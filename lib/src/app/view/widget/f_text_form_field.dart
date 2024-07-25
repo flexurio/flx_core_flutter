@@ -1,0 +1,182 @@
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:flexurio_erp_core/flexurio_erp_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:pattern_formatter/numeric_formatter.dart';
+
+final currencyFormatter = CurrencyTextInputFormatter.currency(
+  symbol: '',
+  decimalDigits: 2,
+  locale: 'en',
+);
+
+final currencyFormatterNoDecimal = CurrencyTextInputFormatter.currency(
+  symbol: '',
+  decimalDigits: 0,
+  locale: 'en',
+);
+
+class FTextFormField extends FormField<String> {
+  FTextFormField({
+    super.key,
+    this.suffixText,
+    this.onEditingComplete,
+    this.errorText,
+    this.maxLines = 1,
+    this.labelText,
+    this.obscureText = false,
+    this.readOnly = false,
+    this.suffixIcon,
+    this.controller,
+    this.helperText,
+    this.inputFormatters,
+    this.focusNode,
+    this.maxLength,
+    this.hintText,
+    this.onChanged,
+    super.validator,
+    super.enabled,
+    this.onTapOutside,
+    this.onSubmitted,
+  }) : super(
+          initialValue: controller?.text ?? '',
+          builder: (field) {
+            var isNumber = false;
+            if (inputFormatters != null) {
+              if (inputFormatters[0] is ThousandsFormatter ||
+                  inputFormatters[0] is CurrencyTextInputFormatter) {
+                isNumber = true;
+              }
+            }
+
+            return Builder(
+              builder: (context) {
+                final theme = Theme.of(context);
+                final border = OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: theme.modeCondition(
+                      Colors.blueGrey.shade100,
+                      const Color(0xff343640),
+                    ),
+                  ),
+                );
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextField(
+                      textAlign: isNumber ? TextAlign.right : TextAlign.left,
+                      focusNode: focusNode,
+                      readOnly: readOnly,
+                      enabled: enabled,
+                      onChanged: (value) {
+                        field.setValue(value);
+                        onChanged?.call(value);
+                      },
+                      inputFormatters: inputFormatters,
+                      maxLength: maxLength,
+                      maxLines: maxLines,
+                      controller: controller,
+                      obscureText: obscureText,
+                      onEditingComplete: onEditingComplete,
+                      onTapOutside: onTapOutside,
+                      onSubmitted: onSubmitted,
+                      style: TextStyle(
+                        color: theme.brightness == Brightness.dark
+                            ? Colors.white70
+                            : Colors.black87,
+                      ),
+                      decoration: InputDecoration(
+                        counterText: '',
+                        labelText: labelText,
+                        hintText: hintText,
+                        filled: true,
+                        fillColor: theme.modeCondition(
+                          Colors.blueGrey.shade50.withOpacity(.5),
+                          MyTheme.black00dp,
+                        ),
+                        suffixText: suffixText,
+                        suffixIcon: suffixIcon,
+                        suffixStyle: TextStyle(
+                          color: theme.modeCondition(
+                            Colors.black87,
+                            Colors.white60,
+                          ),
+                        ),
+                        enabledBorder: border,
+                        border: border,
+                      ),
+                    ),
+                    _HelperText(helperText),
+                    ErrorTextField(errorText: errorText ?? field.errorText),
+                  ],
+                );
+              },
+            );
+          },
+        );
+
+  final void Function()? onEditingComplete;
+  final String? errorText;
+  final int? maxLines;
+  final String? labelText;
+  final String? helperText;
+  final int? maxLength;
+  final bool obscureText;
+  final bool readOnly;
+  final Widget? suffixIcon;
+  final String? suffixText;
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
+  final String? hintText;
+  void Function(String)? onChanged;
+  List<TextInputFormatter>? inputFormatters;
+  void Function(PointerDownEvent)? onTapOutside;
+  void Function(String)? onSubmitted;
+}
+
+class ErrorTextField extends StatelessWidget {
+  const ErrorTextField({
+    super.key,
+    this.errorText,
+  });
+
+  final String? errorText;
+
+  @override
+  Widget build(BuildContext context) {
+    if (errorText != null) {
+      return Padding(
+        padding: const EdgeInsets.only(left: 6, top: 6),
+        child: Text(
+          errorText!,
+          style: const TextStyle(color: Colors.red, fontSize: 10),
+        ),
+      );
+    }
+    return const SizedBox();
+  }
+}
+
+class _HelperText extends StatelessWidget {
+  const _HelperText(this.text);
+
+  final String? text;
+
+  @override
+  Widget build(BuildContext context) {
+    if (text == null) return const SizedBox();
+    return Padding(
+      padding: const EdgeInsets.only(left: 6, top: 6),
+      child: Text(
+        text!,
+        style: TextStyle(color: Colors.grey.shade600, fontSize: 10),
+      ),
+    );
+  }
+}
+
+final inputLetterOnly = [
+  FilteringTextInputFormatter.allow(RegExp('[a-zA-Z ]')),
+];

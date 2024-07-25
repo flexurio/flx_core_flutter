@@ -1,0 +1,872 @@
+import 'package:easy_localization/easy_localization.dart';
+
+abstract class EntityY {
+  const EntityY({
+    required this.titleX,
+    required this.subtitleX,
+    required this.iconPath,
+  });
+  final String titleX;
+  final String subtitleX;
+  final String iconPath;
+
+  String get title => titleX.tr();
+  String get subtitle => 'entity_subtitle.$subtitleX'.tr();
+  String get id => titleX.toLowerCase();
+}
+
+class Entity extends EntityY {
+  const Entity({
+    required super.titleX,
+    required super.subtitleX,
+    required super.iconPath,
+  });
+
+  static Entity get purchaseOrderDocument => const Entity(
+        titleX: 'Purchase Order Document',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
+
+  static Entity get balanceGroup => const Entity(
+        titleX: 'Balance Group',
+        subtitleX: '',
+        iconPath: 'money',
+      );
+
+  static Entity get budgetType =>
+      const Entity(titleX: 'Budget Type', subtitleX: '', iconPath: 'bill');
+  static Entity get cashFlow =>
+      const Entity(titleX: 'Cash Flow', subtitleX: '', iconPath: 'bill');
+  static Entity get leadTime =>
+      const Entity(titleX: 'LeadTime', subtitleX: '', iconPath: 'bill');
+  static Entity get chartOfAccountGroup => const Entity(
+        titleX: 'Chart of Account Group',
+        subtitleX: '',
+        iconPath: 'money',
+      );
+  static Entity get chartOfAccountNumber => const Entity(
+        titleX: 'Chart of Account Number',
+        subtitleX: '',
+        iconPath: 'money',
+      );
+  static Entity get cogs => const Entity(
+      titleX: 'Cost of Goods Sold', subtitleX: '', iconPath: 'bill');
+  static Entity get currency => const Entity(
+        titleX: 'currency',
+        subtitleX: 'currency',
+        iconPath: 'money',
+      );
+  static Entity get customer => const Entity(
+        titleX: 'customer',
+        subtitleX: 'customer',
+        iconPath: 'shopping-bag',
+      );
+  static Entity get customerDiscount => const Entity(
+        titleX: 'customer_discount',
+        subtitleX: 'customer_discount',
+        iconPath: 'discount',
+      );
+  static Entity get department => const Entity(
+        titleX: 'department',
+        subtitleX: '',
+        iconPath: 'department',
+      );
+  static Entity get departmentType =>
+      const Entity(titleX: 'Department Group', subtitleX: '', iconPath: 'bill');
+  static Entity get departmentGroup =>
+      const Entity(titleX: 'Department Group', subtitleX: '', iconPath: 'bill');
+  static Entity get invoiceReceive => const Entity(
+        titleX: 'invoice_receive',
+        subtitleX: 'invoice_receive',
+        iconPath: 'bill',
+      );
+  static Entity get invoiceReceiveDetail => const Entity(
+        titleX: 'Invoice Receive Detail',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
+  static Entity get invoiceReceiveDocument => const Entity(
+        titleX: 'invoice_receive_document',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
+  static Entity get ebitda =>
+      const Entity(titleX: 'Ebitda', subtitleX: '', iconPath: 'bill');
+  static Entity get budgetRealization => const Entity(
+        titleX: 'budget_realization',
+        subtitleX: 'budget_realization',
+        iconPath: 'accountant',
+      );
+  static Entity get pettyCash => const Entity(
+        titleX: 'petty_cash',
+        subtitleX: 'petty_cash',
+        iconPath: 'money',
+      );
+  static Entity get journalEstimation => const Entity(
+        titleX: 'Journal Estimation Type',
+        subtitleX: 'journal_estimation_type',
+        iconPath: 'worksheet',
+      );
+  static Entity get material => const Entity(
+        titleX: 'Material',
+        subtitleX: 'material',
+        iconPath: 'layers',
+      );
+  static Entity get materialApproveVendor => const Entity(
+        titleX: 'Approve Supplier List',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
+  static Entity get materialDesign => const Entity(
+        titleX: 'Material Design',
+        subtitleX: 'material_design',
+        iconPath: 'design-code',
+      );
+  static Entity get materialGroup => const Entity(
+        titleX: 'material_group',
+        subtitleX:
+            'Master menu that includes a list of material groups as the basis for classifying materials',
+        iconPath: 'material-group',
+      );
+  static Entity get materialIssue => const Entity(
+        titleX: 'Material Issue',
+        subtitleX: 'material_issue',
+        iconPath: 'material-issue',
+      );
+  static Entity get materialIssueDetail => const Entity(
+        titleX: 'material_issue_detail',
+        subtitleX: '',
+        iconPath: 'material-issue',
+      );
+  static Entity get materialReceive => const Entity(
+        titleX: 'Material Receive',
+        subtitleX: 'material_receive',
+        iconPath: 'material-receive',
+      );
+  static Entity get materialStock => const Entity(
+        titleX: 'material_stock',
+        subtitleX: 'material_stock',
+        iconPath: 'layers',
+      );
+  static Entity get purchaseRequest => const Entity(
+        titleX: 'purchase_request',
+        subtitleX: 'purchase_request',
+        iconPath: 'add-basket',
+      );
+  static Entity get fuel => const Entity(
+        titleX: 'Fuel',
+        subtitleX: '',
+        iconPath: 'shopping-list',
+      );
+  static Entity get fuelHistory => const Entity(
+        titleX: 'History',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
+  static Entity get vehicle => const Entity(
+        titleX: 'Vehicle',
+        subtitleX: '',
+        iconPath: 'shopping-list',
+      );
+  static Entity get businessTrip => const Entity(
+        titleX: 'Business Trip',
+        subtitleX: '',
+        iconPath: 'shopping-list',
+      );
+  static Entity get businessTripDestination => const Entity(
+        titleX: 'Business Trip Destination',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
+  static Entity get requestForm => const Entity(
+        titleX: 'Request Form',
+        subtitleX:
+            'A document utilized to formally request services, resources, or specific actions from a particular department within an organization',
+        iconPath: 'contact-form',
+      );
+  static Entity get requestFormDetail => const Entity(
+      titleX: 'Request Form Detail', subtitleX: '', iconPath: 'bill');
+  static Entity get none =>
+      const Entity(titleX: '', subtitleX: '', iconPath: 'bill');
+  static Entity get purchaseRequestDetail => const Entity(
+        titleX: 'Material Request Detail',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
+  static Entity get materialReturn => const Entity(
+        titleX: 'Material Return',
+        subtitleX: '',
+        iconPath: 'material-return',
+      );
+  static Entity get materialReturnDetail => const Entity(
+        titleX: 'Material Return Detail',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
+  static Entity get materialReturnNote => const Entity(
+        titleX: 'Material Return Note',
+        subtitleX: '',
+        iconPath: 'shopping-list',
+      );
+  static Entity get materialReturnNoteDetail => const Entity(
+        titleX: 'Material Return Note Detail',
+        subtitleX: '',
+        iconPath: 'shopping-list',
+      );
+  static Entity get materialType => const Entity(
+        titleX: 'Material Type',
+        subtitleX:
+            'Master menu that includes a list of material types as the basis for classifying materials',
+        iconPath: 'material-type',
+      );
+  static Entity get materialUnit =>
+      const Entity(titleX: 'Material Unit', subtitleX: '', iconPath: 'bill');
+  static Entity get unitConvert =>
+      const Entity(titleX: 'Unit Convert', subtitleX: '', iconPath: 'bill');
+  static Entity get office =>
+      const Entity(titleX: 'Office', subtitleX: '', iconPath: 'bill');
+  static Entity get product => const Entity(
+        titleX: 'product',
+        subtitleX: 'Master menu containing a list of product',
+        iconPath: 'medicine',
+      );
+  static Entity get billOfMaterial => const Entity(
+        titleX: 'Bill of Material',
+        subtitleX: 'bill_of_material',
+        iconPath: 'formulations',
+      );
+  static Entity get productGroup => const Entity(
+        titleX: 'Product Group',
+        subtitleX:
+            'Master menu that includes a list of product groups as the basis for classifying products',
+        iconPath: 'product-group',
+      );
+  static Entity get productionFormulation => const Entity(
+        titleX: 'Production Formulation',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
+  static Entity get productionLine =>
+      const Entity(titleX: 'Line', subtitleX: '', iconPath: 'bill');
+  static Entity get productionMachine => const Entity(
+        titleX: 'Production Machine',
+        subtitleX: 'production_machine',
+        iconPath: 'machines',
+      );
+  static Entity get productionOrder => const Entity(
+        titleX: 'Production Order',
+        subtitleX: '',
+        iconPath: 'parcel-care',
+      );
+  static Entity get productionOrderDetail => const Entity(
+        titleX: 'Production Order Detail',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
+  static Entity get productionServiceOrder => const Entity(
+        titleX: 'Production Service Order',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
+  static Entity get productionStage => const Entity(
+        titleX: 'Production Stage',
+        subtitleX: 'production_stage',
+        iconPath: 'production-stage',
+      );
+  static Entity get productionStageProcess => const Entity(
+        titleX: 'Stage Process',
+        subtitleX: 'stage_process',
+        iconPath: 'stage-process',
+      );
+  static Entity get productionStageProcessDetail => const Entity(
+        titleX: 'Stage Process Detail',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
+  static Entity get productionSubStage => const Entity(
+        titleX: 'Production Sub Stage',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
+  static Entity get productIssue => const Entity(
+        titleX: 'Product Issue',
+        subtitleX:
+            'The process of issuing inventory involves confirming the quantity and condition of goods issued to customers or sent to other departments',
+        iconPath: 'unpacking',
+      );
+  static Entity get productNie =>
+      const Entity(titleX: 'Product NIE', subtitleX: '', iconPath: 'bill');
+  static Entity get productPrice =>
+      const Entity(titleX: 'Product Price', subtitleX: '', iconPath: 'money');
+  static Entity get productReceive => const Entity(
+        titleX: 'product_receive',
+        subtitleX: 'product_receive',
+        iconPath: 'parcel-care',
+      );
+  static Entity get productRequest => const Entity(
+        titleX: 'Product Request',
+        subtitleX: '',
+        iconPath: 'product-request',
+      );
+  static Entity get productRequestDetail => const Entity(
+        titleX: 'Product Request Detail',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
+  static Entity get productReturn => const Entity(
+        titleX: 'Product Return',
+        subtitleX: '',
+        iconPath: 'shopping-list',
+      );
+  static Entity get productReturnCheck => const Entity(
+        titleX: 'Product Return Check',
+        subtitleX: '',
+        iconPath: 'shopping-list',
+      );
+  static Entity get productReturnDetail => const Entity(
+        titleX: 'Product Return Detail',
+        subtitleX: '',
+        iconPath: 'shopping-list',
+      );
+  static Entity get document =>
+      const Entity(titleX: 'document', subtitleX: '', iconPath: 'bill');
+  static Entity get purchaseOrder => const Entity(
+        titleX: 'purchase_order',
+        subtitleX: 'purchase_order',
+        iconPath: 'shopping-list',
+      );
+  static Entity get purchaseOrderDetail => const Entity(
+        titleX: 'Purchase Order Detail',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
+  static Entity get productReturnNote => const Entity(
+        titleX: 'Product Return Note',
+        subtitleX: '',
+        iconPath: 'shopping-list',
+      );
+  static Entity get productReturnNoteDetail => const Entity(
+        titleX: 'Product Return Note Detail',
+        subtitleX: '',
+        iconPath: 'shopping-list',
+      );
+  static Entity get rate => const Entity(
+        titleX: 'rate',
+        subtitleX: 'Master menu for recording currency exchange rates',
+        iconPath: 'stock-market',
+      );
+  static Entity get recapProductStock => const Entity(
+      titleX: 'Recap Product Stock', subtitleX: '', iconPath: 'bill');
+  static Entity get role =>
+      const Entity(titleX: 'Role', subtitleX: '', iconPath: 'bill');
+  static Entity get salesOrder => const Entity(
+        titleX: 'Sales Order',
+        subtitleX: '',
+        iconPath: 'sales-order',
+      );
+  static Entity get schedule => const Entity(
+        titleX: 'schedule',
+        subtitleX: 'schedule',
+        iconPath: 'schedule',
+      );
+  static Entity get scheduleActual =>
+      const Entity(titleX: 'Schedule Actual', subtitleX: '', iconPath: 'bill');
+  static Entity get scheduleDetail =>
+      const Entity(titleX: 'Schedule Detail', subtitleX: '', iconPath: 'bill');
+  static Entity get shift =>
+      const Entity(titleX: 'Shift', subtitleX: '', iconPath: 'bill');
+  static Entity get supplier => const Entity(
+        titleX: 'Supplier',
+        subtitleX:
+            'Master menu containing a list of supplier that produce material',
+        iconPath: 'supplier',
+      );
+  static Entity get tax =>
+      const Entity(titleX: 'PPH', subtitleX: '', iconPath: 'bill');
+  static Entity get payment => const Entity(
+        titleX: 'payment',
+        subtitleX: 'payment',
+        iconPath: 'credit-card',
+      );
+  static Entity get sales => const Entity(
+        titleX: 'Sales',
+        subtitleX: 'sales',
+        iconPath: 'credit-card',
+      );
+  static Entity get paymentSalary => const Entity(
+        titleX: 'payment_salary',
+        subtitleX: 'payment_salary',
+        iconPath: 'pay-day',
+      );
+  static Entity get taxInvoiceNumber => const Entity(
+        titleX: 'tax_invoice_number',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
+  static Entity get ticket =>
+      const Entity(titleX: 'Ticket', subtitleX: '', iconPath: 'bill');
+  static Entity get ticketComment =>
+      const Entity(titleX: 'Ticket Comment', subtitleX: '', iconPath: 'bill');
+  static Entity get transactionNonOrder => const Entity(
+        titleX: 'Transaction Non Order',
+        subtitleX: '',
+        iconPath: 'transaction-non-order',
+      );
+  static Entity get transactionRoutine => const Entity(
+        titleX: 'Transaction Routine',
+        subtitleX: '',
+        iconPath: 'transaction-routine',
+      );
+  static Entity get transactionType => const Entity(
+        titleX: 'transaction_type',
+        subtitleX: 'Master menu for registering transaction type of company',
+        iconPath: 'transaction',
+      );
+  static Entity get typeCost => const Entity(
+        titleX: 'Type Cost',
+        subtitleX: '',
+        iconPath: 'transaction',
+      );
+  static Entity get transactionJournalAccounting => const Entity(
+        titleX: 'general_journal',
+        subtitleX: 'general_journal',
+        iconPath: 'notebook',
+      );
+  static Entity get vendor => const Entity(
+        titleX: 'Manufacturer',
+        subtitleX:
+            'Master menu containing a list of vendor that produce material',
+        iconPath: 'manufacturer',
+      );
+  static Entity get workHour =>
+      const Entity(titleX: 'Work Hour', subtitleX: '', iconPath: 'bill');
+  static Entity get materialRetest => const Entity(
+        titleX: 'material_retest',
+        subtitleX: 'material_retest',
+        iconPath: 'material-retest',
+      );
+  static Entity get salesOrderDetail => const Entity(
+      titleX: 'Sales Order Detail', subtitleX: '', iconPath: 'bill');
+  static Entity get assetType => const Entity(
+        titleX: 'Asset Type',
+        subtitleX: '',
+        iconPath: 'asset-type',
+      );
+  static Entity get assetLocation => const Entity(
+        titleX: 'Asset Location',
+        subtitleX: '',
+        iconPath: 'asset-location',
+      );
+  static Entity get assetData => const Entity(
+        titleX: 'Asset Data',
+        subtitleX: '',
+        iconPath: 'asset-data',
+      );
+  static Entity get workHourShift =>
+      const Entity(titleX: 'Work Hour Shift', subtitleX: '', iconPath: 'bill');
+}
+
+// enum Entity {
+
+//   budgetType(titleX: 'Budget Type', subtitleX: '', iconPath: 'bill'),
+//   cashFlow(titleX: 'Cash Flow', subtitleX: '', iconPath: 'bill'),
+//   leadTime(titleX: 'LeadTime', subtitleX: '', iconPath: 'bill'),
+//   chartOfAccountGroup(
+//     titleX: 'Chart of Account Group',
+//     subtitleX: '',
+//     iconPath: 'money',
+//   ),
+//   chartOfAccountNumber(
+//     titleX: 'Chart of Account Number',
+//     subtitleX: '',
+//     iconPath: 'money',
+//   ),
+//   cogs(titleX: 'Cost of Goods Sold', subtitleX: '', iconPath: 'bill'),
+//   currency(
+//     titleX: 'currency',
+//     subtitleX: 'currency',
+//     iconPath: 'money',
+//   ),
+//   customer(
+//     titleX: 'customer',
+//     subtitleX: 'customer',
+//     iconPath: 'shopping-bag',
+//   ),
+//   customerDiscount(
+//     titleX: 'customer_discount',
+//     subtitleX: 'customer_discount',
+//     iconPath: 'discount',
+//   ),
+//   department(
+//     titleX: 'department',
+//     subtitleX: '',
+//     iconPath: 'department',
+//   ),
+//   departmentType(titleX: 'Department Group', subtitleX: '', iconPath: 'bill'),
+//   departmentGroup(titleX: 'Department Group', subtitleX: '', iconPath: 'bill'),
+//   invoiceReceive(
+//     titleX: 'invoice_receive',
+//     subtitleX: 'invoice_receive',
+//     iconPath: 'bill',
+//   ),
+//   invoiceReceiveDetail(
+//     titleX: 'Invoice Receive Detail',
+//     subtitleX: '',
+//     iconPath: 'bill',
+//   ),
+//   invoiceReceiveDocument(
+//     titleX: 'invoice_receive_document',
+//     subtitleX: '',
+//     iconPath: 'bill',
+//   ),
+//   ebitda(titleX: 'Ebitda', subtitleX: '', iconPath: 'bill'),
+//   budgetRealization(
+//     titleX: 'budget_realization',
+//     subtitleX: 'budget_realization',
+//     iconPath: 'accountant',
+//   ),
+//   pettyCash(titleX: 'petty_cash', subtitleX: 'petty_cash', iconPath: 'money'),
+//   journalEstimation(
+//     titleX: 'Journal Estimation Type',
+//     subtitleX: 'journal_estimation_type',
+//     iconPath: 'worksheet',
+//   ),
+//   material(
+//     titleX: 'Material',
+//     subtitleX: 'material',
+//     iconPath: 'layers',
+//   ),
+//   materialApproveVendor(
+//     titleX: 'Approve Supplier List',
+//     subtitleX: '',
+//     iconPath: 'bill',
+//   ),
+//   materialDesign(
+//     titleX: 'Material Design',
+//     subtitleX: 'material_design',
+//     iconPath: 'design-code',
+//   ),
+//   materialGroup(
+//     titleX: 'material_group',
+//     subtitleX:
+//         'Master menu that includes a list of material groups as the basis for classifying materials',
+//     iconPath: 'material-group',
+//   ),
+//   materialIssue(
+//     titleX: 'Material Issue',
+//     subtitleX: 'material_issue',
+//     iconPath: 'material-issue',
+//   ),
+//   materialIssueDetail(
+//     titleX: 'material_issue_detail',
+//     subtitleX: '',
+//     iconPath: 'material-issue',
+//   ),
+//   materialReceive(
+//     titleX: 'Material Receive',
+//     subtitleX: 'material_receive',
+//     iconPath: 'material-receive',
+//   ),
+//   materialStock(
+//     titleX: 'material_stock',
+//     subtitleX: 'material_stock',
+//     iconPath: 'layers',
+//   ),
+//   purchaseRequest(
+//     titleX: 'purchase_request',
+//     subtitleX: 'purchase_request',
+//     iconPath: 'add-basket',
+//   ),
+//   fuel(
+//     titleX: 'Fuel',
+//     subtitleX: '',
+//     iconPath: 'shopping-list',
+//   ),
+//   fuelHistory(
+//     titleX: 'History',
+//     subtitleX: '',
+//     iconPath: 'bill',
+//   ),
+//   vehicle(
+//     titleX: 'Vehicle',
+//     subtitleX: '',
+//     iconPath: 'shopping-list',
+//   ),
+//   businessTrip(
+//     titleX: 'Business Trip',
+//     subtitleX: '',
+//     iconPath: 'shopping-list',
+//   ),
+//   businessTripDestination(
+//     titleX: 'Business Trip Destination',
+//     subtitleX: '',
+//     iconPath: 'bill',
+//   ),
+//   requestForm(
+//     titleX: 'Request Form',
+//     subtitleX:
+//         'A document utilized to formally request services, resources, or specific actions from a particular department within an organization',
+//     iconPath: 'contact-form',
+//   ),
+//   requestFormDetail(titleX: 'Request Form Detail', subtitleX: '', iconPath: 'bill'),
+//   none(titleX: '', subtitleX: '', iconPath: 'bill'),
+//   purchaseRequestDetail(
+//     titleX: 'Material Request Detail',
+//     subtitleX: '',
+//     iconPath: 'bill',
+//   ),
+//   materialReturn(
+//     titleX: 'Material Return',
+//     subtitleX: '',
+//     iconPath: 'material-return',
+//   ),
+//   materialReturnDetail(
+//     titleX: 'Material Return Detail',
+//     subtitleX: '',
+//     iconPath: 'bill',
+//   ),
+//   materialReturnNote(
+//     titleX: 'Material Return Note',
+//     subtitleX: '',
+//     iconPath: 'shopping-list',
+//   ),
+//   materialReturnNoteDetail(
+//     titleX: 'Material Return Note Detail',
+//     subtitleX: '',
+//     iconPath: 'shopping-list',
+//   ),
+//   materialType(
+//     titleX: 'Material Type',
+//     subtitleX:
+//         'Master menu that includes a list of material types as the basis for classifying materials',
+//     iconPath: 'material-type',
+//   ),
+//   materialUnit(titleX: 'Material Unit', subtitleX: '', iconPath: 'bill'),
+//   unitConvert(titleX: 'Unit Convert', subtitleX: '', iconPath: 'bill'),
+//   office(titleX: 'Office', subtitleX: '', iconPath: 'bill'),
+//   product(
+//     titleX: 'product',
+//     subtitleX: 'Master menu containing a list of product',
+//     iconPath: 'medicine',
+//   ),
+//   billOfMaterial(
+//     titleX: 'Bill of Material',
+//     subtitleX: 'bill_of_material',
+//     iconPath: 'formulations',
+//   ),
+//   productGroup(
+//     titleX: 'Product Group',
+//     subtitleX:
+//         'Master menu that includes a list of product groups as the basis for classifying products',
+//     iconPath: 'product-group',
+//   ),
+//   productionFormulation(
+//     titleX: 'Production Formulation',
+//     subtitleX: '',
+//     iconPath: 'bill',
+//   ),
+//   productionLine(titleX: 'Line', subtitleX: '', iconPath: 'bill'),
+//   productionMachine(
+//     titleX: 'Production Machine',
+//     subtitleX: 'production_machine',
+//     iconPath: 'machines',
+//   ),
+//   productionOrder(
+//     titleX: 'Production Order',
+//     subtitleX: '',
+//     iconPath: 'parcel-care',
+//   ),
+//   productionOrderDetail(
+//     titleX: 'Production Order Detail',
+//     subtitleX: '',
+//     iconPath: 'bill',
+//   ),
+//   productionServiceOrder(
+//     titleX: 'Production Service Order',
+//     subtitleX: '',
+//     iconPath: 'bill',
+//   ),
+//   productionStage(
+//     titleX: 'Production Stage',
+//     subtitleX: 'production_stage',
+//     iconPath: 'production-stage',
+//   ),
+//   productionStageProcess(
+//     titleX: 'Stage Process',
+//     subtitleX: 'stage_process',
+//     iconPath: 'stage-process',
+//   ),
+//   productionStageProcessDetail(
+//     titleX: 'Stage Process Detail',
+//     subtitleX: '',
+//     iconPath: 'bill',
+//   ),
+//   productionSubStage(
+//     titleX: 'Production Sub Stage',
+//     subtitleX: '',
+//     iconPath: 'bill',
+//   ),
+//   productIssue(
+//     titleX: 'Product Issue',
+//     subtitleX:
+//         'The process of issuing inventory involves confirming the quantity and condition of goods issued to customers or sent to other departments',
+//     iconPath: 'unpacking',
+//   ),
+//   productNie(titleX: 'Product NIE', subtitleX: '', iconPath: 'bill'),
+//   productPrice(titleX: 'Product Price', subtitleX: '', iconPath: 'money'),
+//   productReceive(
+//     titleX: 'product_receive',
+//     subtitleX: 'product_receive',
+//     iconPath: 'parcel-care',
+//   ),
+//   productRequest(
+//     titleX: 'Product Request',
+//     subtitleX: '',
+//     iconPath: 'product-request',
+//   ),
+//   productRequestDetail(
+//     titleX: 'Product Request Detail',
+//     subtitleX: '',
+//     iconPath: 'bill',
+//   ),
+//   productReturn(
+//     titleX: 'Product Return',
+//     subtitleX: '',
+//     iconPath: 'shopping-list',
+//   ),
+//   productReturnCheck(
+//     titleX: 'Product Return Check',
+//     subtitleX: '',
+//     iconPath: 'shopping-list',
+//   ),
+//   productReturnDetail(
+//     titleX: 'Product Return Detail',
+//     subtitleX: '',
+//     iconPath: 'shopping-list',
+//   ),
+//   document(titleX: 'document', subtitleX: '', iconPath: 'bill'),
+//   purchaseOrder(
+//     titleX: 'purchase_order',
+//     subtitleX: 'purchase_order',
+//     iconPath: 'shopping-list',
+//   ),
+//   purchaseOrderDetail(
+//     titleX: 'Purchase Order Detail',
+//     subtitleX: '',
+//     iconPath: 'bill',
+//   ),
+//   productReturnNote(
+//     titleX: 'Product Return Note',
+//     subtitleX: '',
+//     iconPath: 'shopping-list',
+//   ),
+//   productReturnNoteDetail(
+//     titleX: 'Product Return Note Detail',
+//     subtitleX: '',
+//     iconPath: 'shopping-list',
+//   ),
+//   rate(
+//     titleX: 'rate',
+//     subtitleX: 'Master menu for recording currency exchange rates',
+//     iconPath: 'stock-market',
+//   ),
+//   recapProductStock(titleX: 'Recap Product Stock', subtitleX: '', iconPath: 'bill'),
+//   role(titleX: 'Role', subtitleX: '', iconPath: 'bill'),
+//   salesOrder(titleX: 'Sales Order', subtitleX: '', iconPath: 'sales-order'),
+//   schedule(
+//     titleX: 'schedule',
+//     subtitleX: 'schedule',
+//     iconPath: 'schedule',
+//   ),
+//   scheduleActual(titleX: 'Schedule Actual', subtitleX: '', iconPath: 'bill'),
+//   scheduleDetail(titleX: 'Schedule Detail', subtitleX: '', iconPath: 'bill'),
+//   shift(titleX: 'Shift', subtitleX: '', iconPath: 'bill'),
+//   supplier(
+//     titleX: 'Supplier',
+//     subtitleX:
+//         'Master menu containing a list of supplier that produce material',
+//     iconPath: 'supplier',
+//   ),
+//   tax(titleX: 'PPH', subtitleX: '', iconPath: 'bill'),
+//   payment(titleX: 'payment', subtitleX: 'payment', iconPath: 'credit-card'),
+//   sales(titleX: 'Sales', subtitleX: 'sales', iconPath: 'credit-card'),
+//   paymentSalary(
+//     titleX: 'payment_salary',
+//     subtitleX: 'payment_salary',
+//     iconPath: 'pay-day',
+//   ),
+//   taxInvoiceNumber(
+//     titleX: 'tax_invoice_number',
+//     subtitleX: '',
+//     iconPath: 'bill',
+//   ),
+//   ticket(titleX: 'Ticket', subtitleX: '', iconPath: 'bill'),
+//   ticketComment(titleX: 'Ticket Comment', subtitleX: '', iconPath: 'bill'),
+//   transactionNonOrder(
+//     titleX: 'Transaction Non Order',
+//     subtitleX: '',
+//     iconPath: 'transaction-non-order',
+//   ),
+//   transactionRoutine(
+//     titleX: 'Transaction Routine',
+//     subtitleX: '',
+//     iconPath: 'transaction-routine',
+//   ),
+//   transactionType(
+//     titleX: 'transaction_type',
+//     subtitleX: 'Master menu for registering transaction type of company',
+//     iconPath: 'transaction',
+//   ),
+//   typeCost(
+//     titleX: 'Type Cost',
+//     subtitleX: '',
+//     iconPath: 'transaction',
+//   ),
+//   transactionJournalAccounting(
+//     titleX: 'general_journal',
+//     subtitleX: 'general_journal',
+//     iconPath: 'notebook',
+//   ),
+//   vendor(
+//     titleX: 'Manufacturer',
+//     subtitleX: 'Master menu containing a list of vendor that produce material',
+//     iconPath: 'manufacturer',
+//   ),
+//   workHour(titleX: 'Work Hour', subtitleX: '', iconPath: 'bill'),
+//   materialRetest(
+//     titleX: 'material_retest',
+//     subtitleX: 'material_retest',
+//     iconPath: 'material-retest',
+//   ),
+//   salesOrderDetail(titleX: 'Sales Order Detail', subtitleX: '', iconPath: 'bill'),
+//   assetType(
+//     titleX: 'Asset Type',
+//     subtitleX: '',
+//     iconPath: 'asset-type',
+//   ),
+//   assetLocation(
+//     titleX: 'Asset Location',
+//     subtitleX: '',
+//     iconPath: 'asset-location',
+//   ),
+//   assetData(
+//     titleX: 'Asset Data',
+//     subtitleX: '',
+//     iconPath: 'asset-data',
+//   ),
+//   workHourShift(titleX: 'Work Hour Shift', subtitleX: '', iconPath: 'bill');
+
+//   const Entity({
+//     required this.titleX,
+//     required this.subtitleX,
+//     required this.iconPath,
+//   });
+//   final String titleX;
+//   final String subtitleX;
+//   final String iconPath;
+
+//   String get title => titleX.tr();
+//   String get subtitle => 'entity_subtitle.$subtitleX'.tr();
+//   String get id => titleX.toLowerCase();
+// }
