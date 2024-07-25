@@ -117,10 +117,13 @@ class FDropDownSearch<T> extends StatelessWidget {
           Icons.error,
           color: Colors.red,
         );
+        break;
       case Status.progress:
         icon = const CupertinoActivityIndicator();
+        break;
       case Status.loaded:
         icon = const Icon(Icons.arrow_drop_down, size: 24);
+        break;
     }
 
     final borderColor = theme.modeCondition(
@@ -219,10 +222,13 @@ class FDropDownSearchMultiple<T> extends StatelessWidget {
     switch (status) {
       case Status.error:
         icon = const Icon(Icons.error, color: Colors.red);
+        break;
       case Status.progress:
         icon = const CupertinoActivityIndicator();
+        break;
       case Status.loaded:
         icon = const Icon(Icons.arrow_drop_down, size: 24);
+        break;
     }
 
     return Container(

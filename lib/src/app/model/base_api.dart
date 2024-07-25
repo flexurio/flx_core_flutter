@@ -59,10 +59,12 @@ class BaseApi {
           response = await dio
               .get<dynamic>(url, options: options)
               .timeout(timeLimit, onTimeout: _onTimeout);
+          break;
         case 'POST':
           response = await dio
               .post<dynamic>(url, data: formData, options: options)
               .timeout(timeLimit, onTimeout: _onTimeout);
+          break;
         case 'DELETE':
           response = await dio
               .delete<dynamic>(
@@ -71,6 +73,7 @@ class BaseApi {
                 options: options,
               )
               .timeout(timeLimit, onTimeout: _onTimeout);
+          break;
         case 'PATCH':
           response = await dio
               .patch<dynamic>(
@@ -79,10 +82,12 @@ class BaseApi {
                 options: options,
               )
               .timeout(timeLimit, onTimeout: _onTimeout);
+          break;
         case 'PUT':
           response = await dio
               .put<dynamic>(url, data: formData, options: options)
               .timeout(timeLimit, onTimeout: _onTimeout);
+          break;
         default:
       }
       try {
