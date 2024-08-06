@@ -231,54 +231,6 @@ class Permission {
   static String productGroupDelete = 'product_group_delete';
 
   // --
-  static String productionLineViewMenu = 'production_line_view_menu';
-  static String productionLineCreate = 'production_line_create';
-  static String productionLineDelete = 'production_line_delete';
-  static String productionLineEdit = 'production_line_edit';
-
-  // --
-  static String productionMachineViewMenu = 'production_machine_view_menu';
-  static String productionMachineCreate = 'production_machine_create';
-  static String productionMachineDelete = 'production_machine_delete';
-  static String productionMachineEdit = 'production_machine_edit';
-
-  // --
-  static String productionOrderViewMenu = 'production_order_view_menu';
-  static String productionOrderCreate = 'production_order_create';
-  static String productionOrderDelete = 'production_order_delete';
-  static String productionOrderEdit = 'production_order_edit';
-  static String productionOrderRework = 'production_order_rework';
-
-  // --
-  static String productionServiceOrderViewMenu =
-      'production_service_order_view_menu';
-  static String productionServiceOrderCreate =
-      'production_service_order_create';
-  static String productionServiceOrderDelete =
-      'production_service_order_delete';
-  static String productionServiceOrderEdit = 'production_service_order_edit';
-  static String productionServiceOrderRework =
-      'production_service_order_rework';
-
-  // --
-  static String productionStageViewMenu = 'production_stage_view_menu';
-  static String productionStageCreate = 'production_stage_create';
-  static String productionStageDelete = 'production_stage_delete';
-  static String productionStageEdit = 'production_stage_edit';
-  static String productionSubStageCreate = 'production_sub_stage_create';
-  static String productionSubStageDelete = 'production_sub_stage_delete';
-  static String productionSubStageEdit = 'production_sub_stage_edit';
-
-  // --
-  static String productionStageProcessViewMenu =
-      'production_stage_process_view_menu';
-  static String productionStageProcessCreate =
-      'production_stage_process_create';
-  static String productionStageProcessDelete =
-      'production_stage_process_delete';
-  static String productionStageProcessEdit = 'production_stage_process_edit';
-
-  // --
   static String productIssueViewMenu = 'product_issue_view_menu';
   static String productIssueDeliveryCreate = 'product_issue_delivery_create';
 
@@ -296,38 +248,6 @@ class Permission {
   static String productRequestCreate = 'product_request_create';
   static String productRequestDelete = 'product_request_delete';
   static String productRequestEdit = 'product_request_edit';
-
-  // --
-  static String productReturnViewMenu = 'product_return_view_menu';
-  static String productReturnApprove = 'product_return_approve';
-  static String productReturnConfirmMarketing =
-      'product_return_confirm_marketing';
-  static String productReturnConfirmPpic = 'product_return_confirm_ppic';
-  static String productReturnCreate = 'product_return_create';
-  static String productReturnDelete = 'product_return_delete';
-  static String productReturnDetailCreate = 'product_return_detail_create';
-  static String productReturnDetailDelete = 'product_return_detail_delete';
-  static String productReturnEdit = 'product_return_edit';
-  static String productReturnCheckViewMenu = 'product_return_check_view_menu';
-  static String productReturnCheckCreate = 'product_return_check_create';
-  static String productReturnCheckDelete = 'product_return_check_delete';
-
-  // --
-  static String productReturnNoteViewMenu = 'product_return_note_view_menu';
-  static String productReturnNoteConfirmMarketing =
-      'product_return_note_confirm_marketing';
-  static String productReturnNoteCreate = 'product_return_note_create';
-  static String productReturnNoteDelete = 'product_return_note_delete';
-  static String productReturnNoteEdit = 'product_return_note_edit';
-
-  // --
-  static String productStockViewMenu = 'product_stock_view_menu';
-  static String productStockPrint = 'product_stock_print';
-
-  // --
-  static String productStockRecapViewMenu = 'product_stock_recap_view_menu';
-  static String productStockRecapExportExcel =
-      'recap_product_stock_export_excel';
 
   // --
   static String purchaseOrderViewMenu = 'purchase_order_view_menu';
@@ -496,12 +416,27 @@ class Permission {
     'upload',
     'validate',
     'view_menu',
+    'activate',
+    'deactivate',
   ];
 
   static String label(String permission) {
     for (final event in events) {
       if (permission.contains(event)) {
-        final entity = permission.replaceAll('_$event', '');
+        var entity = permission.replaceAll('_$event', '');
+        String? subWord;
+
+        final regex = RegExp(r'\{(.*?)\}');
+        final Match? match = regex.firstMatch(entity);
+        if (match != null) {
+          subWord = match.group(1);
+          entity = entity.replaceAll('_{$subWord}', '');
+        }
+
+        entity = entity.tr();
+        if (subWord != null) {
+          entity += ' ${subWord.tr()}';
+        }
         return 'permission_title.$event'.tr(namedArgs: {'entity': entity.tr()});
       }
     }
@@ -525,6 +460,10 @@ class Permission {
       return DataAction.exportPdf;
     } else if (permission.contains(DataAction.upload.id)) {
       return DataAction.upload;
+    } else if (permission.contains(DataAction.activate.id)) {
+      return DataAction.activate;
+    } else if (permission.contains(DataAction.deactivate.id)) {
+      return DataAction.deactivate;
     } else {
       return DataAction.create;
     }
@@ -554,9 +493,92 @@ class PermissionMaterial {
   static String materialUnitEdit = 'material_unit_edit';
 }
 
-class PermissionProduction {}
+class PermissionProduction {
+  // --
+  static String productionLineViewMenu = 'production_line_view_menu';
+  static String productionLineCreate = 'production_line_create';
+  static String productionLineDelete = 'production_line_delete';
+  static String productionLineEdit = 'production_line_edit';
 
-class PermissionProductStock {}
+  // --
+  static String productionMachineViewMenu = 'production_machine_view_menu';
+  static String productionMachineCreate = 'production_machine_create';
+  static String productionMachineDelete = 'production_machine_delete';
+  static String productionMachineEdit = 'production_machine_edit';
+
+  // --
+  static String productionOrderViewMenu = 'production_order_view_menu';
+  static String productionOrderCreate = 'production_order_create';
+  static String productionOrderDelete = 'production_order_delete';
+  static String productionOrderEdit = 'production_order_edit';
+  static String productionOrderRework = 'production_order_rework';
+
+  // --
+  static String productionServiceOrderViewMenu =
+      'production_service_order_view_menu';
+  static String productionServiceOrderCreate =
+      'production_service_order_create';
+  static String productionServiceOrderDelete =
+      'production_service_order_delete';
+  static String productionServiceOrderEdit = 'production_service_order_edit';
+  static String productionServiceOrderRework =
+      'production_service_order_rework';
+
+  // --
+  static String productionStageViewMenu = 'production_stage_view_menu';
+  static String productionStageCreate = 'production_stage_create';
+  static String productionStageDelete = 'production_stage_delete';
+  static String productionStageEdit = 'production_stage_edit';
+  static String productionSubStageCreate = 'production_sub_stage_create';
+  static String productionSubStageDelete = 'production_sub_stage_delete';
+  static String productionSubStageEdit = 'production_sub_stage_edit';
+  static String productionSubStageActivate = 'production_sub_stage_activate';
+  static String productionSubStageDeactivate =
+      'production_sub_stage_deactivate';
+
+  // --
+  static String productionStageProcessViewMenu =
+      'production_stage_process_view_menu';
+  static String productionStageProcessCreate =
+      'production_stage_process_create';
+  static String productionStageProcessDelete =
+      'production_stage_process_delete';
+  static String productionStageProcessEdit = 'production_stage_process_edit';
+}
+
+class PermissionProductStock {
+  static String productReturnViewMenu = 'product_return_view_menu';
+  static String productReturnApprove = 'product_return_approve';
+  static String productReturnConfirmMarketing =
+      'product_return_confirm_marketing';
+  static String productReturnConfirmPpic = 'product_return_confirm_ppic';
+  static String productReturnCreate = 'product_return_create';
+  static String productReturnDelete = 'product_return_delete';
+  static String productReturnDetailCreate = 'product_return_detail_create';
+  static String productReturnDetailDelete = 'product_return_detail_delete';
+  static String productReturnEdit = 'product_return_edit';
+  static String productReturnCheckViewMenu = 'product_return_check_view_menu';
+  static String productReturnCheckCreate = 'product_return_check_create';
+  static String productReturnCheckDelete = 'product_return_check_delete';
+  static String productReturnLeadTimeExportExcel =
+      'product_return_{lead_time}_export_excel';
+  static String productReturnRecapDispositionExportExcel =
+      'product_return_{recap_disposition}_export_excel';
+
+  // --
+  static String productStockViewMenu = 'product_stock_view_menu';
+  static String productStockPrint = 'product_stock_print';
+  static String productStockRecapViewMenu = 'product_stock_recap_view_menu';
+  static String productStockRecapExportExcel =
+      'recap_product_stock_export_excel';
+
+  static String productReturnNoteViewMenu = 'product_return_note_view_menu';
+  static String productReturnNoteConfirmMarketing =
+      'product_return_note_confirm_marketing';
+  static String productReturnNoteCreate = 'product_return_note_create';
+  static String productReturnNoteDelete = 'product_return_note_delete';
+  static String productReturnNoteEdit = 'product_return_note_edit';
+}
 
 class PermissionMaterialStock {
   static String materialReturnViewMenu = 'material_return_view_menu';
@@ -567,7 +589,10 @@ class PermissionMaterialStock {
   static String materialReturnDetailEdit = 'material_return_detail_edit';
 }
 
-class PermissionAccounting {}
+class PermissionAccounting {
+  static String journalTransactionExportExcel =
+      'journal_transaction_export_excel';
+}
 
 class PermissionVendor {
   // Vendor

@@ -252,7 +252,7 @@ class _VisibilityPermissionState extends State<VisibilityPermission> {
 
 class LightButton extends StatelessWidget {
   const LightButton({
-    required this.entity,
+    this.entity,
     required this.action,
     required this.permission,
     super.key,
@@ -262,7 +262,7 @@ class LightButton extends StatelessWidget {
 
   final String? permission;
   final DataAction action;
-  final EntityY entity;
+  final EntityY? entity;
 
   @override
   Widget build(BuildContext context) {
@@ -270,6 +270,11 @@ class LightButton extends StatelessWidget {
     final theme = Theme.of(context);
     final foregroundColor =
         theme.modeCondition(Colors.blueGrey.shade700, Colors.white70);
+    var title = action.title;
+    if (entity != null) {
+      title += ' ${entity!.title}';
+    }
+
     return ElevatedButton(
       style: ButtonStyle(
         overlayColor: WidgetStatePropertyAll(
@@ -316,7 +321,7 @@ class LightButton extends StatelessWidget {
             ),
           ),
           const Gap(6),
-          Text('${action.title} ${entity.title}'),
+          Text(title),
         ],
       ),
     );

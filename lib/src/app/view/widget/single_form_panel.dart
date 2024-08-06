@@ -111,7 +111,7 @@ class FormAction extends StatelessWidget {
               if (actions != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 36),
-                  child: Row(
+                  child: RowFields(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: actions!,
                   ),

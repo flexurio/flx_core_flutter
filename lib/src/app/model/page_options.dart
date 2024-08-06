@@ -12,22 +12,22 @@ class PageOptions<T> {
     this.rowsPerPage = 10,
   });
 
-  factory PageOptions.empty({bool? ascending}) {
+  factory PageOptions.empty({bool? ascending, String? sortBy, List<T>? data}) {
     return PageOptions<T>(
       page: 1,
       search: '',
-      sortBy: 'created_at',
+      sortBy: sortBy ?? 'created_at',
       totalRows: 0,
       ascending: ascending ?? false,
-      data: [],
+      data: data ?? [],
     );
   }
 
-  factory PageOptions.emptyNoLimit({bool? ascending}) {
+  factory PageOptions.emptyNoLimit({bool? ascending, String? sortBy}) {
     return PageOptions<T>(
       page: 1,
       search: '',
-      sortBy: 'created_at',
+      sortBy: sortBy ?? 'created_at',
       totalRows: 0,
       ascending: ascending ?? false,
       rowsPerPage: 90000,

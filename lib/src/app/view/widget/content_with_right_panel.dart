@@ -66,7 +66,7 @@ class _ContentWithRightPanelState extends State<ContentWithRightPanel> {
                 right: Radius.circular(25),
               ),
               color: theme.modeCondition(
-                Color(0XFFEFF0F6),
+                const Color(0XFFEFF0F6),
                 const Color(0xff16171C),
               ),
             ),

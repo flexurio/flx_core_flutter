@@ -5,13 +5,17 @@ class TileDataHorizontal extends StatelessWidget {
   const TileDataHorizontal({
     required this.label,
     required this.child,
+    this.inverseColor = false,
     super.key,
     this.labelStyle,
+    this.valueWidth = 220,
   });
 
   final String label;
   final Widget child;
   final TextStyle? labelStyle;
+  final bool inverseColor;
+  final double valueWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -26,23 +30,30 @@ class TileDataHorizontal extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: Text(
                 label,
+                textAlign: TextAlign.end,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: labelStyle ??
                     TextStyle(
                       fontWeight: FontWeight.bold,
-                      color:
-                          theme.modeCondition(Colors.black38, Colors.white30),
+                      color: inverseColor
+                          ? Colors.white70
+                          : theme.modeCondition(Colors.black38, Colors.white30),
                       fontSize: 14,
                     ),
               ),
             ),
           ),
           SizedBox(
-            width: 220,
+            width: valueWidth,
             child: Align(
               alignment: Alignment.centerRight,
               child: DefaultTextStyle(
                 style: theme.textTheme.bodyMedium!.copyWith(
                   fontWeight: FontWeight.bold,
+                  color: inverseColor
+                      ? theme.colorScheme.primary.lighten(.15)
+                      : null,
                 ),
                 child: child,
               ),

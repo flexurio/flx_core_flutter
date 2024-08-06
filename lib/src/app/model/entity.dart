@@ -51,7 +51,10 @@ class Entity extends EntityY {
         iconPath: 'money',
       );
   static Entity get cogs => const Entity(
-      titleX: 'Cost of Goods Sold', subtitleX: '', iconPath: 'bill');
+        titleX: 'Cost of Goods Sold',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
   static Entity get currency => const Entity(
         titleX: 'currency',
         subtitleX: 'currency',
@@ -96,6 +99,16 @@ class Entity extends EntityY {
   static Entity get budgetRealization => const Entity(
         titleX: 'budget_realization',
         subtitleX: 'budget_realization',
+        iconPath: 'accountant',
+      );
+  static Entity get formA1 => const Entity(
+        titleX: 'form_a1',
+        subtitleX: 'form_a1',
+        iconPath: 'accountant',
+      );
+  static Entity get invoiceSummary => const Entity(
+        titleX: 'invoice_summary',
+        subtitleX: 'invoice_summary',
         iconPath: 'accountant',
       );
   static Entity get pettyCash => const Entity(
@@ -186,7 +199,10 @@ class Entity extends EntityY {
         iconPath: 'contact-form',
       );
   static Entity get requestFormDetail => const Entity(
-      titleX: 'Request Form Detail', subtitleX: '', iconPath: 'bill');
+        titleX: 'Request Form Detail',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
   static Entity get none =>
       const Entity(titleX: '', subtitleX: '', iconPath: 'bill');
   static Entity get purchaseRequestDetail => const Entity(
@@ -357,7 +373,10 @@ class Entity extends EntityY {
         iconPath: 'stock-market',
       );
   static Entity get recapProductStock => const Entity(
-      titleX: 'Recap Product Stock', subtitleX: '', iconPath: 'bill');
+        titleX: 'Recap Product Stock',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
   static Entity get role =>
       const Entity(titleX: 'Role', subtitleX: '', iconPath: 'bill');
   static Entity get salesOrder => const Entity(
@@ -447,7 +466,10 @@ class Entity extends EntityY {
         iconPath: 'material-retest',
       );
   static Entity get salesOrderDetail => const Entity(
-      titleX: 'Sales Order Detail', subtitleX: '', iconPath: 'bill');
+        titleX: 'Sales Order Detail',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
   static Entity get assetType => const Entity(
         titleX: 'Asset Type',
         subtitleX: '',

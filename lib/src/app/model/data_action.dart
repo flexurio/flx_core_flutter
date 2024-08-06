@@ -42,7 +42,7 @@ enum DataAction {
   editAdditional('edit_additional', Icons.edit, Colors.orange),
   editHalalCertificate('edit_halal_certificate', Icons.edit, Colors.green),
   none('', Icons.edit, Colors.transparent),
-  deactivate('Deactivate', Icons.add, Colors.green),
+  deactivate('deactivate', Icons.cancel, Colors.red),
   deactivatePhaseOut('Deactivate Phase Out', Icons.add, Colors.green),
   delivery('Delivery', Icons.archive, Colors.green),
   deliveryActual('Delivery Actual', Icons.local_shipping, Colors.green),

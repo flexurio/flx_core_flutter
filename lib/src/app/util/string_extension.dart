@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 extension StringExtension on String {
-    String get replaceSymbol {
+  String get replaceSymbol {
     return replaceAll('/', '-');
   }
-  
+
   String capitalize() {
     return '${this[0].toUpperCase()}${substring(1)}';
   }
@@ -41,13 +41,30 @@ extension TextExtension on Text {
     );
   }
 
-  Widget canCopy() {
+  Widget canCopy({VoidCallback? onTap}) {
     if (data == '') return Container();
+
+    late Widget child;
+    if (onTap != null) {
+      child = InkWell(
+        onTap: onTap,
+        child: DefaultTextStyle(
+          style: const TextStyle(
+            color: Colors.blue,
+            decoration: TextDecoration.underline,
+          ),
+          child: this,
+        ),
+      );
+    } else {
+      child = this;
+    }
+
     return Builder(
       builder: (context) {
         return Row(
           children: [
-            this,
+            child,
             const Gap(6),
             InkWell(
               borderRadius: BorderRadius.circular(12),

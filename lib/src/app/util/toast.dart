@@ -157,7 +157,7 @@ class ToastNotify extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(40),
-        color: Colors.black.withOpacity(.5),
+        color: Colors.black.withOpacity(.7),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

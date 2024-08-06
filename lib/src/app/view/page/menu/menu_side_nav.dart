@@ -158,7 +158,10 @@ class _ButtonToggle extends StatelessWidget {
           'asset/svg/sidebar-$action.svg',
           height: 20,
           colorFilter: ColorFilter.mode(
-            theme.iconTheme.color!.lighten(0.45),
+            theme.modeCondition<Color>(
+              theme.iconTheme.color!.lighten(0.45),
+              theme.iconTheme.color!,
+            ),
             BlendMode.srcATop,
           ),
         );
@@ -178,35 +181,40 @@ List<Menu1> filterMenuByPermission({
   required List<Menu1> menu,
   required List<String> permissions,
 }) {
-  final menu1Filtered = <Menu1>[];
-  for (final menu1 in menu) {
-    final menu2Filtered = <Menu2>[];
-    for (final menu2 in menu1.menu) {
-      final menu3Filtered = <Menu3>[];
-      for (final menu3 in menu2.menu) {
-        if (menu3.permission == null ||
-            permissions.contains(menu3.permission)) {
-          menu3Filtered.add(menu3);
+  try {
+    final menu1Filtered = <Menu1>[];
+    for (final menu1 in menu) {
+      final menu2Filtered = <Menu2>[];
+      for (final menu2 in menu1.menu) {
+        final menu3Filtered = <Menu3>[];
+        for (final menu3 in menu2.menu) {
+          if (menu3.permission == null ||
+              permissions.contains(menu3.permission)) {
+            menu3Filtered.add(menu3);
+          }
+        }
+        if (menu3Filtered.isNotEmpty) {
+          menu2Filtered.add(
+            Menu2(
+              icon: menu2.icon,
+              menu: menu3Filtered,
+              label: menu2.label,
+            ),
+          );
         }
       }
-      if (menu3Filtered.isNotEmpty) {
-        menu2Filtered.add(
-          Menu2(
-            icon: menu2.icon,
-            menu: menu3Filtered,
-            label: menu2.label,
+      if (menu2Filtered.isNotEmpty) {
+        menu1Filtered.add(
+          Menu1(
+            menu: menu2Filtered,
+            label: menu1.label,
           ),
         );
       }
     }
-    if (menu2Filtered.isNotEmpty) {
-      menu1Filtered.add(
-        Menu1(
-          menu: menu2Filtered,
-          label: menu1.label,
-        ),
-      );
-    }
+    return menu1Filtered;
+  } catch (e, s) {
+    print(s);
+    return [];
   }
-  return menu1Filtered;
 }
