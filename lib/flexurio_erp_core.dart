@@ -25,6 +25,7 @@ export 'src/app/util/jwt.dart';
 export 'src/app/util/list_extension.dart';
 export 'src/app/util/number_format.dart';
 export 'src/app/util/pdf.dart';
+export 'src/app/util/pdf/header.dart';
 export 'src/app/util/simple_excel.dart';
 export 'src/app/util/sort.dart';
 export 'src/app/util/string_extension.dart';

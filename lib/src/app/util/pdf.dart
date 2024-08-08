@@ -2,69 +2,119 @@ import 'package:flexurio_erp_core/flexurio_erp_core.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
+import 'package:printing/printing.dart';
 
-Future<Uint8List> getCompanyLogoPdf() async {
+Future<(Uint8List logo, Uint8List logoNamed)> getCompanyLogoPdf() async {
   final logo = await rootBundle
       .load('asset/image/logo-company-${flavorConfig.companyId}.png');
-  return logo.buffer.asUint8List();
+  final logoNamed = await rootBundle
+      .load('asset/image/logo-name-company-${flavorConfig.companyId}.png');
+  return (logo.buffer.asUint8List(), logoNamed.buffer.asUint8List());
 }
 
-Padding headerPdf({
-  required Font font,
-  required Uint8List companyLogo,
-  required String title,
-}) {
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 24),
-    child: Row(
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                  font: font,
-                ),
-              ),
-              SizedBox(height: 6),
-              Text(flavorConfig.companyName),
-            ],
-          ),
-        ),
-        Image(MemoryImage(companyLogo), width: 40, height: 40),
-      ],
-    ),
-  );
-}
-
-Container footerPdf({required String printedBy}) {
+Widget footerPdf({required String printedBy}) {
   final now = DateTime.now();
-  return Container(
-    decoration: const BoxDecoration(
-      border: Border(
-        top: BorderSide(),
-      ),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
-      child: Row(
+  final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
+  return Stack(
+    children: [
+      Column(
         children: [
-          Text(
-            'Printed: ${now.yMMMdHm} GMT${now.timeZoneOffset.inHours}',
-            style: const TextStyle(fontSize: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 36),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Authorized Access:',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        'Only authorized personnel who have been specifically granted permission and have completed the necessary confidentiality training are allowed to print, handle, or view confidential documents. This ensures that sensitive information is protected from unauthorized access and potential breaches of confidentiality.',
+                        style: const TextStyle(
+                          fontSize: 8,
+                          color: PdfColors.blueGrey800,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-          SizedBox(width: 24),
-          Text(
-            'Printed by: $printedBy',
-            style: const TextStyle(fontSize: 10),
+          Container(
+            decoration: const BoxDecoration(
+              color: PdfColors.blueGrey50,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 36),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Printed by: $printedBy',
+                          style: const TextStyle(
+                            fontSize: 8,
+                            color: PdfColors.blueGrey800,
+                          ),
+                        ),
+                        SizedBox(width: 6),
+                        Text(
+                          'Printed on: ${now.yMMMdHm} GMT+${now.timeZoneOffset.inHours}',
+                          style: const TextStyle(
+                            fontSize: 8,
+                            color: PdfColors.blueGrey800,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Text(
+                    'Page 1 of 1',
+                    style: const TextStyle(
+                      fontSize: 8,
+                      color: PdfColors.blueGrey800,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
-    ),
+      Positioned(
+        right: 0,
+        bottom: 0,
+        child: Container(
+          height: 200,
+          width: 6,
+          color: PdfColor.fromInt(flavorConfig.color.lighten(.45).value),
+        ),
+      ),
+      Positioned(
+        right: 0,
+        bottom: 0,
+        child: Container(
+          height: 46.2,
+          width: 6,
+          color: PdfColor.fromInt(flavorConfig.color.lighten(.3).value),
+        ),
+      ),
+      Positioned(
+        right: 0,
+        bottom: 0,
+        child: Container(width: 250, height: 2, color: primaryColor),
+      ),
+    ],
   );
 }
 
@@ -73,10 +123,12 @@ class PColumn<T> {
     required this.title,
     required this.builder,
     this.numeric = false,
+    this.primary = false,
   });
 
   final String title;
   final bool numeric;
+  final bool primary;
   final String Function(T data, int index) builder;
 }
 
@@ -84,9 +136,10 @@ Table simpleTablePdf<T>({
   required List<T> data,
   required List<PColumn<T>> columns,
 }) {
-  const paddingRow = EdgeInsets.symmetric(vertical: 6, horizontal: 6);
+  final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
+  const paddingRow = EdgeInsets.symmetric(horizontal: 8);
   return Table(
-    border: TableBorder.all(color: PdfColors.grey300),
+    border: TableBorder.all(color: PdfColors.white, width: 3),
     columnWidths: {
       for (var i = 0; i < columns.length; i++) i: const FlexColumnWidth(2),
     },
@@ -95,19 +148,22 @@ Table simpleTablePdf<T>({
         children: [
           for (final column in columns)
             Container(
+              height: 30,
               padding: paddingRow,
-              decoration: const BoxDecoration(
-                border: Border(
-                  left: BorderSide(),
-                  bottom: BorderSide(),
-                ),
+              decoration: BoxDecoration(
+                color: column.primary ? primaryColor : PdfColors.blueGrey800,
               ),
-              child: Text(
-                column.title,
-                style: TextStyle(
-                  fontSize: 8,
-                  fontWeight: FontWeight.bold,
-                  color: PdfColors.grey900,
+              child: Align(
+                alignment: column.numeric
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
+                child: Text(
+                  column.title,
+                  style: TextStyle(
+                    fontSize: 8,
+                    fontWeight: FontWeight.bold,
+                    color: PdfColors.white,
+                  ),
                 ),
               ),
             ),
@@ -115,20 +171,75 @@ Table simpleTablePdf<T>({
       ),
       ...List<TableRow>.generate(
         data.length,
-        (index) => TableRow(
-          children: [
-            for (final column in columns)
-              Container(
-                padding: paddingRow,
-                alignment: column.numeric ? Alignment.centerRight : null,
-                child: Text(
-                  column.builder(data[index], index),
-                  style: const TextStyle(fontSize: 8),
+        (row) => TableRow(
+          children: List<Widget>.generate(
+            columns.length,
+            (column) => Container(
+              height: 30,
+              padding: paddingRow,
+              decoration: BoxDecoration(
+                color: row.isEven ? PdfColors.grey100 : PdfColors.white,
+                border: Border.all(
+                  width: 4,
+                  color: PdfColors.grey100,
                 ),
               ),
-          ],
+              alignment: columns[column].numeric
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft,
+              child: Text(
+                columns[column].builder(data[row], row),
+                style: const TextStyle(fontSize: 8),
+              ),
+            ),
+          ),
         ),
       ),
     ],
+  );
+}
+
+Future<MultiPage> pdfTemplate({
+  required Widget child,
+  required String title,
+  required String printedBy,
+}) async {
+  final (companyLogo, companyLogoNamed) = await getCompanyLogoPdf();
+  return MultiPage(
+    pageTheme: PageTheme(
+      theme: ThemeData.withFont(
+        base: await PdfGoogleFonts.openSansLight(),
+        bold: await PdfGoogleFonts.openSansSemiBold(),
+        icons: await PdfGoogleFonts.materialIcons(), // this line
+      ),
+      pageFormat: PdfPageFormat.a4,
+      margin: EdgeInsets.zero,
+      buildBackground: (Context context) => Transform.translate(
+        offset: const PdfPoint(-100, 0),
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 140),
+          height: 220,
+          width: 220,
+          decoration: BoxDecoration(
+            color: PdfColor.fromInt(flavorConfig.color.lighten(.56).value),
+            shape: BoxShape.circle,
+          ),
+        ),
+      ),
+    ),
+    header: (context) => headerPdf(
+      companyLogo: companyLogo,
+      companyLogoNamed: companyLogoNamed,
+      title: title,
+    ),
+    footer: (context) => footerPdf(printedBy: printedBy),
+    build: (context) {
+      return [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 36),
+          child: child,
+        ),
+      ]; // Ce
+    },
   );
 }

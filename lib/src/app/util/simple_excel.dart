@@ -54,7 +54,7 @@ List<int> simpleExcel<T>({
     for (var col = 0; col < columnsCount; col++) {
       final column = columns[col];
       final cell = sheet.getRangeByIndex(row + 2, col + 1)
-        ..setValue(column.builder(item, col))
+        ..setValue(column.builder(item, row))
         ..cellStyle.backColorRgb = (row + 2).isEven
             ? primaryColor.lighten(.5)
             : primaryColor.lighten(.55);
