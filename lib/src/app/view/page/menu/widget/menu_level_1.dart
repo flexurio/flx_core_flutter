@@ -3,6 +3,7 @@ import 'package:flexurio_erp_core/src/app/bloc/theme/menu/menu_bloc.dart';
 import 'package:flexurio_erp_core/src/app/view/page/menu/widget/menu_level_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 
 class MenuLevel1 extends StatelessWidget {
   const MenuLevel1({
@@ -77,7 +78,17 @@ class MenuLevel1 extends StatelessWidget {
                     (index) => SizedBox(
                       height: 50,
                       child: Center(
-                        child: FaIcon(menu1.menu[index].icon, size: 15),
+                        child: Column(
+                          children: [
+                            FaIcon(menu1.menu[index].icon, size: 15),
+                            const Gap(3),
+                            Text(
+                              menu1.menu[index].labelShort ??
+                                  menu1.menu[index].label,
+                              style: const TextStyle(fontSize: 10),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

@@ -111,7 +111,7 @@ Widget headerPdf({
                           ),
                           SizedBox(width: 6),
                           Text(
-                            '(021) 7202351',
+                            flavorConfig.companyPhone,
                             style: const TextStyle(
                               fontSize: 8,
                               color: color,
@@ -129,7 +129,7 @@ Widget headerPdf({
                           ),
                           SizedBox(width: 6),
                           Text(
-                            'www.metiska.co.id',
+                            flavorConfig.companyWebsite,
                             style: const TextStyle(
                               fontSize: 8,
                               color: color,
@@ -149,7 +149,7 @@ Widget headerPdf({
                           SizedBox(width: 6),
                           Expanded(
                             child: Text(
-                              'Jl. Raya Kby. Lama No.557, RT.6/RW.1, Grogol Sel., Kec. Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12220',
+                              flavorConfig.companyAddress,
                               maxLines: 3,
                               style: const TextStyle(
                                 fontSize: 8,

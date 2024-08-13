@@ -111,6 +111,31 @@ class Entity extends EntityY {
         subtitleX: 'invoice_summary',
         iconPath: 'accountant',
       );
+  static Entity get accountsReceivableDetail => const Entity(
+        titleX: 'accounts_receivable_detail',
+        subtitleX: 'accounts_receivable_detail',
+        iconPath: 'accountant',
+      );
+  static Entity get accountsReceivableGlobal => const Entity(
+        titleX: 'accounts_receivable_global',
+        subtitleX: 'accounts_receivable_global',
+        iconPath: 'accountant',
+      );
+  static Entity get accountsReceivableGrup => const Entity(
+        titleX: 'accounts_receivable_grup',
+        subtitleX: 'accounts_receivable_grup',
+        iconPath: 'accountant',
+      );
+  static Entity get accountsReceivableMutation => const Entity(
+        titleX: 'accounts_receivable_mutation',
+        subtitleX: 'accounts_receivable_mutation',
+        iconPath: 'accountant',
+      );
+  static Entity get accountsReceivableCustomer => const Entity(
+        titleX: 'accounts_receivable_customer',
+        subtitleX: 'accounts_receivable_customer',
+        iconPath: 'accountant',
+      );
   static Entity get pettyCash => const Entity(
         titleX: 'petty_cash',
         subtitleX: 'petty_cash',

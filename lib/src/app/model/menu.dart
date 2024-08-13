@@ -13,10 +13,12 @@ class Menu1 {
 class Menu2 {
   Menu2({
     required this.label,
+     this.labelShort,
     required this.icon,
     required this.menu,
   });
   final String label;
+  final String? labelShort;
   final IconData icon;
   final List<Menu3> menu;
 }

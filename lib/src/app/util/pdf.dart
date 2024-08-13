@@ -121,15 +121,17 @@ Widget footerPdf({required String printedBy}) {
 class PColumn<T> {
   PColumn({
     required this.title,
-    required this.builder,
+    required this.contentBuilder,
+    this.footer,
     this.numeric = false,
     this.primary = false,
   });
 
   final String title;
+  final String? footer;
   final bool numeric;
   final bool primary;
-  final String Function(T data, int index) builder;
+  final String Function(T data, int index) contentBuilder;
 }
 
 Table simpleTablePdf<T>({
@@ -138,6 +140,30 @@ Table simpleTablePdf<T>({
 }) {
   final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
   const paddingRow = EdgeInsets.symmetric(horizontal: 8);
+  final footer = <Widget>[
+    for (final column in columns)
+      Container(
+        height: 30,
+        padding: paddingRow,
+        decoration: const BoxDecoration(
+          border:
+              Border(top: BorderSide(color: PdfColors.blueGrey500, width: 4)),
+        ),
+        child: Align(
+          alignment:
+              column.numeric ? Alignment.centerRight : Alignment.centerLeft,
+          child: Text(
+            column.footer ?? '',
+            textAlign: column.numeric ? TextAlign.right : TextAlign.left,
+            style: TextStyle(
+              fontSize: 7,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+  ];
+
   return Table(
     border: TableBorder.all(color: PdfColors.white, width: 3),
     columnWidths: {
@@ -159,8 +185,9 @@ Table simpleTablePdf<T>({
                     : Alignment.centerLeft,
                 child: Text(
                   column.title,
+                  textAlign: column.numeric ? TextAlign.right : TextAlign.left,
                   style: TextStyle(
-                    fontSize: 8,
+                    fontSize: 7,
                     fontWeight: FontWeight.bold,
                     color: PdfColors.white,
                   ),
@@ -188,13 +215,14 @@ Table simpleTablePdf<T>({
                   ? Alignment.centerRight
                   : Alignment.centerLeft,
               child: Text(
-                columns[column].builder(data[row], row),
-                style: const TextStyle(fontSize: 8),
+                columns[column].contentBuilder(data[row], row),
+                style: const TextStyle(fontSize: 7),
               ),
             ),
           ),
         ),
       ),
+      ...[TableRow(children: footer)],
     ],
   );
 }

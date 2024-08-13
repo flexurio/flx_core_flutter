@@ -590,8 +590,11 @@ class PermissionMaterialStock {
 }
 
 class PermissionAccounting {
+  static String journalTransactionViewMenu = 'journal_transaction_view_menu';
   static String journalTransactionExportExcel =
       'journal_transaction_export_excel';
+  static String invoiceDiscountViewMenu = 'invoice_discount_view_menu';
+  static String invoiceDiscountExportPdf = 'invoice_discount_export_pdf';
 }
 
 class PermissionVendor {
