@@ -12,7 +12,7 @@ Future<(Uint8List logo, Uint8List logoNamed)> getCompanyLogoPdf() async {
   return (logo.buffer.asUint8List(), logoNamed.buffer.asUint8List());
 }
 
-Widget footerPdf({required String printedBy}) {
+Widget footerPdf({required Context context, required String printedBy}) {
   final now = DateTime.now();
   final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
   return Stack(
@@ -79,7 +79,7 @@ Widget footerPdf({required String printedBy}) {
                     ),
                   ),
                   Text(
-                    'Page 1 of 1',
+                    'Page ${context.pageNumber} of ${context.pagesCount}',
                     style: const TextStyle(
                       fontSize: 8,
                       color: PdfColors.blueGrey800,
@@ -260,7 +260,7 @@ Future<MultiPage> pdfTemplate({
       companyLogoNamed: companyLogoNamed,
       title: title,
     ),
-    footer: (context) => footerPdf(printedBy: printedBy),
+    footer: (context) => footerPdf(context: context, printedBy: printedBy),
     build: (context) {
       return [
         Padding(

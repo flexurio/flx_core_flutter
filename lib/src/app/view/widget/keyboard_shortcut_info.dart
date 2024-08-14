@@ -24,10 +24,6 @@ class KeyboardShortcutInfo extends StatelessWidget {
             hotkey: const ['Shift', 'Alt', 'P'],
           ),
           ShortcutInfo(
-            title: 'go_to_ticket'.tr(),
-            hotkey: const ['Shift', 'Alt', 'T'],
-          ),
-          ShortcutInfo(
             title: 'cache_refresh'.tr(),
             hotkey: const ['Ctrl', 'Shift', 'R'],
           ),

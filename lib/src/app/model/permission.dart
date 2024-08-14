@@ -564,6 +564,8 @@ class PermissionProductStock {
       'product_return_{lead_time}_export_excel';
   static String productReturnRecapDispositionExportExcel =
       'product_return_{recap_disposition}_export_excel';
+  static String productReturnLeadTimeByStatusExportExcel =
+      'product_return_{lead_time_by_status}_export_excel';
 
   // --
   static String productStockViewMenu = 'product_stock_view_menu';
@@ -595,6 +597,13 @@ class PermissionAccounting {
       'journal_transaction_export_excel';
   static String invoiceDiscountViewMenu = 'invoice_discount_view_menu';
   static String invoiceDiscountExportPdf = 'invoice_discount_export_pdf';
+
+  static String medicalTreatmentExpenseDepartmentViewMenu =
+      'medical_treatment_expense_per_department_view_menu';
+  static String medicalTreatmentExpenseDepartmentExportExcel =
+      'medical_treatment_expense_per_department_export_excel';
+  static String medicalTreatmentExpenseDepartmentExportPdf =
+      'medical_treatment_expense_per_department_export_pdf';
 }
 
 class PermissionVendor {

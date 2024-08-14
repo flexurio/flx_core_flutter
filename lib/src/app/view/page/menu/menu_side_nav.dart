@@ -23,6 +23,7 @@ class MenuSideNav extends StatefulWidget {
 
 class _MenuSideNavState extends State<MenuSideNav> {
   bool _hovered = false;
+  bool _hasMouse = false;
 
   T _conditionCollapsed<T>(
     bool stateCollapsed, {
@@ -38,14 +39,34 @@ class _MenuSideNavState extends State<MenuSideNav> {
       menu: widget.menu,
       permissions: widget.accountPermission,
     );
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hovered = true),
-      onExit: (_) => setState(() => _hovered = false),
-      child: ScreenIdentifierBuilder(
-        builder: (context, screenIdentifier) {
-          final theme = Theme.of(context);
-          return BlocBuilder<MenuCollapseBloc, bool>(
-            builder: (context, collapsed) {
+    return GestureDetector(
+      onTap: () {
+        if (!_hasMouse) setState(() => _hovered = !_hovered);
+      },
+      child: MouseRegion(
+        onEnter: (_) => setState(() {
+          _hasMouse = true;
+          _hovered = true;
+        }),
+        onExit: (_) => setState(() => _hovered = false),
+        child: _buildSideNav(menuFiltered),
+      ),
+    );
+  }
+
+  Widget _buildSideNav(List<Menu1> menuFiltered) {
+    return ScreenIdentifierBuilder(
+      builder: (context, screenIdentifier) {
+        final theme = Theme.of(context);
+        return BlocBuilder<MenuCollapseBloc, bool>(
+          builder: (context, collapsedX) {
+            return ScreenIdentifierBuilder(
+                builder: (context, screenIdentifier) {
+              final collapsed = screenIdentifier.conditions(
+                md: collapsedX,
+                sm: true,
+              );
+
               return Material(
                 color: theme.cardColor,
                 shadowColor: Colors.black,
@@ -92,10 +113,10 @@ class _MenuSideNavState extends State<MenuSideNav> {
                   ),
                 ),
               );
-            },
-          );
-        },
-      ),
+            });
+          },
+        );
+      },
     );
   }
 }
