@@ -9,6 +9,7 @@ class FlavorConfig<T> {
     required this.companyAddress,
     required this.apiUrl,
     required this.color,
+    required this.colorSoft,
     required this.backgroundLoginPage,
     required this.applicationConfig,
   });
@@ -21,6 +22,7 @@ class FlavorConfig<T> {
   final String apiUrl;
   final String backgroundLoginPage;
   final Color color;
+  final Color colorSoft;
   final T applicationConfig;
 }
 

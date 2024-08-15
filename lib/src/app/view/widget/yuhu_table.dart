@@ -215,7 +215,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     final boxDecorationHeader = BoxDecoration(
       color: theme.brightness == Brightness.dark
           ? primaryColor.darken(.3)
-          : primaryColor.lighten(.5),
+          : flavorConfig.colorSoft,
     );
 
     final Widget table = Table(
