@@ -25,7 +25,7 @@ class MenuContent extends StatelessWidget {
                   right: 24,
                   top: 80,
                 ),
-                sm : EdgeInsets.zero,
+                sm: const EdgeInsets.only(top: 46),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

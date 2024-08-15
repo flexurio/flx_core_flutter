@@ -6,11 +6,10 @@ import 'package:flexurio_erp_core/src/app/view/page/menu/widget/menu_content.dar
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:screen_identifier/screen_identifier.dart';
 
-class MenuPage extends StatelessWidget {
+class MenuPage extends StatefulWidget {
   const MenuPage._(
     this.menu,
     this.accountPermissions,
@@ -48,6 +47,13 @@ class MenuPage extends StatelessWidget {
   }
 
   @override
+  State<MenuPage> createState() => _MenuPageState();
+}
+
+class _MenuPageState extends State<MenuPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
   Widget build(BuildContext context) {
     return Shortcuts(
       shortcuts: {
@@ -68,8 +74,8 @@ class MenuPage extends StatelessWidget {
             onInvoke: (i) {
               showSearchDialog(
                 context: context,
-                menu: menu,
-                accountPermissions: accountPermissions,
+                menu: widget.menu,
+                accountPermissions: widget.accountPermissions,
               );
               return null;
             },
@@ -101,45 +107,17 @@ class MenuPage extends StatelessWidget {
                           ),
                     );
                 return Scaffold(
+                  key: _scaffoldKey,
                   drawer: MenuSideNav(
-                    menu: menu,
-                    accountPermission: accountPermissions,
+                    noCollapse: true,
+                    menu: widget.menu,
+                    accountPermission: widget.accountPermissions,
                   ),
-                  appBar: screenIdentifier.conditions<bool>(sm: true, md: false)
-                      ? AppBar(
-                          title: const Text('Chiron'),
-                          actions: [
-                            AccountButton(
-                              title: userName,
-                              subtitle: userSubtitle,
-                              onLogout: onLogout,
-                            ),
-                            const Gap(24),
-                          ],
-                        )
-                      : null,
                   body: Stack(
                     children: [
                       const MenuContent(),
-                      Visibility(
-                        visible:
-                            screenIdentifier.conditions(sm: false, md: true),
-                        child: TopBar(
-                          menu: menu,
-                          accountName: userName,
-                          accountSubtitle: userSubtitle,
-                          accountPermission: accountPermissions,
-                          onLogout: onLogout,
-                        ),
-                      ),
-                      Visibility(
-                        visible:
-                            screenIdentifier.conditions(sm: false, md: true),
-                        child: MenuSideNav(
-                          menu: menu,
-                          accountPermission: accountPermissions,
-                        ),
-                      ),
+                      _buildTopBar(),
+                      _buildSideNav(screenIdentifier),
                       const Align(
                         alignment: Alignment.bottomRight,
                         child: VersionInfo(),
@@ -152,6 +130,42 @@ class MenuPage extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+
+  Widget _buildSideNav(ScreenIdentifier screenIdentifier) {
+    return BlocListener<MenuBloc, MenuState>(
+      listener: (context, state) {
+        if (state.triggerCloseDrawer) {
+          _scaffoldKey.currentState?.closeDrawer();
+        }
+      },
+      child: Visibility(
+        visible: screenIdentifier.conditions(
+          sm: false,
+          md: true,
+        ),
+        child: MenuSideNav(
+          menu: widget.menu,
+          accountPermission: widget.accountPermissions,
+          drawerTriggered: () {
+            _scaffoldKey.currentState?.openDrawer();
+          },
+        ),
+      ),
+    );
+  }
+
+  TopBar _buildTopBar() {
+    return TopBar(
+      menu: widget.menu,
+      accountName: widget.userName,
+      accountSubtitle: widget.userSubtitle,
+      accountPermission: widget.accountPermissions,
+      onLogout: widget.onLogout,
+      drawerTriggered: () {
+        _scaffoldKey.currentState?.openDrawer();
+      },
     );
   }
 }

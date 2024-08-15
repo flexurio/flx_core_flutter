@@ -14,6 +14,7 @@ class TopBar extends StatelessWidget {
     required this.menu,
     required this.accountPermission,
     required this.onLogout,
+    required this.drawerTriggered,
     super.key,
   });
 
@@ -22,10 +23,47 @@ class TopBar extends StatelessWidget {
   final List<Menu1> menu;
   final List<String> accountPermission;
   final void Function() onLogout;
+  final void Function() drawerTriggered;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    return ScreenIdentifierBuilder(
+      builder: (context, screenIdentifier) {
+        return screenIdentifier.conditions(
+          md: _buildLargeTopBar(theme),
+          sm: Container(
+            height: 64,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 18,
+            ),
+            color: theme.cardColor,
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: drawerTriggered,
+                  icon: const Icon(Icons.menu),
+                ),
+                const Gap(6),
+                Image.asset(
+                  'asset/image/logo-name-company-${flavorConfig.companyId}.png',
+                  height: 40,
+                ),
+                // AccountButton(
+                //   title: accountName,
+                //   subtitle: accountSubtitle,
+                //   onLogout: onLogout,
+                // ),
+                // const Gap(24),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Container _buildLargeTopBar(ThemeData theme) {
     return Container(
       height: 80,
       color: theme.cardColor,

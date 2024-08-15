@@ -12,10 +12,14 @@ class MenuSideNav extends StatefulWidget {
   const MenuSideNav({
     required this.menu,
     required this.accountPermission,
+    this.noCollapse = false,
+    this.drawerTriggered,
     super.key,
   });
   final List<Menu1> menu;
   final List<String> accountPermission;
+  final bool noCollapse;
+  final void Function()? drawerTriggered;
 
   @override
   State<MenuSideNav> createState() => _MenuSideNavState();
@@ -41,7 +45,7 @@ class _MenuSideNavState extends State<MenuSideNav> {
     );
     return GestureDetector(
       onTap: () {
-        if (!_hasMouse) setState(() => _hovered = !_hovered);
+        if (!_hasMouse) widget.drawerTriggered?.call();
       },
       child: MouseRegion(
         onEnter: (_) => setState(() {
@@ -61,59 +65,67 @@ class _MenuSideNavState extends State<MenuSideNav> {
         return BlocBuilder<MenuCollapseBloc, bool>(
           builder: (context, collapsedX) {
             return ScreenIdentifierBuilder(
-                builder: (context, screenIdentifier) {
-              final collapsed = screenIdentifier.conditions(
-                md: collapsedX,
-                sm: true,
-              );
+              builder: (context, screenIdentifier) {
+                final collapsed = screenIdentifier.conditions(
+                  md: collapsedX,
+                  sm: true,
+                );
 
-              return Material(
-                color: theme.cardColor,
-                shadowColor: Colors.black,
-                elevation: collapsed && _hovered ? 8 : 0,
-                child: AnimatedContainer(
-                  width: _conditionCollapsed<double>(
-                    collapsed,
-                    collapsed: sideNavWidthCollapsed,
-                    unCollapsed: sideNavWidth,
-                  ),
-                  duration: const Duration(milliseconds: 200),
-                  child: SafeArea(
-                    child: Column(
-                      children: [
-                        const Gap(12),
-                        ToggleSideNav(
-                          isCollapsed: _conditionCollapsed<bool>(
+                return Material(
+                  color: theme.cardColor,
+                  shadowColor: Colors.black,
+                  elevation: collapsed && _hovered ? 8 : 0,
+                  child: AnimatedContainer(
+                    width: widget.noCollapse
+                        ? sideNavWidth
+                        : _conditionCollapsed<double>(
                             collapsed,
-                            collapsed: true,
-                            unCollapsed: false,
+                            collapsed: sideNavWidthCollapsed,
+                            unCollapsed: sideNavWidth,
                           ),
-                        ),
-                        const Gap(12),
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: menuFiltered.length,
-                            itemBuilder: (context, index) {
-                              final menu1 = menuFiltered[index];
-                              return MenuLevel1(
-                                accountPermissions: widget.accountPermission,
-                                menu1: menu1,
-                                index: index,
-                                isCollapsed: _conditionCollapsed<bool>(
-                                  collapsed,
-                                  collapsed: true,
-                                  unCollapsed: false,
-                                ),
-                              );
-                            },
+                    duration: const Duration(milliseconds: 200),
+                    child: SafeArea(
+                      child: Column(
+                        children: [
+                          const Gap(12),
+                          ToggleSideNav(
+                            noCollapse: widget.noCollapse,
+                            isCollapsed: widget.noCollapse
+                                ? false
+                                : _conditionCollapsed<bool>(
+                                    collapsed,
+                                    collapsed: true,
+                                    unCollapsed: false,
+                                  ),
                           ),
-                        ),
-                      ],
+                          const Gap(12),
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: menuFiltered.length,
+                              itemBuilder: (context, index) {
+                                final menu1 = menuFiltered[index];
+                                return MenuLevel1(
+                                  accountPermissions: widget.accountPermission,
+                                  menu1: menu1,
+                                  index: index,
+                                  isCollapsed: widget.noCollapse
+                                      ? false
+                                      : _conditionCollapsed<bool>(
+                                          collapsed,
+                                          collapsed: true,
+                                          unCollapsed: false,
+                                        ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            });
+                );
+              },
+            );
           },
         );
       },
@@ -124,10 +136,12 @@ class _MenuSideNavState extends State<MenuSideNav> {
 class ToggleSideNav extends StatelessWidget {
   const ToggleSideNav({
     required this.isCollapsed,
+    required this.noCollapse,
     super.key,
   });
 
   final bool isCollapsed;
+  final bool noCollapse;
 
   @override
   Widget build(BuildContext context) {
@@ -151,10 +165,11 @@ class ToggleSideNav extends StatelessWidget {
                               top: 6,
                             ),
                           ),
-                          screenIdentifier.conditions(
-                            md: const SizedBox(),
-                            lg: const _ButtonToggle(),
-                          ),
+                          if (!noCollapse)
+                            screenIdentifier.conditions(
+                              md: const SizedBox(),
+                              lg: const _ButtonToggle(),
+                            ),
                         ],
                       ),
               );

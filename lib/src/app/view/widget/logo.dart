@@ -20,13 +20,13 @@ class LogoNamed extends StatelessWidget {
         children: [
           Image.asset(
             'asset/image/logo-company-${flavorConfig.companyId}.png',
-            height: 40,
-            width: 40,
+            height: height,
+            width: height,
           ),
           const Gap(12),
           Image.asset(
             'asset/image/logo-name-company-${flavorConfig.companyId}.png',
-            height: 40,
+            height: height,
           ),
         ],
       ),
