@@ -11,6 +11,10 @@ extension NumExtension on num {
     return formatterIdr.format(this);
   }
 
+  String get compact {
+    return NumberFormat.compact().format(this);
+  }
+
   String format([int decimalDigits = 2]) {
     return NumberFormat.currency(symbol: '', decimalDigits: decimalDigits)
         .format(this);

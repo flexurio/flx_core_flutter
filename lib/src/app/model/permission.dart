@@ -604,6 +604,51 @@ class PermissionAccounting {
       'medical_treatment_expense_per_department_export_excel';
   static String medicalTreatmentExpenseDepartmentExportPdf =
       'medical_treatment_expense_per_department_export_pdf';
+  // Purchase Summary
+  static String purchaseSummaryViewMenu = 'purchase_summary_view_menu';
+  static String purchaseSummaryDetailExportPdf = 
+  'purchase_summary_detail_export_pdf';
+  static String purchaseSummaryGlobalExportPdf = 
+  'purchase_summary_global_export_pdf';
+  // Recap Ap Payment
+  static String recapApPaymentViewMenu = 'recap_ap_payment_view_menu';
+  static String recapApPaymentDetailExportPdf = 
+  'recap_ap_payment_detail_export_pdf';
+  static String recapApPaymentGlobalExportPdf = 
+  'recap_ap_payment_global_export_pdf';
+  // Recap Ar Payment
+  static String recapArPaymentViewMenu = 'recap_ar_payment_view_menu';
+  static String recapArPaymentDetailExportPdf = 
+  'recap_ar_payment_detail_export_pdf';
+  static String recapArPaymentGlobalExportPdf = 
+  'recap_ar_payment_global_export_pdf';
+  static String recapArPaymentValueExportPdf = 
+  'recap_ar_payment_value_export_pdf';
+  // Recap Usage Material Type
+  static String recapUsageMaterialTypeViewMenu = 
+  'recap_usage_material_type_view_menu';
+  static String recapUsageMaterialDetailExportPdf = 
+  'recap_usage_material_detail_export_pdf';
+  static String recapUsageMaterialGlobalExportPdf = 
+  'recap_usage_material_global_export_pdf';
+  // Business Debt Report
+  static String businessDebtReportViewMenu = 
+  'business_debt_report_view_menu';
+  static String debtBalanceDetailInvoiceDateExportPdf = 
+  'debt_balance_detail_invoice_date_export_pdf';
+  static String debtBalanceGlobalInvoiceDateExportPdf = 
+  'debt_balance_global_invoice_date_export_pdf';
+  static String debtBalanceDetailDueDateExportPdf = 
+  'debt_balance_detail_due_date_export_pdf';
+  static String debtBalanceGlobalDueDateExportPdf = 
+  'debt_balance_global_due_date_export_pdf';
+  // Debt Mutation Report
+  static String debtMutationReportViewMenu = 
+  'debt_mutation_report_view_menu';
+  static String debtMutationReportDueDateExportPdf = 
+  'debt_mutation_report_due_date_export_pdf';
+  static String debtMutationReportInvoiceDateExportPdf = 
+  'debt_mutation_report_invoice_date_export_pdf';
 }
 
 class PermissionVendor {
