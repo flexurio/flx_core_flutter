@@ -68,7 +68,7 @@ enum DataAction {
   updateActualEnd('Update Actual End', Icons.calendar_month, Colors.orange),
   exportExcelProductPrice(
     'Export Excel Product Price',
-    FontAwesomeIcons.fileDownload,
+    FontAwesomeIcons.fileArrowDown,
     Colors.orange,
   ),
   exportExcel('export_excel', FontAwesomeIcons.fileExcel, Colors.indigo),
