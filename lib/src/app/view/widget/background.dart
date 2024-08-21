@@ -1,24 +1,29 @@
-import 'package:flexurio_erp_core/flexurio_erp_core.dart';
 import 'package:flutter/material.dart';
 
+enum AssetBackground {
+  displayLogin('asset/image/login-background.jpg');
+
+  const AssetBackground(this.path);
+  final String path;
+}
+
 class Background extends StatelessWidget {
-  const Background({required this.child, super.key});
+  const Background({
+    required this.child,
+    required this.asset,
+    super.key,
+  });
 
   final Widget child;
+  final AssetBackground asset;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Material(
       child: DecoratedBox(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(
-              theme.modeCondition(
-                flavorConfig.backgroundLoginPage,
-                'asset/image/background-night.jpg',
-              ),
-            ),
+            image: AssetImage(asset.path),
             fit: BoxFit.cover,
           ),
         ),
