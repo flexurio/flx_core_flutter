@@ -61,7 +61,6 @@ class DTColumn<T> {
 class DataTableBackend<T> extends StatelessWidget {
   const DataTableBackend({
     required this.pageOptions,
-    required this.title,
     required this.columns,
     required this.actionRight,
     required this.onRefresh,
@@ -75,7 +74,6 @@ class DataTableBackend<T> extends StatelessWidget {
   });
 
   final void Function() onRefresh;
-  final String title;
   final List<DTColumn<T>> columns;
   final List<Widget> Function(Widget refreshButton) actionRight;
   final List<Widget> actionLeft;
