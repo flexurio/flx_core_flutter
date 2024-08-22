@@ -649,6 +649,15 @@ class PermissionAccounting {
   'debt_mutation_report_due_date_export_pdf';
   static String debtMutationReportInvoiceDateExportPdf = 
   'debt_mutation_report_invoice_date_export_pdf';
+  // Debt Card Report Per Supplier
+  static String debtCardReportPerSupplierViewMenu = 
+  'debt_card_report_per_supplier_view_menu';
+  static String debtCardReportPerSupplierDueDateExportPdf = 
+  'debt_card_report_per_supplier_due_date_export_pdf';
+  static String debtCardReportPerSupplierInvoiceDateExportPdf = 
+  'debt_card_report_per_supplier_invoice_date_export_pdf';  
+  static String debtCardReportPerSupplierInvoiceDateNewExportPdf = 
+  'debt_card_report_per_supplier_invoice_date_new_export_pdf';  
 }
 
 class PermissionVendor {
