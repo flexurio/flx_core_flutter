@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
-enum AssetBackground {
-  displayLogin('asset/image/login-background.jpg');
-
-  const AssetBackground(this.path);
-  final String path;
+class AssetBackground {
+  static String displayLogin = 'asset/image/login-background.jpg';
 }
 
 class Background extends StatelessWidget {
@@ -15,7 +12,7 @@ class Background extends StatelessWidget {
   });
 
   final Widget child;
-  final AssetBackground asset;
+  final String asset;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +20,7 @@ class Background extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(asset.path),
+            image: AssetImage(asset),
             fit: BoxFit.cover,
           ),
         ),
