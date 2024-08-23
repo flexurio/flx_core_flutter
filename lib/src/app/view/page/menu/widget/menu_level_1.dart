@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flexurio_erp_core/flexurio_erp_core.dart';
 import 'package:flexurio_erp_core/src/app/bloc/theme/menu/menu_bloc.dart';
 import 'package:flexurio_erp_core/src/app/view/page/menu/widget/menu_level_2.dart';
@@ -61,7 +62,7 @@ class MenuLevel1 extends StatelessWidget {
                     child: isCollapsed
                         ? Icon(Icons.more_horiz, color: primaryColor)
                         : Text(
-                            menu1.label,
+                            menu1.label.tr().toUpperCase(),
                             maxLines: 1,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -84,7 +85,7 @@ class MenuLevel1 extends StatelessWidget {
                             const Gap(3),
                             Text(
                               menu1.menu[index].labelShort ??
-                                  menu1.menu[index].label,
+                                  menu1.menu[index].label.tr(),
                               style: const TextStyle(fontSize: 10),
                             ),
                           ],

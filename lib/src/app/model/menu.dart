@@ -13,9 +13,9 @@ class Menu1 {
 class Menu2 {
   Menu2({
     required this.label,
-     this.labelShort,
     required this.icon,
     required this.menu,
+    this.labelShort,
   });
   final String label;
   final String? labelShort;
