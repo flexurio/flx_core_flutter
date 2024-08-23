@@ -2,13 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flexurio_erp_core/src/app/model/data_action.dart';
 
 class Permission {
-  static String accountingCogsReportViewMenu =
-      'accounting_cogs_report_view_menu';
-  static String accountingCogsReportExportExcel =
-      'accounting_cogs_report_export_excel';
-  static String accountingCogsReportExportPdf =
-      'accounting_cogs_report_export_pdf';
-
   // Asset Type
   static String assetTypeViewMenu = 'asset_type_view_menu';
   static String assetTypeCreate = 'asset_type_create';
@@ -28,43 +21,11 @@ class Permission {
   static String assetDataNonActive = 'asset_data_non_active';
   static String assetDataMoving = 'asset_data_moving';
 
-  // Balance Group
-  static String balanceGroupViewMenu = 'balance_group_view_menu';
-  static String balanceGroupCreate = 'balance_group_create';
-  static String balanceGroupDelete = 'balance_group_delete';
-
-  // Budget Type
-  static String budgetTypeViewMenu = 'budget_type_view_menu';
-  static String budgetTypeCreate = 'budget_type_create';
-  static String budgetTypeDelete = 'budget_type_delete';
-  static String budgetTypeEdit = 'budget_type_edit';
-
   // --
   static String cashFlowViewMenu = 'cash_flow_view_menu';
   static String cashFlowApprove = 'cash_flow_approve';
   static String cashFlowCreate = 'cash_flow_create';
   static String cashFlowEdit = 'cash_flow_edit';
-
-  // --
-  static String chartOfAccountViewMenu = 'chart_of_account_view_menu';
-  static String chartOfAccountCreate = 'chart_of_account_create';
-  static String chartOfAccountDelete = 'chart_of_account_delete';
-  static String chartOfAccountEdit = 'chart_of_account_number_edit';
-  static String chartOfAccountExportExcel = 'chart_of_account_export_excel';
-
-  // Chart Of Account Group
-  static String chartOfAccountGroupViewMenu =
-      'chart_of_account_group_view_menu';
-  static String chartOfAccountGroupCreate = 'chart_of_account_group_create';
-  static String chartOfAccountGroupDelete = 'chart_of_account_group_delete';
-  static String chartOfAccountGroupEdit = 'chart_of_account_group_edit';
-  static String chartOfAccountGroupExportPdf =
-      'chart_of_account_group_export_pdf';
-
-  // Currency
-  static String currencyViewMenu = 'currency_view_menu';
-  static String currencyCreate = 'currency_create';
-  static String currencyDelete = 'currency_delete';
 
   // Customer
   static String customerViewMenu = 'customer_view_menu';
@@ -235,8 +196,6 @@ class Permission {
   static String productIssueDeliveryCreate = 'product_issue_delivery_create';
 
   // --
-
-  // --
   static String productReceiveViewMenu = 'product_receive_view_menu';
   static String productReceiveCreate = 'product_receive_create';
   static String productReceiveEdit = 'product_receive_edit';
@@ -259,11 +218,6 @@ class Permission {
   static String purchaseOrderEdit = 'purchase_order_edit';
   static String purchaseOrderClose = 'purchase_order_close';
   static String purchaseOrderExportExcel = 'purchase_order_export_excel';
-
-  // --
-  static String rateViewMenu = 'rate_view_menu';
-  static String rateCreate = 'rate_create';
-  static String rateDelete = 'rate_delete';
 
   // --
   static String roleViewMenu = 'role_view_menu';
@@ -324,25 +278,6 @@ class Permission {
   static String transactionRoutineCreate = 'transaction_routine_create';
   static String transactionRoutineDelete = 'transaction_routine_delete';
   static String transactionRoutineEdit = 'transaction_routine_edit';
-
-  // --
-  static String transactionTypeViewMenu = 'transaction_type_view_menu';
-  static String transactionTypeCreate = 'transaction_type_create';
-  static String transactionTypeDelete = 'transaction_type_delete';
-  static String transactionTypeEdit = 'transaction_type_edit';
-
-  // Transaction Journal Accounting
-  static String transactionJournalAccountingViewMenu =
-      'transaction_journal_accounting_view_menu';
-  static String transactionJournalAccountingCreate =
-      'transaction_journal_accounting_create';
-  static String transactionJournalAccountingDelete =
-      'transaction_journal_accounting_delete';
-
-  // --
-  static String typeCostViewMenu = 'type_cost_view_menu';
-  static String typeCostCreate = 'type_cost_create';
-  static String typeCostDelete = 'type_cost_delete';
 
   // Unit Convert
   static String unitConvertViewMenu = 'unit_convert_view_menu';
@@ -589,75 +524,6 @@ class PermissionMaterialStock {
   static String materialReturnDetailCreate = 'material_return_detail_create';
   static String materialReturnDetailDelete = 'material_return_detail_delete';
   static String materialReturnDetailEdit = 'material_return_detail_edit';
-}
-
-class PermissionAccounting {
-  static String journalTransactionViewMenu = 'journal_transaction_view_menu';
-  static String journalTransactionExportExcel =
-      'journal_transaction_export_excel';
-  static String invoiceDiscountViewMenu = 'invoice_discount_view_menu';
-  static String invoiceDiscountExportPdf = 'invoice_discount_export_pdf';
-
-  static String medicalTreatmentExpenseDepartmentViewMenu =
-      'medical_treatment_expense_per_department_view_menu';
-  static String medicalTreatmentExpenseDepartmentExportExcel =
-      'medical_treatment_expense_per_department_export_excel';
-  static String medicalTreatmentExpenseDepartmentExportPdf =
-      'medical_treatment_expense_per_department_export_pdf';
-  // Purchase Summary
-  static String purchaseSummaryViewMenu = 'purchase_summary_view_menu';
-  static String purchaseSummaryDetailExportPdf = 
-  'purchase_summary_detail_export_pdf';
-  static String purchaseSummaryGlobalExportPdf = 
-  'purchase_summary_global_export_pdf';
-  // Recap Ap Payment
-  static String recapApPaymentViewMenu = 'recap_ap_payment_view_menu';
-  static String recapApPaymentDetailExportPdf = 
-  'recap_ap_payment_detail_export_pdf';
-  static String recapApPaymentGlobalExportPdf = 
-  'recap_ap_payment_global_export_pdf';
-  // Recap Ar Payment
-  static String recapArPaymentViewMenu = 'recap_ar_payment_view_menu';
-  static String recapArPaymentDetailExportPdf = 
-  'recap_ar_payment_detail_export_pdf';
-  static String recapArPaymentGlobalExportPdf = 
-  'recap_ar_payment_global_export_pdf';
-  static String recapArPaymentValueExportPdf = 
-  'recap_ar_payment_value_export_pdf';
-  // Recap Usage Material Type
-  static String recapUsageMaterialTypeViewMenu = 
-  'recap_usage_material_type_view_menu';
-  static String recapUsageMaterialDetailExportPdf = 
-  'recap_usage_material_detail_export_pdf';
-  static String recapUsageMaterialGlobalExportPdf = 
-  'recap_usage_material_global_export_pdf';
-  // Business Debt Report
-  static String businessDebtReportViewMenu = 
-  'business_debt_report_view_menu';
-  static String debtBalanceDetailInvoiceDateExportPdf = 
-  'debt_balance_detail_invoice_date_export_pdf';
-  static String debtBalanceGlobalInvoiceDateExportPdf = 
-  'debt_balance_global_invoice_date_export_pdf';
-  static String debtBalanceDetailDueDateExportPdf = 
-  'debt_balance_detail_due_date_export_pdf';
-  static String debtBalanceGlobalDueDateExportPdf = 
-  'debt_balance_global_due_date_export_pdf';
-  // Debt Mutation Report
-  static String debtMutationReportViewMenu = 
-  'debt_mutation_report_view_menu';
-  static String debtMutationReportDueDateExportPdf = 
-  'debt_mutation_report_due_date_export_pdf';
-  static String debtMutationReportInvoiceDateExportPdf = 
-  'debt_mutation_report_invoice_date_export_pdf';
-  // Debt Card Report Per Supplier
-  static String debtCardReportPerSupplierViewMenu = 
-  'debt_card_report_per_supplier_view_menu';
-  static String debtCardReportPerSupplierDueDateExportPdf = 
-  'debt_card_report_per_supplier_due_date_export_pdf';
-  static String debtCardReportPerSupplierInvoiceDateExportPdf = 
-  'debt_card_report_per_supplier_invoice_date_export_pdf';  
-  static String debtCardReportPerSupplierInvoiceDateNewExportPdf = 
-  'debt_card_report_per_supplier_invoice_date_new_export_pdf';  
 }
 
 class PermissionVendor {
