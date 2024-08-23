@@ -89,35 +89,40 @@ class DataTableBackend<T> extends StatelessWidget {
     final theme = Theme.of(context);
     return Column(
       children: [
-        ScreenIdentifierBuilder(
-          builder: (context, screenIdentifier) {
-            return Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Wrap(spacing: 12, children: actionLeft),
-                const Spacer(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Wrap(
-                      spacing: 12,
-                      crossAxisAlignment: WrapCrossAlignment.end,
-                      children: actionRight(
-                        LightButtonSmall(
-                          permission: null,
-                          status: status,
-                          action: DataAction.refresh,
-                          onPressed: onRefresh,
-                        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Wrap(spacing: 12, children: actionLeft),
+            const Spacer(),
+            Expanded(
+              child: Wrap(
+                spacing: 12,
+                crossAxisAlignment: WrapCrossAlignment.end,
+                runAlignment: WrapAlignment.end,
+                alignment: WrapAlignment.end,
+                children: actionRight(
+                  LightButtonSmall(
+                    permission: null,
+                    status: status,
+                    action: DataAction.refresh,
+                    onPressed: onRefresh,
+                  ),
+                )
+                    .map(
+                      (e) => Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [e],
                       ),
-                    ),
-                    const Gap(12),
-                    _buildSearchBox(screenIdentifier),
-                  ],
-                ),
-              ],
-            );
-          },
+                    )
+                    .toList(),
+              ),
+            ),
+          ],
+        ),
+        const Gap(12),
+        Align(
+          alignment: Alignment.centerRight,
+          child: _buildSearchBox(),
         ),
         const Gap(24),
         Row(
@@ -228,16 +233,20 @@ class DataTableBackend<T> extends StatelessWidget {
     );
   }
 
-  Visibility _buildSearchBox(ScreenIdentifier screenIdentifier) {
-    return Visibility(
-      visible: screenIdentifier.conditions(sm: false, md: true),
-      child: SizedBox(
-        width: 300,
-        child: SearchBoxX(
-          onSubmitted: _searchBoxOnChange,
-          initial: pageOptions.search,
-        ),
-      ),
+  Widget _buildSearchBox() {
+    return ScreenIdentifierBuilder(
+      builder: (context, screenIdentifier) {
+        return Visibility(
+          visible: screenIdentifier.conditions(sm: false, md: true),
+          child: SizedBox(
+            width: 300,
+            child: SearchBoxX(
+              onSubmitted: _searchBoxOnChange,
+              initial: pageOptions.search,
+            ),
+          ),
+        );
+      },
     );
   }
 
