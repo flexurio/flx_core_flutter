@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flexurio_erp_core/flexurio_erp_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 class DropDownSmall<T> extends StatefulWidget {
   const DropDownSmall({
@@ -24,6 +25,13 @@ class DropDownSmall<T> extends StatefulWidget {
 
   @override
   State<DropDownSmall<T>> createState() => _DropDownSmallState<T>();
+}
+
+Color dropDownSmallForegroundColor(ThemeData theme) {
+  return theme.modeCondition(
+    Colors.blueGrey.shade700,
+    Colors.blueGrey.shade200,
+  );
 }
 
 class _DropDownSmallState<T> extends State<DropDownSmall<T>> {
@@ -259,6 +267,9 @@ class FDropDownSearchMultiple<T> extends StatelessWidget {
           searchDelay: Duration.zero,
           showSearchBox: true,
           searchFieldProps: TextFieldProps(
+            style: TextStyle(
+              color: theme.modeCondition(null, Colors.white70),
+            ),
             decoration: InputDecoration(
               hintText: '${'search'.tr()}...',
               enabledBorder: OutlineInputBorder(
@@ -284,6 +295,126 @@ class FDropDownSearchMultiple<T> extends StatelessWidget {
         onChanged: onChanged,
         dropdownBuilder: dropdownBuilder,
         selectedItems: selectedItems,
+      ),
+    );
+  }
+}
+
+class FDropDownSearchSmall<T> extends StatelessWidget {
+  const FDropDownSearchSmall({
+    required this.labelText,
+    required this.itemAsString,
+    required this.items,
+    required this.iconField,
+    required this.width,
+    super.key,
+    this.status = Status.loaded,
+    this.initialValue,
+    this.compareFn,
+    this.showSelectedItems = false,
+    this.validator,
+    this.onChanged,
+    this.enabled = true,
+  });
+
+  final void Function(T?)? onChanged;
+  final String labelText;
+  final T? initialValue;
+  final List<T> items;
+  final double width;
+  final Status status;
+  final String? Function(T?)? validator;
+  final String Function(T) itemAsString;
+  final bool Function(T, T)? compareFn;
+  final bool showSelectedItems;
+  final bool enabled;
+  final IconData iconField;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    switch (status) {
+      case Status.error:
+        break;
+      case Status.progress:
+        break;
+      case Status.loaded:
+        break;
+    }
+
+    final borderColor = theme.modeCondition(
+      Colors.blueGrey.shade100,
+      const Color(0xff343640),
+    );
+
+    final border = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide(color: borderColor),
+    );
+    final foregroundColor = dropDownSmallForegroundColor(theme);
+    return Container(
+      width: width,
+      height: 32,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: borderColor),
+        color: Colors.white,
+      ),
+      child: DropdownSearch<T>(
+        validator: validator,
+        compareFn: compareFn,
+        dropdownButtonProps: DropdownButtonProps(
+          padding: const EdgeInsets.all(0),
+          iconSize: 18,
+          icon: const Icon(Icons.keyboard_arrow_down_rounded),
+          color: foregroundColor,
+        ),
+        popupProps: PopupProps.menu(
+          showSelectedItems: showSelectedItems,
+          searchDelay: Duration.zero,
+          showSearchBox: true,
+          searchFieldProps: TextFieldProps(
+            style: TextStyle(color: theme.modeCondition(null, Colors.white70)),
+            decoration: InputDecoration(
+              hintText: '${'search'.tr()}...',
+              enabledBorder: border,
+              border: border,
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: theme.colorScheme.primary,
+                  width: 2,
+                ),
+              ),
+            ),
+          ),
+        ),
+        items: items,
+        itemAsString: itemAsString,
+        dropdownBuilder: (context, selectedItem) {
+          return Row(
+            children: [
+              const Gap(12),
+              Icon(iconField, size: 16),
+              const Gap(18),
+              Text(
+                selectedItem == null
+                    ? '${'choose'.tr()} $labelText'
+                    : itemAsString(selectedItem),
+                style: TextStyle(color: foregroundColor),
+              ),
+            ],
+          );
+        },
+        dropdownDecoratorProps: const DropDownDecoratorProps(
+          dropdownSearchDecoration: InputDecoration(
+            contentPadding: EdgeInsets.zero,
+            enabledBorder: InputBorder.none,
+          ),
+        ),
+        onChanged: onChanged,
+        selectedItem: initialValue,
+        enabled: enabled,
       ),
     );
   }
