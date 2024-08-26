@@ -252,9 +252,7 @@ class _VisibilityPermissionState extends State<VisibilityPermission> {
 
 class LightButton extends StatelessWidget {
   const LightButton({
-    this.entity,
-    required this.action,
-    required this.permission,
+    required this.action, required this.permission, this.entity,
     super.key,
     this.onPressed,
   });

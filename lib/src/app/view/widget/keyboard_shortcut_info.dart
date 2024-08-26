@@ -102,7 +102,7 @@ class _ShortcutButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
       child: Text(
         label,
-        style: TextStyle(fontSize: 10),
+        style: const TextStyle(fontSize: 10),
       ),
     );
   }
