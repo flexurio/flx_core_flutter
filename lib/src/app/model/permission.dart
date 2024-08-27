@@ -231,6 +231,7 @@ class Permission {
   // --
   static String salesOrderViewMenu = 'sales_order_view_menu';
   static String salesOrderConfirm = 'sales_order_confirm';
+  static String salesOrderCreate = 'sales_order_create';
   static String salesOrderDelete = 'sales_order_delete';
   static String salesOrderDetailUploadDocument =
       'sales_order_detail_upload_document';
