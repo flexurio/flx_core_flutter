@@ -231,10 +231,12 @@ Future<MultiPage> pdfTemplate({
   required Widget child,
   required String title,
   required String printedBy,
+  PageOrientation? orientation,
 }) async {
   final (companyLogo, companyLogoNamed) = await getCompanyLogoPdf();
   return MultiPage(
     pageTheme: PageTheme(
+      orientation: orientation,
       theme: ThemeData.withFont(
         base: await PdfGoogleFonts.openSansLight(),
         bold: await PdfGoogleFonts.openSansSemiBold(),
