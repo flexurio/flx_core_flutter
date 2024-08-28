@@ -8,6 +8,7 @@ class FCard extends StatelessWidget {
     this.width,
     this.padding,
     this.borderRadius,
+    this.onTap,
   });
 
   final Widget child;
@@ -15,6 +16,7 @@ class FCard extends StatelessWidget {
   final double? width;
   final EdgeInsetsGeometry? padding;
   final BorderRadius? borderRadius;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,10 @@ class FCard extends StatelessWidget {
         height: height,
         width: width,
         // blur: 60,
-        child: child,
+        child: InkWell(
+          onTap: onTap,
+          child: child,
+        ),
       ),
     );
   }

@@ -255,7 +255,7 @@ class DataTableBackend<T> extends StatelessWidget {
   }
 }
 
-class SearchBoxX extends StatelessWidget {
+class SearchBoxX extends StatefulWidget {
   const SearchBoxX({
     super.key,
     this.onChanged,
@@ -265,6 +265,18 @@ class SearchBoxX extends StatelessWidget {
   final void Function(String)? onChanged;
   final void Function(String)? onSubmitted;
   final String? initial;
+
+  @override
+  State<SearchBoxX> createState() => _SearchBoxXState();
+}
+
+class _SearchBoxXState extends State<SearchBoxX> {
+  final _controller = TextEditingController();
+
+  initState() {
+    super.initState();
+    _controller.text = widget.initial ?? '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -283,9 +295,9 @@ class SearchBoxX extends StatelessWidget {
         color: theme.modeCondition(Colors.white54, MyTheme.black02dp),
       ),
       child: TextField(
-        controller: TextEditingController(text: initial),
-        onChanged: onChanged,
-        onSubmitted: onSubmitted,
+        controller: _controller,
+        onChanged: widget.onChanged,
+        onSubmitted: widget.onSubmitted,
         style:
             TextStyle(fontSize: 12, color: theme.textTheme.bodyMedium?.color),
         decoration: InputDecoration(
