@@ -30,6 +30,7 @@ enum DataAction {
   undoConfirm('undo_confirm', Icons.check, Colors.green),
   undoConfirmAccounting('undo_confirm_accounting', Icons.check, Colors.green),
   create('create', Icons.add, Colors.green),
+  placeOrder('place_order', Icons.add, Colors.green),
   createForMaterial('create_for_material', Icons.add, Colors.green),
   createForProduct('create_for_product', Icons.add, Colors.green),
   createSales('create_sales', Icons.add, Colors.green),

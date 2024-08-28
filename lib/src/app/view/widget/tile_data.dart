@@ -9,6 +9,7 @@ class TileDataHorizontal extends StatelessWidget {
     super.key,
     this.labelStyle,
     this.valueWidth = 220,
+    this.labelRight = true,
   });
 
   final String label;
@@ -16,6 +17,7 @@ class TileDataHorizontal extends StatelessWidget {
   final TextStyle? labelStyle;
   final bool inverseColor;
   final double valueWidth;
+  final bool labelRight;
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +29,11 @@ class TileDataHorizontal extends StatelessWidget {
         children: [
           Expanded(
             child: Align(
-              alignment: Alignment.centerRight,
+              alignment:
+                  labelRight ? Alignment.centerRight : Alignment.centerLeft,
               child: Text(
                 label,
-                textAlign: TextAlign.end,
+                textAlign: labelRight ? TextAlign.end : TextAlign.start,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: labelStyle ??

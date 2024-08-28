@@ -38,6 +38,7 @@ class Button extends StatelessWidget {
     this.color,
     this.isInProgress = false,
     this.isSecondary = false,
+    this.rounded = false,
   }) : padding = null;
 
   const Button.small({
@@ -48,6 +49,7 @@ class Button extends StatelessWidget {
     this.onPressed,
     this.isInProgress = false,
     this.isSecondary = false,
+    this.rounded = false,
   }) : padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 24);
 
   final String? permission;
@@ -57,6 +59,7 @@ class Button extends StatelessWidget {
   final bool isInProgress;
   final bool isSecondary;
   final EdgeInsetsGeometry? padding;
+  final bool rounded;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +67,11 @@ class Button extends StatelessWidget {
     final primaryColor = theme.colorScheme.primary;
     final buttonStyle = ButtonStyle(
       padding: WidgetStateProperty.all(padding),
+      shape: WidgetStateProperty.all(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(rounded ? 100 : 8),
+        ),
+      ),
       backgroundColor: WidgetStateProperty.all(
         isInProgress
             ? theme.modeCondition(Colors.grey.shade400, Colors.white12)
@@ -100,50 +108,6 @@ class Button extends StatelessWidget {
             : Text(action.title),
       ),
     );
-  }
-}
-
-class ButtonRounded extends StatelessWidget {
-  const ButtonRounded({
-    required this.onPressed,
-    required this.child,
-    super.key,
-    this.isInProgress = false,
-    this.isExpanded = false,
-  });
-  final void Function() onPressed;
-  final Widget child;
-  final bool isInProgress;
-  final bool isExpanded;
-  @override
-  Widget build(BuildContext context) {
-    final button = ElevatedButton(
-      style: ButtonStyle(
-        padding: WidgetStateProperty.all(
-          const EdgeInsets.symmetric(vertical: 20, horizontal: 36),
-        ),
-        backgroundColor: WidgetStateProperty.all(Colors.blue),
-        shape: WidgetStateProperty.all(const StadiumBorder()),
-      ),
-      onPressed: !isInProgress ? onPressed : null,
-      child: !isInProgress
-          ? child
-          : const SizedBox(
-              height: 20,
-              width: 20,
-              child: CircularProgressIndicator(
-                strokeWidth: 3,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
-            ),
-    );
-    return !isExpanded
-        ? button
-        : Row(
-            children: [
-              Expanded(child: button),
-            ],
-          );
   }
 }
 
@@ -252,7 +216,9 @@ class _VisibilityPermissionState extends State<VisibilityPermission> {
 
 class LightButton extends StatelessWidget {
   const LightButton({
-    required this.action, required this.permission, this.entity,
+    required this.action,
+    required this.permission,
+    this.entity,
     super.key,
     this.onPressed,
   });
