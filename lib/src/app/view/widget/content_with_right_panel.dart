@@ -6,11 +6,13 @@ class ContentWithRightPanel extends StatefulWidget {
   const ContentWithRightPanel({
     required this.child,
     required this.rightPanel,
+    this.sideWidth = 380.0,
     super.key,
   });
 
   final Widget child;
   final Widget rightPanel;
+  final double sideWidth;
 
   @override
   State<ContentWithRightPanel> createState() => _ContentWithRightPanelState();
@@ -42,7 +44,7 @@ class _ContentWithRightPanelState extends State<ContentWithRightPanel> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    const sideWidth = 380.0;
+    final sideWidth = widget.sideWidth;
     const duration = Duration(milliseconds: 200);
     return Stack(
       children: [
