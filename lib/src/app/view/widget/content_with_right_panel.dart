@@ -73,7 +73,9 @@ class _ContentWithRightPanelState extends State<ContentWithRightPanel> {
               ),
             ),
             width: sideWidth,
-            child: widget.rightPanel,
+            child: ClipRRect(
+              child: widget.rightPanel,
+            ),
           ),
         ),
         AnimatedPositioned(
