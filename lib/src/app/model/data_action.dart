@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum DataAction {
   resign('mark_as_resign', Icons.check, Colors.green),
+  addToCard('add_to_card', Icons.check, Colors.green),
   activate('activate', Icons.bolt, Colors.orange),
   activatePhaseOut('activate_phase_out', Icons.bolt, Colors.orange),
   add('add', Icons.add, Colors.green),
