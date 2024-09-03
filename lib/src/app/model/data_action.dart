@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum DataAction {
+  recordAttendance('record_attendance', Icons.check, Colors.green),
+  submit('submit', Icons.check, Colors.lightBlue),
+  markAsLeader('mark_as_leader', Icons.more_vert, Colors.green),
+  remove('remove', Icons.cancel, Colors.green),
   resign('mark_as_resign', Icons.check, Colors.green),
   addToCard('add_to_card', Icons.check, Colors.green),
   activate('activate', Icons.bolt, Colors.orange),
