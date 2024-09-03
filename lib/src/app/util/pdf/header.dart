@@ -7,6 +7,7 @@ Widget headerPdf({
   required Uint8List companyLogo,
   required Uint8List companyLogoNamed,
   required String title,
+  String? subtitle, 
 }) {
   const color = PdfColors.blueGrey800;
   final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
@@ -176,6 +177,19 @@ Widget headerPdf({
               ),
             ),
           ),
+          if (subtitle != null && subtitle != '')
+            SizedBox(height: 12),
+          if (subtitle != null && subtitle != '')
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 36),
+              child: Text(
+                subtitle.toUpperCase(), 
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: PdfColors.blueGrey800,
+                ),
+              ),
+            ),
           SizedBox(height: 6),
         ],
       ),
