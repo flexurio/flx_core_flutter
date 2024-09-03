@@ -406,29 +406,6 @@ class Permission {
   }
 }
 
-class PermissionMaterial {
-  // Material
-  static String materialViewMenu = 'material_view_menu';
-  static String materialCreate = 'material_create';
-  static String materialDelete = 'material_delete';
-  static String materialEdit = 'material_edit';
-  static String materialExportPdf = 'material_export_pdf';
-  static String materialExportExcel = 'material_export_excel';
-  static String materialActivateStock = 'material_activate_stock';
-  static String materialActivateOrder = 'material_activate_order';
-
-  // Material Type
-  static String materialTypeViewMenu = 'material_type_view_menu';
-  static String materialTypeCreate = 'material_type_create';
-  static String materialTypeDelete = 'material_type_delete';
-
-  // Material Unit
-  static String materialUnitViewMenu = 'material_unit_view_menu';
-  static String materialUnitCreate = 'material_unit_create';
-  static String materialUnitDelete = 'material_unit_delete';
-  static String materialUnitEdit = 'material_unit_edit';
-}
-
 class PermissionProduction {
   // --
   static String productionLineViewMenu = 'production_line_view_menu';
