@@ -118,25 +118,12 @@ Widget footerPdf({required Context context, required String printedBy}) {
   );
 }
 
-class PGroup<T> {
-  PGroup({
-    required this.children,
-    this.title,
-    this.numeric = false,
-    this.primary = false,
-  });
-
-  final List<PColumn<T>> children;
-  final String? title;
-  final bool numeric;
-  final bool primary;
-}
-
 class PColumn<T> {
   PColumn({
     required this.title,
     required this.contentBuilder,
     this.footer,
+    this.flex,
     this.numeric = false,
     this.primary = false,
   });
@@ -146,159 +133,7 @@ class PColumn<T> {
   final bool numeric;
   final bool primary;
   final String Function(T data, int index) contentBuilder;
-}
-
-Table simpleTablePdfX<T>({
-  required List<T> data,
-  // required List<PColumn<T>> columns,
-  required List<PGroup<T>> columns,
-}) {
-  final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
-  const paddingRow = EdgeInsets.symmetric(horizontal: 8);
-  // final footer = <Widget>[
-  //   for (final column in columns)
-  //     Container(
-  //       height: 30,
-  //       padding: paddingRow,
-  //       decoration: const BoxDecoration(
-  //         border:
-  //             Border(top: BorderSide(color: PdfColors.blueGrey500, width: 4)),
-  //       ),
-  //       child: Align(
-  //         alignment:
-  //             column.numeric ? Alignment.centerRight : Alignment.centerLeft,
-  //         child: Text(
-  //           column.footer ?? '',
-  //           textAlign: column.numeric ? TextAlign.right : TextAlign.left,
-  //           style: TextStyle(
-  //             fontSize: 7,
-  //             fontWeight: FontWeight.bold,
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  // ];
-
-  return Table(
-    border: TableBorder.all(color: PdfColors.white, width: 3),
-    columnWidths: {
-      for (var i = 0; i < columns.length; i++) i: const FlexColumnWidth(2),
-    },
-    children: [
-      TableRow(
-        children: [
-          for (final column in columns)
-            Column(
-              children: [
-                Container(
-                  height: 30,
-                  padding: paddingRow,
-                  decoration: BoxDecoration(
-                    color: column.primary ? primaryColor : PdfColors.blueGrey800,
-                  ),
-                  child: Align(
-                    alignment: column.numeric
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
-                    child: Text(
-                      column.title ?? '',
-                      textAlign: column.numeric ? TextAlign.right : TextAlign.left,
-                      style: TextStyle(
-                        fontSize: 7,
-                        fontWeight: FontWeight.bold,
-                        color: PdfColors.white,
-                      ),
-                    ),
-                  ),
-                ),
-                Row(
-                  children: List.generate(column.children.length, (x) {
-                    return Container(
-                      height: 30,
-                      padding: paddingRow,
-                      decoration: BoxDecoration(
-                        color: column.children[x].primary 
-                          ? primaryColor 
-                          : PdfColors.blueGrey800,
-                      ),
-                      child: Align(
-                        alignment: column.children[x].numeric
-                            ? Alignment.centerRight
-                            : Alignment.centerLeft,
-                        child: Text(
-                          column.children[x].title,
-                          textAlign: column.children[x].numeric 
-                            ? TextAlign.right 
-                            : TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 7,
-                            fontWeight: FontWeight.bold,
-                            color: PdfColors.white,
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-                ),
-              ],
-            ),
-        ],
-      ),
-      // TableRow(
-      //   children: [
-      //     for (final column in columns)
-      //       Container(
-      //         height: 30,
-      //         padding: paddingRow,
-      //         decoration: BoxDecoration(
-      //           color: column.primary ? primaryColor : PdfColors.blueGrey800,
-      //         ),
-      //         child: Align(
-      //           alignment: column.numeric
-      //               ? Alignment.centerRight
-      //               : Alignment.centerLeft,
-      //           child: Text(
-      //             column.title,
-      //             textAlign: column.numeric ? TextAlign.right : TextAlign.left,
-      //             style: TextStyle(
-      //               fontSize: 7,
-      //               fontWeight: FontWeight.bold,
-      //               color: PdfColors.white,
-      //             ),
-      //           ),
-      //         ),
-      //       ),
-      //   ],
-      // ),
-      // ...List<TableRow>.generate(
-      //   data.length,
-      //   (row) => TableRow(
-      //     children: List<Widget>.generate(
-      //       columns.length,
-      //       (column) => Container(
-      //         height: 30,
-      //         padding: paddingRow,
-      //         decoration: BoxDecoration(
-      //           color: row.isEven ? PdfColors.grey100 : PdfColors.white,
-      //           border: Border.all(
-      //             width: 4,
-      //             color: PdfColors.grey100,
-      //           ),
-      //         ),
-      //         alignment: columns[column].numeric
-      //             ? Alignment.centerRight
-      //             : Alignment.centerLeft,
-      //         child: Text(
-      //           columns[column].contentBuilder(data[row], row),
-      //           style: const TextStyle(fontSize: 7),
-      //         ),
-      //       ),
-      //     ),
-      //   ),
-      // ),
-      // ...[TableRow(children: footer)],
-    ],
-  );
+  final double? flex;
 }
 
 Table simpleTablePdf<T>({
@@ -307,90 +142,139 @@ Table simpleTablePdf<T>({
 }) {
   final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
   const paddingRow = EdgeInsets.symmetric(horizontal: 8);
-  // final footer = <Widget>[
-  //   for (final column in columns)
-  //     Container(
-  //       height: 30,
-  //       padding: paddingRow,
-  //       decoration: const BoxDecoration(
-  //         border:
-  //             Border(top: BorderSide(color: PdfColors.blueGrey500, width: 4)),
-  //       ),
-  //       child: Align(
-  //         alignment:
-  //             column.numeric ? Alignment.centerRight : Alignment.centerLeft,
-  //         child: Text(
-  //           column.footer ?? '',
-  //           textAlign: column.numeric ? TextAlign.right : TextAlign.left,
-  //           style: TextStyle(
-  //             fontSize: 7,
-  //             fontWeight: FontWeight.bold,
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  // ];
+  final footer = <Widget>[
+    for (final column in columns)
+      Container(
+        height: 30,
+        padding: paddingRow,
+        decoration: const BoxDecoration(
+          border:
+              Border(top: BorderSide(color: PdfColors.blueGrey500, width: 4)),
+        ),
+        child: Align(
+          alignment:
+              column.numeric ? Alignment.centerRight : Alignment.centerLeft,
+          child: Text(
+            column.footer ?? '',
+            textAlign: column.numeric ? TextAlign.right : TextAlign.left,
+            style: TextStyle(
+              fontSize: 7,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+  ];
 
   return Table(
     border: TableBorder.all(color: PdfColors.white, width: 3),
     columnWidths: {
-      for (var i = 0; i < columns.length; i++) i: const FlexColumnWidth(2),
+      for (var i = 0; i < columns.length; i++)
+        i: FlexColumnWidth(columns[i].flex ?? 1),
     },
     children: [
-      // TableRow(
-      //   children: [
-      //     for (final column in columns)
-      //       Container(
-      //         height: 30,
-      //         padding: paddingRow,
-      //         decoration: BoxDecoration(
-      //           color: column.primary ? primaryColor : PdfColors.blueGrey800,
-      //         ),
-      //         child: Align(
-      //           alignment: column.numeric
-      //               ? Alignment.centerRight
-      //               : Alignment.centerLeft,
-      //           child: Text(
-      //             column.title,
-      //             textAlign: column.numeric ? TextAlign.right : TextAlign.left,
-      //             style: TextStyle(
-      //               fontSize: 7,
-      //               fontWeight: FontWeight.bold,
-      //               color: PdfColors.white,
-      //             ),
-      //           ),
-      //         ),
-      //       ),
-      //   ],
-      // ),
-      // ...List<TableRow>.generate(
-      //   data.length,
-      //   (row) => TableRow(
-      //     children: List<Widget>.generate(
-      //       columns.length,
-      //       (column) => Container(
-      //         height: 30,
-      //         padding: paddingRow,
-      //         decoration: BoxDecoration(
-      //           color: row.isEven ? PdfColors.grey100 : PdfColors.white,
-      //           border: Border.all(
-      //             width: 4,
-      //             color: PdfColors.grey100,
-      //           ),
-      //         ),
-      //         alignment: columns[column].numeric
-      //             ? Alignment.centerRight
-      //             : Alignment.centerLeft,
-      //         child: Text(
-      //           columns[column].contentBuilder(data[row], row),
-      //           style: const TextStyle(fontSize: 7),
-      //         ),
-      //       ),
-      //     ),
-      //   ),
-      // ),
-      // ...[TableRow(children: footer)],
+      TableRow(
+        children: [
+          for (final column in columns)
+            Container(
+              height: 30,
+              padding: paddingRow,
+              decoration: BoxDecoration(
+                color: column.primary ? primaryColor : PdfColors.blueGrey800,
+              ),
+              child: Align(
+                alignment: column.numeric
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
+                child: Text(
+                  column.title,
+                  textAlign: column.numeric ? TextAlign.right : TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 7,
+                    fontWeight: FontWeight.bold,
+                    color: PdfColors.white,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+      ...List<TableRow>.generate(
+        data.length,
+        (row) => TableRow(
+          children: List<Widget>.generate(
+            columns.length,
+            (column) => Container(
+              height: 30,
+              padding: paddingRow,
+              decoration: BoxDecoration(
+                color: row.isEven ? PdfColors.grey100 : PdfColors.white,
+                border: Border.all(
+                  width: 4,
+                  color: PdfColors.grey100,
+                ),
+              ),
+              alignment: columns[column].numeric
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft,
+              child: Text(
+                columns[column].contentBuilder(data[row], row),
+                style: const TextStyle(fontSize: 7),
+              ),
+            ),
+          ),
+        ),
+      ),
+      ...[TableRow(children: footer)],
     ],
+  );
+}
+
+Widget tileDataHorizontal({
+  required String label,
+  required Widget child,
+  double valueWidth = 100,
+  bool labelRight = false,
+  TextStyle? labelStyle,
+}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 12),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Expanded(
+          child: Align(
+            alignment:
+                labelRight ? Alignment.centerRight : Alignment.centerLeft,
+            child: Text(
+              label,
+              textAlign: labelRight ? TextAlign.end : TextAlign.start,
+              maxLines: 1,
+              style: labelStyle ??
+                  TextStyle(
+                    fontWeight: FontWeight.bold,
+                    // color: inverseColor
+                    //     ? Colors.white70
+                    //     : theme.modeCondition(Colors.black38, Colors.white30),
+                    fontSize: 8,
+                  ),
+            ),
+          ),
+        ),
+        SizedBox(
+          width: valueWidth,
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: DefaultTextStyle(
+              style: const TextStyle(
+                fontSize: 8,
+              ),
+              child: child,
+            ),
+          ),
+        ),
+      ],
+    ),
   );
 }
 
@@ -407,7 +291,7 @@ Future<MultiPage> pdfTemplate({
       theme: ThemeData.withFont(
         base: await PdfGoogleFonts.openSansLight(),
         bold: await PdfGoogleFonts.openSansSemiBold(),
-        icons: await PdfGoogleFonts.materialIcons(), // this line
+        icons: await PdfGoogleFonts.materialIcons(),
       ),
       pageFormat: PdfPageFormat.a4,
       margin: EdgeInsets.zero,
@@ -436,7 +320,7 @@ Future<MultiPage> pdfTemplate({
           padding: const EdgeInsets.symmetric(horizontal: 36),
           child: child,
         ),
-      ]; // Ce
+      ];
     },
   );
 }
