@@ -8,7 +8,7 @@ enum DataAction {
   markAsLeader('mark_as_leader', Icons.more_vert, Colors.green),
   remove('remove', Icons.cancel, Colors.green),
   resign('mark_as_resign', Icons.check, Colors.green),
-  addToCard('add_to_card', Icons.check, Colors.green),
+  addToCart('add_to_cart', Icons.shopping_cart, Colors.green),
   activate('activate', Icons.bolt, Colors.orange),
   activatePhaseOut('activate_phase_out', Icons.bolt, Colors.orange),
   add('add', Icons.add, Colors.green),
