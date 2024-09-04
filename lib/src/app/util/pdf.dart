@@ -118,6 +118,22 @@ Widget footerPdf({required Context context, required String printedBy}) {
   );
 }
 
+class PGroup<T> {
+  PGroup({
+    required this.children,
+    this.title,
+    this.numeric = false,
+    this.primary = false,
+    this.footer,
+  });
+
+  final List<PColumn<T>> children;
+  final String? title;
+  final bool numeric;
+  final bool primary;
+  final String? footer;
+}
+
 class PColumn<T> {
   PColumn({
     required this.title,
@@ -222,6 +238,232 @@ Table simpleTablePdf<T>({
                 style: const TextStyle(fontSize: 7),
               ),
             ),
+          ),
+        ),
+      ),
+      ...[TableRow(children: footer)],
+    ],
+  );
+}
+
+Table simpleTablePdfX<T>({
+  required List<T> data,
+  required List<PGroup<T>> columns,
+  List<String>? total,
+}) {
+  final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
+  const paddingRow = EdgeInsets.symmetric(horizontal: 8);
+  final footer = <Widget>[
+    for (final column in columns)
+      Container(
+        height: 30,
+        padding: paddingRow,
+        decoration: const BoxDecoration(
+          border:
+              Border(top: BorderSide(color: PdfColors.blueGrey500, width: 4)),
+        ),
+        child: Align(
+          alignment:
+              column.numeric ? Alignment.centerRight : Alignment.centerLeft,
+          child: Text(
+            column.footer ?? '',
+            textAlign: column.numeric ? TextAlign.right : TextAlign.left,
+            style: TextStyle(
+              fontSize: 7,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+  ];
+
+  return Table(
+    border: TableBorder.all(color: PdfColors.white, width: 3),
+    columnWidths: {
+      for (var i = 0; i < columns.length; i++) 
+        i: columns[i].children.isEmpty || columns[i].children.length == 1
+          ? const FlexColumnWidth(2)
+          : FlexColumnWidth(columns[i].children.length.toDouble() * 2),
+    },
+    children: [
+      // TableRow(
+      //   children: [
+      //     for (final column in columns)
+      //       Container(
+      //         height: 30,
+      //         padding: paddingRow,
+      //         decoration: BoxDecoration(
+      //           color: column.primary ? primaryColor : PdfColors.blueGrey800,
+      //         ),
+      //         child: Align(
+      //           alignment: column.numeric
+      //               ? Alignment.centerRight
+      //               : Alignment.centerLeft,
+      //           child: Text(
+      //             column.title,
+      //             textAlign: column.numeric ? TextAlign.right : TextAlign.left,
+      //             style: TextStyle(
+      //               fontSize: 7,
+      //               fontWeight: FontWeight.bold,
+      //               color: PdfColors.white,
+      //             ),
+      //           ),
+      //         ),
+      //       ),
+      //   ],
+      // ),
+      TableRow(
+        children: [
+          for (final column in columns)
+            Container(
+              height: 30,
+              padding: paddingRow,
+              decoration: BoxDecoration(
+                color: column.primary ? primaryColor : PdfColors.blueGrey800,
+              ),
+              child: Align(
+                alignment: column.numeric
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
+                child: Text(
+                  column.title ?? '',
+                  textAlign: TextAlign.center,
+                  // textAlign: column.numeric ? TextAlign.right : TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 7,
+                    fontWeight: FontWeight.bold,
+                    color: PdfColors.white,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+      TableRow(
+        children: [
+          for (final column in columns)
+            Row(
+              children: [
+                for (final subheader in column.children)
+                  Expanded(
+                    child: Container(
+                      height: 30,
+                      padding: paddingRow,
+                      margin: column.children.length > 1 
+                        && column.children.last.title != subheader.title
+                          ? const EdgeInsets.only(right: 3)
+                          : EdgeInsets.zero,
+                      decoration: BoxDecoration(
+                        color: subheader.primary 
+                          ? primaryColor 
+                          : PdfColors.blueGrey800,
+                      ),
+                      child: Align(
+                        alignment: subheader.numeric
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft,
+                        child: Text(
+                          subheader.title,
+                          textAlign: subheader.numeric 
+                            ? TextAlign.right 
+                            : TextAlign.left,
+                          style: TextStyle(
+                            fontSize: 7,
+                            fontWeight: FontWeight.bold,
+                            color: PdfColors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+        ],
+      ),
+      ...List<TableRow>.generate(
+        data.length,
+        (row) => TableRow(
+          children: List<Widget>.generate(
+            columns.length,
+            (column) => Row(
+              children: List<Widget>.generate(
+                columns[column].children.length,
+                (x) => 
+                // 
+                Expanded(
+                  child: Container(
+              height: 30,
+              padding: paddingRow,
+                        margin: columns[column].children.length > 1 
+                        && 
+                        columns[column].children.last.title 
+                        != columns[column].children[x].title
+                          ? const EdgeInsets.only(right: 3)
+                          : EdgeInsets.zero,
+              decoration: BoxDecoration(
+                color: row.isEven ? PdfColors.grey100 : PdfColors.white,
+                border: Border.all(
+                  width: 4,
+                  color: PdfColors.grey100,
+                ),
+              ),
+              alignment: columns[column].children[x].numeric
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft,
+              child: Text(
+                columns[column].children[x].contentBuilder(data[row], row),
+                style: const TextStyle(fontSize: 7),
+              ),
+            ),
+                ),
+            
+                // 
+      
+            
+
+          ),
+        ),
+          ),
+        ),
+      ),
+      ...List<TableRow>.generate(
+        1,
+        (row) => TableRow(
+          children: List<Widget>.generate(
+            columns.length,
+            (column) => Row(
+              children: List<Widget>.generate(
+                columns[column].children.length,
+                (x) => 
+                // 
+                Expanded(
+                  child: Container(
+              height: 30,
+              padding: paddingRow,
+                        margin: columns[column].children.length > 1 
+                        && 
+                        columns[column].children.last.title 
+                        != columns[column].children[x].title
+                          ? const EdgeInsets.only(right: 3)
+                          : EdgeInsets.zero,
+              decoration: BoxDecoration(
+                color: row.isEven ? PdfColors.grey100 : PdfColors.white,
+                border: Border.all(
+                  width: 4,
+                  color: PdfColors.grey100,
+                ),
+              ),
+              alignment: columns[column].children[x].numeric
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft,
+              child: Text(
+                'TOTAL',
+                style: const TextStyle(fontSize: 7),
+              ),
+            ),
+                ),
+          ),
+        ),
           ),
         ),
       ),
