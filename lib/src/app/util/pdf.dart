@@ -152,6 +152,75 @@ class PColumn<T> {
   final double? flex;
 }
 
+class PColumnBody<T> {
+  PColumnBody({
+    required this.contentBuilder,
+    this.flex,
+    this.numeric = false,
+  });
+
+  final bool numeric;
+  final String Function(T data, int index) contentBuilder;
+  final double? flex;
+}
+
+class PColumnHeader {
+  PColumnHeader({
+    required this.title,
+    this.flex,
+    this.numeric = false,
+    this.children,
+    this.primary = false,
+  });
+
+  final String title;
+  final bool numeric;
+  final List<PColumnHeader>? children;
+  final bool primary;
+  final double? flex;
+}
+
+Table tableBody<T>({
+  required List<T> data,
+  required List<PColumnBody<T>> columns,
+}) {
+  const paddingRow = EdgeInsets.symmetric(horizontal: 8);
+
+  return Table(
+    border: TableBorder.all(color: PdfColors.white, width: 3),
+    columnWidths: {
+      for (var i = 0; i < columns.length; i++)
+        i: FlexColumnWidth(columns[i].flex ?? 1),
+    },
+    children: List<TableRow>.generate(
+      data.length,
+      (row) => TableRow(
+        children: List<Widget>.generate(
+          columns.length,
+          (column) => Container(
+            height: 30,
+            padding: paddingRow,
+            decoration: BoxDecoration(
+              color: row.isEven ? PdfColors.grey100 : PdfColors.white,
+              border: Border.all(
+                width: 4,
+                color: PdfColors.grey100,
+              ),
+            ),
+            alignment: columns[column].numeric
+                ? Alignment.centerRight
+                : Alignment.centerLeft,
+            child: Text(
+              columns[column].contentBuilder(data[row], row),
+              style: const TextStyle(fontSize: 7),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
 Table simpleTablePdf<T>({
   required List<T> data,
   required List<PColumn<T>> columns,
@@ -242,6 +311,62 @@ Table simpleTablePdf<T>({
         ),
       ),
       ...[TableRow(children: footer)],
+    ],
+  );
+}
+
+Table tableHeader({
+  required List<PColumnHeader> columns,
+  bool hasChildren = false,
+}) {
+  final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
+  const paddingRow = EdgeInsets.symmetric(horizontal: 8);
+
+  return Table(
+    border: TableBorder.all(color: PdfColors.white, width: 3),
+    columnWidths: {
+      for (var i = 0; i < columns.length; i++)
+        i: FlexColumnWidth(columns[i].flex ?? 1),
+    },
+    children: [
+      TableRow(
+        children: [
+          for (final column in columns)
+            Column(
+              children: [
+                Container(
+                  height: hasChildren
+                      ? (column.children?.isNotEmpty ?? false)
+                          ? 30
+                          : 60
+                      : 30,
+                  padding: paddingRow,
+                  decoration: BoxDecoration(
+                    color:
+                        column.primary ? primaryColor : PdfColors.blueGrey800,
+                  ),
+                  child: Align(
+                    alignment: column.numeric
+                        ? Alignment.centerRight
+                        : Alignment.centerLeft,
+                    child: Text(
+                      column.title,
+                      textAlign:
+                          column.numeric ? TextAlign.right : TextAlign.left,
+                      style: TextStyle(
+                        fontSize: 7,
+                        fontWeight: FontWeight.bold,
+                        color: PdfColors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                if (column.children?.isNotEmpty ?? false)
+                  tableHeader(columns: column.children!),
+              ],
+            ),
+        ],
+      ),
     ],
   );
 }
