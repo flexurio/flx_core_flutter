@@ -280,10 +280,10 @@ Table simpleTablePdfX<T>({
   return Table(
     border: TableBorder.all(color: PdfColors.white, width: 3),
     columnWidths: {
-      for (var i = 0; i < columns.length; i++) 
+      for (var i = 0; i < columns.length; i++)
         i: columns[i].children.isEmpty || columns[i].children.length == 1
-          ? const FlexColumnWidth(2)
-          : FlexColumnWidth(columns[i].children.length.toDouble() * 2),
+            ? const FlexColumnWidth(2)
+            : FlexColumnWidth(columns[i].children.length.toDouble() * 2),
     },
     children: [
       // TableRow(
@@ -349,24 +349,24 @@ Table simpleTablePdfX<T>({
                     child: Container(
                       height: 30,
                       padding: paddingRow,
-                      margin: column.children.length > 1 
-                        && column.children.last.title != subheader.title
+                      margin: column.children.length > 1 &&
+                              column.children.last.title != subheader.title
                           ? const EdgeInsets.only(right: 3)
                           : EdgeInsets.zero,
                       decoration: BoxDecoration(
-                        color: subheader.primary 
-                          ? primaryColor 
-                          : PdfColors.blueGrey800,
+                        color: subheader.primary
+                            ? primaryColor
+                            : PdfColors.blueGrey800,
                       ),
                       child: Align(
                         alignment: subheader.numeric
-                          ? Alignment.centerRight
-                          : Alignment.centerLeft,
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
                         child: Text(
                           subheader.title,
-                          textAlign: subheader.numeric 
-                            ? TextAlign.right 
-                            : TextAlign.left,
+                          textAlign: subheader.numeric
+                              ? TextAlign.right
+                              : TextAlign.left,
                           style: TextStyle(
                             fontSize: 7,
                             fontWeight: FontWeight.bold,
@@ -388,41 +388,39 @@ Table simpleTablePdfX<T>({
             (column) => Row(
               children: List<Widget>.generate(
                 columns[column].children.length,
-                (x) => 
-                // 
-                Expanded(
+                (x) =>
+                    //
+                    Expanded(
                   child: Container(
-              height: 30,
-              padding: paddingRow,
-                        margin: columns[column].children.length > 1 
-                        && 
-                        columns[column].children.last.title 
-                        != columns[column].children[x].title
-                          ? const EdgeInsets.only(right: 3)
-                          : EdgeInsets.zero,
-              decoration: BoxDecoration(
-                color: row.isEven ? PdfColors.grey100 : PdfColors.white,
-                border: Border.all(
-                  width: 4,
-                  color: PdfColors.grey100,
+                    height: 30,
+                    padding: paddingRow,
+                    margin: columns[column].children.length > 1 &&
+                            columns[column].children.last.title !=
+                                columns[column].children[x].title
+                        ? const EdgeInsets.only(right: 3)
+                        : EdgeInsets.zero,
+                    decoration: BoxDecoration(
+                      color: row.isEven ? PdfColors.grey100 : PdfColors.white,
+                      border: Border.all(
+                        width: 4,
+                        color: PdfColors.grey100,
+                      ),
+                    ),
+                    alignment: columns[column].children[x].numeric
+                        ? Alignment.centerRight
+                        : Alignment.centerLeft,
+                    child: Text(
+                      columns[column]
+                          .children[x]
+                          .contentBuilder(data[row], row),
+                      style: const TextStyle(fontSize: 7),
+                    ),
+                  ),
                 ),
-              ),
-              alignment: columns[column].children[x].numeric
-                  ? Alignment.centerRight
-                  : Alignment.centerLeft,
-              child: Text(
-                columns[column].children[x].contentBuilder(data[row], row),
-                style: const TextStyle(fontSize: 7),
+
+                //
               ),
             ),
-                ),
-            
-                // 
-      
-            
-
-          ),
-        ),
           ),
         ),
       ),
@@ -434,36 +432,35 @@ Table simpleTablePdfX<T>({
             (column) => Row(
               children: List<Widget>.generate(
                 columns[column].children.length,
-                (x) => 
-                // 
-                Expanded(
+                (x) =>
+                    //
+                    Expanded(
                   child: Container(
-              height: 30,
-              padding: paddingRow,
-                        margin: columns[column].children.length > 1 
-                        && 
-                        columns[column].children.last.title 
-                        != columns[column].children[x].title
-                          ? const EdgeInsets.only(right: 3)
-                          : EdgeInsets.zero,
-              decoration: BoxDecoration(
-                color: row.isEven ? PdfColors.grey100 : PdfColors.white,
-                border: Border.all(
-                  width: 4,
-                  color: PdfColors.grey100,
+                    height: 30,
+                    padding: paddingRow,
+                    margin: columns[column].children.length > 1 &&
+                            columns[column].children.last.title !=
+                                columns[column].children[x].title
+                        ? const EdgeInsets.only(right: 3)
+                        : EdgeInsets.zero,
+                    decoration: BoxDecoration(
+                      color: row.isEven ? PdfColors.grey100 : PdfColors.white,
+                      border: Border.all(
+                        width: 4,
+                        color: PdfColors.grey100,
+                      ),
+                    ),
+                    alignment: columns[column].children[x].numeric
+                        ? Alignment.centerRight
+                        : Alignment.centerLeft,
+                    child: Text(
+                      'TOTAL',
+                      style: const TextStyle(fontSize: 7),
+                    ),
+                  ),
                 ),
-              ),
-              alignment: columns[column].children[x].numeric
-                  ? Alignment.centerRight
-                  : Alignment.centerLeft,
-              child: Text(
-                'TOTAL',
-                style: const TextStyle(fontSize: 7),
               ),
             ),
-                ),
-          ),
-        ),
           ),
         ),
       ),
@@ -525,6 +522,7 @@ Future<MultiPage> pdfTemplate({
   required String title,
   required String printedBy,
   PageOrientation? orientation,
+  PdfPageFormat? pageFormat = PdfPageFormat.a4,
 }) async {
   final (companyLogo, companyLogoNamed) = await getCompanyLogoPdf();
   return MultiPage(
@@ -535,7 +533,7 @@ Future<MultiPage> pdfTemplate({
         bold: await PdfGoogleFonts.openSansSemiBold(),
         icons: await PdfGoogleFonts.materialIcons(),
       ),
-      pageFormat: PdfPageFormat.a4,
+      pageFormat: pageFormat,
       margin: EdgeInsets.zero,
       buildBackground: (Context context) => Transform.translate(
         offset: const PdfPoint(-100, 0),
