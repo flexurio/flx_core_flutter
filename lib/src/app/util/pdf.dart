@@ -411,32 +411,6 @@ Table simpleTablePdfX<T>({
             : FlexColumnWidth(columns[i].children.length.toDouble() * 2),
     },
     children: [
-      // TableRow(
-      //   children: [
-      //     for (final column in columns)
-      //       Container(
-      //         height: 30,
-      //         padding: paddingRow,
-      //         decoration: BoxDecoration(
-      //           color: column.primary ? primaryColor : PdfColors.blueGrey800,
-      //         ),
-      //         child: Align(
-      //           alignment: column.numeric
-      //               ? Alignment.centerRight
-      //               : Alignment.centerLeft,
-      //           child: Text(
-      //             column.title,
-      //             textAlign: column.numeric ? TextAlign.right : TextAlign.left,
-      //             style: TextStyle(
-      //               fontSize: 7,
-      //               fontWeight: FontWeight.bold,
-      //               color: PdfColors.white,
-      //             ),
-      //           ),
-      //         ),
-      //       ),
-      //   ],
-      // ),
       TableRow(
         children: [
           for (final column in columns)
