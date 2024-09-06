@@ -486,6 +486,8 @@ class PermissionProductStock {
   static String productStockRecapViewMenu = 'product_stock_recap_view_menu';
   static String productStockRecapExportExcel =
       'recap_product_stock_export_excel';
+  static String productStockWarehouseExportExcel =
+      'recap_product_stock_warehouse_export_excel';
 
   static String productReturnNoteViewMenu = 'product_return_note_view_menu';
   static String productReturnNoteConfirmMarketing =
