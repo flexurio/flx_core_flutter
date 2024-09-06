@@ -617,9 +617,10 @@ Widget tileDataHorizontal({
 }
 
 Future<MultiPage> pdfTemplate({
-  required Widget child,
-  required String title,
+  required List<Widget> Function(Context context) build,
+  required String headerTitle,
   required String printedBy,
+  Widget? headerChild,
   PageOrientation? orientation,
   PdfPageFormat? pageFormat = PdfPageFormat.a4,
 }) async {
@@ -650,16 +651,10 @@ Future<MultiPage> pdfTemplate({
     header: (context) => headerPdf(
       companyLogo: companyLogo,
       companyLogoNamed: companyLogoNamed,
-      title: title,
+      title: headerTitle,
+      child: headerChild,
     ),
     footer: (context) => footerPdf(context: context, printedBy: printedBy),
-    build: (context) {
-      return [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 36),
-          child: child,
-        ),
-      ];
-    },
+    build: build,
   );
 }
