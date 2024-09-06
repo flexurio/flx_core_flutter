@@ -273,6 +273,7 @@ class SearchBoxX extends StatefulWidget {
 class _SearchBoxXState extends State<SearchBoxX> {
   final _controller = TextEditingController();
 
+  @override
   initState() {
     super.initState();
     _controller.text = widget.initial ?? '';
