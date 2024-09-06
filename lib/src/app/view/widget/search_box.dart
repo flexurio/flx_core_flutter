@@ -221,7 +221,7 @@ class _MenuList extends StatelessWidget {
         final icon = menu.icon;
 
         for (final menu3 in menu.menu) {
-          final key = '${menu1.toLowerCase()} ${menu2.toLowerCase()} '
+          final key = '${(menu1 ?? '-').toLowerCase()} ${menu2.toLowerCase()} '
               '${menu3.label.toLowerCase()}';
 
           if ((menu3.permission == null ||
@@ -234,7 +234,8 @@ class _MenuList extends StatelessWidget {
                 menu: menu3,
                 menu2: menu2,
                 icon: Icon(icon),
-                parent: '$menu1 / $menu2',
+                parent:
+                    '${menu1 == null ? '' : '${menu1.tr()} / '}${menu2.tr()}',
               ),
             );
             index++;

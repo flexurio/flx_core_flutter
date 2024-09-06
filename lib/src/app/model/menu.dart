@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class Menu1 {
   Menu1({
-    required this.label,
     required this.menu,
+    this.label,
   });
 
-  final String label;
+  final String? label;
   final List<Menu2> menu;
 }
 

@@ -52,26 +52,27 @@ class MenuLevel1 extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: SizedBox(
-                  height: 30,
-                  child: Align(
-                    alignment:
-                        isCollapsed ? Alignment.center : Alignment.centerLeft,
-                    child: isCollapsed
-                        ? Icon(Icons.more_horiz, color: primaryColor)
-                        : Text(
-                            menu1.label.tr().toUpperCase(),
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: theme.colorScheme.primary,
+              if (menu1.label != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: SizedBox(
+                    height: 30,
+                    child: Align(
+                      alignment:
+                          isCollapsed ? Alignment.center : Alignment.centerLeft,
+                      child: isCollapsed
+                          ? Icon(Icons.more_horiz, color: primaryColor)
+                          : Text(
+                              menu1.label!.tr().toUpperCase(),
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: theme.colorScheme.primary,
+                              ),
                             ),
-                          ),
+                    ),
                   ),
                 ),
-              ),
               if (isCollapsed)
                 Column(
                   children: List.generate(
