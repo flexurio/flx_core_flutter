@@ -56,8 +56,8 @@ List<int> simpleExcel<T>({
       final cell = sheet.getRangeByIndex(row + 2, col + 1)
         ..setValue(column.builder(item, row))
         ..cellStyle.backColorRgb = (row + 2).isEven
-            ? primaryColor.lighten(.5)
-            : primaryColor.lighten(.55);
+            ? primaryColor.lighten(.25)
+            : primaryColor.lighten(.3);
       if (columns[col].numeric) {
         cell.cellStyle.hAlign = HAlignType.right;
       }
