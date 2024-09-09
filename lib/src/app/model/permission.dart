@@ -250,6 +250,7 @@ class Permission {
   static String scheduleDetailEdit = 'schedule_detail_edit';
   static String scheduleDetailDelete = 'schedule_detail_delete';
   static String scheduleDetailValidate = 'schedule_detail_validate';
+  static String scheduleExportExcel = 'schedule_export_excel';
 
   // --
   static String supplierViewMenu = 'supplier_view_menu';
