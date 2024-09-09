@@ -459,44 +459,6 @@ class PermissionProduction {
   static String productionStageProcessEdit = 'production_stage_process_edit';
 }
 
-class PermissionProductStock {
-  static String productReturnViewMenu = 'product_return_view_menu';
-  static String productReturnApprove = 'product_return_approve';
-  static String productReturnConfirmMarketing =
-      'product_return_confirm_marketing';
-  static String productReturnConfirmPpic = 'product_return_confirm_ppic';
-  static String productReturnCreate = 'product_return_create';
-  static String productReturnDelete = 'product_return_delete';
-  static String productReturnDetailCreate = 'product_return_detail_create';
-  static String productReturnDetailDelete = 'product_return_detail_delete';
-  static String productReturnEdit = 'product_return_edit';
-  static String productReturnCheckViewMenu = 'product_return_check_view_menu';
-  static String productReturnCheckCreate = 'product_return_check_create';
-  static String productReturnCheckDelete = 'product_return_check_delete';
-  static String productReturnLeadTimeExportExcel =
-      'product_return_{lead_time}_export_excel';
-  static String productReturnRecapDispositionExportExcel =
-      'product_return_{recap_disposition}_export_excel';
-  static String productReturnLeadTimeByStatusExportExcel =
-      'product_return_{lead_time_by_status}_export_excel';
-
-  // --
-  static String productStockViewMenu = 'product_stock_view_menu';
-  static String productStockPrint = 'product_stock_print';
-  static String productStockRecapViewMenu = 'product_stock_recap_view_menu';
-  static String productStockRecapExportExcel =
-      'recap_product_stock_export_excel';
-  static String productStockWarehouseExportExcel =
-      'recap_product_stock_warehouse_export_excel';
-
-  static String productReturnNoteViewMenu = 'product_return_note_view_menu';
-  static String productReturnNoteConfirmMarketing =
-      'product_return_note_confirm_marketing';
-  static String productReturnNoteCreate = 'product_return_note_create';
-  static String productReturnNoteDelete = 'product_return_note_delete';
-  static String productReturnNoteEdit = 'product_return_note_edit';
-}
-
 class PermissionMaterialStock {
   static String materialReturnViewMenu = 'material_return_view_menu';
   static String materialReturnCreate = 'material_return_create';

@@ -152,6 +152,18 @@ class PColumn<T> {
   final double? flex;
 }
 
+class PColumnFooter {
+  PColumnFooter({
+    this.footer,
+    this.flex,
+    this.numeric = false,
+  });
+
+  final String? footer;
+  final bool numeric;
+  final double? flex;
+}
+
 class PColumnBody<T> {
   PColumnBody({
     required this.contentBuilder,
@@ -312,6 +324,44 @@ Table simpleTablePdf<T>({
       ),
       ...[TableRow(children: footer)],
     ],
+  );
+}
+
+Table tableFooter({
+  required List<PColumnFooter> columns,
+}) {
+  const paddingRow = EdgeInsets.symmetric(horizontal: 8);
+  final footer = <Widget>[
+    for (final column in columns)
+      Container(
+        height: 30,
+        padding: paddingRow,
+        decoration: const BoxDecoration(
+          border:
+              Border(top: BorderSide(color: PdfColors.blueGrey500, width: 4)),
+        ),
+        child: Align(
+          alignment:
+              column.numeric ? Alignment.centerRight : Alignment.centerLeft,
+          child: Text(
+            column.footer ?? '',
+            textAlign: column.numeric ? TextAlign.right : TextAlign.left,
+            style: TextStyle(
+              fontSize: 7,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+  ];
+
+  return Table(
+    border: TableBorder.all(color: PdfColors.white, width: 3),
+    columnWidths: {
+      for (var i = 0; i < columns.length; i++)
+        i: FlexColumnWidth(columns[i].flex ?? 1),
+    },
+    children: [TableRow(children: footer)],
   );
 }
 

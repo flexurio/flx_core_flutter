@@ -177,8 +177,12 @@ Widget headerPdf({
               ),
             ),
           ),
-          if (child != null) child,
-          SizedBox(height: 6),
+          if (child != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: child,
+            ),
+          if (child == null) SizedBox(height: 12),
         ],
       ),
     ],
