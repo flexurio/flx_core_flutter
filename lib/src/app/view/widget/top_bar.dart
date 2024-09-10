@@ -34,10 +34,7 @@ class TopBar extends StatelessWidget {
           md: _buildLargeTopBar(theme),
           sm: Container(
             height: 64,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 18,
-            ),
-            color: theme.cardColor,
+            padding: const EdgeInsets.symmetric(horizontal: 18),
             child: Row(
               children: [
                 IconButton(
@@ -63,7 +60,7 @@ class TopBar extends StatelessWidget {
     );
   }
 
-  Container _buildLargeTopBar(ThemeData theme) {
+  Widget _buildLargeTopBar(ThemeData theme) {
     return Container(
       height: 80,
       color: theme.cardColor,

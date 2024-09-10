@@ -87,103 +87,117 @@ class DataTableBackend<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Column(
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    var freezeFirstColumnLocal = freezeFirstColumn;
+    var freezeLastColumnLocal = freezeLastColumn;
+    return ScreenIdentifierBuilder(
+      builder: (context, screenIdentifier) {
+        final isSmall = screenIdentifier.conditions(sm: true, md: false);
+        if (isSmall) {
+          freezeFirstColumnLocal = false;
+          freezeLastColumnLocal = false;
+        }
+        return Column(
           children: [
-            Wrap(spacing: 12, children: actionLeft),
-            const Spacer(),
-            Expanded(
-              child: Wrap(
-                spacing: 12,
-                crossAxisAlignment: WrapCrossAlignment.end,
-                runAlignment: WrapAlignment.end,
-                alignment: WrapAlignment.end,
-                children: actionRight(
-                  LightButtonSmall(
-                    permission: null,
-                    status: status,
-                    action: DataAction.refresh,
-                    onPressed: onRefresh,
-                  ),
-                )
-                    .map(
-                      (e) => Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [e],
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Wrap(spacing: 12, children: actionLeft),
+                const Spacer(),
+                Expanded(
+                  child: Wrap(
+                    spacing: 12,
+                    crossAxisAlignment: WrapCrossAlignment.end,
+                    runAlignment: WrapAlignment.end,
+                    alignment: WrapAlignment.end,
+                    children: actionRight(
+                      LightButtonSmall(
+                        permission: null,
+                        status: status,
+                        action: DataAction.refresh,
+                        onPressed: onRefresh,
                       ),
                     )
-                    .toList(),
-              ),
-            ),
-          ],
-        ),
-        const Gap(12),
-        Align(
-          alignment: Alignment.centerRight,
-          child: _buildSearchBox(),
-        ),
-        const Gap(24),
-        Row(
-          children: [
-            Expanded(
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(12)),
-                child: ColoredBox(
-                  color: theme.cardColor,
-                  child: Column(
-                    children: [
-                      YuhuTable<T>(
-                        freezeFirstColumn: freezeFirstColumn,
-                        freezeLastColumn: freezeLastColumn,
-                        width: columns.fold(
-                          0,
-                          (value, element) =>
-                              (value ?? 0) + element.widthFlex * 25,
-                        ),
-                        data: pageOptions.data,
-                        rowsPerPage: 10,
-                        initialSortColumnIndex: columns.indexWhere(
-                          (e) => e.head.backendColumn == pageOptions.sortBy,
-                        ),
-                        initialSortAscending: pageOptions.ascending,
-                        onSort: (index, ascending) {
-                          onChanged(
-                            pageOptions.copyWith(
-                              ascending: ascending,
-                              sortBy: columns[index].head.backendColumn,
-                            ),
-                          );
-                        },
-                        columns: [
-                          for (final column in columns)
-                            TableColumn<T>(
-                              alignment: column.head.numeric
-                                  ? Alignment.centerRight
-                                  : Alignment.centerLeft,
-                              width: column.widthFlex * 25,
-                              title: column.head.label,
-                              builder: (data, _) {
-                                return DefaultTextStyle(
-                                  style: theme.textTheme.bodyMedium!,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  child: column.body(data).child,
-                                );
-                              },
-                            ),
-                        ],
-                      ),
-                      if (pagination) _buildPaginationNumber(),
-                    ],
+                        .map(
+                          (e) => Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [e],
+                          ),
+                        )
+                        .toList(),
                   ),
                 ),
-              ),
+              ],
+            ),
+            const Gap(12),
+            Align(
+              alignment: Alignment.centerRight,
+              child: _buildSearchBox(),
+            ),
+            const Gap(24),
+            Row(
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(12)),
+                    child: ColoredBox(
+                      color: theme.cardColor,
+                      child: Column(
+                        children: [
+                          YuhuTable<T>(
+                            key: ValueKey(
+                              '$freezeFirstColumnLocal $freezeLastColumnLocal',
+                            ),
+                            freezeFirstColumn: freezeFirstColumnLocal,
+                            freezeLastColumn: freezeLastColumnLocal,
+                            width: columns.fold(
+                              0,
+                              (value, element) =>
+                                  (value ?? 0) + element.widthFlex * 25,
+                            ),
+                            data: pageOptions.data,
+                            rowsPerPage: 10,
+                            initialSortColumnIndex: columns.indexWhere(
+                              (e) => e.head.backendColumn == pageOptions.sortBy,
+                            ),
+                            initialSortAscending: pageOptions.ascending,
+                            onSort: (index, ascending) {
+                              onChanged(
+                                pageOptions.copyWith(
+                                  ascending: ascending,
+                                  sortBy: columns[index].head.backendColumn,
+                                ),
+                              );
+                            },
+                            columns: [
+                              for (final column in columns)
+                                TableColumn<T>(
+                                  alignment: column.head.numeric
+                                      ? Alignment.centerRight
+                                      : Alignment.centerLeft,
+                                  width: column.widthFlex * 25,
+                                  title: column.head.label,
+                                  builder: (data, _) {
+                                    return DefaultTextStyle(
+                                      style: theme.textTheme.bodyMedium!,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      child: column.body(data).child,
+                                    );
+                                  },
+                                ),
+                            ],
+                          ),
+                          if (pagination) _buildPaginationNumber(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
-        ),
-      ],
+        );
+      },
     );
   }
 
@@ -200,32 +214,24 @@ class DataTableBackend<T> extends StatelessWidget {
           Text(pageOptions.info),
           const Gap(12),
           IconButton(
-            onPressed: () {
-              _changePage(1);
-            },
+            onPressed: () => _changePage(1),
             icon: const Icon(Icons.first_page),
           ),
           IconButton(
             onPressed: pageOptions.page > 1
-                ? () {
-                    _changePage(pageOptions.page - 1);
-                  }
+                ? () => _changePage(pageOptions.page - 1)
                 : null,
             icon: const Icon(Icons.keyboard_arrow_left),
           ),
           const Gap(6),
           IconButton(
             onPressed: pageOptions.page < pageOptions.lastPage
-                ? () {
-                    _changePage(pageOptions.page + 1);
-                  }
+                ? () => _changePage(pageOptions.page + 1)
                 : null,
             icon: const Icon(Icons.keyboard_arrow_right),
           ),
           IconButton(
-            onPressed: () {
-              _changePage(pageOptions.lastPage);
-            },
+            onPressed: () => _changePage(pageOptions.lastPage),
             icon: const Icon(Icons.last_page),
           ),
         ],
@@ -274,7 +280,7 @@ class _SearchBoxXState extends State<SearchBoxX> {
   final _controller = TextEditingController();
 
   @override
-  initState() {
+  void initState() {
     super.initState();
     _controller.text = widget.initial ?? '';
   }
