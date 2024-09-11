@@ -460,15 +460,6 @@ class PermissionProduction {
   static String productionStageProcessEdit = 'production_stage_process_edit';
 }
 
-class PermissionMaterialStock {
-  static String materialReturnViewMenu = 'material_return_view_menu';
-  static String materialReturnCreate = 'material_return_create';
-  static String materialReturnDelete = 'material_return_delete';
-  static String materialReturnDetailCreate = 'material_return_detail_create';
-  static String materialReturnDetailDelete = 'material_return_detail_delete';
-  static String materialReturnDetailEdit = 'material_return_detail_edit';
-}
-
 class PermissionVendor {
   // Vendor
   static String vendorViewMenu = 'vendor_view_menu';
