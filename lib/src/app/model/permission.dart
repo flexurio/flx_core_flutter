@@ -100,13 +100,6 @@ class Permission {
   static String materialGroupDelete = 'material_group_delete';
   static String materialGroupEdit = 'material_group_edit';
 
-  // --
-  static String materialIssueViewMenu = 'material_issue_view_menu';
-  static String materialIssueCreate = 'material_issue_create';
-  static String materialIssueDelete = 'material_issue_delete';
-  static String materialIssueEdit = 'material_issue_detail_edit';
-  static String materialIssuePrint = 'material_issue_print';
-
   static String materialLeadTimeEdit = 'material_lead_time_edit';
 
   // Material Receive
