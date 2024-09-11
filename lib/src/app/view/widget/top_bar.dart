@@ -46,11 +46,12 @@ class TopBar extends StatelessWidget {
                   'asset/image/logo-name-company-${flavorConfig.companyId}.png',
                   height: 40,
                 ),
-                // AccountButton(
-                //   title: accountName,
-                //   subtitle: accountSubtitle,
-                //   onLogout: onLogout,
-                // ),
+                Spacer(),
+                AccountButton(
+                  title: accountName,
+                  subtitle: accountSubtitle,
+                  onLogout: onLogout,
+                ),
                 // const Gap(24),
               ],
             ),
@@ -99,20 +100,25 @@ class TopBar extends StatelessWidget {
                 permissions: accountPermission,
               ),
             ),
-            const SizedBox(width: 48),
+            const SizedBox(width: 24),
             ScreenIdentifierBuilder(
               builder: (context, screenIdentifier) {
                 return screenIdentifier.conditions(
-                  lg: AccountButton(
-                    padding: 0,
-                    title: accountName,
-                    subtitle: accountSubtitle,
-                    onLogout: onLogout,
+                  md: _buildAccountButton(),
+                  lg: Row(
+                    children: [
+                      _buildThemeLanguage(),
+                      const Gap(24),
+                      _buildAccountButton(),
+                    ],
                   ),
-                  xl: _Profile(
-                    title: accountName,
-                    subtitle: accountSubtitle,
-                    onLogout: onLogout,
+                  xl: Row(
+                    children: [
+                      _buildAvatarNameEmail(),
+                      _buildThemeLanguage(),
+                      const Gap(24),
+                      _buildLogoutButton(),
+                    ],
                   ),
                 );
               },
@@ -122,48 +128,45 @@ class TopBar extends StatelessWidget {
       ),
     );
   }
-}
 
-class _Profile extends StatelessWidget {
-  const _Profile({
-    required this.title,
-    required this.subtitle,
-    required this.onLogout,
-  });
+  AccountButton _buildAccountButton() {
+    return AccountButton(
+      padding: 0,
+      title: accountName,
+      subtitle: accountSubtitle,
+      onLogout: onLogout,
+    );
+  }
 
-  final String title;
-  final String subtitle;
-  final void Function() onLogout;
+  _RoundedContainer _buildThemeLanguage() {
+    return const _RoundedContainer(
+      child: Row(
+        children: [
+          SwitchLightDarkMode(),
+          Gap(24),
+          SwitchLanguage(),
+          Gap(6),
+        ],
+      ),
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        SizedBox(
-          width: 300,
-          child: AvatarNameEmail(
-            avatarWidth: 50,
-            title: title,
-            subtitle: subtitle,
-          ),
-        ),
-        const _RoundedContainer(
-          child: Row(
-            children: [
-              SwitchLightDarkMode(),
-              Gap(24),
-              SwitchLanguage(),
-              Gap(6),
-            ],
-          ),
-        ),
-        const Gap(24),
-        _RoundedContainer(
-          child: LogOutButton(
-            onLogout: onLogout,
-          ),
-        ),
-      ],
+  SizedBox _buildAvatarNameEmail() {
+    return SizedBox(
+      width: 300,
+      child: AvatarNameEmail(
+        avatarWidth: 50,
+        title: accountName,
+        subtitle: accountSubtitle,
+      ),
+    );
+  }
+
+  _RoundedContainer _buildLogoutButton() {
+    return _RoundedContainer(
+      child: LogOutButton(
+        onLogout: onLogout,
+      ),
     );
   }
 }
