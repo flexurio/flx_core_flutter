@@ -414,6 +414,11 @@ class Entity extends EntityY {
         subtitleX: '',
         iconPath: 'sales-order',
       );
+  static Entity get pendingRequestsRecap => const Entity(
+      titleX: 'pending_requests_recap',
+      subtitleX: 'pending_requests_recap',
+      iconPath: 'bill',
+    );
   static Entity get schedule => const Entity(
         titleX: 'schedule',
         subtitleX: 'schedule',
