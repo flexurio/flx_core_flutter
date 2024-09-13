@@ -105,6 +105,8 @@ class Permission {
   // Material Receive
   static String materialReceiveViewMenu = 'material_receive_view_menu';
   static String materialReceiveCreate = 'material_receive_create';
+  static String materialReceiveRelease = 'material_receive_release';
+  static String materialReceiveReject = 'material_receive_reject';
   static String materialReceiveExportPdf = 'material_receive_export_pdf';
   static String materialReceiveDelete = 'material_receive_delete';
   static String materialReceiveDetailDelete = 'material_receive_detail_delete';
@@ -232,8 +234,8 @@ class Permission {
   static String salesOrderExportDeliveryOrder =
       'sales_order_export_delivery_order';
   static String salesOrderPrintInvoice = 'sales_order_print_invoice';
-
-
+  static String salesOrderSummaryExportExcel = 
+  'sales_order_summary_export_excel';
   static String pendingRequestsRecapViewMenu = 
   'pending_requests_recap_view_menu';
   static String pendingRequestsRecapExportPdf = 
@@ -242,6 +244,7 @@ class Permission {
   'pending_requests_unserved_export_pdf';
   static String pendingRequestsDetailExportPdf = 
   'pending_requests_detail_export_pdf';
+  
 
   // --
   static String scheduleViewMenu = 'schedule_view_menu';
