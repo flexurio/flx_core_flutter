@@ -233,8 +233,16 @@ class Permission {
       'sales_order_export_delivery_order';
   static String salesOrderPrintInvoice = 'sales_order_print_invoice';
 
-  static String pendingRequestsRecapViewMenu = 'pending_requests_recap_view_menu';
-  static String pendingRequestsRecapExportPdf = 'pending_requests_recap_export_pdf';
+
+  static String pendingRequestsRecapViewMenu = 
+  'pending_requests_recap_view_menu';
+  static String pendingRequestsRecapExportPdf = 
+  'pending_requests_recap_export_pdf';
+  static String pendingRequestsUnservedExportPdf = 
+  'pending_requests_unserved_export_pdf';
+  static String pendingRequestsDetailExportPdf = 
+  'pending_requests_detail_export_pdf';
+
   // --
   static String scheduleViewMenu = 'schedule_view_menu';
   static String scheduleCreate = 'schedule_create';
