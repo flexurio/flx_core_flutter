@@ -1,5 +1,6 @@
 import 'package:animated_check/animated_check.dart';
 import 'package:animated_cross/animated_cross.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flexurio_erp_core/flexurio_erp_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -229,5 +230,23 @@ class _ToastFailState extends State<ToastFail>
         ],
       ),
     );
+  }
+}
+
+class ToastRepository {
+  static void errorRequiredAtLeastOne({
+    required BuildContext context,
+    required String data,
+  }) {
+    Toast(context)
+        .fail('error.required_at_least_one'.tr(namedArgs: {'data': data.tr()}));
+  }
+
+  static void errorMustBeGreaterThanZero({
+    required BuildContext context,
+    required String data,
+  }) {
+    Toast(context).fail(
+        'error.must_be_greater_than_zero'.tr(namedArgs: {'data': data.tr()}));
   }
 }
