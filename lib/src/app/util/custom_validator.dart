@@ -55,3 +55,31 @@ class NonZeroPositiveNumberValidator extends TextFieldValidator {
     return true;
   }
 }
+
+class NonZeroPositiveNumberValidatorDecimal extends TextFieldValidator {
+  NonZeroPositiveNumberValidatorDecimal({required String errorText})
+      : super(errorText);
+
+  @override
+  bool isValid(String? value) {
+    if (value == null || value.isEmpty) {
+      return false;
+    }
+
+    if (value.startsWith('.')) {
+      return false;
+    }
+
+    final regExp = RegExp(r'^[1-9]\d*(\.\d*)?$');
+    if (!regExp.hasMatch(value)) {
+      return false;
+    }
+
+    final number = num.tryParse(value);
+    if (number == null || number <= 0) {
+      return false;
+    }
+
+    return true;
+  }
+}
