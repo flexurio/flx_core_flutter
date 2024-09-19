@@ -108,6 +108,8 @@ class Permission {
   static String materialReceiveRelease = 'material_receive_release';
   static String materialReceiveReject = 'material_receive_reject';
   static String materialReceiveExportPdf = 'material_receive_export_pdf';
+  static String materialReturnReceiptExportPdf = 
+  'material_return_receipt_export_pdf';
   static String materialReceiveDelete = 'material_receive_delete';
   static String materialReceiveDetailDelete = 'material_receive_detail_delete';
   static String materialReceiveEdit = 'material_receive_edit';
@@ -234,8 +236,10 @@ class Permission {
   static String salesOrderExportDeliveryOrder =
       'sales_order_export_delivery_order';
   static String salesOrderPrintInvoice = 'sales_order_print_invoice';
-  static String salesOrderSummaryExportExcel = 
-  'sales_order_summary_export_excel';
+  static String salesOrderSummaryExportPdf = 
+  'sales_order_summary_export_pdf';
+  static String salesOrderMalkSummaryExportPdf = 
+  'sales_order_malk_summary_export_pdf';
   static String pendingRequestsRecapViewMenu = 
   'pending_requests_recap_view_menu';
   static String pendingRequestsRecapExportPdf = 

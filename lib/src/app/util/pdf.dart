@@ -157,11 +157,13 @@ class PColumnFooter {
     this.footer,
     this.flex,
     this.numeric = false,
+    this.borderTransparent = false,
   });
 
   final String? footer;
   final bool numeric;
   final double? flex;
+  final bool borderTransparent;
 }
 
 class PColumnBody<T> {
@@ -336,9 +338,12 @@ Table tableFooter({
       Container(
         height: 30,
         padding: paddingRow,
-        decoration: const BoxDecoration(
-          border:
-              Border(top: BorderSide(color: PdfColors.blueGrey500, width: 4)),
+        decoration: BoxDecoration(
+          border: column.borderTransparent 
+            ? const Border()
+            : const Border(
+                top: BorderSide(color: PdfColors.blueGrey500, width: 4),
+              ),
         ),
         child: Align(
           alignment:
