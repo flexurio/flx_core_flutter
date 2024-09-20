@@ -247,6 +247,6 @@ class ToastRepository {
     required String data,
   }) {
     Toast(context).fail(
-        'error.must_be_greater_than_zero'.tr(namedArgs: {'data': data.tr()}));
+        'error.must_be_greater_than_zero'.tr(namedArgs: {'data': data.tr()}),);
   }
 }

@@ -46,7 +46,7 @@ class TopBar extends StatelessWidget {
                   'asset/image/logo-name-company-${flavorConfig.companyId}.png',
                   height: 40,
                 ),
-                Spacer(),
+                const Spacer(),
                 AccountButton(
                   title: accountName,
                   subtitle: accountSubtitle,
