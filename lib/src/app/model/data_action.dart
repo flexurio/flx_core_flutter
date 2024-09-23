@@ -81,6 +81,7 @@ enum DataAction {
   exportExcel('export_excel', FontAwesomeIcons.fileExcel, Colors.indigo),
   export('Export', FontAwesomeIcons.fileDownload, Colors.orange),
   exportPdf('export_pdf', FontAwesomeIcons.filePdf, Colors.indigo),
+  exportPdfWithoutTitle('', FontAwesomeIcons.filePdf, Colors.indigo),
   exportJobsheet('export_jobsheet', FontAwesomeIcons.filePdf, Colors.redAccent),
   exportBatch('export_batch', FontAwesomeIcons.filePdf, Colors.redAccent),
   print('print', FontAwesomeIcons.filePdf, Colors.redAccent),

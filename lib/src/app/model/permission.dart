@@ -240,6 +240,8 @@ class Permission {
   'sales_order_summary_export_pdf';
   static String salesOrderMalkSummaryExportPdf = 
   'sales_order_malk_summary_export_pdf';
+  static String salesOrderLoanRequestsSummaryExportPdf = 
+  'sales_order_loan_requests_summary_export_pdf';
   static String pendingRequestsRecapViewMenu = 
   'pending_requests_recap_view_menu';
   static String pendingRequestsRecapExportPdf = 
