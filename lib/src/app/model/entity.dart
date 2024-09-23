@@ -115,7 +115,7 @@ class Entity extends EntityY {
         titleX: 'status_account_payable',
         subtitleX: 'status_account_payable',
         iconPath: 'accountant',
-  );
+      );
   static Entity get accountsReceivableDetail => const Entity(
         titleX: 'accounts_receivable_detail',
         subtitleX: 'accounts_receivable_detail',
@@ -415,20 +415,20 @@ class Entity extends EntityY {
         iconPath: 'sales-order',
       );
   static Entity get pendingRequestsRecap => const Entity(
-      titleX: 'pending_requests_recap',
-      subtitleX: 'pending_requests_recap',
-      iconPath: 'bill',
-    );
+        titleX: 'pending_requests_recap',
+        subtitleX: 'pending_requests_recap',
+        iconPath: 'bill',
+      );
   static Entity get pendingRequestsUnserved => const Entity(
-      titleX: 'pending_requests_unserved',
-      subtitleX: 'pending_requests_unserved',
-      iconPath: 'bill',
-    );
+        titleX: 'pending_requests_unserved',
+        subtitleX: 'pending_requests_unserved',
+        iconPath: 'bill',
+      );
   static Entity get pendingRequestsDetail => const Entity(
-      titleX: 'pending_requests_detail',
-      subtitleX: 'pending_requests_detail',
-      iconPath: 'bill',
-    );
+        titleX: 'pending_requests_detail',
+        subtitleX: 'pending_requests_detail',
+        iconPath: 'bill',
+      );
   static Entity get schedule => const Entity(
         titleX: 'schedule',
         subtitleX: 'schedule',
@@ -525,11 +525,7 @@ class Entity extends EntityY {
         subtitleX: '',
         iconPath: 'asset-location',
       );
-  static Entity get assetData => const Entity(
-        titleX: 'Asset Data',
-        subtitleX: '',
-        iconPath: 'asset-data',
-      );
+
   static Entity get workHourShift =>
       const Entity(titleX: 'Work Hour Shift', subtitleX: '', iconPath: 'bill');
 }
