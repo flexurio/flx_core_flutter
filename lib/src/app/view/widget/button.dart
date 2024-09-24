@@ -239,54 +239,57 @@ class LightButton extends StatelessWidget {
       title += ' ${entity!.title}';
     }
 
-    return ElevatedButton(
-      style: ButtonStyle(
-        overlayColor: WidgetStatePropertyAll(
-          action.color.withOpacity(theme.modeCondition(.08, .03)),
-        ),
-        shape: WidgetStateProperty.all(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-        ),
-        padding: WidgetStateProperty.all(
-          const EdgeInsets.symmetric(horizontal: 12),
-        ),
-        shadowColor: WidgetStateProperty.all(Colors.black.withOpacity(.3)),
-        side: noAction
-            ? null
-            : WidgetStateProperty.all(
-                BorderSide(
-                  color: theme.modeCondition(
-                    Colors.grey.shade300,
-                    MyTheme.black16dp,
+    return VisibilityPermission(
+      permission: permission,
+      child: ElevatedButton(
+        style: ButtonStyle(
+          overlayColor: WidgetStatePropertyAll(
+            action.color.withOpacity(theme.modeCondition(.08, .03)),
+          ),
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+          ),
+          padding: WidgetStateProperty.all(
+            const EdgeInsets.symmetric(horizontal: 12),
+          ),
+          shadowColor: WidgetStateProperty.all(Colors.black.withOpacity(.3)),
+          side: noAction
+              ? null
+              : WidgetStateProperty.all(
+                  BorderSide(
+                    color: theme.modeCondition(
+                      Colors.grey.shade300,
+                      MyTheme.black16dp,
+                    ),
                   ),
                 ),
-              ),
-        backgroundColor: WidgetStateProperty.all(
-          noAction
-              ? theme.modeCondition(Colors.white, MyTheme.black04dp)
-              : Colors.transparent,
-        ),
-        foregroundColor: WidgetStateProperty.all(
-          noAction
-              ? theme.modeCondition(Colors.grey, Colors.white10)
-              : foregroundColor,
-        ),
-      ),
-      onPressed: onPressed,
-      child: Row(
-        children: [
-          IconTheme(
-            data: const IconThemeData(size: 18),
-            child: Icon(
-              action.icon,
-              color: noAction
-                  ? theme.modeCondition(Colors.grey, Colors.white10)
-                  : action.color,
-            ),
+          backgroundColor: WidgetStateProperty.all(
+            noAction
+                ? theme.modeCondition(Colors.white, MyTheme.black04dp)
+                : Colors.transparent,
           ),
-          const Gap(6),
-          Text(title),
-        ],
+          foregroundColor: WidgetStateProperty.all(
+            noAction
+                ? theme.modeCondition(Colors.grey, Colors.white10)
+                : foregroundColor,
+          ),
+        ),
+        onPressed: onPressed,
+        child: Row(
+          children: [
+            IconTheme(
+              data: const IconThemeData(size: 18),
+              child: Icon(
+                action.icon,
+                color: noAction
+                    ? theme.modeCondition(Colors.grey, Colors.white10)
+                    : action.color,
+              ),
+            ),
+            const Gap(6),
+            Text(title),
+          ],
+        ),
       ),
     );
   }
