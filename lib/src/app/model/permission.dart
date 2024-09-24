@@ -108,8 +108,8 @@ class Permission {
   static String materialReceiveRelease = 'material_receive_release';
   static String materialReceiveReject = 'material_receive_reject';
   static String materialReceiveExportPdf = 'material_receive_export_pdf';
-  static String materialReturnReceiptExportPdf = 
-  'material_return_receipt_export_pdf';
+  static String materialReturnReceiptExportPdf =
+      'material_return_receipt_export_pdf';
   static String materialReceiveDelete = 'material_receive_delete';
   static String materialReceiveDetailDelete = 'material_receive_detail_delete';
   static String materialReceiveEdit = 'material_receive_edit';
@@ -206,17 +206,6 @@ class Permission {
   static String productRequestEdit = 'product_request_edit';
 
   // --
-  static String purchaseOrderViewMenu = 'purchase_order_view_menu';
-  static String purchaseOrderConfirm = 'purchase_order_confirm';
-  static String purchaseOrderConfirmAccounting =
-      'purchase_order_confirm_accounting';
-  static String purchaseOrderCreate = 'purchase_order_create';
-  static String purchaseOrderDelete = 'purchase_order_delete';
-  static String purchaseOrderEdit = 'purchase_order_edit';
-  static String purchaseOrderClose = 'purchase_order_close';
-  static String purchaseOrderExportExcel = 'purchase_order_export_excel';
-
-  // --
   static String roleViewMenu = 'role_view_menu';
   static String roleCreate = 'role_create';
   static String roleDelete = 'role_delete';
@@ -236,21 +225,19 @@ class Permission {
   static String salesOrderExportDeliveryOrder =
       'sales_order_export_delivery_order';
   static String salesOrderPrintInvoice = 'sales_order_print_invoice';
-  static String salesOrderSummaryExportPdf = 
-  'sales_order_summary_export_pdf';
-  static String salesOrderMalkSummaryExportPdf = 
-  'sales_order_malk_summary_export_pdf';
-  static String salesOrderLoanRequestsSummaryExportPdf = 
-  'sales_order_loan_requests_summary_export_pdf';
-  static String pendingRequestsRecapViewMenu = 
-  'pending_requests_recap_view_menu';
-  static String pendingRequestsRecapExportPdf = 
-  'pending_requests_recap_export_pdf';
-  static String pendingRequestsUnservedExportPdf = 
-  'pending_requests_unserved_export_pdf';
-  static String pendingRequestsDetailExportPdf = 
-  'pending_requests_detail_export_pdf';
-  
+  static String salesOrderSummaryExportPdf = 'sales_order_summary_export_pdf';
+  static String salesOrderMalkSummaryExportPdf =
+      'sales_order_malk_summary_export_pdf';
+  static String salesOrderLoanRequestsSummaryExportPdf =
+      'sales_order_loan_requests_summary_export_pdf';
+  static String pendingRequestsRecapViewMenu =
+      'pending_requests_recap_view_menu';
+  static String pendingRequestsRecapExportPdf =
+      'pending_requests_recap_export_pdf';
+  static String pendingRequestsUnservedExportPdf =
+      'pending_requests_unserved_export_pdf';
+  static String pendingRequestsDetailExportPdf =
+      'pending_requests_detail_export_pdf';
 
   // --
   static String scheduleViewMenu = 'schedule_view_menu';
