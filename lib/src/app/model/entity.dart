@@ -172,26 +172,6 @@ class Entity extends EntityY {
             'Master menu that includes a list of material groups as the basis for classifying materials',
         iconPath: 'material-group',
       );
-  static Entity get materialIssue => const Entity(
-        titleX: 'Material Issue',
-        subtitleX: 'material_issue',
-        iconPath: 'material-issue',
-      );
-  static Entity get materialIssueDetail => const Entity(
-        titleX: 'material_issue_detail',
-        subtitleX: '',
-        iconPath: 'material-issue',
-      );
-  static Entity get materialReceive => const Entity(
-        titleX: 'Material Receive',
-        subtitleX: 'material_receive',
-        iconPath: 'material-receive',
-      );
-  static Entity get materialStock => const Entity(
-        titleX: 'material_stock',
-        subtitleX: 'material_stock',
-        iconPath: 'layers',
-      );
   static Entity get purchaseRequest => const Entity(
         titleX: 'purchase_request',
         subtitleX: 'purchase_request',
