@@ -16,8 +16,10 @@ class MenuPage extends StatefulWidget {
     this.userName,
     this.userSubtitle,
     this.onLogout,
+    this.appName,
   );
 
+  final String appName;
   final List<Menu1> menu;
   final List<String> accountPermissions;
   final String userName;
@@ -25,6 +27,7 @@ class MenuPage extends StatefulWidget {
   final void Function() onLogout;
 
   static Widget prepare({
+    required String appName,
     required List<Menu1> menu,
     required List<String> accountPermissions,
     required String accountName,
@@ -42,6 +45,7 @@ class MenuPage extends StatefulWidget {
         accountName,
         accountSubtitle,
         onLogout,
+        appName,
       ),
     );
   }
@@ -80,19 +84,6 @@ class _MenuPageState extends State<MenuPage> {
               return null;
             },
           ),
-          // GoToTicketIntent: CallbackAction(
-          //   onInvoke: (i) {
-          //     context.read<MenuBloc>().add(
-          //           Menu3Selected(
-          //             home: TicketPage.prepare(
-          //               department: UserRepositoryApp.instance.departmentTicket,
-          //             ),
-          //             label: 'Ticket',
-          //           ),
-          //         );
-          //     return null;
-          //   },
-          // ),
         },
         child: BlocBuilder<MenuCollapseBloc, bool>(
           builder: (context, collapsed) {
@@ -115,7 +106,7 @@ class _MenuPageState extends State<MenuPage> {
                   ),
                   body: Stack(
                     children: [
-                      const MenuContent(),
+                      MenuContent(appName: widget.appName),
                       _buildTopBar(),
                       _buildSideNav(screenIdentifier),
                       const Align(

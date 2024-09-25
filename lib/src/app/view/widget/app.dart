@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flexurio_erp_core/flexurio_erp_core.dart';
 import 'package:flexurio_erp_core/src/app/bloc/theme/theme_bloc.dart';
@@ -18,9 +20,17 @@ Future<void> run({
 
   flavorConfig = config;
 
-  final storageDirectory = kIsWeb
-      ? HydratedStorage.webStorageDirectory
-      : await getTemporaryDirectory();
+  late Directory storageDirectory;
+
+  if (kIsWeb) {
+    storageDirectory = HydratedStorage.webStorageDirectory;
+  } else if (Platform.isWindows) {
+    storageDirectory = Directory(
+        '${(await getApplicationDocumentsDirectory()).path}/chiron-${config.companyId}/data/');
+  } else {
+    storageDirectory = await getTemporaryDirectory();
+  }
+
   final storage = await HydratedStorage.build(
     storageDirectory: storageDirectory,
   );

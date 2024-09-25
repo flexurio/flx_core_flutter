@@ -24,7 +24,10 @@ abstract class Repository {
     if (error is DioError) {
       if (error.response?.statusCode == 401) {
         onUnauthorized();
-        return const AuthException(AuthExceptionType.tokenExpired);
+        return ApiException.fromType(ExceptionType.tokenExpired);
+      } else if (error.message
+          .contains('SocketException: Failed host lookup')) {
+        return error;
       } else if (error.response?.statusCode == 400 ||
           error.response?.statusCode == 500) {
         final message = error.response?.data as Map<String, dynamic>?;

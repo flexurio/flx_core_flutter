@@ -1,6 +1,5 @@
-import 'package:equatable/equatable.dart';
-
 class ApiException implements Exception {
+  ApiException.fromType(ExceptionType type) : message = type.value;
   ApiException(this.message);
   final String message;
 
@@ -8,25 +7,15 @@ class ApiException implements Exception {
   String toString() => 'ApiException: $message';
 }
 
-class AuthException extends Equatable implements Exception {
-  const AuthException(this.type);
-  final AuthExceptionType type;
-
-  @override
-  String toString() => 'AuthException: $type';
-
-  @override
-  List<Object?> get props => [type];
-}
-
-enum AuthExceptionType {
+enum ExceptionType {
   tokenExpired('Token Expired'),
   invalidUsernamePassword('Invalid Username or Password'),
   accessDenied('Access Denied'),
   accountLocked('Account Locked'),
   invalidToken('Invalid Expired'),
-  invalidCredentials('Invalid Credentials');
+  invalidCredentials('Invalid Credentials'),
+  offline('Offline');
 
-  const AuthExceptionType(this.value);
+  const ExceptionType(this.value);
   final String value;
 }
