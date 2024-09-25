@@ -248,6 +248,8 @@ class Entity extends EntityY {
       );
   static Entity get materialUnit =>
       const Entity(titleX: 'Material Unit', subtitleX: '', iconPath: 'bill');
+  static Entity get materialAnalysis =>
+      const Entity(titleX: 'Material Analysis', subtitleX: '', iconPath: 'bill');
   static Entity get unitConvert =>
       const Entity(titleX: 'Unit Convert', subtitleX: '', iconPath: 'bill');
   static Entity get office =>
