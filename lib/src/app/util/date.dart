@@ -9,6 +9,10 @@ DateTime isoDateToDateTime(String? date) {
   }
 }
 
+String dateTimeToIsoDate(DateTime date) {
+  return date.toIso8601String();
+}
+
 DateTime periodFromJson(String period) {
   final now = DateTime.now();
   try {
