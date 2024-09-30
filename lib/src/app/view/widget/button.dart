@@ -221,12 +221,14 @@ class LightButton extends StatelessWidget {
     this.entity,
     super.key,
     this.onPressed,
+    this.title,
   });
   final void Function()? onPressed;
 
   final String? permission;
   final DataAction action;
   final EntityY? entity;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
@@ -234,9 +236,11 @@ class LightButton extends StatelessWidget {
     final theme = Theme.of(context);
     final foregroundColor =
         theme.modeCondition(Colors.blueGrey.shade700, Colors.white70);
-    var title = action.title;
-    if (entity != null) {
-      title += ' ${entity!.title}';
+    var titleX = action.title;
+    if (title != null) {
+      titleX += ' $title';
+    } else if (entity != null) {
+      titleX += ' ${entity!.title}';
     }
 
     return VisibilityPermission(
@@ -287,7 +291,7 @@ class LightButton extends StatelessWidget {
               ),
             ),
             const Gap(6),
-            Text(title),
+            Text(titleX),
           ],
         ),
       ),
