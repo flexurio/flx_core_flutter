@@ -5,10 +5,12 @@ import 'package:gap/gap.dart';
 class TitlePage extends StatelessWidget {
   const TitlePage({
     required this.entity,
+    this.suffixText,
     super.key,
   });
 
   final EntityY entity;
+  final String? suffixText;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class TitlePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  entity.title,
+                  '${entity.title}${suffixText != null ? ' $suffixText' : ''}',
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
