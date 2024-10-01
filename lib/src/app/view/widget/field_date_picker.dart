@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-class FieldDatePicker extends StatefulWidget {
+class FieldDatePicker extends StatelessWidget {
   const FieldDatePicker({
     required this.labelText,
     required this.controller,
@@ -27,74 +27,65 @@ class FieldDatePicker extends StatefulWidget {
   final String? Function(DateTime?)? validator;
 
   @override
-  State<FieldDatePicker> createState() => _FieldDatePickerState();
-}
+  Widget build(BuildContext context) {
+    final focusNode = FocusNode();
+    late DateTime? dateTimeSelected;
 
-class _FieldDatePickerState extends State<FieldDatePicker> {
-  final focusNode = FocusNode();
-  late DateTime? _dateTimeSelected;
+    void openDatePicker() {
+      showDialog<void>(
+        context: context,
+        builder: (context) {
+          final theme = Theme.of(context);
+          return SimpleDialog(
+            backgroundColor: theme.cardColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            contentPadding: const EdgeInsets.only(
+              left: 15,
+              right: 15,
+              bottom: 15,
+            ),
+            children: [
+              SizedBox(
+                height: 400,
+                width: 300,
+                child: DatePicker(
+                  initialSelectedDate: dateTimeSelected,
+                  maxDate: maxDate,
+                  minDate: minDate,
+                  onChange: (value) {
+                    controller.text = value.yMMMMd;
+                    onChanged?.call(value);
+                    dateTimeSelected = value;
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
 
-  @override
-  void initState() {
-    super.initState();
-    _dateTimeSelected = widget.initialSelectedDate;
-    if (_dateTimeSelected != null) {
-      widget.controller.setText(_dateTimeSelected!.yMMMMd);
+    dateTimeSelected = initialSelectedDate;
+    if (dateTimeSelected != null) {
+      controller.setText(dateTimeSelected!.yMMMMd);
     }
     focusNode.addListener(() {
       if (focusNode.hasFocus) {
-        _openDatePicker();
+        openDatePicker();
         focusNode.unfocus();
       }
     });
-  }
 
-  void _openDatePicker() {
-    showDialog<void>(
-      context: context,
-      builder: (context) {
-        final theme = Theme.of(context);
-        return SimpleDialog(
-          backgroundColor: theme.cardColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          contentPadding: const EdgeInsets.only(
-            left: 15,
-            right: 15,
-            bottom: 15,
-          ),
-          children: [
-            SizedBox(
-              height: 400,
-              width: 300,
-              child: DatePicker(
-                initialSelectedDate: _dateTimeSelected,
-                maxDate: widget.maxDate,
-                minDate: widget.minDate,
-                onChange: (value) {
-                  widget.controller.text = value.yMMMMd;
-                  widget.onChanged?.call(value);
-                  _dateTimeSelected = value;
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return FieldText(
-      enabled: widget.enabled,
+      enabled: enabled,
       focusNode: focusNode,
-      labelText: widget.labelText,
-      errorText: widget.errorText,
-      controller: widget.controller,
-      validator: (_) => widget.validator?.call(_dateTimeSelected),
+      labelText: labelText,
+      errorText: errorText,
+      controller: controller,
+      validator: (_) => validator?.call(dateTimeSelected),
     );
   }
 }
