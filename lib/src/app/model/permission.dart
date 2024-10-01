@@ -231,6 +231,8 @@ class Permission {
   'sales_order_malk_summary_export_pdf';
   static String salesOrderLoanRequestsSummaryExportPdf = 
   'sales_order_loan_requests_summary_export_pdf';
+  static String salesOrderDonationSummaryExportPdf = 
+  'sales_order_donation_summary_export_pdf';
   static String pendingRequestsRecapViewMenu = 
   'pending_requests_recap_view_menu';
   static String pendingRequestsRecapExportPdf = 
