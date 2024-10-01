@@ -10,6 +10,29 @@ class RequiredObjectValidator<T> extends FieldValidator<T> {
   }
 }
 
+class MinNumberValidator extends TextFieldValidator {
+  MinNumberValidator({required this.minNumber})
+      : super('Value must be greater than or equal to $minNumber');
+
+  final int minNumber;
+
+  @override
+  bool get ignoreEmptyValues => false;
+
+  @override
+  bool isValid(String? value) {
+    final parseValue = int.parse(value!);
+    return parseValue >= minNumber;
+  }
+
+  @override
+  String? call(String? value) {
+    return isValid(value)
+        ? null
+        : 'Value must be greater than or equal to $minNumber';
+  }
+}
+
 class RequiredValidatorMinute extends TextFieldValidator {
   RequiredValidatorMinute({
     required String errorText,
