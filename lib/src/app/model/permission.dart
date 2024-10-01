@@ -113,6 +113,7 @@ class Permission {
   static String materialReceiveDelete = 'material_receive_delete';
   static String materialReceiveDetailDelete = 'material_receive_detail_delete';
   static String materialReceiveEdit = 'material_receive_edit';
+  static String materialAnalysis = 'material_analysis';
 
   // Request Form
   static String requestFormViewMenu = 'request_form_view_menu';

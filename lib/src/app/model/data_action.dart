@@ -68,6 +68,7 @@ enum DataAction {
   viewDetail('view_detail', Icons.list, Colors.blue),
   convert('Convert', Icons.autorenew_rounded, Colors.blue),
   edit('edit', Icons.edit_outlined, Colors.orange),
+  editAnalysis('Edit Analysis', Icons.edit_outlined, Colors.blue),
   leadTime('lead_time', Icons.pending_actions, Colors.blue),
   update('Update', Icons.edit_outlined, Colors.orange),
   updateDate('Update', Icons.calendar_month, Colors.orange),
