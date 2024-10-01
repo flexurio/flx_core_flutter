@@ -401,6 +401,11 @@ class Entity extends EntityY {
         subtitleX: 'pending_requests_recap',
         iconPath: 'bill',
       );
+  static Entity get pendingRequestsRecapGlobal => const Entity(
+        titleX: 'pending_requests_recap_global',
+        subtitleX: 'pending_requests_recap_global',
+        iconPath: 'bill',
+      );
   static Entity get pendingRequestsUnserved => const Entity(
         titleX: 'pending_requests_unserved',
         subtitleX: 'pending_requests_unserved',
