@@ -242,6 +242,8 @@ class Permission {
   'pending_requests_unserved_export_pdf';
   static String pendingRequestsDetailExportPdf = 
   'pending_requests_detail_export_pdf';
+  static String pendingRequestsRecapGlobalExportPdf = 
+  'pending_requests_recap_global_export_pdf';
   
 
   // --
