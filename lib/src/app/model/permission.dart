@@ -473,11 +473,16 @@ class PermissionVendor {
 }
 
 class PermissionProduct {
-  static String productViewMenu = 'product_view_menu';
-  static String productCreate = 'product_create';
-  static String productDelete = 'product_delete';
-  static String productEdit = 'product_edit';
-  static String productPrint = 'product_print';
+  static String productViewMenu({required bool isExternal}) =>
+      isExternal ? 'product_external_view_menu' : 'product_view_menu';
+  static String productCreate({required bool isExternal}) =>
+      isExternal ? 'product_external_create' : 'product_create';
+  static String productDelete({required bool isExternal}) =>
+      isExternal ? 'product_external_delete' : 'product_delete';
+  static String productEdit({required bool isExternal}) =>
+      isExternal ? 'product_external_edit' : 'product_edit';
+  static String productPrint({required bool isExternal}) =>
+      isExternal ? 'product_external_print' : 'product_print';
   static String productPrintReport = 'product_print_report';
   static String productPrintDocumentExternal = 'product_print_document';
 
