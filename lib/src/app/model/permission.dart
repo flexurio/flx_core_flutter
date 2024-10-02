@@ -102,17 +102,6 @@ class Permission {
 
   static String materialLeadTimeEdit = 'material_lead_time_edit';
 
-  // Material Receive
-  static String materialReceiveViewMenu = 'material_receive_view_menu';
-  static String materialReceiveCreate = 'material_receive_create';
-  static String materialReceiveRelease = 'material_receive_release';
-  static String materialReceiveReject = 'material_receive_reject';
-  static String materialReceiveExportPdf = 'material_receive_export_pdf';
-  static String materialReturnReceiptExportPdf =
-      'material_return_receipt_export_pdf';
-  static String materialReceiveDelete = 'material_receive_delete';
-  static String materialReceiveDetailDelete = 'material_receive_detail_delete';
-  static String materialReceiveEdit = 'material_receive_edit';
   static String materialAnalysis = 'material_analysis';
 
   // Request Form
@@ -226,25 +215,23 @@ class Permission {
   static String salesOrderExportDeliveryOrder =
       'sales_order_export_delivery_order';
   static String salesOrderPrintInvoice = 'sales_order_print_invoice';
-  static String salesOrderSummaryExportPdf = 
-  'sales_order_summary_export_pdf';
-  static String salesOrderMalkSummaryExportPdf = 
-  'sales_order_malk_summary_export_pdf';
-  static String salesOrderLoanRequestsSummaryExportPdf = 
-  'sales_order_loan_requests_summary_export_pdf';
-  static String salesOrderDonationSummaryExportPdf = 
-  'sales_order_donation_summary_export_pdf';
-  static String pendingRequestsRecapViewMenu = 
-  'pending_requests_recap_view_menu';
-  static String pendingRequestsRecapExportPdf = 
-  'pending_requests_recap_export_pdf';
-  static String pendingRequestsUnservedExportPdf = 
-  'pending_requests_unserved_export_pdf';
-  static String pendingRequestsDetailExportPdf = 
-  'pending_requests_detail_export_pdf';
-  static String pendingRequestsRecapGlobalExportPdf = 
-  'pending_requests_recap_global_export_pdf';
-  
+  static String salesOrderSummaryExportPdf = 'sales_order_summary_export_pdf';
+  static String salesOrderMalkSummaryExportPdf =
+      'sales_order_malk_summary_export_pdf';
+  static String salesOrderLoanRequestsSummaryExportPdf =
+      'sales_order_loan_requests_summary_export_pdf';
+  static String salesOrderDonationSummaryExportPdf =
+      'sales_order_donation_summary_export_pdf';
+  static String pendingRequestsRecapViewMenu =
+      'pending_requests_recap_view_menu';
+  static String pendingRequestsRecapExportPdf =
+      'pending_requests_recap_export_pdf';
+  static String pendingRequestsUnservedExportPdf =
+      'pending_requests_unserved_export_pdf';
+  static String pendingRequestsDetailExportPdf =
+      'pending_requests_detail_export_pdf';
+  static String pendingRequestsRecapGlobalExportPdf =
+      'pending_requests_recap_global_export_pdf';
 
   // --
   static String scheduleViewMenu = 'schedule_view_menu';
