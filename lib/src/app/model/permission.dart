@@ -89,12 +89,6 @@ class Permission {
       'material_approve_vendor_list_edit_halal_certificate';
 
   // --
-  static String materialDesignViewMenu = 'material_design_view_menu';
-  static String materialDesignCreate = 'material_design_create';
-  static String materialDesignDelete = 'material_design_delete';
-  static String materialDesignEdit = 'material_design_edit';
-
-  // --
   static String materialGroupViewMenu = 'material_group_view_menu';
   static String materialGroupCreate = 'material_group_create';
   static String materialGroupDelete = 'material_group_delete';
