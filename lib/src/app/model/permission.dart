@@ -166,19 +166,6 @@ class Permission {
       'presence_monthly_report_per_employee_export_pdf';
 
   // --
-  static String productFormulationViewMenu = 'product_formulation_view_menu';
-  static String productFormulationCreate = 'product_formulation_create';
-  static String productFormulationDelete = 'product_formulation_delete';
-  static String productFormulationEdit = 'product_formulation_edit';
-  static String productFormulationExportExcel =
-      'product_formulation_export_excel';
-
-  // --
-  static String productGroupViewMenu = 'product_group_view_menu';
-  static String productGroupCreate = 'product_group_create';
-  static String productGroupDelete = 'product_group_delete';
-
-  // --
   static String productIssueViewMenu = 'product_issue_view_menu';
   static String productIssueDeliveryCreate = 'product_issue_delivery_create';
 
@@ -459,29 +446,4 @@ class PermissionVendor {
   static String vendorCreate = 'vendor_create';
   static String vendorDelete = 'vendor_delete';
   static String vendorEdit = 'vendor_edit';
-}
-
-class PermissionProduct {
-  static String productViewMenu({required bool isExternal}) =>
-      isExternal ? 'product_external_view_menu' : 'product_view_menu';
-  static String productCreate({required bool isExternal}) =>
-      isExternal ? 'product_external_create' : 'product_create';
-  static String productDelete({required bool isExternal}) =>
-      isExternal ? 'product_external_delete' : 'product_delete';
-  static String productEdit({required bool isExternal}) =>
-      isExternal ? 'product_external_edit' : 'product_edit';
-  static String productPrint({required bool isExternal}) =>
-      isExternal ? 'product_external_print' : 'product_print';
-  static String productPrintReport = 'product_print_report';
-  static String productPrintDocumentExternal = 'product_print_document';
-
-  // Product NIE
-  static String productNieViewMenu = 'product_nie_view_menu';
-  static String productNieCreate = 'product_nie_create';
-  static String productNieDelete = 'product_nie_delete';
-
-  // Product Price
-  static String productPriceCreate = 'product_price_create';
-  static String productPriceDelete = 'product_price_delete';
-  static String productPriceViewMenu = 'product_price_view_menu';
 }
