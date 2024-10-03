@@ -11,7 +11,7 @@ const errorInternalServer = 'ERROR_INTERNAL_SERVER';
 const errorConnectionRefused = 'ERROR_CONNECTION_REFUSED';
 
 const pleaseWait = 'Please Wait...';
-const pleaseFillOutThisField = 'field_required';
+const pleaseFillOutThisField = 'error.field_required';
 
 @Deprecated('use `confirmationMessage(...)` ')
 const deleteConfirmationMessageOld =
