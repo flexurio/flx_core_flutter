@@ -143,54 +143,58 @@ class FDropDownSearch<T> extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       borderSide: BorderSide(color: borderColor),
     );
+     final borderError = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide(color: Colors.red),
+    );
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: backgroundColor,
-        border: Border.all(color: borderColor),
-      ),
-      child: DropdownSearch<T>(
-        validator: validator,
-        compareFn: compareFn,
-        dropdownButtonProps: DropdownButtonProps(icon: icon),
-        popupProps: PopupProps.menu(
-          showSelectedItems: showSelectedItems,
-          searchDelay: Duration.zero,
-          // showSelectedItems: true,
-          showSearchBox: true,
-          searchFieldProps: TextFieldProps(
-            style: TextStyle(
-              color: theme.modeCondition(null, Colors.white70),
-            ),
-            decoration: InputDecoration(
-              hintText: '${'search'.tr()}...',
-              filled: true,
-              fillColor: backgroundColor,
-              enabledBorder: border,
-              border: border,
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: theme.colorScheme.primary,
-                  width: 2,
-                ),
+    return DropdownSearch<T>(
+      validator: validator,
+      compareFn: compareFn,
+      dropdownButtonProps: DropdownButtonProps(icon: icon),
+      popupProps: PopupProps.menu(
+        showSelectedItems: showSelectedItems,
+        searchDelay: Duration.zero,
+        // showSelectedItems: true,
+        showSearchBox: true,
+        searchFieldProps: TextFieldProps(
+          style: TextStyle(
+            color: theme.modeCondition(null, Colors.white70),
+          ),
+          decoration: InputDecoration(
+            hintText: '${'search'.tr()}...',
+            border: border,
+            filled: true,
+            fillColor: backgroundColor,
+            enabledBorder: border,
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: theme.colorScheme.primary,
+                width: 2,
               ),
             ),
           ),
         ),
-        items: items,
-        itemAsString: itemAsString,
-        dropdownDecoratorProps: DropDownDecoratorProps(
-          dropdownSearchDecoration: InputDecoration(
-            enabledBorder: InputBorder.none,
-            labelText: labelText,
-          ),
-        ),
-        onChanged: onChanged,
-        selectedItem: initialValue,
-        enabled: enabled,
       ),
+      items: items,
+      itemAsString: itemAsString,
+      dropdownDecoratorProps: DropDownDecoratorProps(
+        dropdownSearchDecoration: InputDecoration(
+          errorStyle: const TextStyle(
+            color: Colors.red,
+            fontSize: 10,
+          ),
+          enabledBorder: border,
+          errorBorder: borderError,
+          border: border,
+          filled: true,
+          fillColor: backgroundColor,
+          labelText: labelText,
+        ),
+      ),
+      onChanged: onChanged,
+      selectedItem: initialValue,
+      enabled: enabled,
     );
   }
 }

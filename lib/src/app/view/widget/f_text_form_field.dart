@@ -41,6 +41,7 @@ class FTextFormField extends FormField<String> {
   }) : super(
           initialValue: controller?.text ?? '',
           builder: (field) {
+            final error = errorText ?? field.errorText;
             var isNumber = false;
             if (inputFormatters != null) {
               if (inputFormatters[0] is ThousandsFormatter ||
@@ -55,11 +56,12 @@ class FTextFormField extends FormField<String> {
                 final border = OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
-                    color: theme.modeCondition(
-                      Colors.blueGrey.shade100,
-                      const Color(0xff343640),
-                    ),
-                  ),
+                      color: error != null
+                          ? Colors.red
+                          : theme.modeCondition(
+                              Colors.blueGrey.shade100,
+                              const Color(0xff343640),
+                            )),
                 );
                 return Column(
                   mainAxisSize: MainAxisSize.min,
@@ -109,7 +111,7 @@ class FTextFormField extends FormField<String> {
                       ),
                     ),
                     _HelperText(helperText),
-                    ErrorTextField(errorText: errorText ?? field.errorText),
+                    ErrorTextField(errorText: error),
                   ],
                 );
               },
