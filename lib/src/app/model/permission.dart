@@ -95,10 +95,12 @@ class Permission {
   static String materialGroupEdit = 'material_group_edit';
 
   static String materialLeadTimeEdit = 'material_lead_time_edit';
+
   static String materialAnalysis = 'material_analysis';
 
   // Request Form
   static String requestFormViewMenu = 'request_form_view_menu';
+
   static String requestFormClose = 'request_form_close';
   static String requestFormCreate = 'request_form_create';
   static String requestFormEdit = 'request_form_edit';
@@ -127,6 +129,10 @@ class Permission {
   static String materialRetestViewMenu = 'material_retest_view_menu';
   static String materialRetestCreate = 'material_retest_create';
   static String materialRetestEdit = 'material_retest_edit';
+
+  // --
+  static String materialStockViewMenu = 'material_stock_view_menu';
+  static String materialStockExportExcel = 'material_stock_export_excel';
 
   // Office
   static String officeViewMenu = 'office_view_menu';
@@ -158,20 +164,11 @@ class Permission {
   static String productIssueDeliveryCreate = 'product_issue_delivery_create';
 
   // --
-  static String productReceiveViewMenu({required bool isExternal}) => isExternal
-      ? 'product_receive_external_view_menu'
-      : 'product_receive_view_menu';
-  static String productReceiveCreate({required bool isExternal}) =>
-      isExternal ? 'product_receive_external_create' : 'product_receive_create';
-  static String productReceiveEdit({required bool isExternal}) =>
-      isExternal ? 'product_receive_external_edit' : 'product_receive_edit';
-  static String productReceiveRelease({required bool isExternal}) => isExternal
-      ? 'product_receive_external_release'
-      : 'product_receive_release';
-  static String productReceiveExportPdf({required bool isExternal}) =>
-      isExternal
-          ? 'product_receive_external_export_pdf'
-          : 'product_receive_export_pdf';
+  static String productReceiveViewMenu = 'product_receive_view_menu';
+  static String productReceiveCreate = 'product_receive_create';
+  static String productReceiveEdit = 'product_receive_edit';
+  static String productReceiveRelease = 'product_receive_release';
+  static String productReceiveExportPdf = 'product_receive_export_pdf';
 
   // --
   static String productRequestViewMenu = 'product_request_view_menu';
@@ -186,8 +183,16 @@ class Permission {
   static String roleEdit = 'role_edit';
   static String rolePermissionEdit = 'permission_edit';
 
+  // --
+
+  // --
+  static String salesOrderViewMenu = 'sales_order_view_menu';
+  static String salesOrderConfirm = 'sales_order_confirm';
+  static String salesOrderCreate = 'sales_order_create';
+  static String salesOrderDelete = 'sales_order_delete';
   static String salesOrderDetailUploadDocument =
       'sales_order_detail_upload_document';
+  static String salesOrderEdit = 'sales_order_edit';
   static String salesOrderExportDeliveryOrder =
       'sales_order_export_delivery_order';
   static String salesOrderPrintInvoice = 'sales_order_print_invoice';
