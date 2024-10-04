@@ -7,6 +7,7 @@ class AccountButton extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.onLogout,
+    required this.onChangePassword,
     super.key,
     this.padding,
   });
@@ -15,6 +16,7 @@ class AccountButton extends StatelessWidget {
   final String title;
   final String subtitle;
   final void Function() onLogout;
+  final void Function(BuildContext context) onChangePassword;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,7 @@ class AccountButton extends StatelessWidget {
                   color: Colors.green,
                   icon: const Icon(Icons.key),
                   label: 'Change Password',
-                  onTap: () {},
+                  onTap: () => onChangePassword(context),
                 ),
                 const Divider(height: 0),
                 _ListMenu(

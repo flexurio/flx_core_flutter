@@ -15,6 +15,7 @@ class TopBar extends StatelessWidget {
     required this.accountPermission,
     required this.onLogout,
     required this.drawerTriggered,
+    required this.onChangePassword,
     super.key,
   });
 
@@ -24,6 +25,7 @@ class TopBar extends StatelessWidget {
   final List<String> accountPermission;
   final void Function() onLogout;
   final void Function() drawerTriggered;
+  final void Function(BuildContext context) onChangePassword;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,7 @@ class TopBar extends StatelessWidget {
                 ),
                 const Spacer(),
                 AccountButton(
+                  onChangePassword: onChangePassword,
                   title: accountName,
                   subtitle: accountSubtitle,
                   onLogout: onLogout,
@@ -131,6 +134,7 @@ class TopBar extends StatelessWidget {
 
   AccountButton _buildAccountButton() {
     return AccountButton(
+      onChangePassword: onChangePassword,
       padding: 0,
       title: accountName,
       subtitle: accountSubtitle,
