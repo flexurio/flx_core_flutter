@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum DataAction {
+  changePassword('change_password', Icons.edit, Colors.orange),
+  setStandardHour('set_standard_hour', FontAwesomeIcons.clock, Colors.blue),
   recordAttendance('record_attendance', Icons.check, Colors.green),
   submit('submit', Icons.check, Colors.lightBlue),
   markAsLeader('mark_as_leader', Icons.more_vert, Colors.green),

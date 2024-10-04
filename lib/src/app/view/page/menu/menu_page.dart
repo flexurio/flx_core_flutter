@@ -17,6 +17,7 @@ class MenuPage extends StatefulWidget {
     this.userSubtitle,
     this.onLogout,
     this.appName,
+    this.onChangePassword,
   );
 
   final String appName;
@@ -25,6 +26,7 @@ class MenuPage extends StatefulWidget {
   final String userName;
   final String userSubtitle;
   final void Function() onLogout;
+  final void Function(BuildContext context) onChangePassword;
 
   static Widget prepare({
     required String appName,
@@ -33,6 +35,7 @@ class MenuPage extends StatefulWidget {
     required String accountName,
     required String accountSubtitle,
     required void Function() onLogout,
+    required void Function(BuildContext context) onChangePassword,
   }) {
     return MultiBlocProvider(
       providers: [
@@ -46,6 +49,7 @@ class MenuPage extends StatefulWidget {
         accountSubtitle,
         onLogout,
         appName,
+        onChangePassword,
       ),
     );
   }
@@ -154,6 +158,7 @@ class _MenuPageState extends State<MenuPage> {
       accountSubtitle: widget.userSubtitle,
       accountPermission: widget.accountPermissions,
       onLogout: widget.onLogout,
+      onChangePassword: widget.onChangePassword,
       drawerTriggered: () {
         _scaffoldKey.currentState?.openDrawer();
       },
