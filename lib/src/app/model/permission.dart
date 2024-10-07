@@ -166,13 +166,6 @@ class Permission {
   static String productIssueDeliveryCreate = 'product_issue_delivery_create';
 
   // --
-  static String productReceiveViewMenu = 'product_receive_view_menu';
-  static String productReceiveCreate = 'product_receive_create';
-  static String productReceiveEdit = 'product_receive_edit';
-  static String productReceiveRelease = 'product_receive_release';
-  static String productReceiveExportPdf = 'product_receive_export_pdf';
-
-  // --
   static String productRequestViewMenu = 'product_request_view_menu';
   static String productRequestCreate = 'product_request_create';
   static String productRequestDelete = 'product_request_delete';
