@@ -118,6 +118,8 @@ class Permission {
   static String purchaseRequestExportPdf = 'material_request_export_pdf';
   static String purchaseRequestDetailConfirm =
       'material_request_detail_confirm';
+  static String purchaseRequestDetailUndoConfirm =
+      'material_request_detail_undo_confirm';
   static String purchaseRequestExportExcel = 'material_request_export_excel';
 
   static String purchaseRequestDetailReject = 'material_request_detail_reject';
