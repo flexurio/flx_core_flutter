@@ -186,37 +186,6 @@ class Permission {
   static String rolePermissionEdit = 'permission_edit';
 
   // --
-
-  // --
-  static String salesOrderViewMenu = 'sales_order_view_menu';
-  static String salesOrderConfirm = 'sales_order_confirm';
-  static String salesOrderCreate = 'sales_order_create';
-  static String salesOrderDelete = 'sales_order_delete';
-  static String salesOrderDetailUploadDocument =
-      'sales_order_detail_upload_document';
-  static String salesOrderEdit = 'sales_order_edit';
-  static String salesOrderExportDeliveryOrder =
-      'sales_order_export_delivery_order';
-  static String salesOrderPrintInvoice = 'sales_order_print_invoice';
-  static String salesOrderSummaryExportPdf = 'sales_order_summary_export_pdf';
-  static String salesOrderMalkSummaryExportPdf =
-      'sales_order_malk_summary_export_pdf';
-  static String salesOrderLoanRequestsSummaryExportPdf =
-      'sales_order_loan_requests_summary_export_pdf';
-  static String salesOrderDonationSummaryExportPdf =
-      'sales_order_donation_summary_export_pdf';
-  static String pendingRequestsRecapViewMenu =
-      'pending_requests_recap_view_menu';
-  static String pendingRequestsRecapExportPdf =
-      'pending_requests_recap_export_pdf';
-  static String pendingRequestsUnservedExportPdf =
-      'pending_requests_unserved_export_pdf';
-  static String pendingRequestsDetailExportPdf =
-      'pending_requests_detail_export_pdf';
-  static String pendingRequestsRecapGlobalExportPdf =
-      'pending_requests_recap_global_export_pdf';
-
-  // --
   static String supplierViewMenu = 'supplier_view_menu';
   static String supplierCreate = 'supplier_create';
   static String supplierDelete = 'supplier_delete';
