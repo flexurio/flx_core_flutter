@@ -29,6 +29,7 @@ class FTextFormField extends FormField<String> {
     this.suffixIcon,
     this.controller,
     this.helperText,
+    this.autoFocus = false,
     this.inputFormatters,
     this.focusNode,
     this.maxLength,
@@ -68,6 +69,7 @@ class FTextFormField extends FormField<String> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextField(
+                      autofocus: autoFocus,
                       textAlign: isNumber ? TextAlign.right : TextAlign.left,
                       focusNode: focusNode,
                       readOnly: readOnly,
@@ -127,6 +129,7 @@ class FTextFormField extends FormField<String> {
   final int? maxLength;
   final bool obscureText;
   final bool readOnly;
+  final bool autoFocus;
   final Widget? suffixIcon;
   final String? suffixText;
   final TextEditingController? controller;

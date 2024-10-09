@@ -69,12 +69,14 @@ class FieldText extends StatelessWidget {
     this.isExpanded = false,
     this.obscureText = false,
     this.enabled = true,
+    this.autoFocus = false,
   });
 
   final int maxLines;
   final bool isExpanded;
   final bool enabled;
   final bool obscureText;
+  final bool autoFocus;
   final String labelText;
   final FocusNode? focusNode;
   final String? errorText;
@@ -86,6 +88,7 @@ class FieldText extends StatelessWidget {
   Widget build(BuildContext context) {
     final button = FTextFormField(
       key: super.key,
+      autoFocus: autoFocus,
       enabled: enabled,
       focusNode: focusNode,
       errorText: errorText,
