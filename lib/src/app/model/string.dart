@@ -44,3 +44,12 @@ String confirmationMessage(Entity data, DataAction action, String? label) {
   }
   return text;
 }
+
+String informationMessage(Entity data, DataAction action, String? label) {
+  var text = 'you_have_successfully'
+      .tr(namedArgs: {'action': action.title, 'data': data.id.tr()});
+  if (label != null) {
+    text += ' $label.';
+  }
+  return text;
+}
