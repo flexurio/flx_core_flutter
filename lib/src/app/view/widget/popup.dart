@@ -134,6 +134,43 @@ class CardConfirmation extends StatelessWidget {
   }
 }
 
+class CardSuccessInfo extends StatelessWidget {
+  const CardSuccessInfo({
+    required this.isProgress,
+    required this.action,
+    required this.data,
+    super.key,
+    this.label,
+  });
+
+  final bool isProgress;
+  final DataAction action;
+  final Entity data;
+  final String? label;
+
+  @override
+  Widget build(BuildContext context) {
+    Sound.alert();
+    return CardForm(
+      popup: true,
+      title: 'information'.tr(),
+      icon: FontAwesomeIcons.info,
+      actions: [
+        Button(
+          permission: null,
+          isSecondary: true,
+          isInProgress: isProgress,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          action: DataAction.confirm,
+        ),
+      ],
+      child: Text(informationMessage(data, action, label)),
+    );
+  }
+}
+
 class CardConfirmationWithExplanation extends StatefulWidget {
   const CardConfirmationWithExplanation({
     required this.isProgress,
