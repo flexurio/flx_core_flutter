@@ -84,13 +84,14 @@ enum DataAction {
   exportExcel('export_excel', FontAwesomeIcons.fileExcel, Colors.indigo),
   export('Export', FontAwesomeIcons.fileDownload, Colors.orange),
   exportPdf('export_pdf', FontAwesomeIcons.filePdf, Colors.indigo),
+  exportPdfMaterialUsageBatch('export_pdf_material_usage_batch', FontAwesomeIcons.filePdf, Colors.indigo),
   scanQrCode('scan_qr_code', FontAwesomeIcons.qrcode, Colors.indigo),
   exportPdfWithoutTitle('', FontAwesomeIcons.filePdf, Colors.indigo),
   exportJobsheet('export_jobsheet', FontAwesomeIcons.filePdf, Colors.redAccent),
   exportBatch('export_batch', FontAwesomeIcons.filePdf, Colors.redAccent),
   print('print', FontAwesomeIcons.filePdf, Colors.redAccent),
   exportDocument('Export Document', FontAwesomeIcons.filePdf, Colors.redAccent),
-  documentReceive('Document Receive', FontAwesomeIcons.filePdf, Colors.redAccent),
+  documentReceive('Document Receive', FontAwesomeIcons.check, Colors.redAccent),
   insertPrice('Insert Price', Icons.monetization_on_outlined, Colors.green),
   exportDeliveryOrder(
     'Export Delivery Order',
@@ -158,3 +159,4 @@ enum DataAction {
   bool get isEdit => this == DataAction.edit;
   bool get isCreate => this == DataAction.create;
 }
+
