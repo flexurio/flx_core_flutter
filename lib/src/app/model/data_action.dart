@@ -90,6 +90,7 @@ enum DataAction {
   exportBatch('export_batch', FontAwesomeIcons.filePdf, Colors.redAccent),
   print('print', FontAwesomeIcons.filePdf, Colors.redAccent),
   exportDocument('Export Document', FontAwesomeIcons.filePdf, Colors.redAccent),
+  documentReceive('Document Receive', FontAwesomeIcons.filePdf, Colors.redAccent),
   insertPrice('Insert Price', Icons.monetization_on_outlined, Colors.green),
   exportDeliveryOrder(
     'Export Delivery Order',
