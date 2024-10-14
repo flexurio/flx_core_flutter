@@ -109,6 +109,7 @@ enum DataAction {
   validate('validate', Icons.check, Colors.green),
   verify('verify', Icons.cancel, Colors.orange),
   view('view', Icons.remove_red_eye, Colors.blue),
+  viewPayment('View Payment', Icons.remove_red_eye, Colors.blue),
   viewImage('view_image', Icons.remove_red_eye, Colors.blue),
   viewCalendar('View', Icons.calendar_month, Colors.blue),
   viewGroup('View Group', FontAwesomeIcons.layerGroup, Colors.blue),
