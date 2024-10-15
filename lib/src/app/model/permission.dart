@@ -164,6 +164,7 @@ class Permission {
   // --
   static String productIssueViewMenu = 'product_issue_view_menu';
   static String productIssueDeliveryCreate = 'product_issue_delivery_create';
+  static String productIssueGlobalExportPdf = 'product_issue_global_export_pdf';
 
   // --
   static String productRequestViewMenu = 'product_request_view_menu';
