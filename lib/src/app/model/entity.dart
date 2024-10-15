@@ -440,6 +440,11 @@ class Entity extends EntityY {
         subtitleX: 'payment',
         iconPath: 'credit-card',
       );
+  static Entity get transactionJournal => const Entity(
+      titleX: 'Transaction Journal',
+      subtitleX: 'Transaction Journal',
+      iconPath: 'credit-card',
+    );
   static Entity get sales => const Entity(
         titleX: 'Sales',
         subtitleX: 'sales',
