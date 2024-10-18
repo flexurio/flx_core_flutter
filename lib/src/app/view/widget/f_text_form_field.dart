@@ -57,12 +57,13 @@ class FTextFormField extends FormField<String> {
                 final border = OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
-                      color: error != null
-                          ? Colors.red
-                          : theme.modeCondition(
-                              Colors.blueGrey.shade100,
-                              const Color(0xff343640),
-                            )),
+                    color: error != null
+                        ? Colors.red
+                        : theme.modeCondition(
+                            Colors.blueGrey.shade100,
+                            const Color(0xff343640),
+                          ),
+                  ),
                 );
                 return Column(
                   mainAxisSize: MainAxisSize.min,
