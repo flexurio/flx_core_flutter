@@ -26,7 +26,7 @@ Future<void> run({
     storageDirectory = HydratedStorage.webStorageDirectory;
   } else if (Platform.isWindows) {
     storageDirectory = Directory(
-        '${(await getApplicationDocumentsDirectory()).path}/chiron-${config.companyId}/data/');
+        '${(await getApplicationDocumentsDirectory()).path}/chiron-${config.companyId}/data/',);
   } else {
     storageDirectory = await getTemporaryDirectory();
   }

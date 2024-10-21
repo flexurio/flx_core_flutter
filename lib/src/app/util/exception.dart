@@ -1,6 +1,6 @@
 class ApiException implements Exception {
-  ApiException.fromType(ExceptionType type) : message = type.value;
   ApiException(this.message);
+  ApiException.fromType(ExceptionType type) : message = type.value;
   final String message;
 
   @override

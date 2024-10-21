@@ -145,7 +145,7 @@ class FDropDownSearch<T> extends StatelessWidget {
     );
      final borderError = OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
-      borderSide: BorderSide(color: Colors.red),
+      borderSide: const BorderSide(color: Colors.red),
     );
 
     return DropdownSearch<T>(
