@@ -90,34 +90,5 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
         ),
       ),
     );
-    // return OfflineBuilder(
-    //   connectivityBuilder: (context, connectivity, child) {
-    //     final connected = !connectivity.contains(ConnectivityResult.none);
-    //     if (!connected) {
-    //       _show = true;
-    //       _controller.forward();
-    //     } else if (_show) {
-    //       _timer?.cancel();
-    //       _timer = Timer(const Duration(seconds: 1), () {
-    //         _show = false;
-    //         _controller.reverse();
-    //       });
-    //     }
-    //     return SlideTransition(
-    //       position: _offsetAnimation,
-    //       child: Container(
-    //         padding: const EdgeInsets.all(8),
-    //         color: connected ? Colors.green : Colors.red,
-    //         child: Center(
-    //           child: Text(
-    //             connected ? 'ONLINE' : 'OFFLINE',
-    //             style: const TextStyle(color: Colors.white),
-    //           ),
-    //         ),
-    //       ),
-    //     );
-    //   },
-    //   child: Container(),
-    // );
   }
 }
