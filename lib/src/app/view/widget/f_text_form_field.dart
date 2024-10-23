@@ -46,7 +46,8 @@ class FTextFormField extends FormField<String> {
             var isNumber = false;
             if (inputFormatters != null) {
               if (inputFormatters[0] is ThousandsFormatter ||
-                  inputFormatters[0] is CurrencyTextInputFormatter) {
+                  inputFormatters[0] is CurrencyTextInputFormatter ||
+                  inputFormatters[0] is FilteringTextInputFormatter) {
                 isNumber = true;
               }
             }
