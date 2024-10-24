@@ -13,7 +13,7 @@ class Message {
   ///
   /// Returns a string containing a success message.
   static String successCreated(Entity data) =>
-      'Success! The new ${data.id} has been created and added to the database.';
+      'Success! The new ${data.id.tr()} has been created and added to the database.';
 
   /// Message shown when an entity has been successfully updated.
   ///
@@ -21,7 +21,7 @@ class Message {
   ///
   /// Returns a string containing a success message.
   static String successUpdated(Entity data) =>
-      'Success! The ${data.id} information has been successfully updated.';
+      'Success! The ${data.id.tr()} information has been successfully updated.';
 
   /// Message shown when an entity has been successfully deleted.
   ///
@@ -29,7 +29,7 @@ class Message {
   ///
   /// Returns a string containing a success message.
   static String successDeleted(Entity data) =>
-      'Success! The ${data.id} has been deleted from the database.';
+      'Success! The ${data.id.tr()} has been deleted from the database.';
 }
 
 class Toast {
@@ -247,6 +247,7 @@ class ToastRepository {
     required String data,
   }) {
     Toast(context).fail(
-        'error.must_be_greater_than_zero'.tr(namedArgs: {'data': data.tr()}),);
+      'error.must_be_greater_than_zero'.tr(namedArgs: {'data': data.tr()}),
+    );
   }
 }
