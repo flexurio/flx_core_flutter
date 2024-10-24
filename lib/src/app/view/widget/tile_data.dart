@@ -109,9 +109,17 @@ class TileDataVertical extends StatelessWidget {
     return DecoratedBox(
       decoration: bordered
           ? BoxDecoration(
-              color: Colors.grey.shade100,
+              color: theme.modeCondition(
+                Colors.grey.shade100,
+                MyTheme.black02dp,
+              ),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey.shade200),
+              border: Border.all(
+                color: theme.modeCondition(
+                  Colors.grey.shade200,
+                  MyTheme.black16dp,
+                ),
+              ),
             )
           : const BoxDecoration(),
       child: ListTile(
