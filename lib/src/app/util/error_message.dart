@@ -8,3 +8,9 @@ String errorMessage(dynamic error) {
     return errorSomethingWentWrong;
   }
 }
+
+class ErrorMessage {
+  static String fieldNotFound(String fieldName) {
+    return 'error.field_not_found'.tr(namedArgs: {'data': fieldName});
+  }
+}
