@@ -72,6 +72,7 @@ enum DataAction {
   viewJournal('view_journal', Icons.list, Colors.blue),
   convert('Convert', Icons.autorenew_rounded, Colors.blue),
   edit('edit', Icons.edit_outlined, Colors.orange),
+  duplicate('duplicate', Icons.content_copy_outlined, Colors.green),
   editAnalysis('Edit Analysis', Icons.edit_outlined, Colors.blue),
   leadTime('lead_time', Icons.pending_actions, Colors.blue),
   update('Update', Icons.edit_outlined, Colors.orange),
