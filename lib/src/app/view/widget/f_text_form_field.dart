@@ -39,6 +39,7 @@ class FTextFormField extends FormField<String> {
     super.enabled,
     this.onTapOutside,
     this.onSubmitted,
+    this.isNumeric = false,
   }) : super(
           initialValue: controller?.text ?? '',
           builder: (field) {
@@ -46,8 +47,10 @@ class FTextFormField extends FormField<String> {
             var isNumber = false;
             if (inputFormatters != null) {
               if (inputFormatters[0] is ThousandsFormatter ||
-                  inputFormatters[0] is CurrencyTextInputFormatter ||
-                  inputFormatters[0] is FilteringTextInputFormatter) {
+                  inputFormatters[0] is CurrencyTextInputFormatter) {
+                isNumber = true;
+              }
+              if (isNumeric) {
                 isNumber = true;
               }
             }
@@ -141,6 +144,7 @@ class FTextFormField extends FormField<String> {
   List<TextInputFormatter>? inputFormatters;
   void Function(PointerDownEvent)? onTapOutside;
   void Function(String)? onSubmitted;
+  final bool isNumeric;
 }
 
 class ErrorTextField extends StatelessWidget {

@@ -159,6 +159,9 @@ class TopBar extends StatelessWidget {
     return SizedBox(
       width: 300,
       child: AvatarNameEmail(
+        isOnPop: false,
+        onLogout: onLogout,
+        onChangePassword: onChangePassword,
         avatarWidth: 50,
         title: accountName,
         subtitle: accountSubtitle,
