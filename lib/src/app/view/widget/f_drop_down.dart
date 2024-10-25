@@ -143,7 +143,7 @@ class FDropDownSearch<T> extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       borderSide: BorderSide(color: borderColor),
     );
-     final borderError = OutlineInputBorder(
+    final borderError = OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
       borderSide: const BorderSide(color: Colors.red),
     );
@@ -363,7 +363,7 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
         border: Border.all(color: borderColor),
-        color: Colors.white,
+        color: theme.cardColor,
       ),
       child: DropdownSearch<T>(
         validator: validator,
@@ -399,7 +399,7 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
           return Row(
             children: [
               const Gap(12),
-              Icon(iconField, size: 16),
+              Icon(iconField, size: 16, color: foregroundColor),
               const Gap(18),
               Text(
                 selectedItem == null

@@ -6,6 +6,7 @@ import 'package:flexurio_erp_core/src/app/bloc/theme/theme_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
@@ -26,7 +27,8 @@ Future<void> run({
     storageDirectory = HydratedStorage.webStorageDirectory;
   } else if (Platform.isWindows) {
     storageDirectory = Directory(
-        '${(await getApplicationDocumentsDirectory()).path}/chiron-${config.companyId}/data/',);
+      '${(await getApplicationDocumentsDirectory()).path}/chiron-${config.companyId}/data/',
+    );
   } else {
     storageDirectory = await getTemporaryDirectory();
   }
@@ -55,24 +57,28 @@ Future<void> run({
 }
 
 class App extends StatelessWidget {
-  const App({required this.home, super.key});
+  const App({
+    this.home,
+    this.routerConfig,
+    super.key,
+  });
 
-  final Widget home;
+  final Widget? home;
+  final RouterConfig<Object>? routerConfig;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeBloc, ThemeMode>(
       bloc: ThemeBloc.instance,
       builder: (context, state) {
-        return MaterialApp(
+        return MaterialApp.router(
           title: applicationName,
           theme: MyTheme.getTheme(flavorConfig.color, state),
           debugShowCheckedModeBanner: false,
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
           locale: context.locale,
-          home: home,
-          onGenerateRoute: (_) => SplashPage.route(),
+          routerConfig: routerConfig,
         );
       },
     );
