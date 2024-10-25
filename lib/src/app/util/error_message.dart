@@ -13,4 +13,8 @@ class ErrorMessage {
   static String fieldNotFound(String fieldName) {
     return 'error.field_not_found'.tr(namedArgs: {'data': fieldName});
   }
+
+  static String fieldRequired(String fieldName) {
+    return 'error.field_required'.tr(namedArgs: {'data': fieldName});
+  }
 }
