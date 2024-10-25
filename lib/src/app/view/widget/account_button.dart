@@ -26,49 +26,11 @@ class AccountButton extends StatelessWidget {
         onTap: () {
           showDialog<void>(
             context: context,
-            builder: (context) => SimpleDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(radiusPopup),
-              ),
-              contentPadding: EdgeInsets.zero,
-              children: [
-                const Gap(12),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: paddingHorizontalPage,
-                    vertical: 12,
-                  ),
-                  child: AvatarNameEmail(
-                    title: title,
-                    subtitle: subtitle,
-                  ),
-                ),
-                const Gap(12),
-                const Divider(height: 0),
-                _ListMenu(
-                  color: Colors.orange,
-                  icon: const Icon(Icons.account_box),
-                  label: 'Profile',
-                  onTap: () {},
-                ),
-                const Divider(height: 0),
-                _ListMenu(
-                  color: Colors.green,
-                  icon: const Icon(Icons.key),
-                  label: 'Change Password',
-                  onTap: () => onChangePassword(context),
-                ),
-                const Divider(height: 0),
-                _ListMenu(
-                  color: Colors.red,
-                  icon: const Icon(Icons.exit_to_app),
-                  label: 'Log out',
-                  onTap: () {
-                    showDialogLogout(context: context, onLogout: onLogout);
-                  },
-                ),
-                const Gap(12),
-              ],
+            builder: (context) => _PopUpDialogProfile(
+              title,
+              subtitle,
+              onLogout,
+              onChangePassword,
             ),
           );
         },
@@ -87,23 +49,44 @@ class AvatarNameEmail extends StatelessWidget {
   const AvatarNameEmail({
     required this.title,
     required this.subtitle,
-    super.key,
+    required this.onLogout,
+    required this.onChangePassword,
+    required this.isOnPop,
     this.avatarWidth = 70,
+    super.key,
   });
 
   final double avatarWidth;
   final String title;
   final String subtitle;
+  final void Function() onLogout;
+  final void Function(BuildContext context) onChangePassword;
+  final bool isOnPop;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(avatarWidth / 2),
-          child: SizedBox(
-            width: avatarWidth,
-            child: Image.asset('asset/image/avatar.png'),
+        GestureDetector(
+          onTap: isOnPop
+              ? null
+              : () {
+                  showDialog<void>(
+                    context: context,
+                    builder: (context) => _PopUpDialogProfile(
+                      title,
+                      subtitle,
+                      onLogout,
+                      onChangePassword,
+                    ),
+                  );
+                },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(avatarWidth / 2),
+            child: SizedBox(
+              width: avatarWidth,
+              child: Image.asset('asset/image/avatar.png'),
+            ),
           ),
         ),
         const Gap(24),
@@ -114,7 +97,6 @@ class AvatarNameEmail extends StatelessWidget {
             children: [
               Text(
                 title,
-                // UserRepositoryApp.instance.userApp!.name,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -122,13 +104,77 @@ class AvatarNameEmail extends StatelessWidget {
               ),
               Text(
                 subtitle,
-                // '$nip -  $department',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
         ),
+      ],
+    );
+  }
+}
+
+class _PopUpDialogProfile extends StatelessWidget {
+  const _PopUpDialogProfile(
+    this.title,
+    this.subtitle,
+    this.onLogout,
+    this.onChangePassword,
+  );
+
+  final String title;
+  final String subtitle;
+  final void Function() onLogout;
+  final void Function(BuildContext context) onChangePassword;
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(radiusPopup),
+      ),
+      contentPadding: EdgeInsets.zero,
+      children: [
+        const Gap(12),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: paddingHorizontalPage,
+            vertical: 12,
+          ),
+          child: AvatarNameEmail(
+            isOnPop: true,
+            onLogout: onLogout,
+            onChangePassword: onChangePassword,
+            title: title,
+            subtitle: subtitle,
+          ),
+        ),
+        const Gap(12),
+        const Divider(height: 0),
+        _ListMenu(
+          color: Colors.orange,
+          icon: const Icon(Icons.account_box),
+          label: 'Profile',
+          onTap: () {},
+        ),
+        const Divider(height: 0),
+        _ListMenu(
+          color: Colors.green,
+          icon: const Icon(Icons.key),
+          label: 'Change Password',
+          onTap: () => onChangePassword(context),
+        ),
+        const Divider(height: 0),
+        _ListMenu(
+          color: Colors.red,
+          icon: const Icon(Icons.exit_to_app),
+          label: 'Log out',
+          onTap: () {
+            showDialogLogout(context: context, onLogout: onLogout);
+          },
+        ),
+        const Gap(12),
       ],
     );
   }
