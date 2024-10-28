@@ -17,4 +17,8 @@ class ErrorMessage {
   static String fieldRequired(String fieldName) {
     return 'error.field_required'.tr(namedArgs: {'data': fieldName});
   }
+
+  static String requiredAtLeastOne(String fieldName) {
+    return 'error.required_at_least_one'.tr(namedArgs: {'data': fieldName});
+  }
 }
