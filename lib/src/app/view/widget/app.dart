@@ -58,13 +58,11 @@ Future<void> run({
 
 class App extends StatelessWidget {
   const App({
-    this.home,
-    this.routerConfig,
+    required this.routerConfig,
     super.key,
   });
 
-  final Widget? home;
-  final RouterConfig<Object>? routerConfig;
+  final RouterConfig<Object> routerConfig;
 
   @override
   Widget build(BuildContext context) {
