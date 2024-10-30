@@ -243,7 +243,8 @@ class Permission {
   static String businessTripApproveCs = 'business_trip_approve_cs';
   static String businessTripRejectCs = 'business_trip_reject_cs';
   static String businessTripEdit = 'business_trip_edit';
-  static String businessTripActualDate = 'business_trip_actual_date';
+  static String businessTripActualStartDate = 'business_trip_actual_start_date';
+  static String businessTripActualEndDate = 'business_trip_actual_end_date';
 
   static List<String> toListString(List<String> permissions) {
     return permissions.map((e) => e).toList();
@@ -251,6 +252,8 @@ class Permission {
 
   static List<String> events = [
     'actual_date',
+    'actual_start_date',
+    'actual_end_date',
     'approve',
     'approve_cs',
     'approve_manager',
