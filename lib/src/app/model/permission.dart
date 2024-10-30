@@ -274,6 +274,7 @@ class Permission {
     'print_document',
     'print_invoice',
     'print_report',
+    'quality_control_check',
     'realization',
     'reject',
     'reject_cs',
