@@ -235,16 +235,16 @@ class Permission {
   static String vehicleEdit = 'vehicle_edit';
 
   // Business Trip
-  static String businessTripViewMenu = 'business_trip_view_menu';
-  static String businessTripCreate = 'business_trip_create';
-  static String businessTripDelete = 'business_trip_delete';
-  static String businessTripApproveManager = 'business_trip_approve_manager';
-  static String businessTripRejectManager = 'business_trip_reject_manager';
-  static String businessTripApproveCs = 'business_trip_approve_cs';
-  static String businessTripRejectCs = 'business_trip_reject_cs';
-  static String businessTripEdit = 'business_trip_edit';
-  static String businessTripActualStartDate = 'business_trip_actual_start_date';
-  static String businessTripActualEndDate = 'business_trip_actual_end_date';
+  static String vehicleRentViewMenu = 'vehicle_rent_view_menu';
+  static String vehicleRentCreate = 'vehicle_rent_create';
+  static String vehicleRentDelete = 'vehicle_rent_delete';
+  static String vehicleRentApproveManager = 'vehicle_rent_approve_manager';
+  static String vehicleRentRejectManager = 'vehicle_rent_reject_manager';
+  static String vehicleRentApproveCs = 'vehicle_rent_approve_cs';
+  static String vehicleRentRejectCs = 'vehicle_rent_reject_cs';
+  static String vehicleRentEdit = 'vehicle_rent_edit';
+  static String vehicleRentActualStartDate = 'vehicle_rent_actual_start_date';
+  static String vehicleRentActualEndDate = 'vehicle_rent_actual_end_date';
 
   static List<String> toListString(List<String> permissions) {
     return permissions.map((e) => e).toList();
