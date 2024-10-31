@@ -192,13 +192,13 @@ class Entity extends EntityY {
         subtitleX: '',
         iconPath: 'shopping-list',
       );
-  static Entity get businessTrip => const Entity(
-        titleX: 'Business Trip',
+  static Entity get vehicleRent => const Entity(
+        titleX: 'vehicle_rent',
         subtitleX: '',
         iconPath: 'shopping-list',
       );
-  static Entity get businessTripDestination => const Entity(
-        titleX: 'Business Trip Destination',
+  static Entity get vehicleRentDestination => const Entity(
+        titleX: 'vehicle_rent_destination',
         subtitleX: '',
         iconPath: 'bill',
       );
