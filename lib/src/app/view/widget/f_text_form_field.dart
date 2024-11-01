@@ -17,6 +17,22 @@ final currencyFormatterNoDecimal = CurrencyTextInputFormatter.currency(
 );
 
 class FTextFormField extends FormField<String> {
+  static Widget decimal({
+    required String labelText,
+    required TextEditingController controller,
+    String? Function(String?)? validator,
+  }) {
+    return FTextFormField(
+      labelText: labelText,
+      controller: controller,
+      validator: validator,
+      isNumeric: true,
+      inputFormatters: [
+        DecimalInputFormatter(),
+      ],
+    );
+  }
+
   FTextFormField({
     super.key,
     this.suffixText,
@@ -44,15 +60,9 @@ class FTextFormField extends FormField<String> {
           initialValue: controller?.text ?? '',
           builder: (field) {
             final error = errorText ?? field.errorText;
-            var isNumber = false;
             if (inputFormatters != null) {
               if (inputFormatters[0] is ThousandsFormatter ||
-                  inputFormatters[0] is CurrencyTextInputFormatter) {
-                isNumber = true;
-              }
-              if (isNumeric) {
-                isNumber = true;
-              }
+                  inputFormatters[0] is CurrencyTextInputFormatter) {}
             }
 
             return Builder(
@@ -75,7 +85,7 @@ class FTextFormField extends FormField<String> {
                   children: [
                     TextField(
                       autofocus: autoFocus,
-                      textAlign: isNumber ? TextAlign.right : TextAlign.left,
+                      textAlign: isNumeric ? TextAlign.right : TextAlign.left,
                       focusNode: focusNode,
                       readOnly: readOnly,
                       enabled: enabled,
@@ -191,3 +201,17 @@ class _HelperText extends StatelessWidget {
 final inputLetterOnly = [
   FilteringTextInputFormatter.allow(RegExp('[a-zA-Z ]')),
 ];
+
+class DecimalInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final regExp = RegExp(r'^\d*\.?\d*$');
+    if (regExp.hasMatch(newValue.text)) {
+      return newValue;
+    }
+    return oldValue;
+  }
+}
