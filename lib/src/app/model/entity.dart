@@ -194,7 +194,7 @@ class Entity extends EntityY {
       );
   static Entity get vehicleRent => const Entity(
         titleX: 'vehicle_rent',
-        subtitleX: '',
+        subtitleX: 'vehicle_rent',
         iconPath: 'shopping-list',
       );
   static Entity get vehicleRentDestination => const Entity(
