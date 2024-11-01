@@ -233,6 +233,7 @@ class Permission {
   static String vehicleCreate = 'vehicle_create';
   static String vehicleDelete = 'vehicle_delete';
   static String vehicleEdit = 'vehicle_edit';
+  static String vehicleActive = 'vehicle_activate';
 
   // Business Trip
   static String vehicleRentViewMenu = 'vehicle_rent_view_menu';
