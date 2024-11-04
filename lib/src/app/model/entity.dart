@@ -249,7 +249,10 @@ class Entity extends EntityY {
   static Entity get materialUnit =>
       const Entity(titleX: 'Material Unit', subtitleX: '', iconPath: 'bill');
   static Entity get materialAnalysis => const Entity(
-      titleX: 'Material Analysis', subtitleX: '', iconPath: 'bill',);
+        titleX: 'Material Analysis',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
   static Entity get unitConvert =>
       const Entity(titleX: 'Unit Convert', subtitleX: '', iconPath: 'bill');
   static Entity get office =>
@@ -435,26 +438,13 @@ class Entity extends EntityY {
       );
   static Entity get tax =>
       const Entity(titleX: 'PPH', subtitleX: '', iconPath: 'bill');
-  static Entity get payment => const Entity(
-        titleX: 'payment',
-        subtitleX: 'payment',
-        iconPath: 'credit-card',
-      );
-  static Entity get transactionJournal => const Entity(
-        titleX: 'Transaction Journal',
-        subtitleX: 'Transaction Journal',
-        iconPath: 'credit-card',
-      );
+
   static Entity get sales => const Entity(
         titleX: 'Sales',
         subtitleX: 'sales',
         iconPath: 'credit-card',
       );
-  static Entity get paymentSalary => const Entity(
-        titleX: 'payment_salary',
-        subtitleX: 'payment_salary',
-        iconPath: 'pay-day',
-      );
+
   static Entity get taxInvoiceNumber => const Entity(
         titleX: 'tax_invoice_number',
         subtitleX: '',
