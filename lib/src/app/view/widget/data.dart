@@ -8,8 +8,13 @@ class ErrorIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Center(
-        child: CupertinoActivityIndicator(),
+      child: Tooltip(
+        message: errorSomethingWentWrong,
+        child: Icon(
+          Icons.error_outline,
+          size: 32,
+          color: Colors.red,
+        ),
       ),
     );
   }
