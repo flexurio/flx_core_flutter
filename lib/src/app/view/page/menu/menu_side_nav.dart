@@ -177,8 +177,7 @@ List<Menu1> filterMenuByPermission({
       }
     }
     return menu1Filtered;
-  } catch (e, s) {
-    print(s);
+  } catch (e) {
     return [];
   }
 }

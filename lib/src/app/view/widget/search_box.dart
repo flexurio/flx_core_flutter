@@ -221,14 +221,14 @@ class _MenuList extends StatelessWidget {
         final icon = menu.icon;
 
         for (final menu3 in menu.menu) {
-          final key = '${(menu1 ?? '-').toLowerCase()} ${menu2.toLowerCase()} '
-              '${menu3.label.toLowerCase()}';
+          final key = menu3.label.tr().toLowerCase();
 
           if ((menu3.permission == null ||
                   permissions.contains(menu3.permission)) &&
-              key.contains(query.toLowerCase())) {
+              fuzzyMatch(query, key)) {
             menuList.add(
               _MenuTile(
+                query: query,
                 onTap: onTap,
                 index: index,
                 menu: menu3,
@@ -247,6 +247,25 @@ class _MenuList extends StatelessWidget {
   }
 }
 
+bool fuzzyMatch(String query, String target) {
+  if (query.isEmpty) {
+    return true;
+  }
+
+  int queryIndex = 0;
+
+  for (int i = 0; i < target.length; i++) {
+    if (target[i].toLowerCase() == query[queryIndex].toLowerCase()) {
+      queryIndex++;
+      if (queryIndex == query.length) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
 class _MenuTile extends StatelessWidget {
   const _MenuTile({
     required this.menu,
@@ -255,17 +274,50 @@ class _MenuTile extends StatelessWidget {
     required this.icon,
     required this.index,
     required this.onTap,
+    required this.query,
   });
   final Menu3 menu;
   final String menu2;
   final String parent;
   final Icon icon;
   final int index;
+  final String query;
   final void Function(Menu3 menu, String menu2) onTap;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final textTheme = theme.textTheme.bodyMedium!;
+    Widget buildHighlightedText(String text, String query) {
+      List<TextSpan> spans = [];
+      int queryIndex = 0;
+
+      for (int i = 0; i < text.length; i++) {
+        if (queryIndex < query.length &&
+            text[i].toLowerCase() == query[queryIndex].toLowerCase()) {
+          spans.add(
+            TextSpan(
+              text: text[i],
+              style: textTheme.copyWith(
+                color: theme.colorScheme.primary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          );
+          queryIndex++;
+        } else {
+          spans.add(
+            TextSpan(
+              text: text[i],
+              style: textTheme,
+            ),
+          );
+        }
+      }
+
+      return RichText(text: TextSpan(children: spans));
+    }
+
     return InkWell(
       onTap: () => onTap(menu, menu2),
       child: ListTile(
@@ -279,10 +331,7 @@ class _MenuTile extends StatelessWidget {
         ),
         title: Row(
           children: [
-            Text(
-              menu.label.tr(),
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
+            buildHighlightedText(menu.label.tr(), query),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 18),
               width: 30,
