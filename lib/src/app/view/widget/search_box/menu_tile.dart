@@ -8,6 +8,7 @@ class ItemList extends StatelessWidget {
     required this.query,
     required this.title,
     required this.icon,
+     this.trailing,
     super.key,
   });
 
@@ -16,6 +17,7 @@ class ItemList extends StatelessWidget {
   final String query;
   final String title;
   final Widget icon;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,8 @@ class ItemList extends StatelessWidget {
         title: Row(
           children: [
             buildHighlightedText(context, title, query),
+            if (trailing != null)
+              Padding(padding: const EdgeInsets.only(left: 8), child: trailing),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 18),
               width: 30,

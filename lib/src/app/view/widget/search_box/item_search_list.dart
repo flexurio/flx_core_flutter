@@ -11,12 +11,14 @@ class ItemSearchList extends StatelessWidget {
     required this.onTap,
     required this.menu,
     required this.permissions,
+    required this.searchData,
     super.key,
   });
   final String query;
   final void Function(Menu3, String) onTap;
   final List<Menu1> menu;
   final List<String> permissions;
+  final List<Widget> Function(String query) searchData;
 
   List<Widget> _menuSearch() {
     final menuList = <Widget>[];
@@ -47,6 +49,7 @@ class ItemSearchList extends StatelessWidget {
         }
       }
     }
+
     return menuList;
   }
 
@@ -63,8 +66,10 @@ class ItemSearchList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final menuList = <Widget>[];
-    menuList.addAll(_menuSearch());
+    final menuList = List<Widget>.from(_menuSearch());
+    for (final element in searchData(query)) {
+      menuList.add(element);
+    }
     return ListView(children: menuList);
   }
 }

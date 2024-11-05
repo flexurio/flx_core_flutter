@@ -3,7 +3,6 @@ import 'package:flexurio_erp_core/src/app/bloc/theme/menu/menu_bloc.dart';
 import 'package:flexurio_erp_core/src/app/bloc/theme/menu_collapse/menu_collapse.dart';
 import 'package:flexurio_erp_core/src/app/view/page/menu/menu_side_nav.dart';
 import 'package:flexurio_erp_core/src/app/view/page/menu/widget/menu_content.dart';
-import 'package:flexurio_erp_core/src/app/view/widget/search_box/search_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +21,7 @@ class MenuPage extends StatefulWidget {
     this.searchData,
   );
 
-  final List<SearchData> searchData;
+  final List<Widget> Function(String query) searchData;
   final String appName;
   final List<Menu1> menu;
   final List<String> accountPermissions;
@@ -39,7 +38,7 @@ class MenuPage extends StatefulWidget {
     required String accountSubtitle,
     required void Function() onLogout,
     required void Function(BuildContext context) onChangePassword,
-    required List<SearchData> searchData,
+    required List<Widget> Function(String query) searchData,
   }) {
     return MultiBlocProvider(
       providers: [
@@ -89,6 +88,7 @@ class _MenuPageState extends State<MenuPage> {
                 context: context,
                 menu: widget.menu,
                 accountPermissions: widget.accountPermissions,
+                searchData: widget.searchData,
               );
               return null;
             },
