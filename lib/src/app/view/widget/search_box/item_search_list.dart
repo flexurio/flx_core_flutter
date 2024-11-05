@@ -53,17 +53,6 @@ class ItemSearchList extends StatelessWidget {
     return menuList;
   }
 
-  // List<Widget> _menuSearchData() {
-  //   BlocBuilder(
-  //     builder: (context, state) {
-  //       return state.maybeWhen(
-  //         orElse: () => <Widget>[],
-  //         loaded: (menu) => _menuSearch(),
-  //       );
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     final menuList = List<Widget>.from(_menuSearch());
