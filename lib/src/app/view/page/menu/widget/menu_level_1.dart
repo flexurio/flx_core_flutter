@@ -26,6 +26,7 @@ class MenuLevel1 extends StatelessWidget {
     final primaryColor = theme.colorScheme.primary;
 
     return BlocBuilder<MenuBloc, MenuState>(
+      bloc: MenuBloc.instance,
       builder: (context, state) {
         var isEmpty = true;
         final children = <ExpansionPanel>[];

@@ -21,7 +21,7 @@ class MenuPage extends StatefulWidget {
     this.searchData,
   );
 
-  final List<Widget> Function(String query) searchData;
+  final List<Widget> Function(BuildContext context, String query) searchData;
   final String appName;
   final List<Menu1> menu;
   final List<String> accountPermissions;
@@ -38,7 +38,7 @@ class MenuPage extends StatefulWidget {
     required String accountSubtitle,
     required void Function() onLogout,
     required void Function(BuildContext context) onChangePassword,
-    required List<Widget> Function(String query) searchData,
+    required List<Widget> Function(BuildContext context, String query) searchData,
   }) {
     return MultiBlocProvider(
       providers: [
@@ -135,6 +135,7 @@ class _MenuPageState extends State<MenuPage> {
 
   Widget _buildSideNav(ScreenIdentifier screenIdentifier) {
     return BlocListener<MenuBloc, MenuState>(
+      bloc: MenuBloc.instance,
       listener: (context, state) {
         if (state.triggerCloseDrawer) {
           _scaffoldKey.currentState?.closeDrawer();

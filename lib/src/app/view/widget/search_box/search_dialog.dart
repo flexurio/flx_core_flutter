@@ -14,7 +14,7 @@ class SearchDialog extends StatefulWidget {
   final void Function(Menu3, String) onTap;
   final List<Menu1> menu;
   final List<String> permissions;
-  final List<Widget> Function(String query) searchData;
+  final List<Widget> Function(BuildContext context, String query) searchData;
 
   @override
   State<SearchDialog> createState() => _SearchDialogState();

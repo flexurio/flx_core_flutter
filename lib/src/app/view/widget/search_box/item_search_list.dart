@@ -3,7 +3,6 @@ import 'package:flexurio_erp_core/flexurio_erp_core.dart';
 import 'package:flexurio_erp_core/src/app/util/fuzzy.dart';
 import 'package:flexurio_erp_core/src/app/view/widget/search_box/menu_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ItemSearchList extends StatelessWidget {
   const ItemSearchList({
@@ -18,7 +17,7 @@ class ItemSearchList extends StatelessWidget {
   final void Function(Menu3, String) onTap;
   final List<Menu1> menu;
   final List<String> permissions;
-  final List<Widget> Function(String query) searchData;
+  final List<Widget> Function(BuildContext context, String query) searchData;
 
   List<Widget> _menuSearch() {
     final menuList = <Widget>[];
@@ -56,8 +55,10 @@ class ItemSearchList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final menuList = List<Widget>.from(_menuSearch());
-    for (final element in searchData(query)) {
-      menuList.add(element);
+    if (query.length > 2) {
+      for (final element in searchData(context, query)) {
+        menuList.add(element);
+      }
     }
     return ListView(children: menuList);
   }

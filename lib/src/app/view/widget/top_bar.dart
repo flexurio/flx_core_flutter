@@ -20,7 +20,7 @@ class TopBar extends StatelessWidget {
     super.key,
   });
 
-  final List<Widget> Function(String query) searchData;
+  final List<Widget> Function(BuildContext context, String query) searchData;
   final String accountName;
   final String accountSubtitle;
   final List<Menu1> menu;

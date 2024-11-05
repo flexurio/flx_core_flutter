@@ -19,6 +19,7 @@ class MenuLevel3 extends StatelessWidget {
     final borderRadius = BorderRadius.circular(6);
     final theme = Theme.of(context);
     return BlocBuilder<MenuBloc, MenuState>(
+      bloc: MenuBloc.instance,
       builder: (context, state) {
         final isSelected = menu3.label == state.label;
         return Row(

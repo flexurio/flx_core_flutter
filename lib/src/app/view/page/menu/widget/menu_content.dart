@@ -44,6 +44,7 @@ class MenuContent extends StatelessWidget {
                         child: Stack(
                           children: [
                             BlocBuilder<MenuBloc, MenuState>(
+                              bloc: MenuBloc.instance,
                               builder: (context, state) {
                                 return MaterialApp(
                                   key: ValueKey(state.label),

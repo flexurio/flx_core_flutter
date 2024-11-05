@@ -3,7 +3,6 @@ import 'package:flexurio_erp_core/flexurio_erp_core.dart';
 import 'package:flexurio_erp_core/src/app/bloc/theme/menu/menu_bloc.dart';
 import 'package:flexurio_erp_core/src/app/view/widget/search_box/search_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class SearchBoxLarge extends StatelessWidget {
@@ -16,7 +15,7 @@ class SearchBoxLarge extends StatelessWidget {
 
   final List<Menu1> menu;
   final List<String> permissions;
-  final List<Widget> Function(String query) searchData;
+  final List<Widget> Function(BuildContext context, String query) searchData;
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +57,9 @@ Future<void> showSearchDialog({
   required BuildContext context,
   required List<Menu1> menu,
   required List<String> accountPermissions,
-  required List<Widget> Function(String query) searchData,
+  required List<Widget> Function(BuildContext context, String query) searchData,
 }) {
-  final menuBloc = context.read<MenuBloc>();
+  final menuBloc = MenuBloc.instance;
   return showDialog<void>(
     context: context,
     builder: (context) {
