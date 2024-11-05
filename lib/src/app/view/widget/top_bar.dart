@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flexurio_erp_core/flexurio_erp_core.dart';
 import 'package:flexurio_erp_core/src/app/bloc/theme/menu_collapse/menu_collapse.dart';
 import 'package:flexurio_erp_core/src/app/bloc/theme/theme_bloc.dart';
+import 'package:flexurio_erp_core/src/app/view/widget/search_box/search_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -16,9 +17,11 @@ class TopBar extends StatelessWidget {
     required this.onLogout,
     required this.drawerTriggered,
     required this.onChangePassword,
+    required this.searchData,
     super.key,
   });
 
+  final List<SearchData> searchData;
   final String accountName;
   final String accountSubtitle;
   final List<Menu1> menu;
@@ -170,11 +173,7 @@ class TopBar extends StatelessWidget {
   }
 
   _RoundedContainer _buildLogoutButton() {
-    return _RoundedContainer(
-      child: LogOutButton(
-        onLogout: onLogout,
-      ),
-    );
+    return _RoundedContainer(child: LogOutButton(onLogout: onLogout));
   }
 }
 

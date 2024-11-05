@@ -3,6 +3,7 @@ import 'package:flexurio_erp_core/src/app/bloc/theme/menu/menu_bloc.dart';
 import 'package:flexurio_erp_core/src/app/bloc/theme/menu_collapse/menu_collapse.dart';
 import 'package:flexurio_erp_core/src/app/view/page/menu/menu_side_nav.dart';
 import 'package:flexurio_erp_core/src/app/view/page/menu/widget/menu_content.dart';
+import 'package:flexurio_erp_core/src/app/view/widget/search_box/search_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,8 +19,10 @@ class MenuPage extends StatefulWidget {
     this.onLogout,
     this.appName,
     this.onChangePassword,
+    this.searchData,
   );
 
+  final List<SearchData> searchData;
   final String appName;
   final List<Menu1> menu;
   final List<String> accountPermissions;
@@ -36,6 +39,7 @@ class MenuPage extends StatefulWidget {
     required String accountSubtitle,
     required void Function() onLogout,
     required void Function(BuildContext context) onChangePassword,
+    required List<SearchData> searchData,
   }) {
     return MultiBlocProvider(
       providers: [
@@ -50,6 +54,7 @@ class MenuPage extends StatefulWidget {
         onLogout,
         appName,
         onChangePassword,
+        searchData,
       ),
     );
   }
@@ -153,6 +158,7 @@ class _MenuPageState extends State<MenuPage> {
 
   TopBar _buildTopBar() {
     return TopBar(
+      searchData: widget.searchData,
       menu: widget.menu,
       accountName: widget.userName,
       accountSubtitle: widget.userSubtitle,

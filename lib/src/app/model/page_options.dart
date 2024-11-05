@@ -12,12 +12,18 @@ class PageOptions<T> {
     this.rowsPerPage = 10,
   });
 
-  factory PageOptions.empty({bool? ascending, String? sortBy, List<T>? data}) {
+  factory PageOptions.empty({
+    bool? ascending,
+    String? sortBy,
+    List<T>? data,
+    String search = '',
+    int rowsPerPage = 0,
+  }) {
     return PageOptions<T>(
       page: 1,
-      search: '',
+      search: search,
       sortBy: sortBy ?? 'created_at',
-      totalRows: 0,
+      totalRows: rowsPerPage,
       ascending: ascending ?? false,
       data: data ?? [],
     );
