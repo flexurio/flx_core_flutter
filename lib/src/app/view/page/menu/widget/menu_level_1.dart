@@ -103,11 +103,11 @@ class MenuLevel1 extends StatelessWidget {
                   expansionCallback: (panelIndex, isExpanded) {
                     final menuKey =
                         '${menu1.label}#${menu1.menu[panelIndex].label}';
-                    context.read<MenuBloc>().add(
-                          Menu2Expanded(
-                            !isExpanded ? '' : menuKey,
-                          ),
-                        );
+                    MenuBloc.instance.add(
+                      Menu2Expanded(
+                        !isExpanded ? '' : menuKey,
+                      ),
+                    );
                   },
                   children: children,
                 ),

@@ -17,12 +17,13 @@ class PageOptions<T> {
     String? sortBy,
     List<T>? data,
     String search = '',
-    int rowsPerPage = 0,
+    int rowsPerPage = 10,
   }) {
     return PageOptions<T>(
       page: 1,
       search: search,
       sortBy: sortBy ?? 'created_at',
+      rowsPerPage: rowsPerPage,
       totalRows: rowsPerPage,
       ascending: ascending ?? false,
       data: data ?? [],

@@ -29,12 +29,12 @@ class MenuLevel3 extends StatelessWidget {
                 child: InkWell(
                   borderRadius: borderRadius,
                   onTap: () {
-                    context.read<MenuBloc>().add(
-                          Menu3Selected(
-                            home: menu3.home,
-                            label: menu3.label,
-                          ),
-                        );
+                    MenuBloc.instance.add(
+                      Menu3Selected(
+                        home: menu3.home,
+                        label: menu3.label,
+                      ),
+                    );
                   },
                   child: AnimatedContainer(
                     padding: const EdgeInsets.symmetric(
