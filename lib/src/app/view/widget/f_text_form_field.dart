@@ -21,8 +21,10 @@ class FTextFormField extends FormField<String> {
     required String labelText,
     required TextEditingController controller,
     String? Function(String?)? validator,
+    bool enabled = true,
   }) {
     return FTextFormField(
+      enabled: enabled,
       labelText: labelText,
       controller: controller,
       validator: validator,
