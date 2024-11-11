@@ -38,6 +38,9 @@ class _FieldMonthPickerState extends State<FieldMonthPicker> {
   void initState() {
     super.initState();
     _dateTimeSelected = widget.initialSelectedDate;
+    if (_dateTimeSelected != null) {
+      widget.controller.text = DateFormat.yMMMM().format(_dateTimeSelected!);
+    }
     focusNode.addListener(() {
       if (focusNode.hasFocus) {
         _openMonthPicker(context);
