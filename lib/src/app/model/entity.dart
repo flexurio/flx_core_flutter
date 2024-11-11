@@ -373,9 +373,9 @@ class Entity extends EntityY {
         iconPath: 'bill',
       );
   static Entity get productReturnNote => const Entity(
-        titleX: 'Product Return Note',
-        subtitleX: '',
-        iconPath: 'shopping-list',
+        titleX: 'product_return_note',
+        subtitleX: 'product_return_note',
+        iconPath: 'package',
       );
   static Entity get productReturnNoteDetail => const Entity(
         titleX: 'Product Return Note Detail',
