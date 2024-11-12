@@ -29,6 +29,7 @@ export 'src/app/util/pdf/header.dart';
 export 'src/app/util/simple_excel.dart';
 export 'src/app/util/sort.dart';
 export 'src/app/util/string_extension.dart';
+export 'src/app/util/widget_extension.dart';
 export 'src/app/util/theme.dart';
 export 'src/app/util/title_create_or_update.dart';
 export 'src/app/util/toast.dart';
