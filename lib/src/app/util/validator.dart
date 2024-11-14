@@ -34,26 +34,44 @@ class MinNumberValidator extends TextFieldValidator {
   }
 }
 
-class MinDoubleValidator extends TextFieldValidator {
-  MinDoubleValidator({required this.minNumber})
-      : super('Value must be greater than or equal to $minNumber');
+class RangeValueValidator extends TextFieldValidator {
+  final double? minValue;
+  final double? maxValue;
 
-  final double minNumber;
+  RangeValueValidator({
+    this.minValue,
+    this.maxValue,
+    String? errorText,
+  }) : super(errorText ?? _defaultErrorText(minValue, maxValue));
 
-  @override
-  bool get ignoreEmptyValues => false;
-
-  @override
-  bool isValid(String? value) {
-    final parseValue = double.parse(value!);
-    return parseValue >= minNumber;
+  static String _defaultErrorText(double? min, double? max) {
+    if (min != null && max != null) {
+      return "Value must be between $min and $max";
+    } else if (min != null) {
+      return "Value must be at least $min";
+    } else if (max != null) {
+      return "Value must not exceed $max";
+    } else {
+      return "Invalid value";
+    }
   }
 
   @override
-  String? call(String? value) {
-    return isValid(value)
-        ? null
-        : 'Value must be greater than or equal to $minNumber';
+  bool isValid(String? value) {
+    if (value == null || value.isEmpty) {
+      return false;
+    }
+    final doubleValue = double.tryParse(value);
+    if (doubleValue == null) {
+      return false;
+    }
+    if (minValue != null && doubleValue < minValue!) {
+      return false;
+    }
+    if (maxValue != null && doubleValue > maxValue!) {
+      return false;
+    }
+    return true;
   }
 }
 
