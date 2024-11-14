@@ -39,6 +39,8 @@ enum DataAction {
   createForProduct('create_for_product', Icons.add, Colors.green),
   createMR('create_mr', Icons.add, Colors.green),
   createPayment('create_payment', Icons.paid, Colors.green),
+  paymentReceivable('payment_receivable', Icons.paid, Colors.green),
+  paymentPayable('payment_payable', Icons.paid, Colors.green),
   createSales('create_sales', Icons.add, Colors.green),
   createSalesOrder('Create SO', Icons.add, Colors.green),
   createSalesPaid('create_sales', Icons.paid, Colors.green),
