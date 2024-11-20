@@ -302,5 +302,6 @@
         "stage_process": "Rangkuman tahapan produksi yang melibatkan berbagai tahapan dan sub tahapan produksi",
         "production_stage": "Pandangan komprehensif tentang semua tahapan yang terlibat dalam proses produksi, memungkinkan pengguna untuk memantau dan mengelola setiap tahapan secara efektif",
         "production_machine": "Menu master yang berisi daftar mesin yang akan digunakan dalam proses produksi"
-    }
+    },
+    "preview": "Pratinjau"
 }

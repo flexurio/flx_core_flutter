@@ -302,5 +302,6 @@
         "stage_process": "Summary of the production stage involving various stages and sub-stages of production",
         "production_stage": "A comprehensive view of all stages involved in the production process, allowing users to monitor and manage each phase effectively",
         "production_machine": "Master menu containing a list of machine to be used in production process"
-    }
+    },
+    "preview": "Preview"
 }

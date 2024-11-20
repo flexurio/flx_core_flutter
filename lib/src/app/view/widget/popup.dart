@@ -134,6 +134,67 @@ class CardConfirmation extends StatelessWidget {
   }
 }
 
+class CardConfirmationAnyAction extends StatelessWidget {
+  const CardConfirmationAnyAction({
+    required this.isProgress,
+    required this.actionOne,
+    required this.actionTwo,
+    required this.data,
+    required this.onActionOne,
+    required this.onConfirm,
+    super.key,
+    this.label,
+  });
+
+  final bool isProgress;
+  final DataAction actionTwo;
+  final Entity data;
+  final DataAction actionOne;
+  final String? label;
+  final void Function() onActionOne;
+  final void Function() onConfirm;
+
+  @override
+  Widget build(BuildContext context) {
+    Sound.alert();
+    final theme = Theme.of(context);
+    final primaryColor = theme.colorScheme.primary;
+    return CardForm(
+      popup: true,
+      title: 'are_you_sure'.tr(),
+      icon: FontAwesomeIcons.exclamationTriangle,
+      actions: [
+        Button(
+          permission: null,
+          isSecondary: true,
+          isInProgress: isProgress,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          action: DataAction.cancel,
+        ),
+        const SizedBox(width: 10),
+        Button(
+          permission: null,
+          isSecondary: true,
+          isInProgress: isProgress,
+          onPressed: onActionOne.call,
+          action: actionOne,
+        ),
+        const SizedBox(width: 10),
+        Button(
+          permission: null,
+          color: actionTwo == DataAction.delete ? Colors.red : primaryColor,
+          isInProgress: isProgress,
+          onPressed: onConfirm,
+          action: actionTwo,
+        ),
+      ],
+      child: Text(confirmationMessage(data, actionTwo, label)),
+    );
+  }
+}
+
 class CardSuccessInfo extends StatelessWidget {
   const CardSuccessInfo({
     required this.isProgress,
