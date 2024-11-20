@@ -69,7 +69,7 @@ class Toast {
         child: ToastFail(message: message),
         fadeDuration: const Duration(milliseconds: 200),
         gravity: ToastGravity.BOTTOM,
-        toastDuration: const Duration(seconds: 3),
+        toastDuration: const Duration(seconds: 7),
       );
   }
 
