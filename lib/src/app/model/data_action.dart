@@ -20,6 +20,7 @@ enum DataAction {
   archive('Archive', Icons.archive, Colors.grey),
   back('back', Icons.abc, Colors.orange),
   cancel('cancel', Icons.cancel, Colors.grey),
+  preview('preview', Icons.preview, Colors.grey),
   cancelConfirm('cancel_confirm', Icons.cancel, Colors.grey),
   changePassword('change_password', Icons.edit, Colors.orange),
   check('check', Icons.analytics_outlined, Colors.blue),
