@@ -51,7 +51,14 @@ class FileIcon extends StatelessWidget {
       children: [
         FileExtension(extension: extension),
         const Gap(6),
-        Text(name),
+        SizedBox(
+          width: 150,
+          child: Text(
+            name,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
       ],
     );
   }
