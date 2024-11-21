@@ -110,13 +110,19 @@ class FTextFormField extends FormField<String> {
                       ),
                       decoration: InputDecoration(
                         counterText: '',
-                        labelText: labelText,
+                        labelText:
+                            (labelText ?? '') + (enabled ? '' : ' (Read Only)'),
                         hintText: hintText,
                         filled: true,
-                        fillColor: theme.modeCondition(
-                          Colors.blueGrey.shade50.withOpacity(.5),
-                          MyTheme.black00dp,
-                        ),
+                        fillColor: enabled
+                            ? theme.modeCondition(
+                                Colors.blueGrey.shade50.withOpacity(.5),
+                                MyTheme.black00dp,
+                              )
+                            : theme.modeCondition(
+                                Colors.blueGrey.shade100.withOpacity(.8),
+                                MyTheme.black00dp,
+                              ),
                         suffixText: suffixText,
                         suffixIcon: suffixIcon,
                         suffixStyle: TextStyle(
@@ -126,6 +132,7 @@ class FTextFormField extends FormField<String> {
                           ),
                         ),
                         enabledBorder: border,
+                        disabledBorder: border,
                         border: border,
                       ),
                     ),
