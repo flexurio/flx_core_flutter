@@ -9,6 +9,7 @@ class SingleFormPanel extends StatelessWidget {
     required this.entity,
     super.key,
     this.actions,
+    this.suffixText = '',
     this.formKey,
     this.visibleBackButton = true,
     this.size = SingleFormPanelSize.normal,
@@ -19,6 +20,7 @@ class SingleFormPanel extends StatelessWidget {
   final List<Widget> children;
   final List<Widget>? actions;
   final Key? formKey;
+  final String suffixText;
   final bool visibleBackButton;
   final SingleFormPanelSize size;
 
@@ -46,7 +48,7 @@ class SingleFormPanel extends StatelessWidget {
                       horizontal: 24,
                     ),
                     child: BackButtonWithTitle(
-                      title: '${action.title} ${entity.title}',
+                      title: '${action.title} ${entity.title} $suffixText',
                       visibleBackButton: visibleBackButton,
                     ),
                   ),
