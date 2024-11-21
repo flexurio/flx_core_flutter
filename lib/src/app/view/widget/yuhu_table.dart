@@ -30,6 +30,7 @@ class YuhuTable<T> extends StatefulWidget {
     super.key,
     this.onSelectChanged,
     this.rowHeight = 48,
+    this.bodyHeight,
     this.status = Status.loaded,
     this.onSort,
     this.initialSortColumnIndex,
@@ -41,6 +42,7 @@ class YuhuTable<T> extends StatefulWidget {
   final bool? initialSortAscending;
   final void Function(int, bool)? onSort;
   final double rowHeight;
+  final double? bodyHeight;
   final Status status;
   final int? rowsPerPage;
   final List<T> data;
@@ -218,7 +220,8 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
           : flavorConfig.colorSoft,
     );
 
-    final Widget table = Table(
+    final Widget table = TableWithBodyScroll(
+      heightBody: widget.bodyHeight,
       columnWidths: columnWidths,
       border: TableBorder(
         verticalInside:
@@ -355,7 +358,8 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
               ),
             ],
           ),
-          child: Table(
+          child: TableWithBodyScroll(
+            heightBody: widget.bodyHeight,
             columnWidths: {
               0: FixedColumnWidth(freezeColumn.width ?? 0),
             },
