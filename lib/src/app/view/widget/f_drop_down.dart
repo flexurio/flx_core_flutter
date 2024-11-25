@@ -135,10 +135,15 @@ class FDropDownSearch<T> extends StatelessWidget {
       Colors.blueGrey.shade100,
       const Color(0xff343640),
     );
-    final backgroundColor = theme.modeCondition(
-      Colors.blueGrey.shade50.withOpacity(.5),
-      MyTheme.black00dp,
-    );
+    final backgroundColor = enabled
+        ? theme.modeCondition(
+            Colors.blueGrey.shade50.withOpacity(.5),
+            MyTheme.black00dp,
+          )
+        : theme.modeCondition(
+            Colors.blueGrey.shade100.withOpacity(.8),
+            MyTheme.black02dp,
+          );
     final border = OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
       borderSide: BorderSide(color: borderColor),
@@ -189,7 +194,7 @@ class FDropDownSearch<T> extends StatelessWidget {
           border: border,
           filled: true,
           fillColor: backgroundColor,
-          labelText: labelText,
+          labelText: '$labelText${enabled ? '' : ' (Read Only)'}',
         ),
       ),
       onChanged: onChanged,
