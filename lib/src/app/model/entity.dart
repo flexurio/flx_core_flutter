@@ -336,8 +336,8 @@ class Entity extends EntityY {
         iconPath: 'parcel-care',
       );
   static Entity get productRequest => const Entity(
-        titleX: 'Product Request',
-        subtitleX: '',
+        titleX: 'product_request',
+        subtitleX: 'product_request',
         iconPath: 'product-request',
       );
   static Entity get productRequestDetail => const Entity(
@@ -367,9 +367,9 @@ class Entity extends EntityY {
         subtitleX: 'purchase_order',
         iconPath: 'shopping-list',
       );
-        static Entity get purchaseOrderDownPayment => const Entity(
+  static Entity get purchaseOrderDownPayment => const Entity(
         titleX: 'purchase_order_down_payment',
-      subtitleX: 'purchase_order_down_payment',
+        subtitleX: 'purchase_order_down_payment',
         iconPath: 'shopping-list',
       );
   static Entity get purchaseOrderDetail => const Entity(
