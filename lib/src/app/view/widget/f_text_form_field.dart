@@ -81,6 +81,7 @@ class FTextFormField extends FormField<String> {
                           ),
                   ),
                 );
+                
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,

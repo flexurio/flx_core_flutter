@@ -172,6 +172,7 @@ class FDropDownSearch<T> extends StatelessWidget {
             filled: true,
             fillColor: backgroundColor,
             enabledBorder: border,
+            disabledBorder: border,
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: theme.colorScheme.primary,
@@ -190,6 +191,7 @@ class FDropDownSearch<T> extends StatelessWidget {
             fontSize: 10,
           ),
           enabledBorder: border,
+          disabledBorder: border,
           errorBorder: borderError,
           border: border,
           filled: true,
