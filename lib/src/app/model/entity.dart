@@ -404,6 +404,11 @@ class Entity extends EntityY {
         subtitleX: '',
         iconPath: 'sales-order',
       );
+  static Entity get salesOrderDocument => const Entity(
+        titleX: 'sales_order_document',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
   static Entity get pendingRequestsRecap => const Entity(
         titleX: 'pending_requests_recap',
         subtitleX: 'pending_requests_recap',
