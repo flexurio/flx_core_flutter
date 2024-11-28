@@ -38,7 +38,8 @@ class MenuPage extends StatefulWidget {
     required String accountSubtitle,
     required void Function() onLogout,
     required void Function(BuildContext context) onChangePassword,
-    required List<Widget> Function(BuildContext context, String query) searchData,
+    required List<Widget> Function(BuildContext context, String query)
+        searchData,
   }) {
     return MultiBlocProvider(
       providers: [
@@ -64,6 +65,20 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPageState extends State<MenuPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Widget _buildContent(ScreenIdentifier screenIdentifier) {
+    return Stack(
+      children: [
+        MenuContent(appName: widget.appName),
+        _buildTopBar(),
+        _buildSideNav(screenIdentifier),
+        const Align(
+          alignment: Alignment.bottomRight,
+          child: VersionInfo(),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,16 +128,9 @@ class _MenuPageState extends State<MenuPage> {
                     menu: widget.menu,
                     accountPermission: widget.accountPermissions,
                   ),
-                  body: Stack(
-                    children: [
-                      MenuContent(appName: widget.appName),
-                      _buildTopBar(),
-                      _buildSideNav(screenIdentifier),
-                      const Align(
-                        alignment: Alignment.bottomRight,
-                        child: VersionInfo(),
-                      ),
-                    ],
+                  body: _Boxed(
+                    enabled: false,
+                    child: _buildContent(screenIdentifier),
                   ),
                 );
               },
@@ -169,6 +177,44 @@ class _MenuPageState extends State<MenuPage> {
       drawerTriggered: () {
         _scaffoldKey.currentState?.openDrawer();
       },
+    );
+  }
+}
+
+class _Boxed extends StatelessWidget {
+  const _Boxed({
+    required this.enabled,
+    required this.child,
+  });
+
+  final bool enabled;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!enabled) return child;
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(40),
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 40,
+              ),
+            ],
+            borderRadius: BorderRadius.circular(24),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: child,
+          ),
+        ),
+      ),
     );
   }
 }
