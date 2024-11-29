@@ -221,12 +221,22 @@ class Entity extends EntityY {
         iconPath: 'bill',
       );
   static Entity get materialReturn => const Entity(
-        titleX: 'Material Return',
+        titleX: 'material_return',
+        subtitleX: '',
+        iconPath: 'material-return',
+      );
+  static Entity get materialReturnExternal => const Entity(
+        titleX: 'material_return_external',
         subtitleX: '',
         iconPath: 'material-return',
       );
   static Entity get materialReturnDetail => const Entity(
-        titleX: 'Material Return Detail',
+        titleX: 'material_return_detail',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
+  static Entity get materialReturnDetailExternal => const Entity(
+        titleX: 'material_return_detail_external',
         subtitleX: '',
         iconPath: 'bill',
       );
