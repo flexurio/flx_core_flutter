@@ -400,8 +400,13 @@ class Entity extends EntityY {
   static Entity get role =>
       const Entity(titleX: 'Role', subtitleX: '', iconPath: 'bill');
   static Entity get salesOrder => const Entity(
-        titleX: 'Sales Order',
-        subtitleX: '',
+        titleX: 'sales_order',
+        subtitleX: 'sales_order',
+        iconPath: 'sales-order',
+      );
+        static Entity get productRequestOther => const Entity(
+        titleX: 'product_request_other',
+        subtitleX: 'product_request_other',
         iconPath: 'sales-order',
       );
   static Entity get salesOrderDocument => const Entity(
