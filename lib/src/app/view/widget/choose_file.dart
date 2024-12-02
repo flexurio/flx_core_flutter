@@ -114,20 +114,21 @@ class _ChooseFileState extends State<ChooseFile> {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Stack(
+        clipBehavior: Clip.none, // Pastikan widget tidak dipotong
         children: [
           FileIcon(
             extension: file.extension!,
             name: file.name,
           ),
-          InkWell(
-            onTap: () {
-              setState(() {
-                _files.remove(file);
-              });
-            },
-            child: Positioned(
-              right: 6,
-              top: 6,
+          Positioned(
+            right: -6,
+            top: -6,
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  _files.remove(file);
+                });
+              },
               child: Container(
                 padding: const EdgeInsets.all(1),
                 decoration: BoxDecoration(
@@ -135,15 +136,13 @@ class _ChooseFileState extends State<ChooseFile> {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 constraints: const BoxConstraints(
-                  minWidth: 4,
-                  minHeight: 4,
+                  minWidth: 12,
+                  minHeight: 12,
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.all(1),
-                  child: Icon(
-                    Icons.close,
-                    color: Colors.white,
-                  ),
+                child: const Icon(
+                  Icons.close,
+                  color: Colors.white,
+                  size: 12,
                 ),
               ),
             ),
