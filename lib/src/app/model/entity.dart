@@ -168,8 +168,7 @@ class Entity extends EntityY {
       );
   static Entity get materialGroup => const Entity(
         titleX: 'material_group',
-        subtitleX:
-            'Master menu that includes a list of material groups as the basis for classifying materials',
+        subtitleX: 'material_group',
         iconPath: 'material-group',
       );
   static Entity get purchaseRequest => const Entity(
@@ -251,13 +250,15 @@ class Entity extends EntityY {
         iconPath: 'shopping-list',
       );
   static Entity get materialType => const Entity(
-        titleX: 'Material Type',
-        subtitleX:
-            'Master menu that includes a list of material types as the basis for classifying materials',
+        titleX: 'material_type',
+        subtitleX: 'material_type',
         iconPath: 'material-type',
       );
-  static Entity get materialUnit =>
-      const Entity(titleX: 'Material Unit', subtitleX: '', iconPath: 'bill');
+  static Entity get materialUnit => const Entity(
+        titleX: 'material_unit',
+        subtitleX: 'material_unit',
+        iconPath: 'bill',
+      );
   static Entity get materialAnalysis => const Entity(
         titleX: 'Material Analysis',
         subtitleX: '',
@@ -414,7 +415,7 @@ class Entity extends EntityY {
         subtitleX: 'sales_order',
         iconPath: 'sales-order',
       );
-        static Entity get productRequestOther => const Entity(
+  static Entity get productRequestOther => const Entity(
         titleX: 'product_request_other',
         subtitleX: 'product_request_other',
         iconPath: 'sales-order',
