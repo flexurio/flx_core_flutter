@@ -1,5 +1,6 @@
 import 'package:animated_check/animated_check.dart';
 import 'package:animated_cross/animated_cross.dart';
+import 'package:clipboard/clipboard.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flexurio_erp_core/flexurio_erp_core.dart';
 import 'package:flutter/material.dart';
@@ -250,4 +251,62 @@ class ToastRepository {
       'error.must_be_greater_than_zero'.tr(namedArgs: {'data': data.tr()}),
     );
   }
+}
+
+Future<void> showSuccessWithId({
+  required BuildContext context,
+  required Entity entity,
+  required String id,
+}) async {
+  final textStyle = Theme.of(context).textTheme.bodyLarge;
+  await showDialog<bool?>(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return CardForm(
+        popup: true,
+        title: 'Success',
+        icon: Icons.check,
+        actions: [
+          Button(
+            action: DataAction.close,
+            permission: null,
+            isSecondary: true,
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'The ${entity.id.tr()} has been created!\nwith ID: ',
+                    style: textStyle,
+                  ),
+                  TextSpan(
+                    text: id,
+                    style: textStyle!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Gap(12),
+            LightButton(
+              action: DataAction.copyId,
+              permission: null,
+              onPressed: () {
+                FlutterClipboard.copy(id).then(
+                  (value) => Toast(context).notify('Copied to clipboard'),
+                );
+              },
+            ).pullRight(),
+          ],
+        ),
+      );
+    },
+  );
 }
