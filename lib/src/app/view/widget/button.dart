@@ -222,6 +222,7 @@ class LightButton extends StatelessWidget {
     super.key,
     this.onPressed,
     this.title,
+    this.isInProgress = false,
   });
   final void Function()? onPressed;
 
@@ -229,6 +230,7 @@ class LightButton extends StatelessWidget {
   final DataAction action;
   final EntityY? entity;
   final String? title;
+  final bool isInProgress;
 
   @override
   Widget build(BuildContext context) {
@@ -278,17 +280,19 @@ class LightButton extends StatelessWidget {
                 : foregroundColor,
           ),
         ),
-        onPressed: onPressed,
+        onPressed: isInProgress ? null : onPressed,
         child: Row(
           children: [
             IconTheme(
               data: const IconThemeData(size: 18),
-              child: Icon(
-                action.icon,
-                color: noAction
-                    ? theme.modeCondition(Colors.grey, Colors.white10)
-                    : action.color,
-              ),
+              child: isInProgress
+                  ? const CupertinoActivityIndicator()
+                  : Icon(
+                      action.icon,
+                      color: noAction
+                          ? theme.modeCondition(Colors.grey, Colors.white10)
+                          : action.color,
+                    ),
             ),
             const Gap(6),
             Text(titleX),

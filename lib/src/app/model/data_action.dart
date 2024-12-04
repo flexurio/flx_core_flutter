@@ -100,9 +100,10 @@ enum DataAction {
   search('search', Icons.search, Colors.blue),
   setStandardHour('set_standard_hour', FontAwesomeIcons.clock, Colors.blue),
   submit('submit', Icons.check, Colors.lightBlue),
-  undoConfirm('undo_confirm', Icons.check, Colors.green),
-  undoConfirmAccounting('undo_confirm_accounting', Icons.check, Colors.green),
-  undoConfirmPPIC('undo_confirm_ppic', Icons.restart_alt, Colors.purple),
+  undoConfirm('undo_confirm', Icons.undo_rounded, Colors.blueGrey),
+  undoConfirmAccounting(
+      'undo_confirm_accounting', Icons.undo_rounded, Colors.blueGrey),
+  undoConfirmPPIC('undo_confirm_ppic', Icons.undo_rounded, Colors.blueGrey),
   update('Update', Icons.edit_outlined, Colors.orange),
   updateActualEnd('Update Actual End', Icons.calendar_month, Colors.orange),
   updateActualStart('Update Actual Start', Icons.calendar_month, Colors.green),
@@ -141,8 +142,8 @@ enum DataAction {
 
   undoConfirmMarketing(
     'Undo Confirm Marketing',
-    Icons.restart_alt,
-    Colors.purple,
+    Icons.undo_rounded,
+    Colors.blueGrey,
   ),
   cancelRework(
     'Cancel Rework',
