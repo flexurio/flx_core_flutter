@@ -357,17 +357,17 @@ class Entity extends EntityY {
         iconPath: 'bill',
       );
   static Entity get productReturn => const Entity(
-        titleX: 'Product Return',
+        titleX: 'product_return',
         subtitleX: '',
         iconPath: 'shopping-list',
       );
   static Entity get productReturnCheck => const Entity(
-        titleX: 'Product Return Check',
+        titleX: 'product_return_check',
         subtitleX: '',
         iconPath: 'shopping-list',
       );
   static Entity get productReturnDetail => const Entity(
-        titleX: 'Product Return Detail',
+        titleX: 'product_return_detail',
         subtitleX: '',
         iconPath: 'shopping-list',
       );

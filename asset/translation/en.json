@@ -162,6 +162,8 @@
     "product_receive": "Product Receive",
     "product_request": "Product Request",
     "product_return": "Product Return",
+    "product_return_check": "Product Return Check",
+    "product_return_detail": "Product Return Detail",
     "purchase_order": "Purchase Order",
     "purchase_request": "Purchase Request",
     "quantity": "Jumlah",
