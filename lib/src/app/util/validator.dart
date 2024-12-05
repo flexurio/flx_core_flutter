@@ -35,24 +35,24 @@ class MinNumberValidator extends TextFieldValidator {
 }
 
 class RangeValueValidator extends TextFieldValidator {
-  final double? minValue;
-  final double? maxValue;
 
   RangeValueValidator({
     this.minValue,
     this.maxValue,
     String? errorText,
   }) : super(errorText ?? _defaultErrorText(minValue, maxValue));
+  final double? minValue;
+  final double? maxValue;
 
   static String _defaultErrorText(double? min, double? max) {
     if (min != null && max != null) {
-      return "Value must be between $min and $max";
+      return 'Value must be between $min and $max';
     } else if (min != null) {
-      return "Value must be at least $min";
+      return 'Value must be at least $min';
     } else if (max != null) {
-      return "Value must not exceed $max";
+      return 'Value must not exceed $max';
     } else {
-      return "Invalid value";
+      return 'Invalid value';
     }
   }
 

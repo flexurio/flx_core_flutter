@@ -7,7 +7,6 @@ part 'menu_event.dart';
 part 'menu_state.dart';
 
 class MenuBloc extends Bloc<MenuEvent, MenuState> {
-  static MenuBloc instance = MenuBloc();
   MenuBloc()
       : super(
           const MenuState(
@@ -73,4 +72,5 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       );
     });
   }
+  static MenuBloc instance = MenuBloc();
 }

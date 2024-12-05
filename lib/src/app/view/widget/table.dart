@@ -224,19 +224,18 @@ class _TableData extends StatelessWidget {
   }
 }
 
-class TableWithBodyScroll extends StatelessWidget {
+class TableWithBodyScroll extends StatelessWidget {  // Add the border parameter
+
+  const TableWithBodyScroll({
+    required this.children, super.key,
+    this.columnWidths,
+    this.heightBody,
+    this.border,  // Add border in constructor
+  });
   final Map<int, TableColumnWidth>? columnWidths;
   final List<TableRow> children;
   final double? heightBody;
-  final TableBorder? border;  // Add the border parameter
-
-  const TableWithBodyScroll({
-    Key? key,
-    this.columnWidths,
-    required this.children,
-    this.heightBody,
-    this.border,  // Add border in constructor
-  }) : super(key: key);
+  final TableBorder? border;
 
   @override
   Widget build(BuildContext context) {

@@ -17,23 +17,6 @@ final currencyFormatterNoDecimal = CurrencyTextInputFormatter.currency(
 );
 
 class FTextFormField extends FormField<String> {
-  static Widget decimal({
-    required String labelText,
-    required TextEditingController controller,
-    String? Function(String?)? validator,
-    bool enabled = true,
-  }) {
-    return FTextFormField(
-      enabled: enabled,
-      labelText: labelText,
-      controller: controller,
-      validator: validator,
-      isNumeric: true,
-      inputFormatters: [
-        DecimalInputFormatter(),
-      ],
-    );
-  }
 
   FTextFormField({
     super.key,
@@ -145,6 +128,23 @@ class FTextFormField extends FormField<String> {
             );
           },
         );
+  static Widget decimal({
+    required String labelText,
+    required TextEditingController controller,
+    String? Function(String?)? validator,
+    bool enabled = true,
+  }) {
+    return FTextFormField(
+      enabled: enabled,
+      labelText: labelText,
+      controller: controller,
+      validator: validator,
+      isNumeric: true,
+      inputFormatters: [
+        DecimalInputFormatter(),
+      ],
+    );
+  }
 
   final void Function()? onEditingComplete;
   final String? errorText;

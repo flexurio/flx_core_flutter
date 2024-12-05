@@ -7,8 +7,8 @@ class FileButton extends StatelessWidget {
     required this.bytes,
     required this.onTap,
     this.onRemove,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final String fileName;
   final List<int> bytes;
   final void Function(List<int> bytes, String fileName) onTap;
@@ -40,8 +40,8 @@ class FileButton extends StatelessWidget {
             right: 0,
             top: 0,
             child: InkWell(
-              child: const Icon(Icons.close),
               onTap: onRemove,
+              child: const Icon(Icons.close),
             ),
           ),
       ],

@@ -5,11 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class SearchDialog extends StatefulWidget {
-  const SearchDialog({
-    required this.onTap,
-    required this.menu,
-    required this.permissions,
-    required this.searchData,
+  const SearchDialog({required this.onTap, required this.menu, required this.permissions, required this.searchData, super.key,
   });
   final void Function(Menu3, String) onTap;
   final List<Menu1> menu;

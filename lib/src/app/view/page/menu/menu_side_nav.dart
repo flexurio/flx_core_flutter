@@ -249,7 +249,7 @@ List<Menu1> filterMenuByPermission({
       }
     }
     return menu1Filtered;
-  } catch (e, s) {
+  } catch (e) {
     return [];
   }
 }
