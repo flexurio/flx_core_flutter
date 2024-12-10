@@ -21,7 +21,7 @@ dependencies:
   pdf: ^3.8.4
   package_info_plus: ^8.0.0
   currency_text_input_formatter: ^2.1.10
-  syncfusion_flutter_datepicker: ^27.1.53
+  syncfusion_flutter_datepicker: ^27.2.5
   timeline_tile: ^2.0.0
   animated_check: ^1.0.2
   flutter_svg: ^2.0.5
@@ -32,7 +32,7 @@ dependencies:
   month_picker_dialog: ^4.0.1
   file_picker: ^5.2.5
   dotted_border: ^2.1.0
-  syncfusion_flutter_charts: ^27.1.53
+  syncfusion_flutter_charts: ^27.2.5
   fluttertoast: ^8.0.8
   clipboard: ^0.1.3
   dropdown_search: ^5.0.5
@@ -47,7 +47,7 @@ dependencies:
   screen_identifier: ^0.0.2
   side_panel: ^0.0.1
   form_field_validator: ^1.1.0
-  syncfusion_flutter_xlsio: ^27.1.53
+  syncfusion_flutter_xlsio: ^27.2.5
   printing: ^5.10.4
   go_router: ^14.3.0
  
