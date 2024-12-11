@@ -30,10 +30,14 @@ class PageOptions<T> {
     );
   }
 
-  factory PageOptions.emptyNoLimit({bool? ascending, String? sortBy}) {
+  factory PageOptions.emptyNoLimit({
+    bool? ascending,
+    String? sortBy,
+    String? search,
+  }) {
     return PageOptions<T>(
       page: 1,
-      search: '',
+      search: search ?? '',
       sortBy: sortBy ?? 'created_at',
       totalRows: 0,
       ascending: ascending ?? false,
