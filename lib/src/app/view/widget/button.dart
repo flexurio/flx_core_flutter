@@ -145,7 +145,7 @@ class IconButtonSmall extends StatelessWidget {
     this.tooltipMessage,
     super.key,
   });
-  final void Function() onPressed;
+  final void Function()? onPressed;
   final DataAction action;
   final String? permission;
   final String? tooltipMessage;
