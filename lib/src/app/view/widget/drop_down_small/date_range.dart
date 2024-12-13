@@ -65,10 +65,18 @@ class _DropDownSmallDateRangeState extends State<DropDownSmallDateRange> {
                   widget.onChanged.call(dates);
                   _selectedDateRange = dates;
                   setState(() {});
-                  Navigator.pop(context);
                 },
               ),
             ),
+            Button(
+              color: theme.colorScheme.primary,
+              isSecondary: true,
+              action: DataAction.ok,
+              permission: null,
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ).pullRight(),
           ],
         );
       },

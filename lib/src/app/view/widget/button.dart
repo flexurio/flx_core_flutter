@@ -83,7 +83,7 @@ class Button extends StatelessWidget {
       ),
       foregroundColor: WidgetStateProperty.all(
         color == Colors.white || isSecondary
-            ? Colors.grey[600]
+            ? (isSecondary ? (color ?? Colors.grey[600]) : Colors.grey[600])
             : theme.modeCondition(
                 Colors.white,
                 onPressed == null ? Colors.white12 : Colors.white,
