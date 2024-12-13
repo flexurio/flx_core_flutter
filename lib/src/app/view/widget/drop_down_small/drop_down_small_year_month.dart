@@ -124,7 +124,7 @@ class _DropDownSmallDateState extends State<DropDownSmallDate> {
                   child: DatePicker(
                     initialSelectedDate: _dateTimeSelected,
                     maxDate: widget.maxDate,
-                    onChange: (date) {
+                    onChangeSingle: (date) {
                       widget.onChanged.call(date);
                       _dateTimeSelected = date;
                       setState(() {});

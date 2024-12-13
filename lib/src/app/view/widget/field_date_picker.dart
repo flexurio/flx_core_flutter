@@ -57,7 +57,7 @@ class _FieldDatePickerState extends State<FieldDatePicker> {
                 initialSelectedDate: _dateTimeSelected,
                 maxDate: widget.maxDate,
                 minDate: widget.minDate,
-                onChange: (value) {
+                onChangeSingle: (value) {
                   widget.controller.text = value.yMMMMd;
                   widget.onChanged?.call(value);
                   _dateTimeSelected = value;
@@ -101,16 +101,20 @@ class _FieldDatePickerState extends State<FieldDatePicker> {
 
 class DatePicker extends StatelessWidget {
   const DatePicker({
-    required this.onChange,
+    this.onChangeSingle,
     super.key,
     this.maxDate,
     this.initialSelectedDate,
     this.minDate,
+    this.selectionMode = DateRangePickerSelectionMode.single,
+    this.onChangeRange,
   });
   final DateTime? maxDate;
   final DateTime? minDate;
   final DateTime? initialSelectedDate;
-  final void Function(DateTime value) onChange;
+  final void Function(DateTime value)? onChangeSingle;
+  final void Function(DateTimeRange value)? onChangeRange;
+  final DateRangePickerSelectionMode selectionMode;
 
   @override
   Widget build(BuildContext context) {
@@ -119,11 +123,12 @@ class DatePicker extends StatelessWidget {
 
     final monthCellBackground =
         isDark ? const Color(0xFF232731) : Colors.blue[100]!.withOpacity(.3);
-    const indicatorColor = Color(0xFF1AC4C7);
-    const highlightColor = Colors.blue;
+    final indicatorColor = theme.colorScheme.secondary;
+    final highlightColor = theme.colorScheme.primary;
     final cellTextColor = isDark ? Colors.white70 : const Color(0xFF130438);
 
     return SfDateRangePicker(
+      selectionMode: selectionMode,
       selectionShape: DateRangePickerSelectionShape.rectangle,
       selectionColor: highlightColor,
       selectionTextStyle: TextStyle(
@@ -143,10 +148,16 @@ class DatePicker extends StatelessWidget {
         ),
       ),
       onSelectionChanged: (args) {
-        final selectedDate = args.value as DateTime;
-        onChange(selectedDate);
+        if (args.value is DateTime) {
+          final selectedDate = args.value as DateTime;
+          onChangeSingle?.call(selectedDate);
+        } else if (selectionMode is PickerDateRange) {
+          final selectedRange = args.value as DateTimeRange;
+          onChangeRange?.call(selectedRange);
+        }
       },
       initialSelectedDate: initialSelectedDate,
+      rangeSelectionColor: theme.colorScheme.primary.withOpacity(.4),
       monthCellStyle: DateRangePickerMonthCellStyle(
         cellDecoration: _MonthCellDecoration(
           borderColor: Colors.red,
@@ -169,13 +180,13 @@ class DatePicker extends StatelessWidget {
         disabledDatesTextStyle: TextStyle(
           color: isDark ? const Color(0xFF666479) : Colors.blue[100],
         ),
-        weekendTextStyle: const TextStyle(color: highlightColor),
+        weekendTextStyle: TextStyle(color: highlightColor),
         textStyle: TextStyle(color: cellTextColor, fontSize: 14),
         specialDatesTextStyle: TextStyle(color: cellTextColor, fontSize: 14),
-        todayTextStyle: const TextStyle(color: highlightColor, fontSize: 14),
+        todayTextStyle: TextStyle(color: highlightColor, fontSize: 14),
       ),
       yearCellStyle: DateRangePickerYearCellStyle(
-        todayTextStyle: const TextStyle(color: highlightColor, fontSize: 14),
+        todayTextStyle: TextStyle(color: highlightColor, fontSize: 14),
         textStyle: TextStyle(color: cellTextColor, fontSize: 14),
         disabledDatesTextStyle: TextStyle(
           color: isDark ? const Color(0xFF666479) : const Color(0xffe2d7fe),
