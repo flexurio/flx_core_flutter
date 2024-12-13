@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flexurio_erp_core/flexurio_erp_core.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -9,27 +8,29 @@ class DropDownSmallDateRange extends StatefulWidget {
     required this.onChanged,
     this.initialValue,
     this.maxDate,
+    this.minDate,
     super.key,
   });
 
   final String labelText;
-  final DateTime? initialValue;
+  final PickerDateRange? initialValue;
   final DateTime? maxDate;
-  final void Function(DateTimeRange dateRange) onChanged;
+  final DateTime? minDate;
+  final void Function(PickerDateRange dateRange) onChanged;
 
   @override
   State<DropDownSmallDateRange> createState() => _DropDownSmallDateRangeState();
 }
 
 class _DropDownSmallDateRangeState extends State<DropDownSmallDateRange> {
-  DateTimeRange? _selectedDateRange;
+  PickerDateRange? _selectedDateRange;
   String? value;
 
   @override
   void initState() {
     super.initState();
     value = widget.initialValue != null
-        ? DateFormat.yMMMM().format(widget.initialValue!)
+        ? '${widget.initialValue!.startDate?.ddMMyyyySlash} - ${widget.initialValue!.endDate?.ddMMyyyySlash}'
         : null;
   }
 
@@ -53,14 +54,18 @@ class _DropDownSmallDateRangeState extends State<DropDownSmallDateRange> {
               height: 400,
               width: 300,
               child: DatePicker(
-                // initialSelectedDate: _dateTimeSelected,
+                selectionMode: DateRangePickerSelectionMode.range,
+                initialSelectedDateRange: _selectedDateRange,
                 maxDate: widget.maxDate,
-                // minDate: widget.minDate,
-                onChangeSingle: (value) {
-                  // widget.controller.text = value.yMMMMd;
-                  // widget.onChanged?.call(value);
-                  // _dateTimeSelected = value;
-                  // Navigator.pop(context);
+                minDate: widget.minDate,
+                onChangeRange: (dates) {
+                  if (dates.startDate == null || dates.endDate == null) return;
+                  value =
+                      '${dates.startDate?.ddMMyyyySlash} - ${dates.endDate?.ddMMyyyySlash}';
+                  widget.onChanged.call(dates);
+                  _selectedDateRange = dates;
+                  setState(() {});
+                  Navigator.pop(context);
                 },
               ),
             ),

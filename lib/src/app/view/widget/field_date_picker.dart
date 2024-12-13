@@ -105,15 +105,17 @@ class DatePicker extends StatelessWidget {
     super.key,
     this.maxDate,
     this.initialSelectedDate,
+    this.initialSelectedDateRange,
     this.minDate,
     this.selectionMode = DateRangePickerSelectionMode.single,
     this.onChangeRange,
   });
   final DateTime? maxDate;
   final DateTime? minDate;
+  final PickerDateRange? initialSelectedDateRange;
   final DateTime? initialSelectedDate;
   final void Function(DateTime value)? onChangeSingle;
-  final void Function(DateTimeRange value)? onChangeRange;
+  final void Function(PickerDateRange value)? onChangeRange;
   final DateRangePickerSelectionMode selectionMode;
 
   @override
@@ -151,8 +153,8 @@ class DatePicker extends StatelessWidget {
         if (args.value is DateTime) {
           final selectedDate = args.value as DateTime;
           onChangeSingle?.call(selectedDate);
-        } else if (selectionMode is PickerDateRange) {
-          final selectedRange = args.value as DateTimeRange;
+        } else if (args.value is PickerDateRange) {
+          final selectedRange = args.value as PickerDateRange;
           onChangeRange?.call(selectedRange);
         }
       },

@@ -103,6 +103,8 @@ class _DropDownSmallDateState extends State<DropDownSmallDate> {
         : null;
     return InkWell(
       onTap: () {
+        final theme = Theme.of(context);
+
         showDialog<void>(
           context: context,
           builder: (context) {
