@@ -147,6 +147,7 @@ class Permission {
   static String paymentViewMenu = 'payment_view_menu';
   static String paymentCreate = 'payment_create';
   static String paymentExportPdf = 'payment_export_pdf';
+  static String paymentBankReceiptPdf = 'payment_bank_receipt_export_pdf';
   static String paymentSalesCreate = 'payment_sales_create';
   static String paymentSalaryUpload = 'payment_salary_upload';
 
