@@ -147,6 +147,8 @@
     "parent": "Parent",
     "payment": "Payment",
     "payment_salary": "Payment Salary",
+    "payment_bank_receipt": "Payment Bank Receipt",
+    "print_bank_receipt": "Print Bank Receipt",
     "payment_type": "Payment Type",
     "percent_discount": "Discount Percent",
     "percent_ppn": "PPN Percent",

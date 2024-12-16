@@ -147,6 +147,8 @@
     "parent": "Induk",
     "payment": "Pembayaran",
     "payment_salary": "Pembayaran Gaji",
+    "payment_bank_receipt": "Tanda Terima Bank",
+    "print_bank_receipt": "Cetak Tanda Terima Bank",
     "payment_type": "Tipe Pembayaran",
     "percent_discount": "Persen Diskon",
     "percent_ppn": "Persen PPN",
