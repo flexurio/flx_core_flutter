@@ -13,6 +13,7 @@ class SingleFormPanel extends StatelessWidget {
     this.formKey,
     this.visibleBackButton = true,
     this.size = SingleFormPanelSize.normal,
+    this.padding,
   });
 
   final DataAction action;
@@ -23,6 +24,7 @@ class SingleFormPanel extends StatelessWidget {
   final String suffixText;
   final bool visibleBackButton;
   final SingleFormPanelSize size;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -52,20 +54,23 @@ class SingleFormPanel extends StatelessWidget {
                       visibleBackButton: visibleBackButton,
                     ),
                   ),
-                  Container(
-                    height: 30,
-                    decoration: BoxDecoration(
-                      color: theme.cardColor,
-                      borderRadius:
-                          const BorderRadius.vertical(top: Radius.circular(30)),
+                  if (padding == null)
+                    Container(
+                      height: 30,
+                      decoration: BoxDecoration(
+                        color: theme.cardColor,
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(30),
+                        ),
+                      ),
                     ),
-                  ),
                   ColoredBox(
                     color: theme.cardColor,
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          padding: padding ??
+                              const EdgeInsets.symmetric(horizontal: 24),
                           child: FormAction(
                             formKey: formKey,
                             actions: actions,

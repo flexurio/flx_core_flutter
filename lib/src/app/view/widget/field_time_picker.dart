@@ -11,6 +11,8 @@ class FieldTimePicker extends StatefulWidget {
     this.initialSelectedTime,
     this.validator,
     this.enabled = true,
+    this.minDate,
+    this.maxDate,
   });
 
   final bool enabled;
@@ -19,6 +21,8 @@ class FieldTimePicker extends StatefulWidget {
   final TextEditingController controller;
   final void Function(DateTime value)? onChanged;
   final String? Function(DateTime?)? validator;
+  final DateTime? minDate;
+  final DateTime? maxDate;
 
   @override
   State<FieldTimePicker> createState() => _FieldTimePickerState();
@@ -49,8 +53,8 @@ class _FieldTimePickerState extends State<FieldTimePicker> {
     final selectedDate = await showDatePicker(
       initialDate: widget.initialSelectedTime,
       context: context,
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2100),
+      firstDate: widget.minDate ?? DateTime(1900),
+      lastDate: widget.maxDate ?? DateTime(2100),
       confirmText: 'Apply',
       initialEntryMode: DatePickerEntryMode.calendarOnly,
       builder: (context, child) {
