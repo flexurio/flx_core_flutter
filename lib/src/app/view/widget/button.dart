@@ -158,7 +158,7 @@ class IconButtonSmall extends StatelessWidget {
         message: tooltipMessage ?? action.title,
         child: TextButton(
           style: ButtonStyle(
-            foregroundColor: WidgetStateProperty.all(action.color),
+            iconColor: WidgetStateProperty.all(action.color),
             overlayColor: WidgetStateProperty.all(action.color.withOpacity(.1)),
           ),
           onPressed: onPressed,
