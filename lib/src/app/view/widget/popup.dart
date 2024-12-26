@@ -11,12 +11,14 @@ class CardForm extends StatelessWidget {
     required this.child,
     super.key,
     this.popup = false,
+    this.danger = false,
   });
   final String title;
   final IconData icon;
   final Widget child;
   final List<Widget> actions;
   final bool popup;
+  final bool danger;
 
   @override
   Widget build(BuildContext context) {
@@ -35,17 +37,24 @@ class CardForm extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
+                      color: danger ? Colors.white : null,
                     ),
                   ),
                   const Spacer(),
-                  Icon(icon, color: const Color(0XFFAFABBC)),
+                  Icon(icon, color: danger ? Colors.white : Color(0XFFAFABBC)),
                 ],
               ),
               const SizedBox(height: 20),
-              child,
+              DefaultTextStyle(
+                style: theme.textTheme.bodyMedium!.copyWith(
+                  fontSize: 16,
+                  color: danger ? Colors.red.shade50 : null,
+                ),
+                child: child,
+              ),
             ],
           ),
         ),
@@ -53,7 +62,11 @@ class CardForm extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: BoxDecoration(
-            color: theme.isDark ? MyTheme.black06dp : const Color(0XFFF8F7FB),
+            color: danger
+                ? Colors.red.shade100
+                : (theme.isDark
+                    ? const Color.fromARGB(255, 81, 81, 82)
+                    : const Color(0XFFF8F7FB)),
             borderRadius: const BorderRadius.vertical(
               bottom: Radius.circular(20),
             ),
@@ -69,7 +82,7 @@ class CardForm extends StatelessWidget {
     if (popup) {
       const borderRadiusCard = 20.0;
       return SimpleDialog(
-        backgroundColor: theme.cardColor,
+        backgroundColor: danger ? Colors.red : theme.cardColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadiusCard),
         ),
@@ -93,12 +106,14 @@ class CardConfirmation extends StatelessWidget {
     required this.onConfirm,
     super.key,
     this.label,
+    this.danger = false,
   });
 
   final bool isProgress;
   final DataAction action;
   final Entity data;
   final String? label;
+  final bool danger;
   final void Function() onConfirm;
 
   @override
@@ -108,6 +123,7 @@ class CardConfirmation extends StatelessWidget {
     final primaryColor = theme.colorScheme.primary;
     return CardForm(
       popup: true,
+      danger: danger,
       title: 'are_you_sure'.tr(),
       icon: FontAwesomeIcons.exclamationTriangle,
       actions: [
