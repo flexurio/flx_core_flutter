@@ -139,7 +139,8 @@ class CardConfirmation extends StatelessWidget {
         const SizedBox(width: 10),
         Button(
           permission: null,
-          color: action == DataAction.delete ? Colors.red : primaryColor,
+          color:
+              action == DataAction.delete || danger ? Colors.red : primaryColor,
           isInProgress: isProgress,
           onPressed: onConfirm,
           action: action,
