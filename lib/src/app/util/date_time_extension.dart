@@ -38,6 +38,10 @@ extension DateTimeExtension on DateTime {
     return DateFormat('dd-MM-yyyy').format(this);
   }
 
+  String get ddMMMMy {
+    return DateFormat('dd MMMM y').format(this);
+  }
+
   String get ddMMyyyySlash {
     return DateFormat('dd/MM/yyyy').format(this);
   }
