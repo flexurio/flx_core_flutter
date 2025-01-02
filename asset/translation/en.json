@@ -277,6 +277,7 @@
     "balance_group": "Balance Group",
     "number": "Number",
     "petty_cash": "Petty Cash",
+    "role": "Role",
     "employee_cost": "Employee Cost",
     "export_pdf": "Export PDF",
     "operational_cost": "Operational Cost",
@@ -310,7 +311,8 @@
         "journal_estimation_type": "Manage various types of journal estimation",
         "stage_process": "Summary of the production stage involving various stages and sub-stages of production",
         "production_stage": "A comprehensive view of all stages involved in the production process, allowing users to monitor and manage each phase effectively",
-        "production_machine": "Master menu containing a list of machine to be used in production process"
+        "production_machine": "Master menu containing a list of machine to be used in production process",
+        "role": "Master menu for registering department roles"
     },
     "preview": "Preview"
 }
