@@ -409,7 +409,7 @@ class Entity extends EntityY {
         iconPath: 'bill',
       );
   static Entity get role =>
-      const Entity(titleX: 'Role', subtitleX: '', iconPath: 'bill');
+      const Entity(titleX: 'role', subtitleX: 'role', iconPath: 'asset-type');
   static Entity get salesOrder => const Entity(
         titleX: 'sales_order',
         subtitleX: 'sales_order',

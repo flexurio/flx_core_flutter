@@ -277,6 +277,7 @@
     "balance_group": "Grup Saldo",
     "number": "Nomor",
     "petty_cash": "Uang kecil",
+    "role": "Peran",
     "employee_cost": "Biaya Karyawan",
     "export_pdf": "Ekspor PDF",
     "operational_cost": "Biaya Operasional",
@@ -310,7 +311,8 @@
         "journal_estimation_type": "Kelola berbagai jenis estimasi jurnal",
         "stage_process": "Rangkuman tahapan produksi yang melibatkan berbagai tahapan dan sub tahapan produksi",
         "production_stage": "Pandangan komprehensif tentang semua tahapan yang terlibat dalam proses produksi, memungkinkan pengguna untuk memantau dan mengelola setiap tahapan secara efektif",
-        "production_machine": "Menu master yang berisi daftar mesin yang akan digunakan dalam proses produksi"
+        "production_machine": "Menu master yang berisi daftar mesin yang akan digunakan dalam proses produksi",
+        "role": "Menu master untuk mendaftarkan peran departemen"
     },
     "preview": "Pratinjau"
 }
