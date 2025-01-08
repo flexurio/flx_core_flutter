@@ -8,27 +8,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 
 class Message {
-  /// Message shown when an entity has been successfully created.
-  ///
-  /// The [data] parameter contains the created entity.
-  ///
-  /// Returns a string containing a success message.
   static String successCreated(Entity data) =>
       'Success! The new ${data.id.tr()} has been created and added to the database.';
 
-  /// Message shown when an entity has been successfully updated.
-  ///
-  /// The [data] parameter contains the updated entity.
-  ///
-  /// Returns a string containing a success message.
   static String successUpdated(Entity data) =>
       'Success! The ${data.id.tr()} information has been successfully updated.';
 
-  /// Message shown when an entity has been successfully deleted.
-  ///
-  /// The [data] parameter contains the deleted entity.
-  ///
-  /// Returns a string containing a success message.
   static String successDeleted(Entity data) =>
       'Success! The ${data.id.tr()} has been deleted from the database.';
 }

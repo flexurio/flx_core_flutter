@@ -11,6 +11,41 @@ class RequiredObjectValidator<T> extends FieldValidator<T> {
   }
 }
 
+class LengthValidator extends TextFieldValidator {
+  LengthValidator({
+    this.minLength,
+    this.maxLength,
+    String? errorText,
+  }) : super(errorText ?? _generateErrorText(minLength, maxLength));
+
+  final int? minLength;
+  final int? maxLength;
+
+  @override
+  bool get ignoreEmptyValues => false;
+
+  @override
+  bool isValid(String? value) {
+    if (value == null) return false;
+    final length = value.length;
+    final isMinValid = minLength == null || length >= minLength!;
+    final isMaxValid = maxLength == null || length <= maxLength!;
+    return isMinValid && isMaxValid;
+  }
+
+  static String _generateErrorText(int? minLength, int? maxLength) {
+    if (minLength != null && maxLength != null) {
+      return 'Value must be between $minLength and $maxLength';
+    } else if (minLength != null) {
+      return 'Value must be at least $minLength';
+    } else if (maxLength != null) {
+      return 'Value must be at most $maxLength';
+    } else {
+      return 'Invalid value';
+    }
+  }
+}
+
 class MinNumberValidator extends TextFieldValidator {
   MinNumberValidator({required this.minNumber})
       : super('Value must be greater than or equal to $minNumber');
@@ -35,7 +70,6 @@ class MinNumberValidator extends TextFieldValidator {
 }
 
 class RangeValueValidator extends TextFieldValidator {
-
   RangeValueValidator({
     this.minValue,
     this.maxValue,

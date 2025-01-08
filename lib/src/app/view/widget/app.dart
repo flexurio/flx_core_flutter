@@ -15,7 +15,6 @@ Future<void> run({
   required Widget app,
   required void Function() initialized,
 }) async {
-  WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
   flavorConfig = config;

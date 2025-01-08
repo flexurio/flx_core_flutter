@@ -191,11 +191,14 @@ class _VisibilityPermissionState extends State<VisibilityPermission> {
   @override
   void initState() {
     super.initState();
-    () async {
-      final userRepository = await Hive.openBox<dynamic>('user_repository');
-      permissions = userRepository.get('permission') as List<String>;
-      setState(() {});
-    }();
+
+    if (widget.permission != null) {
+      () async {
+        final userRepository = await Hive.openBox<dynamic>('user_repository');
+        permissions = userRepository.get('permission') as List<String>;
+        setState(() {});
+      }();
+    }
   }
 
   @override
