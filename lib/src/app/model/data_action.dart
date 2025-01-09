@@ -82,6 +82,11 @@ enum DataAction {
   printInvoice('Print Invoice', Icons.print, Colors.orange),
   printPDF('print_pdf', Icons.print, Colors.orange),
   printBankReceiptPDF('print_bank_receipt', Icons.print, Colors.orange),
+  printTollOutDeliveryOrder(
+    'Print Toll Out Delivery Order', 
+    FontAwesomeIcons.car, 
+    Colors.green,
+  ),
   realization('Realization', Icons.switch_access_shortcut_add, Colors.green),
   recordAttendance('record_attendance', Icons.check, Colors.green),
   refresh('refresh', Icons.refresh, Colors.green),
