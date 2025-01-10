@@ -83,8 +83,8 @@ enum DataAction {
   printPDF('print_pdf', Icons.print, Colors.orange),
   printBankReceiptPDF('print_bank_receipt', Icons.print, Colors.orange),
   printTollOutDeliveryOrder(
-    'Print Toll Out Delivery Order', 
-    FontAwesomeIcons.car, 
+    'Print Toll Out Delivery Order',
+    FontAwesomeIcons.car,
     Colors.green,
   ),
   realization('Realization', Icons.switch_access_shortcut_add, Colors.green),
@@ -108,6 +108,7 @@ enum DataAction {
   setStandardHour('set_standard_hour', FontAwesomeIcons.clock, Colors.blue),
   submit('submit', Icons.check, Colors.lightBlue),
   ok('ok', Icons.check, Colors.lightBlue),
+  undo('undo', Icons.undo, Colors.blueGrey),
   undoConfirm('undo_confirm', Icons.undo_rounded, Colors.blueGrey),
   undoConfirmAccounting(
     'undo_confirm_accounting',
