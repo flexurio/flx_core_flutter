@@ -35,6 +35,7 @@ enum DataAction {
   confirmPpic('confirm_ppic', Icons.done_all, Colors.green),
   convert('Convert', Icons.autorenew_rounded, Colors.blue),
   create('create', Icons.add, Colors.green),
+  createBAP('create_bap', Icons.add, Colors.green),
   createActual('create_actual', Icons.add, Colors.green),
   createAdditional('create_additional', Icons.add, Colors.green),
   createForMaterial('create_for_material', Icons.add, Colors.green),
