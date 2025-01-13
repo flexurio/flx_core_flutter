@@ -95,11 +95,12 @@ class _ActionsButton extends State<ActionsButton> {
     final theme = Theme.of(context);
 
     return MenuAnchor(
+
       controller: _controller,
       builder:
           (BuildContext context, MenuController controller, Widget? child) {
         return IconButtonSmall(
-          action: DataAction.more,
+          action: DataAction.actions,
           onPressed: () {
             if (controller.isOpen) {
               controller.close();

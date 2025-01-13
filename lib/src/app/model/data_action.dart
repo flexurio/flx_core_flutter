@@ -70,7 +70,7 @@ enum DataAction {
   leadTime('lead_time', Icons.pending_actions, Colors.blue),
   login('login', Icons.cancel, Colors.orange),
   logout('logout', Icons.cancel, Colors.orange),
-  more('more', Icons.more_vert, Colors.blueGrey),
+  actions('actions', Icons.more_vert, Colors.blueGrey),
   markAsLeader('mark_as_leader', Icons.more_vert, Colors.green),
   moving('Moving', Icons.moving_outlined, Colors.orange),
   next('next', Icons.abc, Colors.orange),
