@@ -179,6 +179,7 @@ class Permission {
   static String roleCreate = 'role_create';
   static String roleDelete = 'role_delete';
   static String roleEdit = 'role_edit';
+  static String roleExportExcel = 'role_export_excel';
   static String rolePermissionEdit = 'permission_edit';
 
   // --
