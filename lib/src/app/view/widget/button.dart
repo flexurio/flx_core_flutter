@@ -39,6 +39,7 @@ class Button extends StatelessWidget {
     this.isInProgress = false,
     this.isSecondary = false,
     this.rounded = false,
+    this.entity,
   }) : padding = null;
 
   const Button.small({
@@ -50,6 +51,7 @@ class Button extends StatelessWidget {
     this.isInProgress = false,
     this.isSecondary = false,
     this.rounded = false,
+    this.entity,
   }) : padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 24);
 
   final String? permission;
@@ -60,6 +62,7 @@ class Button extends StatelessWidget {
   final bool isSecondary;
   final EdgeInsetsGeometry? padding;
   final bool rounded;
+  final Entity? entity;
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +94,11 @@ class Button extends StatelessWidget {
       ),
     );
 
+    var title = action.title;
+    if (entity != null) {
+      title = '${action.title} ${entity!.title}';
+    }
+
     return VisibilityPermission(
       permission: permission,
       child: ElevatedButton(
@@ -105,7 +113,7 @@ class Button extends StatelessWidget {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               )
-            : Text(action.title),
+            : Text(title),
       ),
     );
   }
