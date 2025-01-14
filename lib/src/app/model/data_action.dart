@@ -53,6 +53,7 @@ enum DataAction {
   delivery('Delivery', Icons.archive, Colors.green),
   deliveryActual('Delivery Actual', Icons.local_shipping, Colors.green),
   documentReceive('Document Receive', FontAwesomeIcons.check, Colors.redAccent),
+  download('download', FontAwesomeIcons.fileDownload, Colors.orange),
   duplicate('duplicate', Icons.content_copy_outlined, Colors.green),
   edit('edit', Icons.edit_outlined, Colors.orange),
   editAdditional('edit_additional', Icons.edit, Colors.orange),
