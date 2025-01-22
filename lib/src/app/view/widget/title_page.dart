@@ -6,11 +6,13 @@ class TitlePage extends StatelessWidget {
   const TitlePage({
     required this.entity,
     this.suffixText,
+    this.x = false,
     super.key,
   });
 
   final EntityY entity;
   final String? suffixText;
+  final bool x;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,7 @@ class TitlePage extends StatelessWidget {
                   ),
                 ),
                 const Gap(6),
-                Text(entity.subtitle),
+                Text(x ? entity.subtitleX : entity.subtitle),
               ],
             ),
           ),
