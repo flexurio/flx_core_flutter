@@ -266,11 +266,13 @@ class SearchBoxX extends StatefulWidget {
     super.key,
     this.onChanged,
     this.onSubmitted,
+    this.autoFocus = false,
     this.initial,
   });
   final void Function(String)? onChanged;
   final void Function(String)? onSubmitted;
   final String? initial;
+  final bool autoFocus;
 
   @override
   State<SearchBoxX> createState() => _SearchBoxXState();
@@ -302,6 +304,7 @@ class _SearchBoxXState extends State<SearchBoxX> {
         color: theme.modeCondition(Colors.white54, MyTheme.black02dp),
       ),
       child: TextField(
+        autofocus: widget.autoFocus,
         controller: _controller,
         onChanged: widget.onChanged,
         onSubmitted: widget.onSubmitted,

@@ -65,3 +65,69 @@ class _LightButtonSmallGroupState extends State<LightButtonSmallGroup> {
     );
   }
 }
+
+class ActionsButton extends StatefulWidget {
+  const ActionsButton({
+    required this.children,
+    super.key,
+  });
+
+  final List<Widget> children;
+
+  @override
+  State<ActionsButton> createState() => _ActionsButton();
+}
+
+class _ActionsButton extends State<ActionsButton> {
+  final _controller = MenuController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.children.isEmpty) {
+      return const SizedBox();
+    }
+
+    final theme = Theme.of(context);
+
+    return MenuAnchor(
+
+      controller: _controller,
+      builder:
+          (BuildContext context, MenuController controller, Widget? child) {
+        return IconButtonSmall(
+          action: DataAction.actions,
+          onPressed: () {
+            if (controller.isOpen) {
+              controller.close();
+            } else {
+              controller.open();
+            }
+          },
+          permission: null,
+        );
+      },
+      style: MenuStyle(
+        backgroundColor: WidgetStatePropertyAll(theme.cardColor),
+        shape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+        ),
+      ),
+      menuChildren: widget.children
+          .map(
+            (e) => Listener(
+              behavior: HitTestBehavior.translucent,
+              child: e,
+              onPointerUp: (event) {
+                _controller.close();
+              },
+            ),
+          )
+          .toList(),
+    );
+  }
+}
