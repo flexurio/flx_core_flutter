@@ -82,3 +82,4 @@ export 'src/app/view/widget/title_page.dart';
 export 'src/app/view/widget/top_bar.dart';
 export 'src/app/view/widget/yuhu_table.dart';
 export 'src/app/view/widget/drop_down_object.dart';
+export 'src/app/bloc/theme/menu/menu_bloc.dart';
