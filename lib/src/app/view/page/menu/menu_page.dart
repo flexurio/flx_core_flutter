@@ -19,6 +19,8 @@ class MenuPage extends StatefulWidget {
     this.appName,
     this.onChangePassword,
     this.searchData,
+    this.logoUrl,
+    this.logoNamed,
   );
 
   final List<Widget> Function(BuildContext context, String query) searchData;
@@ -27,6 +29,8 @@ class MenuPage extends StatefulWidget {
   final List<String> accountPermissions;
   final String userName;
   final String userSubtitle;
+  final String? logoUrl;
+  final String? logoNamed;
   final void Function() onLogout;
   final void Function(BuildContext context) onChangePassword;
 
@@ -37,6 +41,8 @@ class MenuPage extends StatefulWidget {
     required String accountName,
     required String accountSubtitle,
     required void Function() onLogout,
+    String? logoUrl,
+    String? logoNamed,
     required void Function(BuildContext context) onChangePassword,
     required List<Widget> Function(BuildContext context, String query)
         searchData,
@@ -55,6 +61,8 @@ class MenuPage extends StatefulWidget {
         appName,
         onChangePassword,
         searchData,
+        logoUrl,
+        logoNamed,
       ),
     );
   }
@@ -124,6 +132,8 @@ class _MenuPageState extends State<MenuPage> {
                 return Scaffold(
                   key: _scaffoldKey,
                   drawer: MenuSideNav(
+                    logoNamedUrl: widget.logoNamed,
+                    logoUrl: widget.logoUrl,
                     noCollapse: true,
                     menu: widget.menu,
                     accountPermission: widget.accountPermissions,
@@ -155,6 +165,8 @@ class _MenuPageState extends State<MenuPage> {
           md: true,
         ),
         child: MenuSideNav(
+          logoNamedUrl: widget.logoNamed,
+          logoUrl: widget.logoUrl,
           menu: widget.menu,
           accountPermission: widget.accountPermissions,
           drawerTriggered: () {

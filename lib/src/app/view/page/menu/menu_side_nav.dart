@@ -12,6 +12,8 @@ class MenuSideNav extends StatefulWidget {
   const MenuSideNav({
     required this.menu,
     required this.accountPermission,
+    required this.logoUrl,
+    required this.logoNamedUrl,
     this.noCollapse = false,
     this.drawerTriggered,
     super.key,
@@ -20,6 +22,8 @@ class MenuSideNav extends StatefulWidget {
   final List<String> accountPermission;
   final bool noCollapse;
   final void Function()? drawerTriggered;
+  final String? logoUrl;
+  final String? logoNamedUrl;
 
   @override
   State<MenuSideNav> createState() => _MenuSideNavState();
@@ -89,6 +93,8 @@ class _MenuSideNavState extends State<MenuSideNav> {
                         children: [
                           const Gap(12),
                           ToggleSideNav(
+                            logoNamedUrl: widget.logoNamedUrl,
+                            logoUrl: widget.logoUrl,
                             noCollapse: widget.noCollapse,
                             isCollapsed: widget.noCollapse
                                 ? false
@@ -137,11 +143,15 @@ class ToggleSideNav extends StatelessWidget {
   const ToggleSideNav({
     required this.isCollapsed,
     required this.noCollapse,
+    required this.logoNamedUrl,
+    required this.logoUrl,
     super.key,
   });
 
   final bool isCollapsed;
   final bool noCollapse;
+  final String? logoUrl;
+  final String? logoNamedUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -154,15 +164,21 @@ class ToggleSideNav extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 6),
                 child: isCollapsed
-                    ? const Logo()
+                    ? Logo(
+                        logoUrl: logoUrl,
+                      )
                     : Row(
                         children: [
-                          const LogoNamed(
-                            padding: EdgeInsets.only(
-                              left: 16,
-                              right: 6,
-                              bottom: 6,
-                              top: 6,
+                          Expanded(
+                            child: LogoNamed(
+                              logoNamedUrl: logoNamedUrl,
+                              logoUrl: logoUrl,
+                              padding: const EdgeInsets.only(
+                                left: 16,
+                                right: 6,
+                                bottom: 6,
+                                top: 6,
+                              ),
                             ),
                           ),
                           if (!noCollapse)
