@@ -317,7 +317,7 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
     required this.itemAsString,
     required this.items,
     required this.iconField,
-    required this.width,
+    this.width,
     super.key,
     this.status = Status.loaded,
     this.initialValue,
@@ -332,7 +332,7 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
   final String labelText;
   final T? initialValue;
   final List<T> items;
-  final double width;
+  final double? width;
   final Status status;
   final String? Function(T?)? validator;
   final String Function(T) itemAsString;
@@ -340,6 +340,153 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
   final bool showSelectedItems;
   final bool enabled;
   final IconData iconField;
+
+  @override
+  Widget build(BuildContext context) {
+    return _ContainerDropDown<T>(
+      builder: (
+        foregroundColor,
+        border,
+        dropdownButtonProps,
+        popupProps,
+        dropdownDecoratorProps,
+      ) {
+        return DropdownSearch<T>(
+          validator: validator,
+          compareFn: compareFn,
+          dropdownButtonProps: dropdownButtonProps,
+          popupProps: popupProps,
+          items: items,
+          itemAsString: itemAsString,
+          dropdownBuilder: (context, selectedItem) {
+            return Row(
+              children: [
+                const Gap(12),
+                Icon(iconField, size: 16, color: foregroundColor),
+                const Gap(18),
+                Text(
+                  selectedItem == null
+                      ? '${'choose'.tr()} $labelText'
+                      : itemAsString(selectedItem),
+                  style: TextStyle(color: foregroundColor),
+                ),
+              ],
+            );
+          },
+          dropdownDecoratorProps: dropdownDecoratorProps,
+          onChanged: onChanged,
+          // selectedItem: initialValue,
+          enabled: enabled,
+        );
+      },
+      status: status,
+      width: width,
+      showSelectedItems: showSelectedItems,
+    );
+  }
+}
+
+class FDropDownSearchSmallMultiple<T> extends StatelessWidget {
+  const FDropDownSearchSmallMultiple({
+    required this.labelText,
+    required this.itemAsString,
+    required this.items,
+    required this.iconField,
+    required this.initialValue,
+    this.width,
+    super.key,
+    this.status = Status.loaded,
+    this.compareFn,
+    this.showSelectedItems = false,
+    this.validator,
+    this.onChanged,
+    this.enabled = true,
+  });
+
+  final void Function(List<T>)? onChanged;
+  final String labelText;
+  final List<T> initialValue;
+  final List<T> items;
+  final double? width;
+  final Status status;
+  final String? Function(List<T>?)? validator;
+  final String Function(T) itemAsString;
+  final bool Function(T, T)? compareFn;
+  final bool showSelectedItems;
+  final bool enabled;
+  final IconData iconField;
+
+  @override
+  Widget build(BuildContext context) {
+    return _ContainerDropDown<T>(
+      key: UniqueKey(),
+      builder: (
+        foregroundColor,
+        border,
+        dropdownButtonProps,
+        popupProps,
+        dropdownDecoratorProps,
+      ) {
+        return DropdownSearch<T>.multiSelection(
+          validator: validator,
+          compareFn: compareFn,
+          dropdownButtonProps: dropdownButtonProps,
+          popupProps: popupProps,
+          items: items,
+          itemAsString: itemAsString,
+          dropdownBuilder: (context, selectedItem) {
+            return Row(
+              children: [
+                const Gap(12),
+                Icon(iconField, size: 16, color: foregroundColor),
+                const Gap(18),
+                Expanded(
+                  child: Text(
+                    selectedItem.isEmpty
+                        ? '${'choose'.tr()} $labelText'
+                        : selectedItem.map(itemAsString).join(', '),
+                    style: TextStyle(color: foregroundColor),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            );
+          },
+          dropdownDecoratorProps: dropdownDecoratorProps,
+          onChanged: onChanged,
+          selectedItems: initialValue,
+          // selectedItem: initialValue,
+          enabled: enabled,
+        );
+      },
+      status: status,
+      width: width,
+      showSelectedItems: showSelectedItems,
+    );
+  }
+}
+
+class _ContainerDropDown<T> extends StatelessWidget {
+  const _ContainerDropDown({
+    required this.builder,
+    required this.status,
+    required this.showSelectedItems,
+    super.key,
+    this.width,
+  });
+
+  final double? width;
+  final Status status;
+  final bool showSelectedItems;
+
+  final Widget Function(
+    Color foregroundColor,
+    OutlineInputBorder border,
+    DropdownButtonProps dropdownButtonProps,
+    PopupPropsMultiSelection<T> popupProps,
+    DropDownDecoratorProps dropdownDecoratorProps,
+  ) builder;
 
   @override
   Widget build(BuildContext context) {
@@ -364,6 +511,41 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
       borderSide: BorderSide(color: borderColor),
     );
     final foregroundColor = dropDownSmallForegroundColor(theme);
+
+    final dropdownButtonProps = DropdownButtonProps(
+      padding: EdgeInsets.zero,
+      iconSize: 18,
+      icon: const Icon(Icons.keyboard_arrow_down_rounded),
+      color: foregroundColor,
+    );
+
+    final popupProps = PopupPropsMultiSelection<T>.menu(
+      showSelectedItems: showSelectedItems,
+      searchDelay: Duration.zero,
+      showSearchBox: true,
+      searchFieldProps: TextFieldProps(
+        style: TextStyle(color: theme.modeCondition(null, Colors.white70)),
+        decoration: InputDecoration(
+          hintText: '${'search'.tr()}...',
+          enabledBorder: border,
+          border: border,
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: theme.colorScheme.primary,
+              width: 2,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    const dropdownDecoratorProps = DropDownDecoratorProps(
+      dropdownSearchDecoration: InputDecoration(
+        contentPadding: EdgeInsets.zero,
+        enabledBorder: InputBorder.none,
+      ),
+    );
+
     return Container(
       width: width,
       height: 32,
@@ -372,60 +554,12 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
         border: Border.all(color: borderColor),
         color: theme.cardColor,
       ),
-      child: DropdownSearch<T>(
-        validator: validator,
-        compareFn: compareFn,
-        dropdownButtonProps: DropdownButtonProps(
-          padding: const EdgeInsets.all(0),
-          iconSize: 18,
-          icon: const Icon(Icons.keyboard_arrow_down_rounded),
-          color: foregroundColor,
-        ),
-        popupProps: PopupProps.menu(
-          showSelectedItems: showSelectedItems,
-          searchDelay: Duration.zero,
-          showSearchBox: true,
-          searchFieldProps: TextFieldProps(
-            style: TextStyle(color: theme.modeCondition(null, Colors.white70)),
-            decoration: InputDecoration(
-              hintText: '${'search'.tr()}...',
-              enabledBorder: border,
-              border: border,
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: theme.colorScheme.primary,
-                  width: 2,
-                ),
-              ),
-            ),
-          ),
-        ),
-        items: items,
-        itemAsString: itemAsString,
-        dropdownBuilder: (context, selectedItem) {
-          return Row(
-            children: [
-              const Gap(12),
-              Icon(iconField, size: 16, color: foregroundColor),
-              const Gap(18),
-              Text(
-                selectedItem == null
-                    ? '${'choose'.tr()} $labelText'
-                    : itemAsString(selectedItem),
-                style: TextStyle(color: foregroundColor),
-              ),
-            ],
-          );
-        },
-        dropdownDecoratorProps: const DropDownDecoratorProps(
-          dropdownSearchDecoration: InputDecoration(
-            contentPadding: EdgeInsets.zero,
-            enabledBorder: InputBorder.none,
-          ),
-        ),
-        onChanged: onChanged,
-        selectedItem: initialValue,
-        enabled: enabled,
+      child: builder(
+        foregroundColor,
+        border,
+        dropdownButtonProps,
+        popupProps,
+        dropdownDecoratorProps,
       ),
     );
   }
