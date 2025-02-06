@@ -29,9 +29,9 @@ class Entity extends EntityY {
       );
 
   static Entity get balanceGroup => const Entity(
-        titleX: 'Balance Group',
-        subtitleX: '',
-        iconPath: 'money',
+        titleX: 'balance_group',
+        subtitleX: 'balance_group',
+        iconPath: 'wallet',
       );
 
   static Entity get budgetType =>
