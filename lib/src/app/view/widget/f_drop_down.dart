@@ -375,7 +375,7 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
           },
           dropdownDecoratorProps: dropdownDecoratorProps,
           onChanged: onChanged,
-          // selectedItem: initialValue,
+          selectedItem: initialValue,
           enabled: enabled,
         );
       },
