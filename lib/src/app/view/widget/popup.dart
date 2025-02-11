@@ -321,11 +321,13 @@ class _CardConfirmationWithExplanationState
           children: [
             Text(confirmationMessage(widget.data, widget.action, widget.label)),
             const Gap(24),
-            FieldText(
+            FTextFormField(
+              maxLength: 100,
               controller: _reasonController,
               labelText: title,
               maxLines: widget.title != null ? 1 : 3,
               validator: requiredValidator.call,
+              showCounter: true,
             ),
             const Gap(3),
             Text(

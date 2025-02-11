@@ -17,7 +17,6 @@ final currencyFormatterNoDecimal = CurrencyTextInputFormatter.currency(
 );
 
 class FTextFormField extends FormField<String> {
-
   FTextFormField({
     super.key,
     this.suffixText,
@@ -29,6 +28,7 @@ class FTextFormField extends FormField<String> {
     this.readOnly = false,
     this.suffixIcon,
     this.controller,
+    this.showCounter = false,
     this.helperText,
     this.autoFocus = false,
     this.inputFormatters,
@@ -64,7 +64,7 @@ class FTextFormField extends FormField<String> {
                           ),
                   ),
                 );
-                
+
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,7 +93,7 @@ class FTextFormField extends FormField<String> {
                             : Colors.black87,
                       ),
                       decoration: InputDecoration(
-                        counterText: '',
+                        counterText: showCounter ?  null : '',
                         labelText:
                             (labelText ?? '') + (enabled ? '' : ' (Read Only)'),
                         hintText: hintText,
@@ -153,6 +153,7 @@ class FTextFormField extends FormField<String> {
   final String? helperText;
   final int? maxLength;
   final bool obscureText;
+  final bool showCounter;
   final bool readOnly;
   final bool autoFocus;
   final Widget? suffixIcon;

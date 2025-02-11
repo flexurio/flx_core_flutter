@@ -69,6 +69,7 @@ class FieldText extends StatelessWidget {
     this.isExpanded = false,
     this.obscureText = false,
     this.enabled = true,
+    this.showCounter = false,
     this.autoFocus = false,
   });
 
@@ -77,6 +78,7 @@ class FieldText extends StatelessWidget {
   final bool enabled;
   final bool obscureText;
   final bool autoFocus;
+  final bool showCounter;
   final String labelText;
   final FocusNode? focusNode;
   final String? errorText;
@@ -88,6 +90,7 @@ class FieldText extends StatelessWidget {
   Widget build(BuildContext context) {
     final button = FTextFormField(
       key: super.key,
+      showCounter: showCounter,
       autoFocus: autoFocus,
       enabled: enabled,
       focusNode: focusNode,
