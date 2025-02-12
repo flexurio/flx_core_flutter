@@ -27,7 +27,7 @@ class BoolSwitch extends StatelessWidget {
     return CupertinoSwitch(
       value: value,
       onChanged: (_) {},
-      activeColor: primaryColor,
+      activeTrackColor: primaryColor,
     );
   }
 }

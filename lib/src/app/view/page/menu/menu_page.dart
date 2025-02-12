@@ -1,5 +1,4 @@
 import 'package:flexurio_erp_core/flexurio_erp_core.dart';
-import 'package:flexurio_erp_core/src/app/bloc/theme/menu/menu_bloc.dart';
 import 'package:flexurio_erp_core/src/app/bloc/theme/menu_collapse/menu_collapse.dart';
 import 'package:flexurio_erp_core/src/app/view/page/menu/menu_side_nav.dart';
 import 'package:flexurio_erp_core/src/app/view/page/menu/widget/menu_content.dart';
@@ -41,11 +40,9 @@ class MenuPage extends StatefulWidget {
     required String accountName,
     required String accountSubtitle,
     required void Function() onLogout,
-    String? logoUrl,
+    required void Function(BuildContext context) onChangePassword, required List<Widget> Function(BuildContext context, String query)
+        searchData, String? logoUrl,
     String? logoNamed,
-    required void Function(BuildContext context) onChangePassword,
-    required List<Widget> Function(BuildContext context, String query)
-        searchData,
   }) {
     return MultiBlocProvider(
       providers: [

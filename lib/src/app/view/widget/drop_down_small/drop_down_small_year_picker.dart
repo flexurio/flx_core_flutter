@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 
 class DropDownSmallYearPicker extends StatefulWidget {
   const DropDownSmallYearPicker({
-    super.key,
-    required this.labelText,
+    required this.labelText, required this.onChanged, super.key,
     this.initialValue,
     this.maxDate,
     this.minDate,
-    required this.onChanged,
   });
 
   final String labelText;

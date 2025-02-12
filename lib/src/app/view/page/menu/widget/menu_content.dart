@@ -39,7 +39,7 @@ class MenuContent extends StatelessWidget {
                   Expanded(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(24),
-                      child: Container(
+                      child: ColoredBox(
                         color: theme.scaffoldBackgroundColor,
                         child: Stack(
                           children: [

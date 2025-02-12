@@ -44,7 +44,7 @@ class CardForm extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  Icon(icon, color: danger ? Colors.white : Color(0XFFAFABBC)),
+                  Icon(icon, color: danger ? Colors.white : const Color(0XFFAFABBC)),
                 ],
               ),
               const SizedBox(height: 20),
