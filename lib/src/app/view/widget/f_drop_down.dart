@@ -50,37 +50,30 @@ class _DropDownSmallState<T> extends State<DropDownSmall<T>> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return MenuAnchor(
-      builder:
-          (BuildContext context, MenuController controller, Widget? child) {
-        return DropDownSmallButton(
-          icon: widget.icon,
-          label: label,
-          onPressed: () {
-            if (controller.isOpen) {
-              controller.close();
-            } else {
-              controller.open();
-            }
-          },
-        );
+
+    return PopupMenuButton<T>(
+      onSelected: (T value) {
+        widget.onChanged?.call(value);
+        setState(() {
+          label = widget.itemAsString(value);
+        });
       },
-      style: MenuStyle(
-        backgroundColor: WidgetStatePropertyAll(theme.cardColor),
-        shape: WidgetStatePropertyAll(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-        ),
+      itemBuilder: (BuildContext context) => widget.items
+          .map(
+            (item) => PopupMenuItem<T>(
+              value: item,
+              child: Text(widget.itemAsString(item)),
+            ),
+          )
+          .toList(),
+      color: theme.cardColor,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+      child: AbsorbPointer(
+        child: DropDownSmallButton(
+        icon: widget.icon,
+        label: label,
+        onPressed: () {},
       ),
-      menuChildren: List<MenuItemButton>.generate(
-        widget.items.length,
-        (int index) => MenuItemButton(
-          onPressed: () {
-            widget.onChanged?.call(widget.items[index]);
-            label = widget.itemAsString(widget.items[index]);
-            setState(() {});
-          },
-          child: Text(widget.itemAsString(widget.items[index])),
-        ),
       ),
     );
   }
