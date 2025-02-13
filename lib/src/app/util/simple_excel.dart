@@ -73,3 +73,32 @@ List<int> simpleExcel<T>({
   final bytes = workbook.saveSync();
   return bytes;
 }
+
+List<int> generalXlsx(BuildContext context, List<Map<String, dynamic>> data,
+    List<String> fields) {
+  for (final field in fields) {
+    if (!data[0].containsKey(field)) {
+      throw Exception(
+          'The specified field "$field" is missing from the data. Available fields are: ${data[0].keys.join(', ')}.');
+    }
+  }
+
+  final columns = <TColumn<Map<String, dynamic>>>[];
+  for (final field in fields) {
+    final numeric = data.isNotEmpty && data[0][field] is num;
+    columns.add(
+      TColumn<Map<String, dynamic>>(
+        numeric: numeric,
+        title: field.replaceAll('_', ' ').toUpperCase(),
+        builder: (data, index) => data[field]!.toString(),
+      ),
+    );
+  }
+
+  final bytes = simpleExcel<Map<String, dynamic>>(
+    context: context,
+    data: data,
+    columns: columns,
+  );
+  return bytes;
+}
