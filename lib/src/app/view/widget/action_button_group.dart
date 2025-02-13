@@ -5,12 +5,18 @@ import 'package:hive/hive.dart';
 class LightButtonSmallGroup extends StatefulWidget {
   const LightButtonSmallGroup({
     required this.action,
-    required this.children,
+    this.children,
+    this.childrenList,
     super.key,
-  });
+  }) : assert(
+          !((children != null && childrenList != null) ||
+              (children == null && childrenList == null)),
+          'children and childrenList are mutually exclusive',
+        );
 
   final DataAction action;
-  final Map<String?, Widget> children;
+  final Map<String?, Widget>? children;
+  final List<Widget>? childrenList;
 
   @override
   State<LightButtonSmallGroup> createState() => _LightButtonSmallGroupState();
@@ -22,22 +28,31 @@ class _LightButtonSmallGroupState extends State<LightButtonSmallGroup> {
   @override
   void initState() {
     super.initState();
-    () async {
-      final userRepository = await Hive.openBox<dynamic>('user_repository');
-      permissions = userRepository.get('permission') as List<String>;
-      setState(() {});
-    }();
+    if (widget.children != null) {
+      () async {
+        final userRepository = await Hive.openBox<dynamic>('user_repository');
+        permissions = userRepository.get('permission') as List<String>;
+        setState(() {});
+      }();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final menuChildren = <Widget>[];
 
-    final allFalse = widget.children.keys
-        .map((e) => permissions.contains(e))
-        .every((item) => !item);
-    if (allFalse) {
-      return const SizedBox();
+    if (widget.children != null) {
+      final allFalse = widget.children!.keys
+          .map((e) => permissions.contains(e))
+          .every((item) => !item);
+
+      if (allFalse) {
+        return const SizedBox();
+      }
+      menuChildren.addAll(widget.children!.values.toList());
+    } else {
+      menuChildren.addAll(widget.childrenList!);
     }
 
     return MenuAnchor(
@@ -61,7 +76,7 @@ class _LightButtonSmallGroupState extends State<LightButtonSmallGroup> {
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
         ),
       ),
-      menuChildren: widget.children.values.toList(),
+      menuChildren: menuChildren,
     );
   }
 }
@@ -95,7 +110,6 @@ class _ActionsButton extends State<ActionsButton> {
     final theme = Theme.of(context);
 
     return MenuAnchor(
-
       controller: _controller,
       builder:
           (BuildContext context, MenuController controller, Widget? child) {
