@@ -74,12 +74,16 @@ List<int> simpleExcel<T>({
   return bytes;
 }
 
-List<int> generalXlsx(BuildContext context, List<Map<String, dynamic>> data,
-    List<String> fields) {
+List<int> generalXlsx(
+  BuildContext context,
+  List<Map<String, dynamic>> data,
+  List<String> fields,
+) {
   for (final field in fields) {
     if (!data[0].containsKey(field)) {
       throw Exception(
-          'The specified field "$field" is missing from the data. Available fields are: ${data[0].keys.join(', ')}.');
+        'The specified field "$field" is missing from the data. Available fields are: ${data[0].keys.join(', ')}.',
+      );
     }
   }
 
@@ -90,7 +94,9 @@ List<int> generalXlsx(BuildContext context, List<Map<String, dynamic>> data,
       TColumn<Map<String, dynamic>>(
         numeric: numeric,
         title: field.replaceAll('_', ' ').toUpperCase(),
-        builder: (data, index) => data[field]!.toString(),
+        builder: (data, index) => data.containsKey(field)
+            ? (data[field]?.toString() ?? '-')
+            : 'Error: Field "$field" not found',
       ),
     );
   }

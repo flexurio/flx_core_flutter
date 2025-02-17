@@ -44,7 +44,11 @@ Future<Page> pdfGeneral({
               final regex = RegExp(
                   r'^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(\.\d+)?Z$');
               if (regex.hasMatch(value)) {
-                value = DateFormat.LLLL(DateTime.parse(value));
+                try {
+                  value = DateFormat.LLLL(DateTime.parse(value));
+                } catch (e) {
+                  value = 'Invalid date';
+                }
               }
             }
             return PColumnBody<Map<String, dynamic>>(
