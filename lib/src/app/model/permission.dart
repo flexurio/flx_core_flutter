@@ -267,6 +267,7 @@ class Permission {
     'confirm_accounting',
     'confirm_finance',
     'confirm_marketing',
+    'confirm_document_ppic',
     'confirm_ppic',
     'create',
     'delete',
