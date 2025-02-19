@@ -96,7 +96,7 @@ class Permission {
 
   static String materialLeadTimeEdit = 'material_lead_time_edit';
 
-  static String materialAnalysis = 'material_analysis';
+  static String materialAnalysisEdit = 'material_analysis_edit';
 
   // Request Form
   static String requestFormViewMenu = 'request_form_view_menu';
