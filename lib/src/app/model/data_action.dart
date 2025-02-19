@@ -31,6 +31,7 @@ enum DataAction {
   closePO('close_po', Icons.done_all, Colors.green),
   comment('comment', Icons.comment_outlined, Colors.blueGrey),
   confirm('confirm', Icons.check, Colors.green),
+  confirmDocumentPpic('confirm_document_ppic', Icons.check, Colors.green),
   confirmFinance('confirm_finance', Icons.done_all, Colors.green),
   confirmMarketing('confirm_marketing', Icons.check, Colors.green),
   confirmPpic('confirm_ppic', Icons.done_all, Colors.green),
