@@ -70,16 +70,28 @@ class _DropDownSmallState<T> extends State<DropDownSmall<T>> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
       child: AbsorbPointer(
         child: DropDownSmallButton(
-        icon: widget.icon,
-        label: label,
-        onPressed: () {},
-      ),
+          icon: widget.icon,
+          label: label,
+          onPressed: () {},
+        ),
       ),
     );
   }
 }
 
-enum Status { progress, error, loaded }
+enum Status {
+  progress(0),
+  error(-1),
+  loaded(1);
+
+  const Status(this.value);
+
+  final int value;
+
+  bool get isProgress => this == Status.progress;
+  bool get isError => this == Status.error;
+  bool get isLoaded => this == Status.loaded;
+}
 
 class FDropDownSearch<T> extends StatelessWidget {
   const FDropDownSearch({
