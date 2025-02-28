@@ -1,4 +1,7 @@
-import 'package:flexurio_erp_core/flexurio_erp_core.dart';
+import 'package:flexurio_erp_core/src/app/model/data_action.dart';
+import 'package:flexurio_erp_core/src/app/model/page_options.dart';
+import 'package:flexurio_erp_core/src/app/view/widget/button.dart';
+import 'package:flexurio_erp_core/src/app/view/widget/f_drop_down.dart';
 import 'package:flexurio_erp_core/src/app/view/widget/search_box/search_box_x.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -28,58 +31,75 @@ class DataSetAction<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Wrap(spacing: 12, children: actionLeft),
-            const Spacer(),
-            Expanded(
-              child: Wrap(
-                spacing: 12,
-                crossAxisAlignment: WrapCrossAlignment.end,
-                runAlignment: WrapAlignment.end,
-                alignment: WrapAlignment.end,
-                children: actionRight(
-                  LightButtonSmall(
-                    permission: null,
-                    status: status,
-                    action: DataAction.refresh,
-                    onPressed: onRefresh,
+        ScreenIdentifierBuilder(
+          builder: (context, screenIdentifier) {
+            return screenIdentifier.conditions(
+              sm: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [_buildActionRight()],
                   ),
-                )
-                    .map(
-                      (e) => Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [e],
-                      ),
-                    )
-                    .toList(),
+                  if (actionLeft.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: Row(children: [_buildActionLeft()]),
+                    ),
+                ],
               ),
-            ),
-          ],
+              md: Row(
+                children: [
+                  _buildActionLeft(),
+                  Expanded(child: _buildActionRight()),
+                ],
+              ),
+            );
+          },
         ),
         const Gap(12),
-        Align(
-          alignment: Alignment.centerRight,
-          child: _buildSearchBox(),
-        ),
+        Align(alignment: Alignment.centerRight, child: _buildSearchBox()),
         const Gap(24),
         child,
       ],
     );
   }
 
+  Widget _buildActionLeft() {
+    return Wrap(spacing: 12, children: actionLeft);
+  }
+
+  Widget _buildActionRight() {
+    return Wrap(
+      spacing: 12,
+      crossAxisAlignment: WrapCrossAlignment.end,
+      runAlignment: WrapAlignment.end,
+      alignment: WrapAlignment.end,
+      children: actionRight(
+        LightButtonSmall(
+          permission: null,
+          status: status,
+          action: DataAction.refresh,
+          onPressed: onRefresh,
+        ),
+      )
+          .map(
+            (e) => Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [e],
+            ),
+          )
+          .toList(),
+    );
+  }
+
   Widget _buildSearchBox() {
     return ScreenIdentifierBuilder(
       builder: (context, screenIdentifier) {
-        return Visibility(
-          visible: screenIdentifier.conditions(sm: false, md: true),
-          child: SizedBox(
-            width: 300,
-            child: SearchBoxX(
-              onSubmitted: _searchBoxOnChange,
-              initial: pageOptions.search,
-            ),
+        return SizedBox(
+          width: screenIdentifier.conditions(sm: true, md: false) ? null : 300,
+          child: SearchBoxX(
+            onSubmitted: _searchBoxOnChange,
+            initial: pageOptions.search,
           ),
         );
       },
