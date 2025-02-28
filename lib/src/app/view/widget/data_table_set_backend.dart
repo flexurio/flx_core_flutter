@@ -71,12 +71,12 @@ class DataTableBackend<T> extends StatelessWidget {
   });
 
   final void Function() onRefresh;
-  final List<DTColumn<T>> columns;
   final List<Widget> Function(Widget refreshButton) actionRight;
-  final List<Widget> actionLeft;
-  final Status status;
   final void Function(PageOptions<T> pageOptions) onChanged;
   final PageOptions<T> pageOptions;
+  final List<Widget> actionLeft;
+  final List<DTColumn<T>> columns;
+  final Status status;
   final bool freezeFirstColumn;
   final bool freezeLastColumn;
   final bool pagination;
