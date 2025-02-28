@@ -32,9 +32,7 @@ class DataListView<T> extends StatelessWidget {
       actionRight: actionRight,
       onRefresh: onRefresh,
       status: status,
-      child: Column(
-        children: pageOptions.data.map(builder).toList(),
-      ),
+      child: Column(children: pageOptions.data.map(builder).toList()),
     );
   }
 }
@@ -45,24 +43,25 @@ class ListTileItem extends StatelessWidget {
     super.key,
     this.subtitle,
     this.trailing,
+    this.onTap,
   });
 
   final Widget? title;
   final Widget? subtitle;
   final Widget? trailing;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: ListTile(
-        title: title,
-        subtitle: subtitle,
-        trailing: trailing,
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: ListTile(title: title, subtitle: subtitle, trailing: trailing),
       ),
     );
   }

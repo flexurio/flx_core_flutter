@@ -30,7 +30,7 @@ dependencies:
   just_audio: ^0.9.37
   just_audio_windows: ^0.2.1
   month_picker_dialog: ^4.0.1
-  file_picker: ^5.2.5
+  file_picker: ^9.0.2
   dotted_border: ^2.1.0
   syncfusion_flutter_charts: ^28.1.33
   fluttertoast: ^8.0.8
