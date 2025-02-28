@@ -1,5 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flexurio_erp_core/flexurio_erp_core.dart';
+import 'package:flexurio_erp_core/src/app/view/widget/data_set_action.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:screen_identifier/screen_identifier.dart';
@@ -15,10 +15,7 @@ class DTHead<T> {
   final String? backendColumn;
 
   DataColumn toDataColumn() {
-    return DataColumn(
-      label: Text(label),
-      numeric: numeric,
-    );
+    return DataColumn(label: Text(label), numeric: numeric);
   }
 }
 
@@ -86,7 +83,6 @@ class DataTableBackend<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     var freezeFirstColumnLocal = freezeFirstColumn;
     var freezeLastColumnLocal = freezeLastColumn;
     return ScreenIdentifierBuilder(
@@ -96,108 +92,88 @@ class DataTableBackend<T> extends StatelessWidget {
           freezeFirstColumnLocal = false;
           freezeLastColumnLocal = false;
         }
-        return Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Wrap(spacing: 12, children: actionLeft),
-                const Spacer(),
-                Expanded(
-                  child: Wrap(
-                    spacing: 12,
-                    crossAxisAlignment: WrapCrossAlignment.end,
-                    runAlignment: WrapAlignment.end,
-                    alignment: WrapAlignment.end,
-                    children: actionRight(
-                      LightButtonSmall(
-                        permission: null,
-                        status: status,
-                        action: DataAction.refresh,
-                        onPressed: onRefresh,
-                      ),
-                    )
-                        .map(
-                          (e) => Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [e],
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
-              ],
-            ),
-            const Gap(12),
-            Align(
-              alignment: Alignment.centerRight,
-              child: _buildSearchBox(),
-            ),
-            const Gap(24),
-            Row(
-              children: [
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(12)),
-                    child: ColoredBox(
-                      color: theme.cardColor,
-                      child: Column(
-                        children: [
-                          YuhuTable<T>(
-                            key: ValueKey(
-                              '$freezeFirstColumnLocal $freezeLastColumnLocal',
-                            ),
-                            freezeFirstColumn: freezeFirstColumnLocal,
-                            freezeLastColumn: freezeLastColumnLocal,
-                            width: columns.fold(
-                              0,
-                              (value, element) =>
-                                  (value ?? 0) + element.widthFlex * 25,
-                            ),
-                            data: pageOptions.data,
-                            rowsPerPage: 10,
-                            initialSortColumnIndex: columns.indexWhere(
-                              (e) => e.head.backendColumn == pageOptions.sortBy,
-                            ),
-                            initialSortAscending: pageOptions.ascending,
-                            onSort: (index, ascending) {
-                              onChanged(
-                                pageOptions.copyWith(
-                                  ascending: ascending,
-                                  sortBy: columns[index].head.backendColumn,
-                                ),
-                              );
-                            },
-                            columns: [
-                              for (final column in columns)
-                                TableColumn<T>(
-                                  alignment: column.head.numeric
-                                      ? Alignment.centerRight
-                                      : Alignment.centerLeft,
-                                  width: column.widthFlex * 25,
-                                  title: column.head.label,
-                                  builder: (data, _) {
-                                    return DefaultTextStyle(
-                                      style: theme.textTheme.bodyMedium!,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      child: column.body(data).child,
-                                    );
-                                  },
-                                ),
-                            ],
-                          ),
-                          if (pagination) _buildPaginationNumber(),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
+        return DataSetAction(
+          onChanged: onChanged,
+          pageOptions: pageOptions,
+          actionLeft: actionLeft,
+          actionRight: actionRight,
+          onRefresh: onRefresh,
+          status: status,
+          child: _buildTable(
+            context: context,
+            freezeLastColumnLocal: freezeLastColumnLocal,
+            freezeFirstColumnLocal: freezeFirstColumnLocal,
+          ),
         );
       },
+    );
+  }
+
+  Widget _buildTable({
+    required BuildContext context,
+    required bool freezeLastColumnLocal,
+    required bool freezeFirstColumnLocal,
+  }) {
+    final key = ValueKey('$freezeFirstColumnLocal $freezeLastColumnLocal');
+    final theme = Theme.of(context);
+
+    return Row(
+      children: [
+        Expanded(
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(12)),
+            child: ColoredBox(
+              color: theme.cardColor,
+              child: Column(
+                children: [
+                  YuhuTable<T>(
+                    key: key,
+                    freezeFirstColumn: freezeFirstColumnLocal,
+                    freezeLastColumn: freezeLastColumnLocal,
+                    width: columns.fold(
+                      0,
+                      (value, element) => (value ?? 0) + element.widthFlex * 25,
+                    ),
+                    data: pageOptions.data,
+                    rowsPerPage: 10,
+                    initialSortColumnIndex: columns.indexWhere(
+                      (e) => e.head.backendColumn == pageOptions.sortBy,
+                    ),
+                    initialSortAscending: pageOptions.ascending,
+                    onSort: (index, ascending) {
+                      onChanged(
+                        pageOptions.copyWith(
+                          ascending: ascending,
+                          sortBy: columns[index].head.backendColumn,
+                        ),
+                      );
+                    },
+                    columns: [
+                      for (final column in columns)
+                        TableColumn<T>(
+                          alignment: column.head.numeric
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
+                          width: column.widthFlex * 25,
+                          title: column.head.label,
+                          builder: (data, _) {
+                            return DefaultTextStyle(
+                              style: theme.textTheme.bodyMedium!,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              child: column.body(data).child,
+                            );
+                          },
+                        ),
+                    ],
+                  ),
+                  if (pagination) _buildPaginationNumber(),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -235,90 +211,6 @@ class DataTableBackend<T> extends StatelessWidget {
             icon: const Icon(Icons.last_page),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildSearchBox() {
-    return ScreenIdentifierBuilder(
-      builder: (context, screenIdentifier) {
-        return Visibility(
-          visible: screenIdentifier.conditions(sm: false, md: true),
-          child: SizedBox(
-            width: 300,
-            child: SearchBoxX(
-              onSubmitted: _searchBoxOnChange,
-              initial: pageOptions.search,
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void _searchBoxOnChange(String value) {
-    onChanged(pageOptions.copyWith(search: value, data: []));
-  }
-}
-
-class SearchBoxX extends StatefulWidget {
-  const SearchBoxX({
-    super.key,
-    this.onChanged,
-    this.onSubmitted,
-    this.autoFocus = false,
-    this.initial,
-  });
-  final void Function(String)? onChanged;
-  final void Function(String)? onSubmitted;
-  final String? initial;
-  final bool autoFocus;
-
-  @override
-  State<SearchBoxX> createState() => _SearchBoxXState();
-}
-
-class _SearchBoxXState extends State<SearchBoxX> {
-  final _controller = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _controller.text = widget.initial ?? '';
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-      height: 45,
-      padding: const EdgeInsets.only(left: 12, top: 4),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: theme.modeCondition(
-            Colors.grey.shade300,
-            Colors.grey.shade800,
-          ),
-        ),
-        borderRadius: BorderRadius.circular(8),
-        color: theme.modeCondition(Colors.white54, MyTheme.black02dp),
-      ),
-      child: TextField(
-        autofocus: widget.autoFocus,
-        controller: _controller,
-        onChanged: widget.onChanged,
-        onSubmitted: widget.onSubmitted,
-        style:
-            TextStyle(fontSize: 12, color: theme.textTheme.bodyMedium?.color),
-        decoration: InputDecoration(
-          suffixIcon: const Icon(Icons.search, size: 20),
-          hintText: '${'type_here_to_search'.tr()} ...',
-          hintStyle: TextStyle(
-            color: theme.textTheme.bodyMedium?.color
-                ?.withOpacity(theme.modeCondition(.7, .3)),
-          ),
-          border: InputBorder.none,
-        ),
       ),
     );
   }
