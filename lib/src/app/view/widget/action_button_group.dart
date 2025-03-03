@@ -1,5 +1,6 @@
 import 'package:flexurio_erp_core/flexurio_erp_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:hive/hive.dart';
 
 class LightButtonSmallGroup extends StatefulWidget {
@@ -144,4 +145,47 @@ class _ActionsButton extends State<ActionsButton> {
           .toList(),
     );
   }
+}
+
+class ActionButtonX extends StatelessWidget {
+  const ActionButtonX({required this.items, super.key});
+
+  final List<ActionButtonItem> items;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return SpeedDial(
+      backgroundColor: Colors.blueGrey.shade400,
+      foregroundColor: theme.canvasColor,
+      icon: Icons.more_vert,
+      overlayColor: Colors.black,
+      overlayOpacity: .3,
+      children: items
+          .map(
+            (e) => SpeedDialChild(
+              foregroundColor: e.color,
+              shape: const CircleBorder(),
+              child: Icon(e.icon),
+              label: e.label,
+              onTap: e.onPressed,
+            ),
+          )
+          .toList(),
+    );
+  }
+}
+
+class ActionButtonItem {
+  ActionButtonItem({
+    required this.label,
+    required this.icon,
+    required this.color,
+    required this.onPressed,
+  });
+
+  final String label;
+  final IconData icon;
+  final Color color;
+  final VoidCallback? onPressed;
 }

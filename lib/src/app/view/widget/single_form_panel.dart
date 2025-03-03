@@ -11,6 +11,7 @@ class SingleFormPanel extends StatelessWidget {
     this.actions,
     this.suffixText = '',
     this.formKey,
+    this.hideHeader = false,
     this.visibleBackButton = true,
     this.size = SingleFormPanelSize.normal,
     this.padding,
@@ -24,6 +25,7 @@ class SingleFormPanel extends StatelessWidget {
   final String suffixText;
   final bool visibleBackButton;
   final SingleFormPanelSize size;
+  final bool hideHeader;
   final EdgeInsetsGeometry? padding;
 
   @override
@@ -32,7 +34,7 @@ class SingleFormPanel extends StatelessWidget {
     return SingleChildScrollView(
       child: Center(
         child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 24),
+          margin: EdgeInsets.symmetric(vertical: hideHeader ? 0 : 24),
           width: size.width,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(30),
@@ -44,16 +46,7 @@ class SingleFormPanel extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12,
-                      horizontal: 24,
-                    ),
-                    child: BackButtonWithTitle(
-                      title: '${action.title} ${entity.title} $suffixText',
-                      visibleBackButton: visibleBackButton,
-                    ),
-                  ),
+                  if (!hideHeader) _buildHeader(),
                   if (padding == null)
                     Container(
                       height: 30,
@@ -86,6 +79,19 @@ class SingleFormPanel extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        vertical: 12,
+        horizontal: 24,
+      ),
+      child: BackButtonWithTitle(
+        title: '${action.title} ${entity.title} $suffixText',
+        visibleBackButton: visibleBackButton,
       ),
     );
   }

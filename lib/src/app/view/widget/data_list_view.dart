@@ -1,7 +1,9 @@
 import 'package:flexurio_erp_core/src/app/model/page_options.dart';
 import 'package:flexurio_erp_core/src/app/view/widget/data_set_action.dart';
 import 'package:flexurio_erp_core/src/app/view/widget/f_drop_down.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class DataListView<T> extends StatelessWidget {
   const DataListView({
@@ -25,6 +27,10 @@ class DataListView<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final children = pageOptions.data.map(builder).toList();
+    if (children.length == pageOptions.rowsPerPage) {
+      children.add(const LoadMore());
+    }
     return DataSetAction(
       onChanged: onChanged,
       pageOptions: pageOptions,
@@ -32,7 +38,7 @@ class DataListView<T> extends StatelessWidget {
       actionRight: actionRight,
       onRefresh: onRefresh,
       status: status,
-      child: Column(children: pageOptions.data.map(builder).toList()),
+      child: Column(children: children),
     );
   }
 }
@@ -63,6 +69,23 @@ class ListTileItem extends StatelessWidget {
         ),
         child: ListTile(title: title, subtitle: subtitle, trailing: trailing),
       ),
+    );
+  }
+}
+
+class LoadMore extends StatelessWidget {
+  const LoadMore({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return VisibilityDetector(
+      key: UniqueKey(),
+      onVisibilityChanged: (info) {
+        if (info.visibleFraction == 1) {
+          print("object");
+        }
+      },
+      child: CupertinoActivityIndicator(),
     );
   }
 }

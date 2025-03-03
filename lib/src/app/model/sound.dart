@@ -4,8 +4,12 @@ class Sound {
   static final player = AudioPlayer();
 
   static Future<void> alert() async {
-    await player.setAsset('asset/sound/alert.mp3');
-    await player.play();
+    try {
+      await player.setAsset('asset/sound/alert.mp3');
+      await player.play();
+    } catch (e) {
+      print(e);
+    }
   }
 
   // static Future<void> success() async {

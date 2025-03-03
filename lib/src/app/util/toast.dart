@@ -121,9 +121,11 @@ class _ToastSuccessState extends State<ToastSuccess>
             size: 40,
           ),
           const Gap(6),
-          Text(
-            widget.message,
-            style: const TextStyle(color: Colors.black),
+          Flexible(
+            child: Text(
+              widget.message,
+              style: const TextStyle(color: Colors.black),
+            ),
           ),
         ],
       ),
