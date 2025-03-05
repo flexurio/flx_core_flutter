@@ -553,7 +553,7 @@ class _ContainerDropDown<T> extends StatelessWidget {
 
     return Container(
       width: width,
-      height: 32,
+      height: isPlatformMobile() ? 36 : 32,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
         border: Border.all(color: borderColor),

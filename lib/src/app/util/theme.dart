@@ -59,6 +59,9 @@ class MyTheme {
       shadowColor: Colors.black38,
       dividerTheme: DividerThemeData(space: 0, color: dividerColor),
       dividerColor: dividerColor,
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: isDark ? black02dp : Colors.white,
+      ),
       scaffoldBackgroundColor: isDark ? black01dp : const Color(0XFFf3f4f8),
       inputDecorationTheme: InputDecorationTheme(
         labelStyle: TextStyle(color: Colors.grey[600]),

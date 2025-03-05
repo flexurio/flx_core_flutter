@@ -1,5 +1,8 @@
+import 'dart:io' show Platform;
+
 import 'package:flexurio_erp_core/flexurio_erp_core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hive/hive.dart';
@@ -69,7 +72,11 @@ class Button extends StatelessWidget {
     final theme = Theme.of(context);
     final primaryColor = theme.colorScheme.primary;
     final buttonStyle = ButtonStyle(
-      padding: WidgetStateProperty.all(padding),
+      padding: WidgetStateProperty.all(
+        isPlatformMobile()
+            ? const EdgeInsets.symmetric(vertical: 6, horizontal: 24)
+            : padding,
+      ),
       shape: WidgetStateProperty.all(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(rounded ? 100 : 8),
@@ -144,6 +151,8 @@ class FabMini extends StatelessWidget {
     );
   }
 }
+
+bool isPlatformMobile() => !kIsWeb && (Platform.isAndroid || Platform.isIOS);
 
 class IconButtonSmall extends StatelessWidget {
   const IconButtonSmall({
