@@ -26,7 +26,7 @@ extension DateTimeExtension on DateTime {
     return DateFormat('yyyy-MM-dd').format(this);
   }
 
-  String get formatPeriod {
+  String get yyyyMM {
     return DateFormat('yyyyMM').format(this);
   }
 
