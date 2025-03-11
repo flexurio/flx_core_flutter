@@ -109,6 +109,7 @@ class Permission {
   static String requestFormDetailDelete = 'request_form_detail_delete';
   static String requestFormCreateMR = 'request_form_create_mr';
   static String requestFormReject = 'request_form_reject';
+  static String requestFormExportExcel = 'request_form_export_excel';
 
   // --
   static String purchaseRequestViewMenu = 'material_request_view_menu';
