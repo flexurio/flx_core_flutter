@@ -235,6 +235,41 @@ Table tableBody<T>({
   );
 }
 
+List<Widget> simpleTablePdf2<T>({
+  required List<T> data,
+  required List<PColumn<T>> columns,
+}) {
+  Widget usePadding(Widget child) =>
+      Padding(padding: const EdgeInsets.symmetric(horizontal: 36), child: child);
+
+  final children = <Widget>[
+    usePadding(
+      tableHeader(
+        columns: columns.map((e) => PColumnHeader(title: e.title)).toList(),
+      ),
+    ),
+  ];
+  for (var i = 0; i < data.length; i++) {
+    children.add(
+      usePadding(
+        tableBody(
+          data: [data[i]],
+          columns: columns
+              .map(
+                (e) => PColumnBody<T>(
+                  contentBuilder: (d, i) => e.contentBuilder(d, i),
+                ),
+              )
+              .toList(),
+        ),
+      ),
+    );
+  }
+
+  return children;
+}
+
+@Deprecated('Use simpleTablePdf2 instead')
 Table simpleTablePdf<T>({
   required List<T> data,
   required List<PColumn<T>> columns,
@@ -339,11 +374,11 @@ Table tableFooter({
         height: 30,
         padding: paddingRow,
         decoration: BoxDecoration(
-          border: column.borderTransparent 
-            ? const Border()
-            : const Border(
-                top: BorderSide(color: PdfColors.blueGrey500, width: 4),
-              ),
+          border: column.borderTransparent
+              ? const Border()
+              : const Border(
+                  top: BorderSide(color: PdfColors.blueGrey500, width: 4),
+                ),
         ),
         child: Align(
           alignment:
