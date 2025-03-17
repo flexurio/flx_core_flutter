@@ -22,8 +22,12 @@ extension DateTimeExtension on DateTime {
     return DateFormat.yMMMM().format(this);
   }
 
-  String get yyyyMMdd {
+  String get yyyyMMddDash {
     return DateFormat('yyyy-MM-dd').format(this);
+  }
+
+    String get yyyyMMdd {
+    return DateFormat('yyyyMMdd').format(this);
   }
 
   String get yyyyMM {
