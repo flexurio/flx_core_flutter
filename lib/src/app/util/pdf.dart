@@ -238,9 +238,12 @@ Table tableBody<T>({
 List<Widget> simpleTablePdf2<T>({
   required List<T> data,
   required List<PColumn<T>> columns,
+  EdgeInsets? padding,
 }) {
   Widget usePadding(Widget child) => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 36), child: child);
+    padding: padding ?? const EdgeInsets.symmetric(horizontal: 36),
+    child: child,
+  );
 
   final children = <Widget>[
     usePadding(
