@@ -239,8 +239,8 @@ List<Widget> simpleTablePdf2<T>({
   required List<T> data,
   required List<PColumn<T>> columns,
 }) {
-  Widget usePadding(Widget child) =>
-      Padding(padding: const EdgeInsets.symmetric(horizontal: 36), child: child);
+  Widget usePadding(Widget child) => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 36), child: child);
 
   final children = <Widget>[
     usePadding(
@@ -405,14 +405,15 @@ Table tableFooter({
   );
 }
 
-Table tableHeader({
+Widget tableHeader({
   required List<PColumnHeader> columns,
   bool hasChildren = false,
+  EdgeInsetsGeometry? padding,
 }) {
   final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
   const paddingRow = EdgeInsets.symmetric(horizontal: 8);
 
-  return Table(
+  final table = Table(
     border: TableBorder.all(color: PdfColors.white, width: 3),
     columnWidths: {
       for (var i = 0; i < columns.length; i++)
@@ -459,6 +460,15 @@ Table tableHeader({
       ),
     ],
   );
+
+  if (padding != null) {
+    return Padding(
+      padding: padding,
+      child: table,
+    );
+  } else {
+    return table;
+  }
 }
 
 Table simpleTablePdfX<T>({
