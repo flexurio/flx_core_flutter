@@ -7,12 +7,12 @@ import 'package:screen_identifier/screen_identifier.dart';
 class DTHead<T> {
   const DTHead({
     required this.label,
-    required this.backendColumn,
+    required this.backendKeySort,
     this.numeric = false,
   });
   final bool numeric;
   final String label;
-  final String? backendColumn;
+  final String? backendKeySort;
 
   DataColumn toDataColumn() {
     return DataColumn(label: Text(label), numeric: numeric);
@@ -137,14 +137,14 @@ class DataTableBackend<T> extends StatelessWidget {
                     data: pageOptions.data,
                     rowsPerPage: 10,
                     initialSortColumnIndex: columns.indexWhere(
-                      (e) => e.head.backendColumn == pageOptions.sortBy,
+                      (e) => e.head.backendKeySort == pageOptions.sortBy,
                     ),
                     initialSortAscending: pageOptions.ascending,
                     onSort: (index, ascending) {
                       onChanged(
                         pageOptions.copyWith(
                           ascending: ascending,
-                          sortBy: columns[index].head.backendColumn,
+                          sortBy: columns[index].head.backendKeySort,
                         ),
                       );
                     },
