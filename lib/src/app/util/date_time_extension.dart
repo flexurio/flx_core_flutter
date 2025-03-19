@@ -26,7 +26,7 @@ extension DateTimeExtension on DateTime {
     return DateFormat('yyyy-MM-dd').format(this);
   }
 
-    String get yyyyMMdd {
+  String get yyyyMMdd {
     return DateFormat('yyyyMMdd').format(this);
   }
 
@@ -48,6 +48,10 @@ extension DateTimeExtension on DateTime {
 
   String get ddMMMMy {
     return DateFormat('dd MMMM y').format(this);
+  }
+
+  String get ddMMMyyyy {
+    return DateFormat('dd MMM yyyy').format(this);
   }
 
   String get ddMMyyyySlash {
