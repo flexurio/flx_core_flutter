@@ -194,13 +194,14 @@ class PColumnHeader {
   final double? flex;
 }
 
-Table tableBody<T>({
+Widget tableBody<T>({
   required List<T> data,
   required List<PColumnBody<T>> columns,
+  EdgeInsetsGeometry? padding,
 }) {
   const paddingRow = EdgeInsets.symmetric(horizontal: 8);
 
-  return Table(
+  final table = Table(
     border: TableBorder.all(color: PdfColors.white, width: 3),
     columnWidths: {
       for (var i = 0; i < columns.length; i++)
@@ -233,6 +234,12 @@ Table tableBody<T>({
       ),
     ),
   );
+
+  if (padding != null) {
+    return Padding(padding: padding, child: table);
+  } else {
+    return table;
+  }
 }
 
 List<Widget> simpleTablePdf2<T>({
@@ -241,9 +248,9 @@ List<Widget> simpleTablePdf2<T>({
   EdgeInsets? padding,
 }) {
   Widget usePadding(Widget child) => Padding(
-    padding: padding ?? const EdgeInsets.symmetric(horizontal: 36),
-    child: child,
-  );
+        padding: padding ?? const EdgeInsets.symmetric(horizontal: 36),
+        child: child,
+      );
 
   final children = <Widget>[
     usePadding(
@@ -367,8 +374,9 @@ Table simpleTablePdf<T>({
   );
 }
 
-Table tableFooter({
+Widget tableFooter({
   required List<PColumnFooter> columns,
+  EdgeInsetsGeometry? padding,
 }) {
   const paddingRow = EdgeInsets.symmetric(horizontal: 8);
   final footer = <Widget>[
@@ -398,7 +406,7 @@ Table tableFooter({
       ),
   ];
 
-  return Table(
+  final table = Table(
     border: TableBorder.all(color: PdfColors.white, width: 3),
     columnWidths: {
       for (var i = 0; i < columns.length; i++)
@@ -406,6 +414,12 @@ Table tableFooter({
     },
     children: [TableRow(children: footer)],
   );
+
+  if (padding != null) {
+    return Padding(padding: padding, child: table);
+  } else {
+    return table;
+  }
 }
 
 Widget tableHeader({
