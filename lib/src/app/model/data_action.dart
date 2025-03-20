@@ -23,7 +23,6 @@ enum DataAction {
   back('back', Icons.abc, Colors.orange),
   cancel('cancel', Icons.cancel, Colors.grey),
   preview('preview', Icons.preview, Colors.grey),
-  cancelConfirm('cancel_confirm', Icons.cancel, Colors.grey),
   changePassword('change_password', Icons.key, Colors.green),
   check('check', Icons.analytics_outlined, Colors.blue),
   checkQc('check_qc', Icons.check, Colors.green),
