@@ -21,12 +21,17 @@ class ErrorIndicator extends StatelessWidget {
   }
 }
 
-class WarningIconAnimate extends StatelessWidget {
-  const WarningIconAnimate({super.key});
+class IconWarningAnimate extends StatelessWidget {
+  const IconWarningAnimate({super.key, this.height, this.tooltipMessage});
+  final double? height;
+  final String? tooltipMessage;
 
   @override
   Widget build(BuildContext context) {
-    return Lottie.asset('asset/lottie/warning.json', repeat: true); // Warning();
+    return Tooltip(
+      message: tooltipMessage,
+      child: Lottie.asset('asset/lottie/warning.json', height: height),
+    ); // Warning();
   }
 }
 

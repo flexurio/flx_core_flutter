@@ -1,6 +1,8 @@
 import 'package:intl/intl.dart';
 
 extension DateTimeExtension on DateTime {
+  bool get isLessThanOneYear => difference(DateTime.now()).inDays < 365;
+
   bool get isWeekend {
     final weekday = this.weekday;
     return [7, 6].contains(weekday);
