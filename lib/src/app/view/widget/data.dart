@@ -1,6 +1,7 @@
 import 'package:flexurio_erp_core/flexurio_erp_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class ErrorIndicator extends StatelessWidget {
   const ErrorIndicator({super.key});
@@ -17,6 +18,15 @@ class ErrorIndicator extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class WarningIconAnimate extends StatelessWidget {
+  const WarningIconAnimate({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Lottie.asset('asset/lottie/warning.json', repeat: true); // Warning();
   }
 }
 
