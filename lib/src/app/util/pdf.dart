@@ -242,6 +242,16 @@ Widget tableBody<T>({
   }
 }
 
+Widget textGroup(String text) {
+  return Text(
+    text,
+    style: TextStyle(
+      fontWeight: FontWeight.bold,
+      color: PdfColor.fromInt(flavorConfig.color.value),
+    ),
+  );
+}
+
 List<Widget> simpleTablePdf2<T>({
   required List<T> data,
   required List<PColumn<T>> columns,
