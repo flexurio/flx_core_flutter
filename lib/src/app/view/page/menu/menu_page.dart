@@ -40,13 +40,20 @@ class MenuPage extends StatefulWidget {
     required String accountName,
     required String accountSubtitle,
     required void Function() onLogout,
-    required void Function(BuildContext context) onChangePassword, required List<Widget> Function(BuildContext context, String query)
-        searchData, String? logoUrl,
+    required void Function(BuildContext context) onChangePassword,
+    required List<Widget> Function(BuildContext context, String query)
+        searchData,
+    String? logoUrl,
     String? logoNamed,
   }) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => MenuBloc()),
+        BlocProvider(
+          create: (_) => MenuBloc(
+            logoUrl: logoUrl,
+            logoNamedUrl: logoNamed,
+          ),
+        ),
         BlocProvider(create: (_) => MenuCollapseBloc()),
       ],
       child: MenuPage._(
