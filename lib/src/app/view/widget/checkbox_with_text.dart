@@ -2,6 +2,37 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
+class FieldCheckBox extends StatelessWidget {
+  const FieldCheckBox({
+    required this.label,
+    required this.initialValue,
+    required this.onChanged,
+    this.enabled = true,
+    super.key,
+  });
+  final bool enabled;
+  final bool initialValue;
+  final String label;
+  final void Function(bool)? onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 7.5, horizontal: 6),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: enabled ? null : Colors.blueGrey.shade100,
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: CheckboxWithText(
+        onChanged: onChanged,
+        initialValue: initialValue,
+        text: '$label' + (enabled ? '' : ' (Read Only)'),
+      ),
+    );
+  }
+}
+
 class CheckboxWithText extends StatefulWidget {
   const CheckboxWithText({
     required this.initialValue,
