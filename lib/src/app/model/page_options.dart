@@ -98,11 +98,16 @@ class PageOptions<T> {
   }
 
   Map<String, dynamic> toUrlQueryMap() {
+    bool? ascendingParam = ascending;
+    if (sortBy.toLowerCase().contains(' asc') || sortBy.toLowerCase().contains(' desc')) {
+      ascendingParam = null;
+    }
+
     return {
       'page': page,
       'search': search,
       'sort': sortBy,
-      'ascending': ascending,
+      'ascending': ascendingParam,
       'limit': rowsPerPage,
     };
   }

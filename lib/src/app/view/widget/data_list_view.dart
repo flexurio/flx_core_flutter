@@ -82,10 +82,10 @@ class LoadMore extends StatelessWidget {
       key: UniqueKey(),
       onVisibilityChanged: (info) {
         if (info.visibleFraction == 1) {
-          print("object");
+          print('object');
         }
       },
-      child: CupertinoActivityIndicator(),
+      child: const CupertinoActivityIndicator(),
     );
   }
 }

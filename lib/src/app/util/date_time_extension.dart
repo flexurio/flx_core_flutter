@@ -1,6 +1,8 @@
 import 'package:intl/intl.dart';
 
 extension DateTimeExtension on DateTime {
+  bool get isLessThanOneYear => difference(DateTime.now()).inDays < 365;
+
   bool get isWeekend {
     final weekday = this.weekday;
     return [7, 6].contains(weekday);
@@ -22,11 +24,15 @@ extension DateTimeExtension on DateTime {
     return DateFormat.yMMMM().format(this);
   }
 
-  String get yyyyMMdd {
+  String get yyyyMMddDash {
     return DateFormat('yyyy-MM-dd').format(this);
   }
 
-  String get formatPeriod {
+  String get yyyyMMdd {
+    return DateFormat('yyyyMMdd').format(this);
+  }
+
+  String get yyyyMM {
     return DateFormat('yyyyMM').format(this);
   }
 
@@ -38,8 +44,16 @@ extension DateTimeExtension on DateTime {
     return DateFormat('dd-MM-yyyy').format(this);
   }
 
+  String get ddMMyyyyHHmmDash {
+    return DateFormat('dd-MM-yyyy HH:mm').format(this);
+  }
+
   String get ddMMMMy {
     return DateFormat('dd MMMM y').format(this);
+  }
+
+  String get ddMMMyyyy {
+    return DateFormat('dd MMM yyyy').format(this);
   }
 
   String get ddMMyyyySlash {

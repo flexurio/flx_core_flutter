@@ -33,20 +33,7 @@ class CardForm extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: danger ? Colors.white : null,
-                    ),
-                  ),
-                  const Spacer(),
-                  Icon(icon, color: danger ? Colors.white : const Color(0XFFAFABBC)),
-                ],
-              ),
+              _buildTitle(),
               const SizedBox(height: 20),
               DefaultTextStyle(
                 style: theme.textTheme.bodyMedium!.copyWith(
@@ -59,23 +46,7 @@ class CardForm extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: BoxDecoration(
-            color: danger
-                ? Colors.red.shade100
-                : (theme.isDark
-                    ? const Color.fromARGB(255, 81, 81, 82)
-                    : const Color(0XFFF8F7FB)),
-            borderRadius: const BorderRadius.vertical(
-              bottom: Radius.circular(20),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: actions,
-          ),
-        ),
+        _buildActions(theme),
       ],
     );
 
@@ -95,6 +66,43 @@ class CardForm extends StatelessWidget {
         child: body,
       );
     }
+  }
+
+  Widget _buildActions(ThemeData theme) {
+    return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+            color: danger
+                ? Colors.red.shade100
+                : (theme.isDark
+                    ? MyTheme.black06dp
+                    : const Color(0XFFF8F7FB)),
+            borderRadius: const BorderRadius.vertical(
+              bottom: Radius.circular(20),
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: actions,
+          ),
+        );
+  }
+
+  Widget _buildTitle() {
+    return Row(
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: danger ? Colors.white : null,
+                    ),
+                  ),
+                  const Spacer(),
+                  Icon(icon, color: danger ? Colors.white : const Color(0XFFAFABBC)),
+                ],
+              );
   }
 }
 

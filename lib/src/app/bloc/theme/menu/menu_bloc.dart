@@ -7,14 +7,16 @@ part 'menu_event.dart';
 part 'menu_state.dart';
 
 class MenuBloc extends Bloc<MenuEvent, MenuState> {
-  MenuBloc()
-      : super(
-          const MenuState(
+  MenuBloc({
+    String? logoUrl,
+    String? logoNamedUrl,
+  }) : super(
+          MenuState(
             label: 'Home',
             menu2Expanded: '',
             menu3Selected: '',
             home: ContentWithRightPanel(
-              rightPanel: Padding(
+              rightPanel: const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24),
                 child: KeyboardShortcutInfo(),
               ),
@@ -25,7 +27,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ColorFiltered(
-                        colorFilter: ColorFilter.matrix(<double>[
+                        colorFilter: const ColorFilter.matrix(<double>[
                           0.2126,
                           0.7152,
                           0.0722,
@@ -49,6 +51,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
                         ]),
                         child: LogoNamed(
                           height: 70,
+                          logoUrl: logoUrl,
+                          logoNamedUrl: logoNamedUrl,
                         ),
                       ),
                     ],

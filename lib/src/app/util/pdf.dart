@@ -194,13 +194,14 @@ class PColumnHeader {
   final double? flex;
 }
 
-Table tableBody<T>({
+Widget tableBody<T>({
   required List<T> data,
   required List<PColumnBody<T>> columns,
+  EdgeInsetsGeometry? padding,
 }) {
   const paddingRow = EdgeInsets.symmetric(horizontal: 8);
 
-  return Table(
+  final table = Table(
     border: TableBorder.all(color: PdfColors.white, width: 3),
     columnWidths: {
       for (var i = 0; i < columns.length; i++)
@@ -233,8 +234,62 @@ Table tableBody<T>({
       ),
     ),
   );
+
+  if (padding != null) {
+    return Padding(padding: padding, child: table);
+  } else {
+    return table;
+  }
 }
 
+Widget textGroup(String text) {
+  return Text(
+    text,
+    style: TextStyle(
+      fontWeight: FontWeight.bold,
+      color: PdfColor.fromInt(flavorConfig.color.value),
+    ),
+  );
+}
+
+List<Widget> simpleTablePdf2<T>({
+  required List<T> data,
+  required List<PColumn<T>> columns,
+  EdgeInsets? padding,
+}) {
+  Widget usePadding(Widget child) => Padding(
+        padding: padding ?? const EdgeInsets.symmetric(horizontal: 36),
+        child: child,
+      );
+
+  final children = <Widget>[
+    usePadding(
+      tableHeader(
+        columns: columns.map((e) => PColumnHeader(title: e.title)).toList(),
+      ),
+    ),
+  ];
+  for (var i = 0; i < data.length; i++) {
+    children.add(
+      usePadding(
+        tableBody(
+          data: [data[i]],
+          columns: columns
+              .map(
+                (e) => PColumnBody<T>(
+                  contentBuilder: (d, i) => e.contentBuilder(d, i),
+                ),
+              )
+              .toList(),
+        ),
+      ),
+    );
+  }
+
+  return children;
+}
+
+@Deprecated('Use simpleTablePdf2 instead')
 Table simpleTablePdf<T>({
   required List<T> data,
   required List<PColumn<T>> columns,
@@ -329,8 +384,9 @@ Table simpleTablePdf<T>({
   );
 }
 
-Table tableFooter({
+Widget tableFooter({
   required List<PColumnFooter> columns,
+  EdgeInsetsGeometry? padding,
 }) {
   const paddingRow = EdgeInsets.symmetric(horizontal: 8);
   final footer = <Widget>[
@@ -339,11 +395,11 @@ Table tableFooter({
         height: 30,
         padding: paddingRow,
         decoration: BoxDecoration(
-          border: column.borderTransparent 
-            ? const Border()
-            : const Border(
-                top: BorderSide(color: PdfColors.blueGrey500, width: 4),
-              ),
+          border: column.borderTransparent
+              ? const Border()
+              : const Border(
+                  top: BorderSide(color: PdfColors.blueGrey500, width: 4),
+                ),
         ),
         child: Align(
           alignment:
@@ -360,7 +416,7 @@ Table tableFooter({
       ),
   ];
 
-  return Table(
+  final table = Table(
     border: TableBorder.all(color: PdfColors.white, width: 3),
     columnWidths: {
       for (var i = 0; i < columns.length; i++)
@@ -368,16 +424,23 @@ Table tableFooter({
     },
     children: [TableRow(children: footer)],
   );
+
+  if (padding != null) {
+    return Padding(padding: padding, child: table);
+  } else {
+    return table;
+  }
 }
 
-Table tableHeader({
+Widget tableHeader({
   required List<PColumnHeader> columns,
   bool hasChildren = false,
+  EdgeInsetsGeometry? padding,
 }) {
   final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
   const paddingRow = EdgeInsets.symmetric(horizontal: 8);
 
-  return Table(
+  final table = Table(
     border: TableBorder.all(color: PdfColors.white, width: 3),
     columnWidths: {
       for (var i = 0; i < columns.length; i++)
@@ -424,6 +487,15 @@ Table tableHeader({
       ),
     ],
   );
+
+  if (padding != null) {
+    return Padding(
+      padding: padding,
+      child: table,
+    );
+  } else {
+    return table;
+  }
 }
 
 Table simpleTablePdfX<T>({

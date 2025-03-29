@@ -84,6 +84,11 @@ class Entity extends EntityY {
         subtitleX: 'invoice_receive',
         iconPath: 'bill',
       );
+  static Entity get generalInvoice => const Entity(
+        titleX: 'general_invoice',
+        subtitleX: 'general_invoice',
+        iconPath: 'general_invoice',
+      );
   static Entity get invoiceReceiveDetail => const Entity(
         titleX: 'Invoice Receive Detail',
         subtitleX: '',
@@ -283,6 +288,11 @@ class Entity extends EntityY {
         subtitleX:
             'Master menu that includes a list of product groups as the basis for classifying products',
         iconPath: 'product-group',
+      );
+  static Entity get productStock => const Entity(
+        titleX: 'product_stock',
+        subtitleX: 'product_stock',
+        iconPath: 'product_stock',
       );
   static Entity get productionFormulation => const Entity(
         titleX: 'Production Formulation',
