@@ -43,7 +43,10 @@ class DataSetAction<T> extends StatelessWidget {
                   if (actionLeft.isNotEmpty)
                     Padding(
                       padding: const EdgeInsets.only(top: 12),
-                      child: Row(children: [_buildActionLeft()]),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(children: [_buildActionLeft()]),
+                      ),
                     ),
                 ],
               ),
