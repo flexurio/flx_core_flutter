@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 Future<bool?> showDialogLogout({
   required BuildContext context,
-  required void Function() onLogout,
 }) async {
   return showDialog<bool?>(
     context: context,
@@ -25,8 +24,7 @@ Future<bool?> showDialogLogout({
             permission: null,
             action: DataAction.logout,
             onPressed: () {
-              onLogout();
-              Navigator.pop(context);
+              Navigator.pop(context, true);
             },
           ),
         ],
