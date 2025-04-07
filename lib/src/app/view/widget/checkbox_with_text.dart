@@ -27,7 +27,7 @@ class FieldCheckBox extends StatelessWidget {
       child: CheckboxWithText(
         onChanged: onChanged,
         initialValue: initialValue,
-        text: '$label' + (enabled ? '' : ' (Read Only)'),
+        text: '$label${enabled ? '' : ' (Read Only)'}',
       ),
     );
   }

@@ -2,6 +2,7 @@ export 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 export 'constant/size.dart';
 export 'src/app/bloc/theme/menu/menu_bloc.dart';
+export 'src/app/model/access.dart';
 export 'src/app/model/base_api.dart';
 export 'src/app/model/color_type.dart';
 export 'src/app/model/data_action.dart';
@@ -86,4 +87,3 @@ export 'src/app/view/widget/time_line.dart';
 export 'src/app/view/widget/title_page.dart';
 export 'src/app/view/widget/top_bar.dart';
 export 'src/app/view/widget/yuhu_table.dart';
-export 'src/app/model/access.dart';

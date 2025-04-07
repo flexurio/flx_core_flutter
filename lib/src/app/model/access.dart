@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class Access {
-  final Map<String, bool> permissions;
 
   Access({
     required bool delete,
@@ -23,6 +22,7 @@ class Access {
           'export': export,
           'approve_reject': approveReject,
         };
+  final Map<String, bool> permissions;
 
   int getValue() {
     return permissions.entries.fold<int>(0, (acc, entry) {

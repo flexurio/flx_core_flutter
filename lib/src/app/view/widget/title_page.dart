@@ -1,6 +1,5 @@
 import 'package:flexurio_erp_core/flexurio_erp_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class TitlePage extends StatelessWidget {

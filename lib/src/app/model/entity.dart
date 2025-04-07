@@ -146,7 +146,7 @@ class Entity extends EntityY {
         subtitleX: 'accounts_receivable_customer',
         iconPath: 'accountant',
       );
-  static Entity get pettyCash => const Entity(
+  static Entity get paymentGeneral => const Entity(
         titleX: 'petty_cash',
         subtitleX: 'petty_cash',
         iconPath: 'money',
