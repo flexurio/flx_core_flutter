@@ -1,5 +1,6 @@
 import 'package:flexurio_erp_core/flexurio_erp_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class TitlePage extends StatelessWidget {
@@ -44,6 +45,32 @@ class TitlePage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class EntityHomePage extends StatelessWidget {
+  const EntityHomePage({
+    required this.entity,
+    required this.child,
+    super.key,
+  });
+
+  final Entity entity;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 12),
+      children: [
+        TitlePage(entity: entity),
+        const Gap(12),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: child,
+        ),
+      ],
     );
   }
 }
