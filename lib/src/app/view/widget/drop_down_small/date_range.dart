@@ -61,7 +61,8 @@ class _DropDownSmallDateRangeState extends State<DropDownSmallDateRange> {
                 onChangeRange: (dates) {
                   if (dates.startDate == null || dates.endDate == null) return;
                   value =
-                      '${dates.startDate?.ddMMyyyySlash} - ${dates.endDate?.ddMMyyyySlash}';
+                      '${dates.startDate?.ddMMyyyySlash} - '
+                          '${dates.endDate?.ddMMyyyySlash}';
                   widget.onChanged.call(dates);
                   _selectedDateRange = dates;
                   setState(() {});

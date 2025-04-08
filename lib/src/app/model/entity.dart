@@ -286,7 +286,8 @@ class Entity extends EntityY {
   static Entity get productGroup => const Entity(
         titleX: 'Product Group',
         subtitleX:
-            'Master menu that includes a list of product groups as the basis for classifying products',
+            'Master menu that includes a list of product groups as the basis '
+                'for classifying products',
         iconPath: 'product-group',
       );
   static Entity get productStock => const Entity(

@@ -9,7 +9,8 @@ import 'package:gap/gap.dart';
 
 class Message {
   static String successCreated(Entity data) =>
-      'Success! The new ${data.id.tr()} has been created and added to the database.';
+      'Success! The new ${data.id.tr()} has been created and added to the '
+      'database.';
 
   static String successUpdated(Entity data) =>
       'Success! The ${data.id.tr()} information has been successfully updated.';

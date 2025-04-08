@@ -554,7 +554,6 @@ Table simpleTablePdfX<T>({
                 child: Text(
                   column.title ?? '',
                   textAlign: TextAlign.center,
-                  // textAlign: column.numeric ? TextAlign.right : TextAlign.left,
                   style: TextStyle(
                     fontSize: 7,
                     fontWeight: FontWeight.bold,
