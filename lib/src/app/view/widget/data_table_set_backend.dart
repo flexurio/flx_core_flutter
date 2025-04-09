@@ -140,7 +140,7 @@ class DataTableBackend<T> extends StatelessWidget {
                     initialSortColumnIndex: columns.indexWhere(
                       (e) => [
                         e.head.backendKeySort,
-                        e.head.backendKeySortDescending
+                        e.head.backendKeySortDescending,
                       ].contains(pageOptions.sortBy),
                     ),
                     initialSortAscending: pageOptions.ascending,

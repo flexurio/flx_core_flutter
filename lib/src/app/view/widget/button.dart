@@ -494,9 +494,9 @@ class BackButtonWithTitle extends StatelessWidget {
           BackButton(
             style: ButtonStyle(
               foregroundColor:
-                  WidgetStatePropertyAll(foregroundColor.withOpacity(.7)),
+                  WidgetStatePropertyAll(foregroundColor.withAlpha(170)),
               side: WidgetStateProperty.all(
-                BorderSide(color: foregroundColor.withOpacity(.3)),
+                BorderSide(color: foregroundColor.withAlpha(50)),
               ),
             ),
             onPressed: () {

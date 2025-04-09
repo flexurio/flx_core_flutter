@@ -209,7 +209,9 @@ class Entity extends EntityY {
   static Entity get requestForm => const Entity(
         titleX: 'Request Form',
         subtitleX:
-            'A document utilized to formally request services, resources, or specific actions from a particular department within an organization',
+            'A document utilized to formally request services, resources, or '
+            'specific actions from a particular department within an '
+            'organization',
         iconPath: 'contact-form',
       );
   static Entity get requestFormDetail => const Entity(
@@ -287,7 +289,7 @@ class Entity extends EntityY {
         titleX: 'Product Group',
         subtitleX:
             'Master menu that includes a list of product groups as the basis '
-                'for classifying products',
+            'for classifying products',
         iconPath: 'product-group',
       );
   static Entity get productStock => const Entity(
