@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class Access {
-
   Access({
     required bool delete,
     required bool write,

@@ -3,7 +3,9 @@ import 'package:gap/gap.dart';
 
 class BlockNote extends StatelessWidget {
   const BlockNote({
-    required this.title, required this.subtitle, super.key,
+    required this.title,
+    required this.subtitle,
+    super.key,
     this.color,
   });
 

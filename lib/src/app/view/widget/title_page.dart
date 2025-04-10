@@ -52,7 +52,7 @@ class EntityHomePage extends StatelessWidget {
   const EntityHomePage({
     required this.entity,
     required this.child,
-     this.suffixText,
+    this.suffixText,
     super.key,
   });
 
