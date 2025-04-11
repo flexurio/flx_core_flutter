@@ -38,9 +38,7 @@ class _SearchDialogState extends State<SearchDialog> {
     const maxWidth = 800;
     final theme = Theme.of(context);
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       backgroundColor: theme.cardColor,
       surfaceTintColor: Colors.transparent,
       insetPadding: EdgeInsets.symmetric(
