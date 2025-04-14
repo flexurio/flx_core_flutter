@@ -25,7 +25,7 @@ abstract class Repository {
       if (error.response?.statusCode == 401) {
         onUnauthorized();
         return ApiException.fromType(ExceptionType.tokenExpired);
-      } else if (error.message
+      } else if (error.message!
           .contains('SocketException: Failed host lookup')) {
         return error;
       } else if (error.response?.statusCode == 400 ||
