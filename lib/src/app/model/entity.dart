@@ -76,7 +76,7 @@ class Entity extends EntityY {
         iconPath: 'department',
       );
   static Entity get departmentType =>
-      const Entity(titleX: 'Department Group', subtitleX: '', iconPath: 'bill');
+      const Entity(titleX: 'Department Type', subtitleX: '', iconPath: 'bill');
   static Entity get departmentGroup =>
       const Entity(titleX: 'Department Group', subtitleX: '', iconPath: 'bill');
   static Entity get invoiceReceive => const Entity(
