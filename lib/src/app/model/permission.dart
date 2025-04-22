@@ -170,6 +170,10 @@ class Permission {
   static String productIssueViewMenu = 'product_issue_view_menu';
   static String productIssueDeliveryCreate = 'product_issue_delivery_create';
   static String productIssueGlobalExportPdf = 'product_issue_global_export_pdf';
+  static String productIssueLeadTimeSJLExportPdf =
+      'product_issue_lead_time_sjl_export_pdf';
+  static String productIssueReportDeliveryExportPdf =
+      'product_issue_report_delivery_export_pdf';
 
   // --
   static String productRequestViewMenu = 'product_request_view_menu';
