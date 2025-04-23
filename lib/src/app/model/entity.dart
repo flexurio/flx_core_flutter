@@ -364,6 +364,11 @@ class Entity extends EntityY {
         subtitleX: 'product_request',
         iconPath: 'product-request',
       );
+  static Entity get productRequestDistributor => const Entity(
+        titleX: 'product_request_distributor',
+        subtitleX: 'product_request_distributor',
+        iconPath: 'bill',
+      );
   static Entity get productRequestDetail => const Entity(
         titleX: 'Product Request Detail',
         subtitleX: '',

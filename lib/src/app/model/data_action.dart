@@ -81,6 +81,7 @@ enum DataAction {
   markAsLeader('mark_as_leader', Icons.more_vert, Colors.green),
   moving('Moving', Icons.moving_outlined, Colors.orange),
   next('next', Icons.abc, Colors.orange),
+  continueX('continue', Icons.abc, Colors.orange),
   none('', Icons.edit, Colors.transparent),
   notActive('Not active', Icons.cancel, Colors.red),
   open('open', Icons.replay_outlined, Colors.orange),
