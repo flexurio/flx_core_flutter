@@ -8,7 +8,7 @@ class ItemList extends StatelessWidget {
     required this.query,
     required this.title,
     required this.icon,
-     this.trailing,
+    this.trailing,
     super.key,
   });
 

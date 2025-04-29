@@ -34,28 +34,39 @@ class LogoNamed extends StatelessWidget {
       );
     }
 
-    if (logoNamedUrl != null) {
-      logoNamed = Image.network(
-        logoNamedUrl!,
-        height: height,
-      );
-    } else {
-      logoNamed = Image.asset(
-        'asset/image/logo-name-company-${flavorConfig.companyId}.png',
-        height: height,
-      );
-    }
-
     return Padding(
       padding: padding,
       child: Row(
         children: [
           logo,
           const Gap(12),
-          logoNamed,
+          Named(logoNamedUrl: logoNamedUrl),
         ],
       ),
     );
+  }
+}
+
+class Named extends StatelessWidget {
+  const Named({super.key, this.logoNamedUrl});
+
+  final String? logoNamedUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    late Widget logoNamed;
+    if (logoNamedUrl != null) {
+      logoNamed = Image.network(
+        logoNamedUrl!,
+        height: 40,
+      );
+    } else {
+      logoNamed = Image.asset(
+        'asset/image/logo-name-company-${flavorConfig.companyId}.png',
+        height: 40,
+      );
+    }
+    return logoNamed;
   }
 }
 

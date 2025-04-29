@@ -76,7 +76,7 @@ class Entity extends EntityY {
         iconPath: 'department',
       );
   static Entity get departmentType =>
-      const Entity(titleX: 'Department Group', subtitleX: '', iconPath: 'bill');
+      const Entity(titleX: 'Department Type', subtitleX: '', iconPath: 'bill');
   static Entity get departmentGroup =>
       const Entity(titleX: 'Department Group', subtitleX: '', iconPath: 'bill');
   static Entity get invoiceReceive => const Entity(
@@ -146,7 +146,7 @@ class Entity extends EntityY {
         subtitleX: 'accounts_receivable_customer',
         iconPath: 'accountant',
       );
-  static Entity get pettyCash => const Entity(
+  static Entity get paymentGeneral => const Entity(
         titleX: 'petty_cash',
         subtitleX: 'petty_cash',
         iconPath: 'money',
@@ -209,7 +209,9 @@ class Entity extends EntityY {
   static Entity get requestForm => const Entity(
         titleX: 'Request Form',
         subtitleX:
-            'A document utilized to formally request services, resources, or specific actions from a particular department within an organization',
+            'A document utilized to formally request services, resources, or '
+            'specific actions from a particular department within an '
+            'organization',
         iconPath: 'contact-form',
       );
   static Entity get requestFormDetail => const Entity(
@@ -286,7 +288,8 @@ class Entity extends EntityY {
   static Entity get productGroup => const Entity(
         titleX: 'Product Group',
         subtitleX:
-            'Master menu that includes a list of product groups as the basis for classifying products',
+            'Master menu that includes a list of product groups as the basis '
+            'for classifying products',
         iconPath: 'product-group',
       );
   static Entity get productStock => const Entity(
@@ -360,6 +363,11 @@ class Entity extends EntityY {
         titleX: 'product_request',
         subtitleX: 'product_request',
         iconPath: 'product-request',
+      );
+  static Entity get productRequestDistributor => const Entity(
+        titleX: 'product_request_distributor',
+        subtitleX: 'product_request_distributor',
+        iconPath: 'bill',
       );
   static Entity get productRequestDetail => const Entity(
         titleX: 'Product Request Detail',

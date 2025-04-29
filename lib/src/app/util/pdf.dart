@@ -69,7 +69,8 @@ Widget footerPdf({required Context context, required String printedBy}) {
                         ),
                         SizedBox(width: 6),
                         Text(
-                          'Printed on: ${now.yMMMdHm} GMT+${now.timeZoneOffset.inHours}',
+                          'Printed on: ${now.yMMMdHm} '
+                          'GMT+${now.timeZoneOffset.inHours}',
                           style: const TextStyle(
                             fontSize: 8,
                             color: PdfColors.blueGrey800,
@@ -554,7 +555,6 @@ Table simpleTablePdfX<T>({
                 child: Text(
                   column.title ?? '',
                   textAlign: TextAlign.center,
-                  // textAlign: column.numeric ? TextAlign.right : TextAlign.left,
                   style: TextStyle(
                     fontSize: 7,
                     fontWeight: FontWeight.bold,

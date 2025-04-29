@@ -47,3 +47,34 @@ class TitlePage extends StatelessWidget {
     );
   }
 }
+
+class EntityHomePage extends StatelessWidget {
+  const EntityHomePage({
+    required this.entity,
+    required this.child,
+    this.suffixText,
+    super.key,
+  });
+
+  final Entity entity;
+  final Widget child;
+  final String? suffixText;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 12),
+      children: [
+        TitlePage(
+          entity: entity,
+          suffixText: suffixText,
+        ),
+        const Gap(12),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: child,
+        ),
+      ],
+    );
+  }
+}

@@ -93,7 +93,7 @@ class FTextFormField extends FormField<String> {
                             : Colors.black87,
                       ),
                       decoration: InputDecoration(
-                        counterText: showCounter ?  null : '',
+                        counterText: showCounter ? null : '',
                         labelText:
                             (labelText ?? '') + (enabled ? '' : ' (Read Only)'),
                         hintText: hintText,

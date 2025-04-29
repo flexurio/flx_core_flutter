@@ -10,6 +10,10 @@ String errorMessage(dynamic error) {
 }
 
 class ErrorMessage {
+  static String noRecords() {
+    return 'error.no_records'.tr();
+  }
+
   static String fieldNotFound(String fieldName) {
     return 'error.field_not_found'.tr(namedArgs: {'data': fieldName});
   }

@@ -15,7 +15,9 @@ Future<Page> pdfGeneral({
   for (final field in fields) {
     if (!data[0].containsKey(field)) {
       throw Exception(
-          'The specified field "$field" is missing from the data. Available fields are: ${data[0].keys.join(', ')}.',);
+        'The specified field "$field" is missing from the data. Available '
+        'fields are: ${data[0].keys.join(', ')}.',
+      );
     }
   }
 
@@ -26,7 +28,8 @@ Future<Page> pdfGeneral({
     child: tableHeader(
       columns: keys
           .map(
-              (e) => PColumnHeader(title: e.replaceAll('_', ' ').toUpperCase()),)
+            (e) => PColumnHeader(title: e.replaceAll('_', ' ').toUpperCase()),
+          )
           .toList(),
     ),
   );
@@ -42,7 +45,8 @@ Future<Page> pdfGeneral({
             final isNum = value is num;
             if (value is String) {
               final regex = RegExp(
-                  r'^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(\.\d+)?Z$',);
+                r'^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(\.\d+)?Z$',
+              );
               if (regex.hasMatch(value)) {
                 try {
                   value = DateFormat.LLLL(DateTime.parse(value));

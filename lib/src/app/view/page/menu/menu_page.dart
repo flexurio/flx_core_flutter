@@ -183,6 +183,7 @@ class _MenuPageState extends State<MenuPage> {
 
   TopBar _buildTopBar() {
     return TopBar(
+      logoNamedUrl: widget.logoNamed,
       searchData: widget.searchData,
       menu: widget.menu,
       accountName: widget.userName,

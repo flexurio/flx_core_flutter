@@ -224,13 +224,15 @@ class _TableData extends StatelessWidget {
   }
 }
 
-class TableWithBodyScroll extends StatelessWidget {  // Add the border parameter
+class TableWithBodyScroll extends StatelessWidget {
+  // Add the border parameter
 
   const TableWithBodyScroll({
-    required this.children, super.key,
+    required this.children,
+    super.key,
     this.columnWidths,
     this.heightBody,
-    this.border,  // Add border in constructor
+    this.border, // Add border in constructor
   });
   final Map<int, TableColumnWidth>? columnWidths;
   final List<TableRow> children;
@@ -243,7 +245,7 @@ class TableWithBodyScroll extends StatelessWidget {  // Add the border parameter
       return Table(
         columnWidths: columnWidths,
         children: children,
-        border: border,  // Apply the border to the table
+        border: border, // Apply the border to the table
       );
     }
 
@@ -256,7 +258,7 @@ class TableWithBodyScroll extends StatelessWidget {  // Add the border parameter
           Table(
             columnWidths: columnWidths,
             children: [headerRow],
-            border: border,  // Apply the border to the header table
+            border: border, // Apply the border to the header table
           ),
         SizedBox(
           height: heightBody,
@@ -266,7 +268,7 @@ class TableWithBodyScroll extends StatelessWidget {  // Add the border parameter
               child: Table(
                 columnWidths: columnWidths,
                 children: bodyRows,
-                border: border,  // Apply the border to the body table
+                border: border, // Apply the border to the body table
               ),
             ),
           ),

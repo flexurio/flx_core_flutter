@@ -19,38 +19,34 @@ Future<void> run({
 
   flavorConfig = config;
 
-  late Directory storageDirectory;
+  late String storageDirectoryPath;
 
   if (kIsWeb) {
-    storageDirectory = HydratedStorage.webStorageDirectory;
+    storageDirectoryPath = HydratedStorageDirectory.web.path;
   } else if (Platform.isWindows) {
-    storageDirectory = Directory(
-      '${(await getApplicationDocumentsDirectory()).path}/chiron-${config.companyId}/data/',
-    );
+    storageDirectoryPath =
+        '${(await getApplicationDocumentsDirectory()).path}/chiron-${config.companyId}/data/';
   } else {
-    storageDirectory = await getTemporaryDirectory();
+    storageDirectoryPath = (await getTemporaryDirectory()).path;
   }
 
-  final storage = await HydratedStorage.build(
-    storageDirectory: storageDirectory,
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: kIsWeb
+        ? HydratedStorageDirectory.web
+        : HydratedStorageDirectory((await getTemporaryDirectory()).path),
   );
 
-  Hive.init(storageDirectory.path);
+  Hive.init(storageDirectoryPath);
 
-  HydratedBlocOverrides.runZoned(
-    () {
-      initialized();
+  initialized();
 
-      runApp(
-        EasyLocalization(
-          supportedLocales: const [Locale('en'), Locale('id')],
-          path: 'asset/translation',
-          fallbackLocale: const Locale('en'),
-          child: app,
-        ),
-      );
-    },
-    storage: storage,
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('id')],
+      path: 'asset/translation',
+      fallbackLocale: const Locale('en'),
+      child: app,
+    ),
   );
 }
 

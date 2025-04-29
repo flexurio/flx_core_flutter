@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class SearchDialog extends StatefulWidget {
-  const SearchDialog({required this.onTap, required this.menu, required this.permissions, required this.searchData, super.key,
+  const SearchDialog({
+    required this.onTap,
+    required this.menu,
+    required this.permissions,
+    required this.searchData,
+    super.key,
   });
   final void Function(Menu3, String) onTap;
   final List<Menu1> menu;
@@ -33,9 +38,7 @@ class _SearchDialogState extends State<SearchDialog> {
     const maxWidth = 800;
     final theme = Theme.of(context);
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       backgroundColor: theme.cardColor,
       surfaceTintColor: Colors.transparent,
       insetPadding: EdgeInsets.symmetric(

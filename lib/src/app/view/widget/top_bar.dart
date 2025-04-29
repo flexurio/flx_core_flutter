@@ -17,6 +17,7 @@ class TopBar extends StatelessWidget {
     required this.drawerTriggered,
     required this.onChangePassword,
     required this.searchData,
+    required this.logoNamedUrl,
     super.key,
   });
 
@@ -25,6 +26,7 @@ class TopBar extends StatelessWidget {
   final String accountSubtitle;
   final List<Menu1> menu;
   final List<String> accountPermission;
+  final String? logoNamedUrl;
   final void Function() onLogout;
   final void Function() drawerTriggered;
   final void Function(BuildContext context) onChangePassword;
@@ -46,10 +48,7 @@ class TopBar extends StatelessWidget {
                   icon: const Icon(Icons.menu),
                 ),
                 const Gap(6),
-                Image.asset(
-                  'asset/image/logo-name-company-${flavorConfig.companyId}.png',
-                  height: 40,
-                ),
+                Named(logoNamedUrl: logoNamedUrl),
                 const Spacer(),
                 AccountButton(
                   onChangePassword: onChangePassword,
@@ -221,8 +220,9 @@ class LogOutButton extends StatelessWidget {
     return IconButton(
       tooltip: 'logout'.tr(),
       color: theme.isDark ? Colors.white70 : Colors.black54,
-      onPressed: () {
-        showDialogLogout(context: context, onLogout: onLogout);
+      onPressed: () async {
+        final logout = await showDialogLogout(context: context);
+        if (logout ?? false) onLogout();
       },
       icon: const Icon(Icons.exit_to_app),
     );

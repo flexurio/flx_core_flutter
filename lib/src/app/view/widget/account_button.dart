@@ -170,8 +170,12 @@ class _PopUpDialogProfile extends StatelessWidget {
           color: Colors.red,
           icon: const Icon(Icons.exit_to_app),
           label: 'Log out',
-          onTap: () {
-            showDialogLogout(context: context, onLogout: onLogout);
+          onTap: () async {
+            final logout = await showDialogLogout(context: context);
+            if (logout ?? false) {
+              onLogout();
+              Navigator.pop(context);
+            }
           },
         ),
         const Gap(12),
