@@ -70,44 +70,42 @@ class CardForm extends StatelessWidget {
 
   Widget _buildActions(ThemeData theme) {
     return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: BoxDecoration(
-            color: danger
-                ? Colors.red.shade100
-                : (theme.isDark
-                    ? MyTheme.black06dp
-                    : const Color(0XFFF8F7FB)),
-            borderRadius: const BorderRadius.vertical(
-              bottom: Radius.circular(20),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: actions,
-          ),
-        );
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      decoration: BoxDecoration(
+        color: danger
+            ? Colors.red.shade100
+            : (theme.isDark ? MyTheme.black06dp : const Color(0XFFF8F7FB)),
+        borderRadius: const BorderRadius.vertical(
+          bottom: Radius.circular(20),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: actions,
+      ),
+    );
   }
 
   Widget _buildTitle() {
     return Row(
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: danger ? Colors.white : null,
-                    ),
-                  ),
-                  const Spacer(),
-                  Icon(icon, color: danger ? Colors.white : const Color(0XFFAFABBC)),
-                ],
-              );
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: danger ? Colors.white : null,
+          ),
+        ),
+        const Spacer(),
+        Icon(icon, color: danger ? Colors.white : const Color(0XFFAFABBC)),
+      ],
+    );
   }
 }
 
 class CardConfirmation extends StatelessWidget {
-  const CardConfirmation({
+  const CardConfirmation._({
     required this.isProgress,
     required this.action,
     required this.data,
@@ -117,8 +115,42 @@ class CardConfirmation extends StatelessWidget {
     this.danger = false,
   });
 
+  factory CardConfirmation.action({
+    required bool isProgress,
+    required DataAction action,
+    required Entity entity,
+    required void Function() onConfirm,
+    String? label,
+    bool danger = false,
+  }) =>
+      CardConfirmation._(
+        isProgress: isProgress,
+        action: action.title,
+        data: entity,
+        onConfirm: onConfirm,
+        label: label,
+        danger: danger,
+      );
+
+  factory CardConfirmation.string({
+    required bool isProgress,
+    required String action,
+    required Entity entity,
+    required void Function() onConfirm,
+    String? label,
+    bool danger = false,
+  }) =>
+      CardConfirmation._(
+        isProgress: isProgress,
+        action: action,
+        data: entity,
+        onConfirm: onConfirm,
+        label: label,
+        danger: danger,
+      );
+
   final bool isProgress;
-  final DataAction action;
+  final String action;
   final Entity data;
   final String? label;
   final bool danger;
@@ -126,7 +158,6 @@ class CardConfirmation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Sound.alert();
     final theme = Theme.of(context);
     final primaryColor = theme.colorScheme.primary;
     return CardForm(
@@ -135,7 +166,7 @@ class CardConfirmation extends StatelessWidget {
       title: 'are_you_sure'.tr(),
       icon: FontAwesomeIcons.exclamationTriangle,
       actions: [
-        Button(
+        Button.action(
           permission: null,
           isSecondary: true,
           isInProgress: isProgress,
@@ -145,10 +176,11 @@ class CardConfirmation extends StatelessWidget {
           action: DataAction.cancel,
         ),
         const SizedBox(width: 10),
-        Button(
+        Button.string(
           permission: null,
-          color:
-              action == DataAction.delete || danger ? Colors.red : primaryColor,
+          color: action == DataAction.delete.title || danger
+              ? Colors.red
+              : primaryColor,
           isInProgress: isProgress,
           onPressed: onConfirm,
           action: action,
@@ -189,7 +221,7 @@ class CardConfirmationAnyAction extends StatelessWidget {
       title: 'are_you_sure'.tr(),
       icon: FontAwesomeIcons.exclamationTriangle,
       actions: [
-        Button(
+        Button.action(
           permission: null,
           isSecondary: true,
           isInProgress: isProgress,
@@ -199,7 +231,7 @@ class CardConfirmationAnyAction extends StatelessWidget {
           action: DataAction.cancel,
         ),
         const SizedBox(width: 10),
-        Button(
+        Button.action(
           permission: null,
           isSecondary: true,
           isInProgress: isProgress,
@@ -207,7 +239,7 @@ class CardConfirmationAnyAction extends StatelessWidget {
           action: actionOne,
         ),
         const SizedBox(width: 10),
-        Button(
+        Button.action(
           permission: null,
           color: actionTwo == DataAction.delete ? Colors.red : primaryColor,
           isInProgress: isProgress,
@@ -215,7 +247,7 @@ class CardConfirmationAnyAction extends StatelessWidget {
           action: actionTwo,
         ),
       ],
-      child: Text(confirmationMessage(data, actionTwo, label)),
+      child: Text(confirmationMessage(data, actionTwo.title, label)),
     );
   }
 }
@@ -242,7 +274,7 @@ class CardSuccessInfo extends StatelessWidget {
       title: 'information'.tr(),
       icon: FontAwesomeIcons.info,
       actions: [
-        Button(
+        Button.action(
           permission: null,
           isSecondary: true,
           isInProgress: isProgress,
@@ -303,7 +335,7 @@ class _CardConfirmationWithExplanationState
         title: 'are_you_sure'.tr(),
         icon: FontAwesomeIcons.exclamationTriangle,
         actions: [
-          Button(
+          Button.action(
             permission: null,
             isSecondary: true,
             isInProgress: widget.isProgress,
@@ -313,7 +345,7 @@ class _CardConfirmationWithExplanationState
             action: DataAction.cancel,
           ),
           const SizedBox(width: 10),
-          Button(
+          Button.action(
             permission: null,
             color: widget.action.title.toLowerCase().contains('delete') ||
                     widget.action.title.toLowerCase().contains('reject')
@@ -327,7 +359,13 @@ class _CardConfirmationWithExplanationState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(confirmationMessage(widget.data, widget.action, widget.label)),
+            Text(
+              confirmationMessage(
+                widget.data,
+                widget.action.title,
+                widget.label,
+              ),
+            ),
             const Gap(24),
             FTextFormField(
               maxLength: 100,

@@ -32,14 +32,14 @@ const errorPhoneValidator = 'Please enter a valid phone number 62XXXXXXXXXXX';
 const errorQuantityValidator = 'Quantity can only contain numbers';
 const errorOnlyNumberValidator = 'Input Field can only contain numbers';
 
-String confirmationMessage(Entity data, DataAction action, String? label) {
+String confirmationMessage(Entity data, String action, String? label) {
   var text = 'are_you_really_to'
-      .tr(namedArgs: {'action': action.title, 'data': data.id.tr()});
+      .tr(namedArgs: {'action': action, 'data': data.id.tr()});
   if (label != null) {
     text += ' $label';
   }
   text += '?';
-  if (action == DataAction.delete) {
+  if (action == DataAction.delete.title) {
     text += '\n${'cannot_be_undone'.tr()}.';
   }
   return text;

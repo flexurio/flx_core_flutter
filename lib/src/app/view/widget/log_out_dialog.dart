@@ -14,14 +14,14 @@ Future<bool?> showDialogLogout({
         title: 'logout'.tr(),
         icon: FontAwesomeIcons.triangleExclamation,
         actions: [
-          Button(
+          Button.action(
             isSecondary: true,
             action: DataAction.cancel,
             onPressed: () => Navigator.pop(context),
             permission: null,
           ),
           const SizedBox(width: 10),
-          Button(
+          Button.action(
             permission: null,
             action: DataAction.logout,
             onPressed: () {

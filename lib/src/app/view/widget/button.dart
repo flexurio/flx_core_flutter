@@ -33,7 +33,7 @@ class BackButtonTitled extends StatelessWidget {
 }
 
 class Button extends StatelessWidget {
-  const Button({
+  const Button._({
     required this.action,
     required this.permission,
     super.key,
@@ -45,9 +45,9 @@ class Button extends StatelessWidget {
     this.entity,
   }) : padding = null;
 
-  const Button.small({
+  Button.small({
     required this.permission,
-    required this.action,
+    required DataAction action,
     super.key,
     this.color,
     this.onPressed,
@@ -55,12 +55,57 @@ class Button extends StatelessWidget {
     this.isSecondary = false,
     this.rounded = false,
     this.entity,
-  }) : padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 24);
+  })  : padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+        action = action.title;
+
+  factory Button.action({
+    required DataAction action,
+    required String? permission,
+    void Function()? onPressed,
+    bool isInProgress = false,
+    bool isSecondary = false,
+    Color? color,
+    bool rounded = false,
+    Entity? entity,
+  }) {
+    return Button._(
+      permission: permission,
+      color: color,
+      onPressed: onPressed,
+      action: action.title,
+      isInProgress: isInProgress,
+      isSecondary: isSecondary,
+      rounded: rounded,
+      entity: entity,
+    );
+  }
+
+  factory Button.string({
+    required String action,
+    required bool isInProgress,
+    bool isSecondary = false,
+    required String? permission,
+    Color? color,
+    void Function()? onPressed,
+    bool rounded = false,
+    Entity? entity,
+  }) {
+    return Button._(
+      permission: permission,
+      color: color,
+      onPressed: onPressed,
+      action: action,
+      isInProgress: isInProgress,
+      isSecondary: isSecondary,
+      rounded: rounded,
+      entity: entity,
+    );
+  }
 
   final String? permission;
   final Color? color;
   final void Function()? onPressed;
-  final DataAction action;
+  final String action;
   final bool isInProgress;
   final bool isSecondary;
   final EdgeInsetsGeometry? padding;
@@ -101,9 +146,9 @@ class Button extends StatelessWidget {
       ),
     );
 
-    var title = action.title;
+    var title = action;
     if (entity != null) {
-      title = '${action.title} ${entity!.title}';
+      title = '$action ${entity!.title}';
     }
 
     return VisibilityPermission(

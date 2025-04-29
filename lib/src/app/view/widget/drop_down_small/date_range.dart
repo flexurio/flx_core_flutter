@@ -68,7 +68,7 @@ class _DropDownSmallDateRangeState extends State<DropDownSmallDateRange> {
                 },
               ),
             ),
-            Button(
+            Button.action(
               color: theme.colorScheme.primary,
               isSecondary: true,
               action: DataAction.ok,

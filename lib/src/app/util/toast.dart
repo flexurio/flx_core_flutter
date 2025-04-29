@@ -255,7 +255,7 @@ Future<void> showSuccessWithId({
         title: 'Success',
         icon: Icons.check,
         actions: [
-          Button(
+          Button.action(
             action: DataAction.close,
             permission: null,
             isSecondary: true,
