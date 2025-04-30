@@ -266,7 +266,9 @@ List<Widget> simpleTablePdf2<T>({
   final children = <Widget>[
     usePadding(
       tableHeader(
-        columns: columns.map((e) => PColumnHeader(title: e.title)).toList(),
+        columns: columns
+            .map((e) => PColumnHeader(title: e.title, flex: e.flex))
+            .toList(),
       ),
     ),
   ];
@@ -278,6 +280,7 @@ List<Widget> simpleTablePdf2<T>({
           columns: columns
               .map(
                 (e) => PColumnBody<T>(
+                  flex: e.flex,
                   contentBuilder: (d, i) => e.contentBuilder(d, i),
                 ),
               )
