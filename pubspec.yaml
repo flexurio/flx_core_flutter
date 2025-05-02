@@ -35,10 +35,7 @@ dependencies:
   month_picker_dialog: ^4.0.1
   package_info_plus: ^8.0.0
   page_transition: ^2.0.9
-  pattern_formatter:
-    git:
-      url: https://github.com/augustineonu/flutter_pattern_formatter.git
-      ref: e310fc81043468b9b2b063bac6122f7dde51b03f
+  pattern_formatter: ^4.0.0
   pdf: ^3.8.4
   pinput: ^2.2.31
   printing: ^5.10.4
