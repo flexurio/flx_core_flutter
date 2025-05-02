@@ -1,8 +1,8 @@
-import 'package:flexurio_erp_core/src/app/model/data_action.dart';
-import 'package:flexurio_erp_core/src/app/model/page_options.dart';
-import 'package:flexurio_erp_core/src/app/view/widget/button.dart';
-import 'package:flexurio_erp_core/src/app/view/widget/f_drop_down.dart';
-import 'package:flexurio_erp_core/src/app/view/widget/search_box/search_box_x.dart';
+import 'package:flx_core_flutter/src/app/model/data_action.dart';
+import 'package:flx_core_flutter/src/app/model/page_options.dart';
+import 'package:flx_core_flutter/src/app/view/widget/button.dart';
+import 'package:flx_core_flutter/src/app/view/widget/f_drop_down.dart';
+import 'package:flx_core_flutter/src/app/view/widget/search_box/search_box_x.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:screen_identifier/screen_identifier.dart';

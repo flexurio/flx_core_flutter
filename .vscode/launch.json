@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "flexurio_erp_core",
+            "name": "flx_core_flutter",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "flexurio_erp_core (profile mode)",
+            "name": "flx_core_flutter (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "flexurio_erp_core (release mode)",
+            "name": "flx_core_flutter (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

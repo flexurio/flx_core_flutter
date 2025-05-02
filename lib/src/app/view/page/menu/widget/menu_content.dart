@@ -1,7 +1,7 @@
-import 'package:flexurio_erp_core/constant/size.dart';
-import 'package:flexurio_erp_core/src/app/bloc/theme/menu/menu_bloc.dart';
-import 'package:flexurio_erp_core/src/app/bloc/theme/menu_collapse/menu_collapse.dart';
-import 'package:flexurio_erp_core/src/app/view/widget/offline_indicator.dart';
+import 'package:flx_core_flutter/constant/size.dart';
+import 'package:flx_core_flutter/src/app/bloc/theme/menu/menu_bloc.dart';
+import 'package:flx_core_flutter/src/app/bloc/theme/menu_collapse/menu_collapse.dart';
+import 'package:flx_core_flutter/src/app/view/widget/offline_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:screen_identifier/screen_identifier.dart';

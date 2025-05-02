@@ -1,4 +1,4 @@
-import 'package:flexurio_erp_core/flexurio_erp_core.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -414,7 +414,7 @@ class _TableHeader<T> extends StatelessWidget {
                   child: Icon(
                     ascending ? Icons.arrow_downward : Icons.arrow_upward,
                     size: 16,
-                    color: primaryColor.withOpacity(.5),
+                    color: primaryColor.withAlpha(120),
                   ),
                 ),
             ],

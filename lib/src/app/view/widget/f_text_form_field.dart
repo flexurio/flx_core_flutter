@@ -1,5 +1,5 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
-import 'package:flexurio_erp_core/flexurio_erp_core.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pattern_formatter/numeric_formatter.dart';

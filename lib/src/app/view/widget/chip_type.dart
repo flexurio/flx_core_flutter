@@ -1,4 +1,4 @@
-import 'package:flexurio_erp_core/src/app/model/color_type.dart';
+import 'package:flx_core_flutter/src/app/model/color_type.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 

@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flexurio_erp_core/flexurio_erp_core.dart';
-import 'package:flexurio_erp_core/src/app/view/widget/search_box/search_dialog.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
+import 'package:flx_core_flutter/src/app/view/widget/search_box/search_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 

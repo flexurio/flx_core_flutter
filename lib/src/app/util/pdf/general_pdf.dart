@@ -1,4 +1,4 @@
-import 'package:flexurio_erp_core/src/app/util/pdf.dart';
+import 'package:flx_core_flutter/src/app/util/pdf.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
