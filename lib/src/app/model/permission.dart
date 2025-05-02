@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flexurio_erp_core/src/app/model/data_action.dart';
+import 'package:flx_core_flutter/src/app/model/data_action.dart';
 
 class Permission {
   // Asset Type

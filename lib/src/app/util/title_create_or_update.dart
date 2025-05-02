@@ -1,4 +1,4 @@
-import 'package:flexurio_erp_core/flexurio_erp_core.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 
 DataAction createOrEdit(dynamic data) {
   return data == null ? DataAction.create : DataAction.edit;

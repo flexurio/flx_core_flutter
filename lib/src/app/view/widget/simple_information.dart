@@ -1,5 +1,5 @@
-import 'package:flexurio_erp_core/src/app/view/widget/row_fields.dart';
-import 'package:flexurio_erp_core/src/app/view/widget/tile_data.dart';
+import 'package:flx_core_flutter/src/app/view/widget/row_fields.dart';
+import 'package:flx_core_flutter/src/app/view/widget/tile_data.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 

@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flexurio_erp_core/flexurio_erp_core.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
 class RequiredObjectValidator<T> extends FieldValidator<T> {

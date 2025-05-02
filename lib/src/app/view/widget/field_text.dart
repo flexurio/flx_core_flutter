@@ -1,4 +1,4 @@
-import 'package:flexurio_erp_core/src/app/view/widget/f_text_form_field.dart';
+import 'package:flx_core_flutter/src/app/view/widget/f_text_form_field.dart';
 import 'package:flutter/material.dart';
 
 class Option {

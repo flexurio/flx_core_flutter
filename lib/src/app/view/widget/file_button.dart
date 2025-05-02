@@ -1,4 +1,4 @@
-import 'package:flexurio_erp_core/src/app/view/widget/file_extension.dart';
+import 'package:flx_core_flutter/src/app/view/widget/file_extension.dart';
 import 'package:flutter/material.dart';
 
 class FileButton extends StatelessWidget {
