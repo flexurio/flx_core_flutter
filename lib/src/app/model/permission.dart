@@ -170,8 +170,8 @@ class Permission {
   static String productIssueViewMenu = 'product_issue_view_menu';
   static String productIssueDeliveryCreate = 'product_issue_delivery_create';
   static String productIssueGlobalExportPdf = 'product_issue_global_export_pdf';
-  static String productIssueLeadTimeSJLExportPdf =
-      'product_issue_lead_time_sjl_export_pdf';
+  static String productIssueLeadDeliveryOrderExportPdf =
+      'product_issue_{lead_time}_{delivery_order}_export_pdf';
   static String productIssueReportDeliveryExportPdf =
       'product_issue_report_delivery_export_pdf';
 
@@ -308,8 +308,8 @@ class Permission {
         String? subWord;
 
         final regex = RegExp(r'\{(.*?)\}');
-        final Match? match = regex.firstMatch(entity);
-        if (match != null) {
+        final matches = regex.allMatches(entity);
+        for (final match in matches) {
           subWord = match.group(1);
           entity = entity.replaceAll('_{$subWord}', '');
         }
