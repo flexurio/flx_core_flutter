@@ -1,7 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -161,7 +161,7 @@ class FDropDownSearch<T> extends StatelessWidget {
     return DropdownSearch<T>(
       validator: validator,
       compareFn: compareFn,
-      dropdownButtonProps: DropdownButtonProps(icon: icon),
+      // TODO:dropdownButtonProps: DropdownButtonProps(icon: icon),
       popupProps: PopupProps.menu(
         showSelectedItems: showSelectedItems,
         searchDelay: Duration.zero,
@@ -187,10 +187,10 @@ class FDropDownSearch<T> extends StatelessWidget {
           ),
         ),
       ),
-      items: items,
+      items: (_, __) => items,
       itemAsString: itemAsString,
-      dropdownDecoratorProps: DropDownDecoratorProps(
-        dropdownSearchDecoration: InputDecoration(
+      decoratorProps: DropDownDecoratorProps(
+        decoration: InputDecoration(
           errorStyle: const TextStyle(
             color: Colors.red,
             fontSize: 10,
@@ -258,28 +258,28 @@ class FDropDownSearchMultiple<T> extends StatelessWidget {
       ),
       child: DropdownSearch<T>.multiSelection(
         validator: validator,
-        dropdownButtonProps: DropdownButtonProps(
-          icon: icon,
-        ),
+        // dropdownButtonProps: DropdownButtonProps(
+        //   icon: icon,
+        // ),
         popupProps: PopupPropsMultiSelection.menu(
-          selectionWidget: (context, item, isSelected) {
-            final theme = Theme.of(context);
-            return isSelected
-                ? Padding(
-                    padding: const EdgeInsets.only(right: 13),
-                    child: Icon(
-                      Icons.check_box_outlined,
-                      color: theme.colorScheme.primary,
-                    ),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.only(right: 13),
-                    child: Icon(
-                      Icons.square_outlined,
-                      color: theme.colorScheme.primary,
-                    ),
-                  );
-          },
+          // selectionWidget: (context, item, isSelected) {
+          //   final theme = Theme.of(context);
+          //   return isSelected
+          //       ? Padding(
+          //           padding: const EdgeInsets.only(right: 13),
+          //           child: Icon(
+          //             Icons.check_box_outlined,
+          //             color: theme.colorScheme.primary,
+          //           ),
+          //         )
+          //       : Padding(
+          //           padding: const EdgeInsets.only(right: 13),
+          //           child: Icon(
+          //             Icons.square_outlined,
+          //             color: theme.colorScheme.primary,
+          //           ),
+          //         );
+          // },
           searchDelay: Duration.zero,
           showSearchBox: true,
           searchFieldProps: TextFieldProps(
@@ -300,10 +300,10 @@ class FDropDownSearchMultiple<T> extends StatelessWidget {
             ),
           ),
         ),
-        items: items,
+        items: (_, __) => items,
         itemAsString: itemAsString,
-        dropdownDecoratorProps: DropDownDecoratorProps(
-          dropdownSearchDecoration: InputDecoration(
+        decoratorProps: DropDownDecoratorProps(
+          decoration: InputDecoration(
             enabledBorder: InputBorder.none,
             labelText: labelText,
           ),
@@ -359,9 +359,9 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
         return DropdownSearch<T>(
           validator: validator,
           compareFn: compareFn,
-          dropdownButtonProps: dropdownButtonProps,
+          //TODO: dropdownButtonProps: dropdownButtonProps,
           popupProps: popupProps,
-          items: items,
+          items: (_, __) => items,
           itemAsString: itemAsString,
           dropdownBuilder: (context, selectedItem) {
             return Row(
@@ -378,7 +378,7 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
               ],
             );
           },
-          dropdownDecoratorProps: dropdownDecoratorProps,
+          decoratorProps: dropdownDecoratorProps,
           onChanged: onChanged,
           selectedItem: initialValue,
           enabled: enabled,
@@ -435,9 +435,9 @@ class FDropDownSearchSmallMultiple<T> extends StatelessWidget {
         return DropdownSearch<T>.multiSelection(
           validator: validator,
           compareFn: compareFn,
-          dropdownButtonProps: dropdownButtonProps,
+          //TODO: dropdownButtonProps: dropdownButtonProps,
           popupProps: popupProps,
-          items: items,
+          items: (_, __) => items,
           itemAsString: itemAsString,
           dropdownBuilder: (context, selectedItem) {
             return Row(
@@ -458,7 +458,7 @@ class FDropDownSearchSmallMultiple<T> extends StatelessWidget {
               ],
             );
           },
-          dropdownDecoratorProps: dropdownDecoratorProps,
+          decoratorProps: dropdownDecoratorProps,
           onChanged: onChanged,
           selectedItems: initialValue,
           // selectedItem: initialValue,
@@ -520,7 +520,8 @@ class _ContainerDropDown<T> extends StatelessWidget {
     final dropdownButtonProps = DropdownButtonProps(
       padding: EdgeInsets.zero,
       iconSize: 18,
-      icon: const Icon(Icons.keyboard_arrow_down_rounded),
+      iconClosed: const Icon(Icons.keyboard_arrow_down_rounded),
+      iconOpened: const Icon(Icons.keyboard_arrow_down_rounded),
       color: foregroundColor,
     );
 
@@ -545,7 +546,7 @@ class _ContainerDropDown<T> extends StatelessWidget {
     );
 
     const dropdownDecoratorProps = DropDownDecoratorProps(
-      dropdownSearchDecoration: InputDecoration(
+      decoration: InputDecoration(
         contentPadding: EdgeInsets.zero,
         enabledBorder: InputBorder.none,
       ),
