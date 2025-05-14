@@ -48,6 +48,7 @@ enum DataAction {
   createSales('create_sales', Icons.add, Colors.green),
   createSalesOrder('Create SO', Icons.add, Colors.green),
   createSalesPaid('create_sales', Icons.paid, Colors.green),
+  createDestructionReport('create_destruction_report', Icons.add, Colors.green),
   deactivate('deactivate', Icons.cancel, Colors.red),
   deactivatePhaseOut('Deactivate Phase Out', Icons.add, Colors.green),
   delete('delete', Icons.delete_outline_rounded, Colors.red),
