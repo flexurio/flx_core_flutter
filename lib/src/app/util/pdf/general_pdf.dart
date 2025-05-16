@@ -68,7 +68,7 @@ Future<Page> pdfGeneral({
 
   return pdfTemplate(
     printedBy: printedBy,
-    pageFormat: PdfPageFormat.a3.landscape,
+    pageFormat: PdfPageFormat.a4.landscape,
     headerTitle: title,
     headerChild: header,
     build: (context) => body.toList(),
