@@ -141,9 +141,9 @@ enum DataAction {
   viewImage('view_image', Icons.remove_red_eye, Colors.blue),
   viewJournal('view_journal', Icons.list, Colors.blue),
   viewPayment('View Payment', Icons.remove_red_eye, Colors.blue),
-  exportPdfMaterialUsageBatch(
-    'export_pdf_material_usage_batch',
-    FontAwesomeIcons.filePdf,
+  exportMaterialUsageBatch(
+    'export Material Usage Batch',
+    FontAwesomeIcons.file,
     Colors.indigo,
   ),
   viewTransactionJournal(
