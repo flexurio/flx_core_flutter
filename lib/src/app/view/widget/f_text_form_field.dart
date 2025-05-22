@@ -2,7 +2,6 @@ import 'package:currency_text_input_formatter/currency_text_input_formatter.dart
 import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pattern_formatter/numeric_formatter.dart';
 
 final currencyFormatter = CurrencyTextInputFormatter.currency(
   symbol: '',
@@ -45,10 +44,6 @@ class FTextFormField extends FormField<String> {
           initialValue: controller?.text ?? '',
           builder: (field) {
             final error = errorText ?? field.errorText;
-            if (inputFormatters != null) {
-              if (inputFormatters[0] is ThousandsFormatter ||
-                  inputFormatters[0] is CurrencyTextInputFormatter) {}
-            }
 
             return Builder(
               builder: (context) {
