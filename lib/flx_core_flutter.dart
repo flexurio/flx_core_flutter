@@ -12,6 +12,9 @@ export 'src/app/model/page_options.dart';
 export 'src/app/model/permission.dart';
 export 'src/app/model/sound.dart';
 export 'src/app/model/string.dart';
+
+// Util
+export 'src/app/util/base64.dart';
 export 'src/app/util/color.dart';
 export 'src/app/util/compare_object.dart';
 export 'src/app/util/custom_validator.dart';
@@ -35,6 +38,8 @@ export 'src/app/util/title_create_or_update.dart';
 export 'src/app/util/toast.dart';
 export 'src/app/util/validator.dart';
 export 'src/app/util/widget_extension.dart';
+
+// View
 export 'src/app/view/page/menu/menu_page.dart';
 export 'src/app/view/page/splash/splash_page.dart';
 export 'src/app/view/widget/account_button.dart';
