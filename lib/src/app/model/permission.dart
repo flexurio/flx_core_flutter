@@ -257,6 +257,7 @@ class Permission {
   static String vehicleRentActualStartDate = 'vehicle_rent_actual_start_date';
   static String vehicleRentActualEndDate = 'vehicle_rent_actual_end_date';
   static String vehicleRentExportExcel = 'vehicle_rent_export_excel';
+  static String vehicleRentExportPdf = 'vehicle_rent_export_pdf';
 
   static List<String> toListString(List<String> permissions) {
     return permissions.map((e) => e).toList();
