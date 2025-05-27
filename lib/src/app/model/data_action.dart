@@ -112,7 +112,7 @@ enum DataAction {
   resign('mark_as_resign', Icons.check, Colors.green),
   resetPassword('reset_password', Icons.key, Colors.green),
   retry('Retry', Icons.refresh, Colors.green),
-  retest('restest', Icons.check, Colors.green),
+  retest('Retest Date', Icons.check, Colors.green),
   rework('Rework', Icons.restart_alt, Colors.purple),
   scanQrCode('scan_qr_code', FontAwesomeIcons.qrcode, Colors.indigo),
   search('search', Icons.search, Colors.blue),
