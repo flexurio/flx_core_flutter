@@ -1,3 +1,4 @@
+import 'package:download/download.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flx_core_flutter/flx_core_flutter.dart';
@@ -29,6 +30,9 @@ Future<void> generalExport<T>({
     period = ' ($start - $end)';
   }
 
+  // final fileName = '$title$period'.replaceAll('/', '_');
+  final fileName = 'xxxxxx';
+
   if (exportType == ExportType.pdf) {
     final pages = await pdfTemplate(
       printedBy: userName ?? '-',
@@ -52,36 +56,45 @@ Future<void> generalExport<T>({
     final pdf = pw.Document()..addPage(pages);
     await Printing.sharePdf(
       bytes: await pdf.save(),
-      filename: 'Material Status Rupiah Quarantine.pdf',
+      filename: '$fileName.pdf',
     );
+    print('[generalExport] pdf downloaded');
   } else if (exportType == ExportType.excel) {
-    // simpleExcel<T>(context: null, data: data(), title: title);
+    final excel = simpleExcel2<T>(
+      data: data,
+      header: header,
+      title: title,
+      body: body,
+    );
+    await download(Stream.fromIterable(excel), '$fileName.xlsx');
+    print('[generalExport] excel downloaded');
   }
 }
 
 Future<ExportType?> showChooseExportType(material.BuildContext context) async {
   return material.showDialog<ExportType?>(
-      context: context,
-      builder: (context) {
-        return CardForm(
-          title: 'choose_export_type'.tr(),
-          actions: [],
-          popup: true,
-          icon: material.Icons.download,
-          child: material.Column(
-            children: ExportType.values.map((e) {
-              return Button.string(
-                permission: null,
-                action: 'Export ${e.name}',
-                isInProgress: false,
-                onPressed: () {
-                  material.Navigator.pop(context, e);
-                },
-              );
-            }).toList(),
-          ),
-        );
-      });
+    context: context,
+    builder: (context) {
+      return CardForm(
+        title: 'choose_export_type'.tr(),
+        actions: [],
+        popup: true,
+        icon: material.Icons.download,
+        child: material.Column(
+          children: ExportType.values.map((e) {
+            return Button.string(
+              permission: null,
+              action: 'Export ${e.name}',
+              isInProgress: false,
+              onPressed: () {
+                material.Navigator.pop(context, e);
+              },
+            );
+          }).toList(),
+        ),
+      );
+    },
+  );
 }
 
 enum ExportType {

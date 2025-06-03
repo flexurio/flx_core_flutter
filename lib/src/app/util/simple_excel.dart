@@ -1,5 +1,6 @@
-import 'package:flx_core_flutter/flx_core_flutter.dart';
+import 'package:excel/excel.dart' as ex;
 import 'package:flutter/material.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart';
 
 class TColumn<T> {
@@ -108,4 +109,65 @@ List<int> generalXlsx(
     columns: columns,
   );
   return bytes;
+}
+
+List<int> simpleExcel2<T>({
+  required List<T> data,
+  required List<PColumnHeader> header,
+  required List<PColumnBody<T>> body,
+  required String title,
+}) {
+  final excel = ex.Excel.createExcel();
+  final sheet = excel['Sheet1'];
+  final columnsCount = body.length;
+  final headersCount = header.length;
+
+  final headerStyle = ex.CellStyle(
+    bold: true,
+    fontColorHex: ex.ExcelColor.white,
+    backgroundColorHex: ex.ExcelColor.lightBlue,
+    horizontalAlign: ex.HorizontalAlign.Center,
+    verticalAlign: ex.VerticalAlign.Center,
+  );
+
+  final rowStyleEven = ex.CellStyle(
+    backgroundColorHex: ex.ExcelColor.lightBlue50,
+  );
+
+  final rowStyleOdd = ex.CellStyle(
+    backgroundColorHex: ex.ExcelColor.lightBlue100,
+  );
+
+  // Header row
+  for (var col = 0; col < headersCount; col++) {
+    final cell = sheet
+        .cell(ex.CellIndex.indexByColumnRow(columnIndex: col, rowIndex: 0));
+    cell.value = ex.TextCellValue(header[col].title);
+    cell.cellStyle = headerStyle;
+  }
+
+  // Data rows
+  for (var row = 0; row < data.length; row++) {
+    final item = data[row];
+    final isEvenRow = row % 2 == 0;
+
+    for (var col = 0; col < columnsCount; col++) {
+      final column = body[col];
+      final value = column.contentBuilder(item, row);
+      final cell = sheet.cell(
+          ex.CellIndex.indexByColumnRow(columnIndex: col, rowIndex: row + 1));
+
+      if (column.numeric && value is num) {
+        cell.value = ex.TextCellValue(value);
+      } else {
+        cell.value = ex.TextCellValue(value);
+      }
+
+      // Apply alternating row color
+      cell.cellStyle = isEvenRow ? rowStyleEven : rowStyleOdd;
+    }
+  }
+
+  final fileBytes = excel.encode()!;
+  return fileBytes;
 }
