@@ -119,9 +119,11 @@ List<int> simpleExcel2<T>({
 }) {
   final excel = ex.Excel.createExcel();
   final sheet = excel['Sheet1'];
-  final columnsCount = body.length;
-  final headersCount = header.length;
   final headerHasChildren = header.any((e) => e.children?.isNotEmpty ?? false);
+  final border = ex.Border(
+    borderStyle: ex.BorderStyle.Thin,
+    borderColorHex: ex.ExcelColor.black,
+  );
 
   final headerStyle = ex.CellStyle(
     bold: true,
@@ -129,55 +131,103 @@ List<int> simpleExcel2<T>({
     backgroundColorHex: ex.ExcelColor.lightBlue,
     horizontalAlign: ex.HorizontalAlign.Center,
     verticalAlign: ex.VerticalAlign.Center,
+    bottomBorder: border,
+    topBorder: border,
+    leftBorder: border,
+    rightBorder: border,
   );
 
   final rowStyleEven = ex.CellStyle(
     backgroundColorHex: ex.ExcelColor.lightBlue50,
+    bottomBorder: border,
+    topBorder: border,
+    leftBorder: border,
+    rightBorder: border,
   );
 
   final rowStyleOdd = ex.CellStyle(
     backgroundColorHex: ex.ExcelColor.lightBlue100,
+    bottomBorder: border,
+    topBorder: border,
+    leftBorder: border,
+    rightBorder: border,
   );
 
-  // Header row
-  for (var col = 0; col < headersCount; col++) {
-    final cell = sheet
-        .cell(ex.CellIndex.indexByColumnRow(columnIndex: col, rowIndex: 0));
-    cell.value = ex.TextCellValue(header[col].title);
-    cell.cellStyle = headerStyle;
+  // ----- HEADER -----
+  int colIndex = 0;
+  for (var h in header) {
+    final hasChildren = h.children?.isNotEmpty ?? false;
+    if (hasChildren) {
+      final children = h.children!;
+      final childCount = children.length;
+
+      // Merge parent title across child columns
+      sheet.merge(
+        ex.CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 0),
+        ex.CellIndex.indexByColumnRow(
+            columnIndex: colIndex + childCount - 1, rowIndex: 0),
+      );
+
+      final parentCell = sheet.cell(
+          ex.CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 0));
+      parentCell.value = ex.TextCellValue(h.title);
+      parentCell.cellStyle = headerStyle;
+
+      // Render child titles in row 1
+      for (var i = 0; i < childCount; i++) {
+        final child = children[i];
+        final cell = sheet.cell(ex.CellIndex.indexByColumnRow(
+            columnIndex: colIndex + i, rowIndex: 1));
+        cell.value = ex.TextCellValue(child.title);
+        cell.cellStyle = headerStyle;
+      }
+
+      colIndex += childCount;
+    } else {
+      // Merge vertically across 2 rows
+      sheet.merge(
+        ex.CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 0),
+        ex.CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 1),
+      );
+
+      final cell = sheet.cell(
+          ex.CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 0));
+      cell.value = ex.TextCellValue(h.title);
+      cell.cellStyle = headerStyle;
+
+      colIndex += 1;
+    }
   }
 
-  // Data rows
+  // ----- DATA -----
+  final dataStartRow = headerHasChildren ? 2 : 1;
+
   for (var row = 0; row < data.length; row++) {
     final item = data[row];
     final isEvenRow = row % 2 == 0;
 
-    for (var col = 0; col < columnsCount; col++) {
+    for (var col = 0; col < body.length; col++) {
       final column = body[col];
       final value = column.contentBuilder(item, row);
-      final cell = sheet.cell(
-          ex.CellIndex.indexByColumnRow(columnIndex: col, rowIndex: row + 1));
+      final cell = sheet.cell(ex.CellIndex.indexByColumnRow(
+          columnIndex: col, rowIndex: dataStartRow + row));
+      cell.value = ex.TextCellValue(value.toString());
 
-      if (column.numeric && value is num) {
-        cell.value = ex.TextCellValue(value);
-      } else {
-        cell.value = ex.TextCellValue(value);
-      }
-
-      // Apply alternating row color
       final baseStyle = isEvenRow ? rowStyleEven : rowStyleOdd;
 
-      // Apply alignment: right if numeric
+      // Alignment
       if (column.numeric) {
-        cell.cellStyle = baseStyle.copyWith(
-          horizontalAlignVal: ex.HorizontalAlign.Right,
-        );
+        cell.cellStyle =
+            baseStyle.copyWith(horizontalAlignVal: ex.HorizontalAlign.Right);
       } else {
-        cell.cellStyle = baseStyle.copyWith(
-          horizontalAlignVal: ex.HorizontalAlign.Left,
-        );
+        cell.cellStyle =
+            baseStyle.copyWith(horizontalAlignVal: ex.HorizontalAlign.Left);
       }
     }
+  }
+
+  for (var col = 0; col < body.length; col++) {
+    sheet.setColumnAutoFit(col);
   }
 
   final fileBytes = excel.encode()!;
