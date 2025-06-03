@@ -121,6 +121,7 @@ List<int> simpleExcel2<T>({
   final sheet = excel['Sheet1'];
   final columnsCount = body.length;
   final headersCount = header.length;
+  final headerHasChildren = header.any((e) => e.children?.isNotEmpty ?? false);
 
   final headerStyle = ex.CellStyle(
     bold: true,
@@ -164,7 +165,18 @@ List<int> simpleExcel2<T>({
       }
 
       // Apply alternating row color
-      cell.cellStyle = isEvenRow ? rowStyleEven : rowStyleOdd;
+      final baseStyle = isEvenRow ? rowStyleEven : rowStyleOdd;
+
+      // Apply alignment: right if numeric
+      if (column.numeric) {
+        cell.cellStyle = baseStyle.copyWith(
+          horizontalAlignVal: ex.HorizontalAlign.Right,
+        );
+      } else {
+        cell.cellStyle = baseStyle.copyWith(
+          horizontalAlignVal: ex.HorizontalAlign.Left,
+        );
+      }
     }
   }
 

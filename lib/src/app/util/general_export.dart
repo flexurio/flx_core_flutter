@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:download/download.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' as material;
@@ -30,8 +32,10 @@ Future<void> generalExport<T>({
     period = ' ($start - $end)';
   }
 
-  // final fileName = '$title$period'.replaceAll('/', '_');
-  final fileName = 'xxxxxx';
+  final fileName = '$title$period'
+      .replaceAll('/', '_')
+      .replaceAll(' ', '_')
+      .replaceAll('-', '_');
 
   if (exportType == ExportType.pdf) {
     final pages = await pdfTemplate(
