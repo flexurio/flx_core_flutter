@@ -243,6 +243,54 @@ Widget tableBody<T>({
   }
 }
 
+List<Widget> tableBody2<T>({
+  required List<T> data,
+  required List<PColumnBody<T>> columns,
+  EdgeInsetsGeometry? padding,
+}) {
+  const paddingRow = EdgeInsets.symmetric(horizontal: 8);
+  final children = <Widget>[];
+  for (var i = 0; i < columns.length; i++) {
+    print('[tableBody2] No: $i');
+    children.add(Padding(
+      padding: EdgeInsets.symmetric(horizontal: 36),
+      child: Table(
+        border: TableBorder.all(color: PdfColors.white, width: 3),
+        columnWidths: {
+          for (var i = 0; i < columns.length; i++)
+            i: FlexColumnWidth(columns[i].flex ?? 1),
+        },
+        children: [
+          TableRow(
+            children: List<Widget>.generate(
+              columns.length,
+              (column) => Container(
+                height: 30,
+                padding: paddingRow,
+                decoration: BoxDecoration(
+                  color: i.isEven ? PdfColors.grey100 : PdfColors.white,
+                  border: Border.all(
+                    width: 4,
+                    color: PdfColors.grey100,
+                  ),
+                ),
+                alignment: columns[column].numeric
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
+                child: Text(
+                  columns[column].contentBuilder(data[i], i),
+                  style: const TextStyle(fontSize: 7),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ));
+  }
+  return children;
+}
+
 Widget textGroup(String text) {
   return Text(
     text,
@@ -438,11 +486,11 @@ Widget tableFooter({
 
 Widget tableHeader({
   required List<PColumnHeader> columns,
-  bool hasChildren = false,
   EdgeInsetsGeometry? padding,
 }) {
   final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
   const paddingRow = EdgeInsets.symmetric(horizontal: 8);
+  final hasChildren = columns.any((e) => e.children?.isNotEmpty ?? false);
 
   final table = Table(
     border: TableBorder.all(color: PdfColors.white, width: 3),
