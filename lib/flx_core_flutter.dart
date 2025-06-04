@@ -16,6 +16,7 @@ export 'src/app/model/sound.dart';
 export 'src/app/model/string.dart';
 
 // Util
+export 'src/app/util/base64.dart';
 export 'src/app/util/color.dart';
 export 'src/app/util/compare_object.dart';
 export 'src/app/util/custom_validator.dart';
