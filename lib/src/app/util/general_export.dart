@@ -4,6 +4,7 @@ import 'package:download/download.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flx_core_flutter/flx_core_flutter.dart';
+import 'package:flx_core_flutter/src/app/util/simple_excel_exporter.dart';
 import 'package:gap/gap.dart';
 import 'package:pdf/pdf.dart' as p;
 import 'package:pdf/widgets.dart' as pw;
@@ -15,18 +16,15 @@ Future<void> generalExport<T>({
   required String title,
   required List<PColumnHeader> header,
   required List<PColumnBody<T>> body,
-  required List<PColumnFooter> Function(List<T> data) footer,
   required String? userName,
   required Map<ExportType, String> permissions,
+  List<PColumnFooter> Function(List<T> data)? footer,
   DateTime? periodStart,
   DateTime? periodEnd,
 }) async {
-  print('[generalExport] title: $title, length: ${data.length}');
-
   final exportType = await showChooseExportType(context, permissions);
   if (exportType == null) return;
 
-  print('[generalExport] exportType: $exportType');
   var period = '';
   if (periodStart != null && periodEnd != null) {
     final start = periodStart.ddMMyyyySlash;
@@ -39,12 +37,15 @@ Future<void> generalExport<T>({
       .replaceAll(' ', '_')
       .replaceAll('-', '_');
 
+  final printedBy = userName ?? '-';
+  final titleHeader = '$title$period';
+
   if (exportType == ExportType.pdf) {
     final pages = await pdfTemplate(
-      printedBy: userName ?? '-',
-      headerTitle: '$title$period',
+      printedBy: printedBy,
+      headerTitle: titleHeader,
       headerChild: pw.Padding(
-        padding: const pw.EdgeInsets.only(left: 36, right: 36),
+        padding: const pw.EdgeInsets.symmetric(horizontal: 36),
         child: pw.Column(children: [tableHeader(columns: header)]),
       ),
       pageFormat:
@@ -54,9 +55,11 @@ Future<void> generalExport<T>({
           data: data,
           columns: body,
         ),
-        tableFooter(
+        if (footer != null)
+          tableFooter(
             columns: footer(data),
-            padding: const pw.EdgeInsets.symmetric(horizontal: 36)),
+            padding: const pw.EdgeInsets.symmetric(horizontal: 36),
+          ),
       ],
     );
     final pdf = pw.Document()..addPage(pages);
@@ -64,16 +67,15 @@ Future<void> generalExport<T>({
       bytes: await pdf.save(),
       filename: '$fileName.pdf',
     );
-    print('[generalExport] pdf downloaded');
   } else if (exportType == ExportType.excel) {
-    final excel = simpleExcel2<T>(
+    final excel = SimpleExcelExporter<T>(
       data: data,
-      header: header,
-      title: title,
+      headers: header,
+      title: titleHeader,
       body: body,
+      printedBy: printedBy,
     );
-    await download(Stream.fromIterable(excel), '$fileName.xlsx');
-    print('[generalExport] excel downloaded');
+    await download(Stream.fromIterable(excel.export()), '$fileName.xlsx');
   }
 }
 
@@ -111,10 +113,10 @@ Future<ExportType?> showChooseExportType(
 
 class ExportTypeButton extends material.StatelessWidget {
   const ExportTypeButton({
-    super.key,
     required this.permissions,
     required this.exportType,
     required this.action,
+    super.key,
   });
   final Map<ExportType, String> permissions;
   final ExportType exportType;
