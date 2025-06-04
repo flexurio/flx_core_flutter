@@ -1,5 +1,6 @@
 import 'package:excel/excel.dart';
 import 'package:flx_core_flutter/src/app/util/pdf.dart';
+import 'package:flx_core_flutter/src/app/util/group_by.dart';
 
 class SimpleExcelExporter<T> {
   SimpleExcelExporter({
@@ -8,6 +9,9 @@ class SimpleExcelExporter<T> {
     required this.body,
     required this.title,
     required this.printedBy,
+    this.group,
+    this.footerBuilder,
+    this.footerGroupBuilder,
   }) {
     _excel = Excel.createExcel();
     _sheet = _excel['Sheet1'];
@@ -18,6 +22,9 @@ class SimpleExcelExporter<T> {
   final List<PColumnBody<T>> body;
   final String title;
   final String printedBy;
+  final String Function(T)? group;
+  final List<PColumnFooter> Function(List<T> data)? footerBuilder;
+  final List<PColumnFooter> Function(List<T> data)? footerGroupBuilder;
 
   late final Excel _excel;
   late final Sheet _sheet;
@@ -41,8 +48,6 @@ class SimpleExcelExporter<T> {
 
     return _excel.encode()!;
   }
-
-  // ==== PRIVATE METHODS ====
 
   void _renderTitleAndInfo(CellStyle style) {
     _sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0))
@@ -107,33 +112,91 @@ class SimpleExcelExporter<T> {
   }
 
   void _renderData(int startRow, CellStyle evenStyle, CellStyle oddStyle) {
-    for (var row = 0; row < data.length; row++) {
-      final item = data[row];
-      final rowStyle = row.isEven ? evenStyle : oddStyle;
+    if (group != null) {
+      _renderGroupedData(startRow, evenStyle, oddStyle);
+    } else {
+      for (var row = 0; row < data.length; row++) {
+        _renderRow(data[row], row, startRow + row, evenStyle, oddStyle);
+      }
+      if (footerBuilder != null) {
+        _renderFooterRow(footerBuilder!(data), startRow + data.length);
+      }
+    }
+  }
 
-      for (var col = 0; col < body.length; col++) {
-        final column = body[col];
-        final value = column.contentBuilder(item, row);
+  void _renderGroupedData(
+      int startRow, CellStyle evenStyle, CellStyle oddStyle) {
+    final groupedData = groupBy<T>(data, group!);
+    var currentRow = startRow;
 
-        final cell = _sheet.cell(
+    groupedData.forEach((groupKey, items) {
+      _sheet.cell(
+          CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: currentRow))
+        ..value = TextCellValue(groupKey)
+        ..cellStyle = _groupHeaderStyle();
+      currentRow++;
+
+      for (var i = 0; i < items.length; i++) {
+        _renderRow(items[i], i, currentRow, evenStyle, oddStyle);
+        currentRow++;
+      }
+
+      if (footerGroupBuilder != null) {
+        _renderFooterRow(footerGroupBuilder!(items), currentRow);
+        currentRow++;
+      }
+    });
+
+    if (footerBuilder != null) {
+      _renderFooterRow(footerBuilder!(data), currentRow);
+    }
+  }
+
+  void _renderRow(
+      T item, int index, int rowIndex, CellStyle even, CellStyle odd) {
+    final style = index.isEven ? even : odd;
+    for (var col = 0; col < body.length; col++) {
+      final column = body[col];
+      final value = column.contentBuilder(item, index);
+      final cell = _sheet.cell(
+          CellIndex.indexByColumnRow(columnIndex: col, rowIndex: rowIndex));
+      cell.value = TextCellValue(value);
+      cell.cellStyle = style.copyWith(
+        horizontalAlignVal:
+            column.numeric ? HorizontalAlign.Right : HorizontalAlign.Left,
+      );
+    }
+  }
+
+  void _renderFooterRow(List<PColumnFooter> footers, int rowIndex) {
+    int colIndex = 0;
+
+    for (var footer in footers) {
+      final flex = footer.flex ?? 1.0;
+      final span = flex.ceil();
+
+      if (span > 1) {
+        _sheet.merge(
+          CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex),
           CellIndex.indexByColumnRow(
-              columnIndex: col, rowIndex: startRow + row),
-        )..value = TextCellValue(value);
-
-        cell.cellStyle = rowStyle.copyWith(
-          horizontalAlignVal:
-              column.numeric ? HorizontalAlign.Right : HorizontalAlign.Left,
+              columnIndex: colIndex + span - 1, rowIndex: rowIndex),
         );
       }
+
+      final cell = _sheet.cell(
+        CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex),
+      );
+      cell.value = TextCellValue(footer.footer ?? '');
+      cell.cellStyle = _footerStyle();
+
+      colIndex += span;
     }
   }
 
   void _autoFitColumns() {
     final rowCount = data.length;
-
     for (var col = 0; col < body.length; col++) {
       int maxLength = 0;
-
       final headerTitle = headers.length > col ? headers[col].title : '';
       maxLength = headerTitle.length;
 
@@ -144,11 +207,9 @@ class SimpleExcelExporter<T> {
         }
       }
 
-      _sheet.setColumnWidth(col, maxLength.toDouble() + 2); // +2 padding
+      _sheet.setColumnWidth(col, maxLength.toDouble() + 2);
     }
   }
-
-  // ==== STYLES ====
 
   Border _thinBorder() => Border(
         borderStyle: BorderStyle.Thin,
@@ -180,6 +241,20 @@ class SimpleExcelExporter<T> {
         bold: true,
         fontColorHex: ExcelColor.black,
         horizontalAlign: HorizontalAlign.Left,
+        verticalAlign: VerticalAlign.Center,
+      );
+
+  CellStyle _groupHeaderStyle() => CellStyle(
+        bold: true,
+        fontColorHex: ExcelColor.blue800,
+        horizontalAlign: HorizontalAlign.Left,
+        verticalAlign: VerticalAlign.Center,
+      );
+
+  CellStyle _footerStyle() => CellStyle(
+        bold: true,
+        backgroundColorHex: ExcelColor.grey300,
+        horizontalAlign: HorizontalAlign.Right,
         verticalAlign: VerticalAlign.Center,
       );
 }

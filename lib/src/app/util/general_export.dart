@@ -5,9 +5,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flx_core_flutter/src/app/util/simple_excel_exporter.dart';
+import 'package:flx_core_flutter/src/app/util/simple_pdf_exporter.dart';
 import 'package:gap/gap.dart';
-import 'package:pdf/pdf.dart' as p;
-import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 Future<void> generalExport<T>({
@@ -18,7 +17,9 @@ Future<void> generalExport<T>({
   required List<PColumnBody<T>> body,
   required String? userName,
   required Map<ExportType, String> permissions,
+  String Function(T)? group,
   List<PColumnFooter> Function(List<T> data)? footer,
+  List<PColumnFooter> Function(List<T> data)? footerGroup,
   DateTime? periodStart,
   DateTime? periodEnd,
 }) async {
@@ -41,32 +42,21 @@ Future<void> generalExport<T>({
   final titleHeader = '$title$period';
 
   if (exportType == ExportType.pdf) {
-    final pages = await pdfTemplate(
+    final pdfExporter = SimplePdfExporter<T>(
+      data: data,
+      title: title,
+      headers: header,
+      group: group,
+      body: body,
       printedBy: printedBy,
-      headerTitle: titleHeader,
-      headerChild: pw.Padding(
-        padding: const pw.EdgeInsets.symmetric(horizontal: 36),
-        child: pw.Column(children: [tableHeader(columns: header)]),
-      ),
-      pageFormat:
-          body.length > 5 ? p.PdfPageFormat.a4.landscape : p.PdfPageFormat.a4,
-      build: (context) => [
-        ...tableBody2<T>(
-          data: data,
-          columns: body,
-        ),
-        if (footer != null)
-          tableFooter(
-            columns: footer(data),
-            padding: const pw.EdgeInsets.symmetric(horizontal: 36),
-          ),
-      ],
+      periodStart: periodStart,
+      periodEnd: periodEnd,
+      footerBuilder: footer,
+      footerGroupBuilder: footerGroup,
     );
-    final pdf = pw.Document()..addPage(pages);
-    await Printing.sharePdf(
-      bytes: await pdf.save(),
-      filename: '$fileName.pdf',
-    );
+
+    final pdf = await pdfExporter.build();
+    await Printing.sharePdf(bytes: await pdf.save(), filename: '$fileName.pdf');
   } else if (exportType == ExportType.excel) {
     final excel = SimpleExcelExporter<T>(
       data: data,
@@ -74,6 +64,9 @@ Future<void> generalExport<T>({
       title: titleHeader,
       body: body,
       printedBy: printedBy,
+      group: group,
+      footerBuilder: footer,
+      footerGroupBuilder: footerGroup,
     );
     await download(Stream.fromIterable(excel.export()), '$fileName.xlsx');
   }
