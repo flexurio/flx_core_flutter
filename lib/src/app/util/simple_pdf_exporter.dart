@@ -43,7 +43,7 @@ class SimplePdfExporter<T> {
     final headerTitle = '$title$periodStr';
 
     final pageFormat =
-        body.length > 5 ? PdfPageFormat.a4.landscape : PdfPageFormat.a4;
+        body.length > 7 ? PdfPageFormat.a4.landscape : PdfPageFormat.a4;
 
     final header = _buildHeader(headerTitle);
     final content = _buildContent();
