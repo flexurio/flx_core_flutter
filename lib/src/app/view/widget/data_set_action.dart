@@ -78,7 +78,7 @@ class DataSetAction<T> extends StatelessWidget {
       runAlignment: WrapAlignment.end,
       alignment: WrapAlignment.end,
       children: actionRight(
-        LightButtonSmall(
+        LBS_JANGAN_PAKE_INI_LAGI(
           permission: null,
           status: status,
           action: DataAction.refresh,

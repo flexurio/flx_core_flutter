@@ -59,7 +59,7 @@ class _LightButtonSmallGroupState extends State<LightButtonSmallGroup> {
     return MenuAnchor(
       builder:
           (BuildContext context, MenuController controller, Widget? child) {
-        return LightButtonSmall(
+        return LBS_JANGAN_PAKE_INI_LAGI(
           action: widget.action,
           onPressed: () {
             if (controller.isOpen) {
@@ -78,6 +78,45 @@ class _LightButtonSmallGroupState extends State<LightButtonSmallGroup> {
         ),
       ),
       menuChildren: menuChildren,
+    );
+  }
+}
+
+class LightButtonSmallGroupNew extends StatelessWidget {
+  const LightButtonSmallGroupNew({
+    required this.action,
+    required this.childrenList,
+    super.key,
+  });
+
+  final DataAction action;
+  final List<Widget> childrenList;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return MenuAnchor(
+      builder:
+          (BuildContext context, MenuController controller, Widget? child) {
+        return LightButtonSmall(
+          action: action,
+          onPressed: () {
+            if (controller.isOpen) {
+              controller.close();
+            } else {
+              controller.open();
+            }
+          },
+          permissions: null,
+        );
+      },
+      style: MenuStyle(
+        backgroundColor: WidgetStatePropertyAll(theme.cardColor),
+        shape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+        ),
+      ),
+      menuChildren: childrenList,
     );
   }
 }

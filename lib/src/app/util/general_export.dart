@@ -4,6 +4,7 @@ import 'package:download/download.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flx_core_flutter/flx_core_flutter.dart';
+import 'package:gap/gap.dart';
 import 'package:pdf/pdf.dart' as p;
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -16,12 +17,13 @@ Future<void> generalExport<T>({
   required List<PColumnBody<T>> body,
   required List<PColumnFooter> Function(List<T> data) footer,
   required String? userName,
+  required Map<ExportType, String> permissions,
   DateTime? periodStart,
   DateTime? periodEnd,
 }) async {
   print('[generalExport] title: $title, length: ${data.length}');
 
-  final exportType = await showChooseExportType(context);
+  final exportType = await showChooseExportType(context, permissions);
   if (exportType == null) return;
 
   print('[generalExport] exportType: $exportType');
@@ -75,7 +77,10 @@ Future<void> generalExport<T>({
   }
 }
 
-Future<ExportType?> showChooseExportType(material.BuildContext context) async {
+Future<ExportType?> showChooseExportType(
+  material.BuildContext context,
+  Map<ExportType, String> permissions,
+) async {
   return material.showDialog<ExportType?>(
     context: context,
     builder: (context) {
@@ -85,20 +90,57 @@ Future<ExportType?> showChooseExportType(material.BuildContext context) async {
         popup: true,
         icon: material.Icons.download,
         child: material.Column(
-          children: ExportType.values.map((e) {
-            return Button.string(
-              permission: null,
-              action: 'Export ${e.name}',
-              isInProgress: false,
-              onPressed: () {
-                material.Navigator.pop(context, e);
-              },
-            );
-          }).toList(),
+          children: [
+            ExportTypeButton(
+              permissions: permissions,
+              exportType: ExportType.excel,
+              action: DataAction.exportExcel,
+            ),
+            const Gap(6),
+            ExportTypeButton(
+              permissions: permissions,
+              exportType: ExportType.pdf,
+              action: DataAction.exportPdf,
+            ),
+          ],
         ),
       );
     },
   );
+}
+
+class ExportTypeButton extends material.StatelessWidget {
+  const ExportTypeButton({
+    super.key,
+    required this.permissions,
+    required this.exportType,
+    required this.action,
+  });
+  final Map<ExportType, String> permissions;
+  final ExportType exportType;
+  final DataAction action;
+
+  @override
+  material.Widget build(material.BuildContext context) {
+    return VisibilityPermissionBuilder(
+      permission: [permissions[exportType]!],
+      builder: (hasPermission) {
+        return material.Tooltip(
+          message: !hasPermission ? 'No permission: ${action.title}' : '',
+          child: material.Opacity(
+            opacity: hasPermission ? 1 : .5,
+            child: LBS_JANGAN_PAKE_INI_LAGI(
+              action: action,
+              permission: null,
+              onPressed: hasPermission
+                  ? () => material.Navigator.pop(context, exportType)
+                  : null,
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
 
 enum ExportType {
