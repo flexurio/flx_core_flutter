@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:download/download.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' as material;
@@ -9,99 +7,136 @@ import 'package:flx_core_flutter/src/app/util/simple_pdf_exporter.dart';
 import 'package:gap/gap.dart';
 import 'package:printing/printing.dart';
 
-Future<void> generalExport<T>({
-  required material.BuildContext context,
-  required List<T> data,
-  required String title,
-  required List<PColumnHeader> header,
-  required List<PColumnBody<T>> body,
-  required String? userName,
-  required Map<ExportType, String> permissions,
-  String Function(T)? group,
-  List<PColumnFooter> Function(List<T> data)? footer,
-  List<PColumnFooter> Function(List<T> data)? footerGroup,
-  DateTime? periodStart,
-  DateTime? periodEnd,
-}) async {
-  final exportType = await showChooseExportType(context, permissions);
-  if (exportType == null) return;
+class GeneralExporter<T> {
+  GeneralExporter({
+    required this.context,
+    required this.data,
+    required this.title,
+    required this.headers,
+    required this.body,
+    required this.permissions,
+    this.userName,
+    this.group1,
+    this.group2,
+    this.footerBuilder,
+    this.footerGroup1Builder,
+    this.footerGroup2Builder,
+    this.periodStart,
+    this.periodEnd,
+  });
 
-  var period = '';
-  if (periodStart != null && periodEnd != null) {
-    final start = periodStart.ddMMyyyySlash;
-    final end = periodEnd.ddMMyyyySlash;
-    period = ' ($start - $end)';
+  final material.BuildContext context;
+  final List<T> data;
+  final String title;
+  final List<PColumnHeader> headers;
+  final List<PColumnBody<T>> body;
+  final Map<ExportType, String> permissions;
+
+  final String? userName;
+  final String Function(T)? group1;
+  final String Function(T)? group2;
+
+  final List<PColumnFooter> Function(List<T>)? footerBuilder;
+  final List<PColumnFooter> Function(List<T>)? footerGroup1Builder;
+  final List<PColumnFooter> Function(List<T>)? footerGroup2Builder;
+
+  final DateTime? periodStart;
+  final DateTime? periodEnd;
+
+  Future<void> export() async {
+    final exportType = await showChooseExportType();
+    if (exportType == null) return;
+
+    switch (exportType) {
+      case ExportType.pdf:
+        await exportPdf();
+        break;
+      case ExportType.excel:
+        await exportExcel();
+        break;
+    }
   }
 
-  final fileName = '$title$period'
-      .replaceAll('/', '_')
-      .replaceAll(' ', '_')
-      .replaceAll('-', '_');
+  Future<ExportType?> showChooseExportType() async {
+    return material.showDialog<ExportType?>(
+      context: context,
+      builder: (context) {
+        return CardForm(
+          title: 'choose_export_type'.tr(),
+          actions: [],
+          popup: true,
+          icon: material.Icons.download,
+          child: material.Column(
+            children: [
+              ExportTypeButton(
+                permissions: permissions,
+                exportType: ExportType.excel,
+                action: DataAction.exportExcel,
+              ),
+              const Gap(6),
+              ExportTypeButton(
+                permissions: permissions,
+                exportType: ExportType.pdf,
+                action: DataAction.exportPdf,
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
-  final printedBy = userName ?? '-';
-  final titleHeader = '$title$period';
-
-  if (exportType == ExportType.pdf) {
+  Future<void> exportPdf() async {
     final pdfExporter = SimplePdfExporter<T>(
       data: data,
-      title: title,
-      headers: header,
-      group: group,
+      title: '$title$period',
+      headers: headers,
       body: body,
-      printedBy: printedBy,
+      printedBy: userName ?? '-',
+      group1: group1,
+      group2: group2,
+      footerBuilder: footerBuilder,
+      footerGroup1Builder: footerGroup1Builder,
+      footerGroup2Builder: footerGroup2Builder,
       periodStart: periodStart,
       periodEnd: periodEnd,
-      footerBuilder: footer,
-      footerGroupBuilder: footerGroup,
     );
 
     final pdf = await pdfExporter.build();
     await Printing.sharePdf(bytes: await pdf.save(), filename: '$fileName.pdf');
-  } else if (exportType == ExportType.excel) {
+  }
+
+  String get period {
+    var period = '';
+    if (periodStart != null && periodEnd != null) {
+      final start = periodStart!.ddMMyyyySlash;
+      final end = periodEnd!.ddMMyyyySlash;
+      period = ' ($start - $end)';
+    }
+    return period;
+  }
+
+  String get fileName {
+    return '$title$period'
+        .replaceAll('/', '_')
+        .replaceAll(' ', '_')
+        .replaceAll('-', '_');
+  }
+
+  Future<void> exportExcel() async {
     final excel = SimpleExcelExporter<T>(
       data: data,
-      headers: header,
-      title: titleHeader,
+      headers: headers,
+      title: '$title$period',
       body: body,
-      printedBy: printedBy,
-      group: group,
-      footerBuilder: footer,
-      footerGroupBuilder: footerGroup,
+      printedBy: userName ?? '-',
+      group: group1,
+      footerBuilder: footerBuilder,
+      footerGroupBuilder: footerGroup1Builder,
     );
+
     await download(Stream.fromIterable(excel.export()), '$fileName.xlsx');
   }
-}
-
-Future<ExportType?> showChooseExportType(
-  material.BuildContext context,
-  Map<ExportType, String> permissions,
-) async {
-  return material.showDialog<ExportType?>(
-    context: context,
-    builder: (context) {
-      return CardForm(
-        title: 'choose_export_type'.tr(),
-        actions: [],
-        popup: true,
-        icon: material.Icons.download,
-        child: material.Column(
-          children: [
-            ExportTypeButton(
-              permissions: permissions,
-              exportType: ExportType.excel,
-              action: DataAction.exportExcel,
-            ),
-            const Gap(6),
-            ExportTypeButton(
-              permissions: permissions,
-              exportType: ExportType.pdf,
-              action: DataAction.exportPdf,
-            ),
-          ],
-        ),
-      );
-    },
-  );
 }
 
 class ExportTypeButton extends material.StatelessWidget {

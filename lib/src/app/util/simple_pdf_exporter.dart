@@ -5,6 +5,7 @@ import 'package:flx_core_flutter/src/app/util/pdf.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:toastification/toastification.dart';
+import 'package:printing/printing.dart';
 
 class SimplePdfExporter<T> {
   SimplePdfExporter({
@@ -14,10 +15,12 @@ class SimplePdfExporter<T> {
     required this.body,
     required this.printedBy,
     this.footerBuilder,
-    this.footerGroupBuilder,
+    this.footerGroup1Builder,
+    this.footerGroup2Builder,
     this.periodStart,
     this.periodEnd,
-    this.group,
+    this.group1,
+    this.group2,
   });
 
   final List<T> data;
@@ -27,9 +30,13 @@ class SimplePdfExporter<T> {
   final String printedBy;
   final DateTime? periodStart;
   final DateTime? periodEnd;
+
   final List<PColumnFooter> Function(List<T> data)? footerBuilder;
-  final List<PColumnFooter> Function(List<T> data)? footerGroupBuilder;
-  final String Function(T)? group;
+  final List<PColumnFooter> Function(List<T> data)? footerGroup1Builder;
+  final List<PColumnFooter> Function(List<T> data)? footerGroup2Builder;
+
+  final String Function(T)? group1;
+  final String Function(T)? group2;
 
   Future<Document> build() async {
     final periodStr = _formattedPeriod();
@@ -76,33 +83,75 @@ class SimplePdfExporter<T> {
   List<Widget> _buildContent() {
     final content = <Widget>[];
 
-    if (group != null) {
-      final grouped = groupBy<T>(data, group!).entries;
+    if (group1 != null) {
+      final grouped1 = groupBy<T>(data, group1!).entries;
 
-      for (final groupEntry in grouped) {
-        content.addAll([
+      for (final g1 in grouped1) {
+        content.add(
           Padding(
             padding:
-                const EdgeInsets.symmetric(horizontal: 36 + 4, vertical: 4),
+                const EdgeInsets.symmetric(horizontal: 36 + 4, vertical: 6),
             child: Text(
-              groupEntry.key,
+              g1.key,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: 12,
                 color: PdfColor.fromInt(flavorConfig.color.intValue),
               ),
             ),
           ),
-          ...tableBody2<T>(
-            data: groupEntry.value,
-            columns: body,
-          ),
-          if (footerGroupBuilder != null)
+        );
+
+        if (group2 != null) {
+          final grouped2 = groupBy<T>(g1.value, group2!).entries;
+
+          for (final g2 in grouped2) {
+            content.add(
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 36 + 8, vertical: 4),
+                child: Text(
+                  g2.key,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 10,
+                    color: PdfColors.grey800,
+                  ),
+                ),
+              ),
+            );
+
+            content.addAll([
+              ...tableBody2<T>(
+                data: g2.value,
+                columns: body,
+              ),
+              if (footerGroup2Builder != null)
+                tableFooter(
+                  columns: footerGroup2Builder!(g2.value),
+                  padding: const EdgeInsets.symmetric(horizontal: 36),
+                ),
+            ]);
+          }
+        } else {
+          content.addAll([
+            ...tableBody2<T>(
+              data: g1.value,
+              columns: body,
+            ),
+          ]);
+        }
+
+        if (footerGroup1Builder != null) {
+          content.add(
             tableFooter(
-              columns: footerGroupBuilder!(groupEntry.value),
+              columns: footerGroup1Builder!(g1.value),
               padding: const EdgeInsets.symmetric(horizontal: 36),
             ),
-        ]);
+          );
+        }
       }
+
       if (footerBuilder != null) {
         content.add(
           tableFooter(
