@@ -9,9 +9,11 @@ class SimpleExcelExporter<T> {
     required this.body,
     required this.title,
     required this.printedBy,
-    this.group,
+    this.group1,
+    this.group2,
     this.footerBuilder,
-    this.footerGroupBuilder,
+    this.footerGroup1Builder,
+    this.footerGroup2Builder,
   }) {
     _excel = Excel.createExcel();
     _sheet = _excel['Sheet1'];
@@ -22,9 +24,13 @@ class SimpleExcelExporter<T> {
   final List<PColumnBody<T>> body;
   final String title;
   final String printedBy;
-  final String Function(T)? group;
+
+  final String Function(T)? group1;
+  final String Function(T)? group2;
+
   final List<PColumnFooter> Function(List<T> data)? footerBuilder;
-  final List<PColumnFooter> Function(List<T> data)? footerGroupBuilder;
+  final List<PColumnFooter> Function(List<T> data)? footerGroup1Builder;
+  final List<PColumnFooter> Function(List<T> data)? footerGroup2Builder;
 
   late final Excel _excel;
   late final Sheet _sheet;
@@ -48,6 +54,80 @@ class SimpleExcelExporter<T> {
     return _excel.encode()!;
   }
 
+  void _renderData(int startRow, CellStyle evenStyle, CellStyle oddStyle) {
+    if (group1 != null) {
+      _renderGroupedData2Levels(startRow, evenStyle, oddStyle);
+    } else {
+      for (var row = 0; row < data.length; row++) {
+        _renderRow(data[row], row, startRow + row, evenStyle, oddStyle);
+      }
+      if (footerBuilder != null) {
+        _renderFooterRow(footerBuilder!(data), startRow + data.length);
+      }
+    }
+  }
+
+  void _renderGroupedData2Levels(
+      int startRow, CellStyle evenStyle, CellStyle oddStyle) {
+    final grouped1 = groupBy<T>(data, group1!);
+    var currentRow = startRow;
+
+    grouped1.forEach((key1, items1) {
+      // Add blank row before group1
+      _sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: currentRow))
+        ..value = TextCellValue('')
+        ..cellStyle = CellStyle();
+      currentRow++;
+
+      // Group1 Header
+      _sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: currentRow))
+        ..value = TextCellValue(key1)
+        ..cellStyle = _groupHeaderStyle();
+      currentRow++;
+
+      if (group2 != null) {
+        final grouped2 = groupBy<T>(items1, group2!);
+        grouped2.forEach((key2, items2) {
+          // Add blank row before group2
+          _sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: currentRow))
+            ..value = TextCellValue('')
+            ..cellStyle = CellStyle();
+          currentRow++;
+
+          // Group2 Header (black color)
+          _sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: currentRow))
+            ..value = TextCellValue(key2)
+            ..cellStyle = _groupSubHeaderStyle();
+          currentRow++;
+
+          for (var i = 0; i < items2.length; i++) {
+            _renderRow(items2[i], i, currentRow, evenStyle, oddStyle);
+            currentRow++;
+          }
+
+          if (footerGroup2Builder != null) {
+            _renderFooterRow(footerGroup2Builder!(items2), currentRow);
+            currentRow++;
+          }
+        });
+      } else {
+        for (var i = 0; i < items1.length; i++) {
+          _renderRow(items1[i], i, currentRow, evenStyle, oddStyle);
+          currentRow++;
+        }
+      }
+
+      if (footerGroup1Builder != null) {
+        _renderFooterRow(footerGroup1Builder!(items1), currentRow);
+        currentRow++;
+      }
+    });
+
+    if (footerBuilder != null) {
+      _renderFooterRow(footerBuilder!(data), currentRow);
+    }
+  }
+
   void _renderTitleAndInfo(CellStyle style) {
     _sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0))
       ..value = TextCellValue(title)
@@ -69,12 +149,10 @@ class SimpleExcelExporter<T> {
 
         _sheet.merge(
           CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2),
-          CellIndex.indexByColumnRow(
-              columnIndex: colIndex + span - 1, rowIndex: 2),
+          CellIndex.indexByColumnRow(columnIndex: colIndex + span - 1, rowIndex: 2),
         );
 
-        _sheet.cell(
-            CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2))
+        _sheet.cell(CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2))
           ..value = TextCellValue(header.title)
           ..cellStyle = style;
 
@@ -83,13 +161,11 @@ class SimpleExcelExporter<T> {
           if (child.flex > 1) {
             _sheet.merge(
               CellIndex.indexByColumnRow(columnIndex: childCol, rowIndex: 3),
-              CellIndex.indexByColumnRow(
-                  columnIndex: childCol + child.flex - 1, rowIndex: 3),
+              CellIndex.indexByColumnRow(columnIndex: childCol + child.flex - 1, rowIndex: 3),
             );
           }
 
-          _sheet.cell(
-              CellIndex.indexByColumnRow(columnIndex: childCol, rowIndex: 3))
+          _sheet.cell(CellIndex.indexByColumnRow(columnIndex: childCol, rowIndex: 3))
             ..value = TextCellValue(child.title)
             ..cellStyle = style;
 
@@ -103,8 +179,7 @@ class SimpleExcelExporter<T> {
         if (span > 1) {
           _sheet.merge(
             CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2),
-            CellIndex.indexByColumnRow(
-                columnIndex: colIndex + span - 1, rowIndex: 3),
+            CellIndex.indexByColumnRow(columnIndex: colIndex + span - 1, rowIndex: 3),
           );
         } else {
           _sheet.merge(
@@ -113,8 +188,7 @@ class SimpleExcelExporter<T> {
           );
         }
 
-        _sheet.cell(
-            CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2))
+        _sheet.cell(CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2))
           ..value = TextCellValue(header.title)
           ..cellStyle = style;
 
@@ -131,58 +205,15 @@ class SimpleExcelExporter<T> {
       if (span > 1) {
         _sheet.merge(
           CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2),
-          CellIndex.indexByColumnRow(
-              columnIndex: colIndex + span - 1, rowIndex: 2),
+          CellIndex.indexByColumnRow(columnIndex: colIndex + span - 1, rowIndex: 2),
         );
       }
 
-      _sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2))
+      _sheet.cell(CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2))
         ..value = TextCellValue(header.title)
         ..cellStyle = style;
 
       colIndex += span;
-    }
-  }
-
-  void _renderData(int startRow, CellStyle evenStyle, CellStyle oddStyle) {
-    if (group != null) {
-      _renderGroupedData(startRow, evenStyle, oddStyle);
-    } else {
-      for (var row = 0; row < data.length; row++) {
-        _renderRow(data[row], row, startRow + row, evenStyle, oddStyle);
-      }
-      if (footerBuilder != null) {
-        _renderFooterRow(footerBuilder!(data), startRow + data.length);
-      }
-    }
-  }
-
-  void _renderGroupedData(
-      int startRow, CellStyle evenStyle, CellStyle oddStyle) {
-    final groupedData = groupBy<T>(data, group!);
-    var currentRow = startRow;
-
-    groupedData.forEach((groupKey, items) {
-      _sheet.cell(
-          CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: currentRow))
-        ..value = TextCellValue(groupKey)
-        ..cellStyle = _groupHeaderStyle();
-      currentRow++;
-
-      for (var i = 0; i < items.length; i++) {
-        _renderRow(items[i], i, currentRow, evenStyle, oddStyle);
-        currentRow++;
-      }
-
-      if (footerGroupBuilder != null) {
-        _renderFooterRow(footerGroupBuilder!(items), currentRow);
-        currentRow++;
-      }
-    });
-
-    if (footerBuilder != null) {
-      _renderFooterRow(footerBuilder!(data), currentRow);
     }
   }
 
@@ -199,10 +230,7 @@ class SimpleExcelExporter<T> {
       if (flex > 1) {
         _sheet.merge(
           CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex),
-          CellIndex.indexByColumnRow(
-            columnIndex: colIndex + flex - 1,
-            rowIndex: rowIndex,
-          ),
+          CellIndex.indexByColumnRow(columnIndex: colIndex + flex - 1, rowIndex: rowIndex),
         );
       }
 
@@ -211,8 +239,7 @@ class SimpleExcelExporter<T> {
       );
       cell.value = TextCellValue(value);
       cell.cellStyle = style.copyWith(
-        horizontalAlignVal:
-            column.numeric ? HorizontalAlign.Right : HorizontalAlign.Left,
+        horizontalAlignVal: column.numeric ? HorizontalAlign.Right : HorizontalAlign.Left,
       );
 
       colIndex += flex;
@@ -228,8 +255,7 @@ class SimpleExcelExporter<T> {
       if (span > 1) {
         _sheet.merge(
           CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex),
-          CellIndex.indexByColumnRow(
-              columnIndex: colIndex + span - 1, rowIndex: rowIndex),
+          CellIndex.indexByColumnRow(columnIndex: colIndex + span - 1, rowIndex: rowIndex),
         );
       }
 
@@ -270,35 +296,42 @@ class SimpleExcelExporter<T> {
   }
 
   CellStyle _headerCellStyle() => CellStyle(
-        bold: true,
-        fontColorHex: ExcelColor.white,
-        backgroundColorHex: ExcelColor.lightBlue,
-        horizontalAlign: HorizontalAlign.Center,
-        verticalAlign: VerticalAlign.Center,
-      );
+    bold: true,
+    fontColorHex: ExcelColor.white,
+    backgroundColorHex: ExcelColor.lightBlue,
+    horizontalAlign: HorizontalAlign.Center,
+    verticalAlign: VerticalAlign.Center,
+  );
 
   CellStyle _rowCellStyle(ExcelColor backgroundColor) => CellStyle(
-        backgroundColorHex: backgroundColor,
-      );
+    backgroundColorHex: backgroundColor,
+  );
 
   CellStyle _infoStyle() => CellStyle(
-        bold: true,
-        fontColorHex: ExcelColor.black,
-        horizontalAlign: HorizontalAlign.Left,
-        verticalAlign: VerticalAlign.Center,
-      );
+    bold: true,
+    fontColorHex: ExcelColor.black,
+    horizontalAlign: HorizontalAlign.Left,
+    verticalAlign: VerticalAlign.Center,
+  );
 
   CellStyle _groupHeaderStyle() => CellStyle(
-        bold: true,
-        fontColorHex: ExcelColor.blue800,
-        horizontalAlign: HorizontalAlign.Left,
-        verticalAlign: VerticalAlign.Center,
-      );
+    bold: true,
+    fontColorHex: ExcelColor.blue800,
+    horizontalAlign: HorizontalAlign.Left,
+    verticalAlign: VerticalAlign.Center,
+  );
+
+  CellStyle _groupSubHeaderStyle() => CellStyle(
+    bold: true,
+    fontColorHex: ExcelColor.black,
+    horizontalAlign: HorizontalAlign.Left,
+    verticalAlign: VerticalAlign.Center,
+  );
 
   CellStyle _footerStyle() => CellStyle(
-        bold: true,
-        backgroundColorHex: ExcelColor.grey300,
-        horizontalAlign: HorizontalAlign.Right,
-        verticalAlign: VerticalAlign.Center,
-      );
+    bold: true,
+    backgroundColorHex: ExcelColor.grey300,
+    horizontalAlign: HorizontalAlign.Right,
+    verticalAlign: VerticalAlign.Center,
+  );
 }

@@ -132,9 +132,11 @@ class GeneralExporter<T> {
       title: '$title$period',
       body: body,
       printedBy: userName ?? '-',
-      group: group1,
+      group1: group1,
+      group2: group2,
       footerBuilder: footerBuilder,
-      footerGroupBuilder: footerGroup1Builder,
+      footerGroup1Builder: footerGroup1Builder,
+      footerGroup2Builder: footerGroup2Builder,
     );
     await download(Stream.fromIterable(excel.export()), '$fileName.xlsx');
     print('[export] excel done');
