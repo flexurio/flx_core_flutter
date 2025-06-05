@@ -44,6 +44,8 @@ class GeneralExporter<T> {
   final DateTime? periodEnd;
 
   Future<void> export() async {
+    print('[export] length: ${data.length}');
+
     final exportType = await showChooseExportType();
     if (exportType == null) return;
 
@@ -134,8 +136,8 @@ class GeneralExporter<T> {
       footerBuilder: footerBuilder,
       footerGroupBuilder: footerGroup1Builder,
     );
-
     await download(Stream.fromIterable(excel.export()), '$fileName.xlsx');
+    print('[export] excel done');
   }
 }
 

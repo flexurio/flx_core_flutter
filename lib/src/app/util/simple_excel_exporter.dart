@@ -33,10 +33,9 @@ class SimpleExcelExporter<T> {
     final hasChildren = headers.any((e) => e.children?.isNotEmpty ?? false);
     final dataStartRow = hasChildren ? 4 : 3;
 
-    final border = _thinBorder();
-    final headerStyle = _headerCellStyle(border);
-    final evenStyle = _rowCellStyle(border, ExcelColor.lightBlue50);
-    final oddStyle = _rowCellStyle(border, ExcelColor.lightBlue100);
+    final headerStyle = _headerCellStyle();
+    final evenStyle = _rowCellStyle(ExcelColor.lightBlue50);
+    final oddStyle = _rowCellStyle(ExcelColor.lightBlue100);
     final infoStyle = _infoStyle();
 
     _renderTitleAndInfo(infoStyle);
@@ -201,7 +200,9 @@ class SimpleExcelExporter<T> {
         _sheet.merge(
           CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex),
           CellIndex.indexByColumnRow(
-              columnIndex: colIndex + flex - 1, rowIndex: rowIndex),
+            columnIndex: colIndex + flex - 1,
+            rowIndex: rowIndex,
+          ),
         );
       }
 
@@ -268,30 +269,16 @@ class SimpleExcelExporter<T> {
     }
   }
 
-  Border _thinBorder() => Border(
-        borderStyle: BorderStyle.Thin,
-        borderColorHex: ExcelColor.black,
-      );
-
-  CellStyle _headerCellStyle(Border border) => CellStyle(
+  CellStyle _headerCellStyle() => CellStyle(
         bold: true,
         fontColorHex: ExcelColor.white,
         backgroundColorHex: ExcelColor.lightBlue,
         horizontalAlign: HorizontalAlign.Center,
         verticalAlign: VerticalAlign.Center,
-        bottomBorder: border,
-        topBorder: border,
-        leftBorder: border,
-        rightBorder: border,
       );
 
-  CellStyle _rowCellStyle(Border border, ExcelColor backgroundColor) =>
-      CellStyle(
+  CellStyle _rowCellStyle(ExcelColor backgroundColor) => CellStyle(
         backgroundColorHex: backgroundColor,
-        bottomBorder: border,
-        topBorder: border,
-        leftBorder: border,
-        rightBorder: border,
       );
 
   CellStyle _infoStyle() => CellStyle(
