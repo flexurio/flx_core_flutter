@@ -140,7 +140,7 @@ class PColumn<T> {
     required this.title,
     required this.contentBuilder,
     this.footer,
-    this.flex,
+    this.flex = 1,
     this.numeric = false,
     this.primary = false,
   });
@@ -150,39 +150,39 @@ class PColumn<T> {
   final bool numeric;
   final bool primary;
   final String Function(T data, int index) contentBuilder;
-  final double? flex;
+  final int flex;
 }
 
 class PColumnFooter {
   PColumnFooter({
     this.footer,
-    this.flex,
+    this.flex = 1,
     this.numeric = false,
     this.borderTransparent = false,
   });
 
   final String? footer;
   final bool numeric;
-  final double? flex;
+  final int flex;
   final bool borderTransparent;
 }
 
 class PColumnBody<T> {
   PColumnBody({
     required this.contentBuilder,
-    this.flex,
+    this.flex = 1,
     this.numeric = false,
   });
 
   final bool numeric;
   final String Function(T data, int index) contentBuilder;
-  final double? flex;
+  final int flex;
 }
 
 class PColumnHeader {
   PColumnHeader({
     required this.title,
-    this.flex,
+    this.flex = 1,
     this.numeric = false,
     this.children,
     this.primary = false,
@@ -192,7 +192,7 @@ class PColumnHeader {
   final bool numeric;
   final List<PColumnHeader>? children;
   final bool primary;
-  final double? flex;
+  final int flex;
 }
 
 Widget tableBody<T>({
@@ -206,7 +206,7 @@ Widget tableBody<T>({
     border: TableBorder.all(color: PdfColors.white, width: 3),
     columnWidths: {
       for (var i = 0; i < columns.length; i++)
-        i: FlexColumnWidth(columns[i].flex ?? 1),
+        i: FlexColumnWidth(columns[i].flex.toDouble()),
     },
     children: List<TableRow>.generate(
       data.length,
@@ -258,7 +258,7 @@ List<Widget> tableBody2<T>({
         border: TableBorder.all(color: PdfColors.white, width: 3),
         columnWidths: {
           for (var i = 0; i < columns.length; i++)
-            i: FlexColumnWidth(columns[i].flex ?? 1),
+            i: FlexColumnWidth(columns[i].flex.toDouble()),
         },
         children: [
           TableRow(
@@ -376,7 +376,7 @@ Table simpleTablePdf<T>({
     border: TableBorder.all(color: PdfColors.white, width: 3),
     columnWidths: {
       for (var i = 0; i < columns.length; i++)
-        i: FlexColumnWidth(columns[i].flex ?? 1),
+        i: FlexColumnWidth(columns[i].flex.toDouble()),
     },
     children: [
       TableRow(
@@ -472,7 +472,7 @@ Widget tableFooter({
     border: TableBorder.all(color: PdfColors.white, width: 3),
     columnWidths: {
       for (var i = 0; i < columns.length; i++)
-        i: FlexColumnWidth(columns[i].flex ?? 1),
+        i: FlexColumnWidth(columns[i].flex.toDouble()),
     },
     children: [TableRow(children: footer)],
   );
@@ -496,7 +496,7 @@ Widget tableHeader({
     border: TableBorder.all(color: PdfColors.white, width: 3),
     columnWidths: {
       for (var i = 0; i < columns.length; i++)
-        i: FlexColumnWidth(columns[i].flex ?? 1),
+        i: FlexColumnWidth(columns[i].flex.toDouble()),
     },
     children: [
       TableRow(

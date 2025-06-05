@@ -39,20 +39,17 @@ class SimplePdfExporter<T> {
   final String Function(T)? group2;
 
   Future<Document> build() async {
-    final periodStr = _formattedPeriod();
-    final headerTitle = '$title$periodStr';
-
     final pageFormat =
         body.length > 7 ? PdfPageFormat.a4.landscape : PdfPageFormat.a4;
 
-    final header = _buildHeader(headerTitle);
+    final header = _buildHeader(title);
     final content = _buildContent();
 
     final pdf = Document()
       ..addPage(
         await pdfTemplate(
           printedBy: printedBy,
-          headerTitle: headerTitle,
+          headerTitle: title,
           headerChild: header,
           pageFormat: pageFormat,
           build: (_) => content,
@@ -60,15 +57,6 @@ class SimplePdfExporter<T> {
       );
 
     return pdf;
-  }
-
-  String _formattedPeriod() {
-    if (periodStart != null && periodEnd != null) {
-      final start = periodStart!.ddMMyyyySlash;
-      final end = periodEnd!.ddMMyyyySlash;
-      return ' ($start - $end)';
-    }
-    return '';
   }
 
   Widget _buildHeader(String headerTitle) {

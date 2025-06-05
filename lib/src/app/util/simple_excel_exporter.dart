@@ -1,6 +1,6 @@
 import 'package:excel/excel.dart';
-import 'package:flx_core_flutter/src/app/util/pdf.dart';
 import 'package:flx_core_flutter/src/app/util/group_by.dart';
+import 'package:flx_core_flutter/src/app/util/pdf.dart';
 
 class SimpleExcelExporter<T> {
   SimpleExcelExporter({
@@ -60,13 +60,13 @@ class SimpleExcelExporter<T> {
   }
 
   void _renderHeadersWithChildren(CellStyle style) {
-    var colIndex = 0;
+    int colIndex = 0;
     for (final header in headers) {
       final hasChildren = header.children?.isNotEmpty ?? false;
 
       if (hasChildren) {
         final children = header.children!;
-        final span = children.length;
+        final span = children.fold<int>(0, (sum, child) => sum + child.flex);
 
         _sheet.merge(
           CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2),
@@ -79,35 +79,70 @@ class SimpleExcelExporter<T> {
           ..value = TextCellValue(header.title)
           ..cellStyle = style;
 
-        for (var i = 0; i < span; i++) {
-          _sheet.cell(CellIndex.indexByColumnRow(
-              columnIndex: colIndex + i, rowIndex: 3))
-            ..value = TextCellValue(children[i].title)
+        int childCol = colIndex;
+        for (final child in children) {
+          if (child.flex > 1) {
+            _sheet.merge(
+              CellIndex.indexByColumnRow(columnIndex: childCol, rowIndex: 3),
+              CellIndex.indexByColumnRow(
+                  columnIndex: childCol + child.flex - 1, rowIndex: 3),
+            );
+          }
+
+          _sheet.cell(
+              CellIndex.indexByColumnRow(columnIndex: childCol, rowIndex: 3))
+            ..value = TextCellValue(child.title)
             ..cellStyle = style;
+
+          childCol += child.flex;
         }
 
         colIndex += span;
       } else {
-        _sheet.merge(
-          CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2),
-          CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 3),
-        );
+        final span = header.flex;
+
+        if (span > 1) {
+          _sheet.merge(
+            CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2),
+            CellIndex.indexByColumnRow(
+                columnIndex: colIndex + span - 1, rowIndex: 3),
+          );
+        } else {
+          _sheet.merge(
+            CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2),
+            CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 3),
+          );
+        }
 
         _sheet.cell(
             CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2))
           ..value = TextCellValue(header.title)
           ..cellStyle = style;
 
-        colIndex++;
+        colIndex += span;
       }
     }
   }
 
   void _renderHeaders(CellStyle style) {
-    for (var col = 0; col < headers.length; col++) {
-      _sheet.cell(CellIndex.indexByColumnRow(columnIndex: col, rowIndex: 2))
-        ..value = TextCellValue(headers[col].title)
+    int colIndex = 0;
+    for (final header in headers) {
+      final span = header.flex;
+
+      if (span > 1) {
+        _sheet.merge(
+          CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2),
+          CellIndex.indexByColumnRow(
+              columnIndex: colIndex + span - 1, rowIndex: 2),
+        );
+      }
+
+      _sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2))
+        ..value = TextCellValue(header.title)
         ..cellStyle = style;
+
+      colIndex += span;
     }
   }
 
@@ -155,16 +190,31 @@ class SimpleExcelExporter<T> {
   void _renderRow(
       T item, int index, int rowIndex, CellStyle even, CellStyle odd) {
     final style = index.isEven ? even : odd;
+    int colIndex = 0;
+
     for (var col = 0; col < body.length; col++) {
       final column = body[col];
+      final flex = column.flex;
       final value = column.contentBuilder(item, index);
+
+      if (flex > 1) {
+        _sheet.merge(
+          CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex),
+          CellIndex.indexByColumnRow(
+              columnIndex: colIndex + flex - 1, rowIndex: rowIndex),
+        );
+      }
+
       final cell = _sheet.cell(
-          CellIndex.indexByColumnRow(columnIndex: col, rowIndex: rowIndex));
+        CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex),
+      );
       cell.value = TextCellValue(value);
       cell.cellStyle = style.copyWith(
         horizontalAlignVal:
             column.numeric ? HorizontalAlign.Right : HorizontalAlign.Left,
       );
+
+      colIndex += flex;
     }
   }
 
@@ -172,8 +222,7 @@ class SimpleExcelExporter<T> {
     int colIndex = 0;
 
     for (var footer in footers) {
-      final flex = footer.flex ?? 1.0;
-      final span = flex.ceil();
+      final span = footer.flex;
 
       if (span > 1) {
         _sheet.merge(
@@ -195,8 +244,11 @@ class SimpleExcelExporter<T> {
 
   void _autoFitColumns() {
     final rowCount = data.length;
+    int colIndex = 0;
+
     for (var col = 0; col < body.length; col++) {
       int maxLength = 0;
+      final flex = body[col].flex;
       final headerTitle = headers.length > col ? headers[col].title : '';
       maxLength = headerTitle.length;
 
@@ -207,7 +259,12 @@ class SimpleExcelExporter<T> {
         }
       }
 
-      _sheet.setColumnWidth(col, maxLength.toDouble() + 2);
+      final widthPerColumn = (maxLength.toDouble() + 2) / flex;
+      for (int i = 0; i < flex; i++) {
+        _sheet.setColumnWidth(colIndex + i, widthPerColumn);
+      }
+
+      colIndex += flex;
     }
   }
 
