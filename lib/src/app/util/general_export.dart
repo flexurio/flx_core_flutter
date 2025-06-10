@@ -36,9 +36,9 @@ class GeneralExporter<T> {
   final String Function(T)? group1;
   final String Function(T)? group2;
 
-  final List<PColumnFooter> Function(List<T>)? footerBuilder;
-  final List<PColumnFooter> Function(List<T>)? footerGroup1Builder;
-  final List<PColumnFooter> Function(List<T>)? footerGroup2Builder;
+  final List<List<PColumnFooter>> Function(List<T>)? footerBuilder;
+  final List<List<PColumnFooter>> Function(List<T>)? footerGroup1Builder;
+  final List<List<PColumnFooter>> Function(List<T>)? footerGroup2Builder;
 
   final DateTime? periodStart;
   final DateTime? periodEnd;
