@@ -28,9 +28,9 @@ class SimpleExcelExporter<T> {
   final String Function(T)? group1;
   final String Function(T)? group2;
 
-  final List<PColumnFooter> Function(List<T> data)? footerBuilder;
-  final List<PColumnFooter> Function(List<T> data)? footerGroup1Builder;
-  final List<PColumnFooter> Function(List<T> data)? footerGroup2Builder;
+  final List<List<PColumnFooter>> Function(List<T> data)? footerBuilder;
+  final List<List<PColumnFooter>> Function(List<T> data)? footerGroup1Builder;
+  final List<List<PColumnFooter>> Function(List<T> data)? footerGroup2Builder;
 
   late final Excel _excel;
   late final Sheet _sheet;
@@ -62,7 +62,7 @@ class SimpleExcelExporter<T> {
         _renderRow(data[row], row, startRow + row, evenStyle, oddStyle);
       }
       if (footerBuilder != null) {
-        _renderFooterRow(footerBuilder!(data), startRow + data.length);
+        _renderFooterRows(footerBuilder!(data), startRow + data.length);
       }
     }
   }
@@ -73,13 +73,11 @@ class SimpleExcelExporter<T> {
     var currentRow = startRow;
 
     grouped1.forEach((key1, items1) {
-      // Add blank row before group1
       _sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: currentRow))
         ..value = TextCellValue('')
         ..cellStyle = CellStyle();
       currentRow++;
 
-      // Group1 Header
       _sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: currentRow))
         ..value = TextCellValue(key1)
         ..cellStyle = _groupHeaderStyle();
@@ -88,13 +86,11 @@ class SimpleExcelExporter<T> {
       if (group2 != null) {
         final grouped2 = groupBy<T>(items1, group2!);
         grouped2.forEach((key2, items2) {
-          // Add blank row before group2
           _sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: currentRow))
             ..value = TextCellValue('')
             ..cellStyle = CellStyle();
           currentRow++;
 
-          // Group2 Header (black color)
           _sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: currentRow))
             ..value = TextCellValue(key2)
             ..cellStyle = _groupSubHeaderStyle();
@@ -106,8 +102,9 @@ class SimpleExcelExporter<T> {
           }
 
           if (footerGroup2Builder != null) {
-            _renderFooterRow(footerGroup2Builder!(items2), currentRow);
-            currentRow++;
+            final rows = footerGroup2Builder!(items2);
+            _renderFooterRows(rows, currentRow);
+            currentRow += rows.length;
           }
         });
       } else {
@@ -118,13 +115,41 @@ class SimpleExcelExporter<T> {
       }
 
       if (footerGroup1Builder != null) {
-        _renderFooterRow(footerGroup1Builder!(items1), currentRow);
-        currentRow++;
+        final rows = footerGroup1Builder!(items1);
+        _renderFooterRows(rows, currentRow);
+        currentRow += rows.length;
       }
     });
 
     if (footerBuilder != null) {
-      _renderFooterRow(footerBuilder!(data), currentRow);
+      final rows = footerBuilder!(data);
+      _renderFooterRows(rows, currentRow);
+    }
+  }
+
+  void _renderFooterRows(List<List<PColumnFooter>> rows, int startRow) {
+    for (int i = 0; i < rows.length; i++) {
+      _renderFooterRow(rows[i], startRow + i);
+    }
+  }
+
+  void _renderFooterRow(List<PColumnFooter> footers, int rowIndex) {
+    int colIndex = 0;
+    for (var footer in footers) {
+      final span = footer.flex;
+      if (span > 1) {
+        _sheet.merge(
+          CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex),
+          CellIndex.indexByColumnRow(columnIndex: colIndex + span - 1, rowIndex: rowIndex),
+        );
+      }
+
+      final cell = _sheet.cell(
+        CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex),
+      );
+      cell.value = TextCellValue(footer.footer ?? '');
+      cell.cellStyle = _footerStyle();
+      colIndex += span;
     }
   }
 
@@ -243,29 +268,6 @@ class SimpleExcelExporter<T> {
       );
 
       colIndex += flex;
-    }
-  }
-
-  void _renderFooterRow(List<PColumnFooter> footers, int rowIndex) {
-    int colIndex = 0;
-
-    for (var footer in footers) {
-      final span = footer.flex;
-
-      if (span > 1) {
-        _sheet.merge(
-          CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex),
-          CellIndex.indexByColumnRow(columnIndex: colIndex + span - 1, rowIndex: rowIndex),
-        );
-      }
-
-      final cell = _sheet.cell(
-        CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex),
-      );
-      cell.value = TextCellValue(footer.footer ?? '');
-      cell.cellStyle = _footerStyle();
-
-      colIndex += span;
     }
   }
 
