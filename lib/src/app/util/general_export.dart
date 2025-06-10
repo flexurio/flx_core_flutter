@@ -15,6 +15,7 @@ class GeneralExporter<T> {
     required this.headers,
     required this.body,
     required this.permissions,
+    this.bodyFirstBuilder,
     this.userName,
     this.group1,
     this.group2,
@@ -35,6 +36,8 @@ class GeneralExporter<T> {
   final String? userName;
   final String Function(T)? group1;
   final String Function(T)? group2;
+
+  final List<PColumnBodyN<T>> Function(List<T> data)? bodyFirstBuilder;
 
   final List<List<PColumnFooter>> Function(List<T>)? footerBuilder;
   final List<List<PColumnFooter>> Function(List<T>)? footerGroup1Builder;
@@ -98,6 +101,7 @@ class GeneralExporter<T> {
       group1: group1,
       group2: group2,
       footerBuilder: footerBuilder,
+      bodyFirstBuilder: bodyFirstBuilder,
       footerGroup1Builder: footerGroup1Builder,
       footerGroup2Builder: footerGroup2Builder,
       periodStart: periodStart,
@@ -135,6 +139,7 @@ class GeneralExporter<T> {
       group1: group1,
       group2: group2,
       footerBuilder: footerBuilder,
+      bodyFirstBuilder: bodyFirstBuilder,
       footerGroup1Builder: footerGroup1Builder,
       footerGroup2Builder: footerGroup2Builder,
     );

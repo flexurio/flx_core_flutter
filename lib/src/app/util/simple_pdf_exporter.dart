@@ -12,6 +12,7 @@ class SimplePdfExporter<T> {
     required this.headers,
     required this.body,
     required this.printedBy,
+    this.bodyFirstBuilder,
     this.footerBuilder,
     this.footerGroup1Builder,
     this.footerGroup2Builder,
@@ -24,6 +25,7 @@ class SimplePdfExporter<T> {
   final List<T> data;
   final String title;
   final List<PColumnHeader> headers;
+  final List<PColumnBodyN<T>> Function(List<T> data)? bodyFirstBuilder;
   final List<PColumnBody<T>> body;
   final String printedBy;
   final DateTime? periodStart;
@@ -38,7 +40,7 @@ class SimplePdfExporter<T> {
 
   Future<Document> build() async {
     final pageFormat =
-    body.length > 7 ? PdfPageFormat.a4.landscape : PdfPageFormat.a4;
+        body.length > 7 ? PdfPageFormat.a4.landscape : PdfPageFormat.a4;
 
     final header = _buildHeader(title);
     final content = _buildContent();
@@ -93,7 +95,8 @@ class SimplePdfExporter<T> {
           for (final g2 in grouped2) {
             content.add(
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 44, vertical: 4),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 44, vertical: 4),
                 child: Text(
                   g2.key,
                   style: TextStyle(
@@ -105,6 +108,23 @@ class SimplePdfExporter<T> {
               ),
             );
 
+            if (bodyFirstBuilder != null) {
+              final body = bodyFirstBuilder!(g2.value);
+              final columns = body.map((e) {
+                return PColumnBody(
+                  contentBuilder: (_, __) => e.content,
+                  flex: e.flex,
+                  numeric: e.numeric,
+                );
+              }).toList();
+              content.addAll(
+                tableBody2(
+                  data: body,
+                  columns: columns,
+                ),
+              );
+            }
+
             content.addAll([
               ...tableBody2<T>(data: g2.value, columns: body),
               if (footerGroup2Builder != null)
@@ -112,6 +132,23 @@ class SimplePdfExporter<T> {
             ]);
           }
         } else {
+          if (bodyFirstBuilder != null) {
+            final body = bodyFirstBuilder!(g1.value);
+            final columns = body.map((e) {
+              return PColumnBody(
+                contentBuilder: (_, __) => e.content,
+                flex: e.flex,
+                numeric: e.numeric,
+              );
+            }).toList();
+            content.addAll(
+              tableBody2(
+                data: body,
+                columns: columns,
+              ),
+            );
+          }
+
           content.addAll([
             ...tableBody2<T>(data: g1.value, columns: body),
           ]);
@@ -139,11 +176,10 @@ class SimplePdfExporter<T> {
     return groupedFooters
         .map(
           (row) => tableFooter(
-        columns: row,
-        padding: const EdgeInsets.symmetric(horizontal: 36),
-      ),
-    )
+            columns: row,
+            padding: const EdgeInsets.symmetric(horizontal: 36),
+          ),
+        )
         .toList();
   }
 }
-

@@ -179,6 +179,18 @@ class PColumnBody<T> {
   final int flex;
 }
 
+class PColumnBodyN<T> {
+  PColumnBodyN({
+    required this.content,
+    this.flex = 1,
+    this.numeric = false,
+  });
+
+  final bool numeric;
+  final String content;
+  final int flex;
+}
+
 class PColumnHeader {
   PColumnHeader({
     required this.title,
