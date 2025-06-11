@@ -1,5 +1,5 @@
-import 'package:flx_core_flutter/src/app/model/color_type.dart';
 import 'package:flutter/material.dart';
+import 'package:flx_core_flutter/src/app/model/color_type.dart';
 import 'package:gap/gap.dart';
 
 class ChipType extends StatelessWidget {

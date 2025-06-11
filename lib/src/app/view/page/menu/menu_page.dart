@@ -1,10 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flx_core_flutter/src/app/bloc/theme/menu_collapse/menu_collapse.dart';
 import 'package:flx_core_flutter/src/app/view/page/menu/menu_side_nav.dart';
 import 'package:flx_core_flutter/src/app/view/page/menu/widget/menu_content.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:screen_identifier/screen_identifier.dart';
 

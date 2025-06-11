@@ -1,6 +1,6 @@
-import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:hive/hive.dart';
 
 class LightButtonSmallGroup extends StatefulWidget {

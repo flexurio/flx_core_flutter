@@ -1,5 +1,5 @@
-import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flutter/services.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
@@ -264,7 +264,7 @@ List<Widget> tableBody2<T>({
   final children = <Widget>[];
   for (var i = 0; i < data.length; i++) {
     children.add(Padding(
-      padding: EdgeInsets.symmetric(horizontal: 36),
+      padding: const EdgeInsets.symmetric(horizontal: 36),
       child: Table(
         border: TableBorder.all(color: PdfColors.white, width: 3),
         columnWidths: {
@@ -297,7 +297,7 @@ List<Widget> tableBody2<T>({
           ),
         ],
       ),
-    ));
+    ),);
   }
   return children;
 }

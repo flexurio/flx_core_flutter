@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flx_core_flutter/flx_core_flutter.dart';
-import 'package:flx_core_flutter/src/app/view/page/menu/widget/menu_level_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
+import 'package:flx_core_flutter/src/app/view/page/menu/widget/menu_level_2.dart';
 import 'package:gap/gap.dart';
 
 class MenuLevel1 extends StatelessWidget {

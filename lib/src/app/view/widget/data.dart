@@ -1,6 +1,6 @@
-import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:lottie/lottie.dart';
 
 class ErrorIndicator extends StatelessWidget {

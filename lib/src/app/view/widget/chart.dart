@@ -1,5 +1,5 @@
-import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DonutChart extends StatelessWidget {

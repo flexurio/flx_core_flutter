@@ -1,5 +1,5 @@
-import 'package:flx_core_flutter/src/app/view/widget/f_text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flx_core_flutter/src/app/view/widget/f_text_form_field.dart';
 
 class Option {
   Option(this.text, this.value);

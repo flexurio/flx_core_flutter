@@ -1,8 +1,8 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/src/app/model/page_options.dart';
 import 'package:flx_core_flutter/src/app/view/widget/data_set_action.dart';
 import 'package:flx_core_flutter/src/app/view/widget/f_drop_down.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class DataListView<T> extends StatelessWidget {

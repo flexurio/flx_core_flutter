@@ -55,10 +55,8 @@ class GeneralExporter<T> {
     switch (exportType) {
       case ExportType.pdf:
         await exportPdf();
-        break;
       case ExportType.excel:
         await exportExcel();
-        break;
     }
   }
 
@@ -68,7 +66,7 @@ class GeneralExporter<T> {
       builder: (context) {
         return CardForm(
           title: 'choose_export_type'.tr(),
-          actions: [],
+          actions: const [],
           popup: true,
           icon: material.Icons.download,
           child: material.Column(
@@ -124,8 +122,8 @@ class GeneralExporter<T> {
 
   String get fileName {
     return '$title$period'
-        .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_')
-        .replaceAll(RegExp(r'_+'), '_');
+        .replaceAll(RegExp('[^a-zA-Z0-9]'), '_')
+        .replaceAll(RegExp('_+'), '_');
   }
 
   Future<void> exportExcel() async {

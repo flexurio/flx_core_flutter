@@ -1,12 +1,10 @@
 import 'dart:io' show Platform;
 
-import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flx_core_flutter/src/app/view/widget/visibility_permission.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:gap/gap.dart';
-import 'package:hive/hive.dart';
 
 class BackButtonTitled extends StatelessWidget {
   const BackButtonTitled({
@@ -37,7 +35,6 @@ class Button extends StatelessWidget {
   const Button._({
     required this.action,
     required this.permission,
-    super.key,
     this.onPressed,
     this.color,
     this.isInProgress = false,
@@ -84,8 +81,7 @@ class Button extends StatelessWidget {
   factory Button.string({
     required String action,
     required bool isInProgress,
-    bool isSecondary = false,
-    required String? permission,
+    required String? permission, bool isSecondary = false,
     Color? color,
     void Function()? onPressed,
     bool rounded = false,

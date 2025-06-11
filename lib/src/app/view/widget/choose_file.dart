@@ -1,8 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 
 class ChooseFileFormField extends FormField<List<PlatformFile>> {
   ChooseFileFormField({
