@@ -186,3 +186,7 @@ enum ExportType {
   const ExportType(this.name);
   final String name;
 }
+
+extension ExportTypeExtension on Map<ExportType, String> {
+  List<String> get toList => values.toList();
+}
