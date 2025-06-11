@@ -263,7 +263,6 @@ List<Widget> tableBody2<T>({
   const paddingRow = EdgeInsets.symmetric(horizontal: 8);
   final children = <Widget>[];
   for (var i = 0; i < data.length; i++) {
-    print('[tableBody2] No: $i');
     children.add(Padding(
       padding: EdgeInsets.symmetric(horizontal: 36),
       child: Table(

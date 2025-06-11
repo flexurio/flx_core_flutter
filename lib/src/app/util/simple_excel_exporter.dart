@@ -164,7 +164,10 @@ class SimpleExcelExporter<T> {
         CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex),
       );
       cell.value = TextCellValue(value);
-      cell.cellStyle = _infoStyle(); // atau style custom lain
+      cell.cellStyle = _infoStyle().copyWith(
+        horizontalAlignVal:
+            column.numeric ? HorizontalAlign.Right : HorizontalAlign.Left,
+      );
 
       colIndex += flex;
     }
