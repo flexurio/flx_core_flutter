@@ -124,9 +124,8 @@ class GeneralExporter<T> {
 
   String get fileName {
     return '$title$period'
-        .replaceAll('/', '_')
-        .replaceAll(' ', '_')
-        .replaceAll('-', '_');
+        .replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_')
+        .replaceAll(RegExp(r'_+'), '_');
   }
 
   Future<void> exportExcel() async {

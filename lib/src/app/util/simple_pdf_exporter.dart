@@ -119,7 +119,7 @@ class SimplePdfExporter<T> {
               }).toList();
               content.addAll(
                 tableBody2(
-                  data: body,
+                  data: [1],
                   columns: columns,
                 ),
               );
@@ -143,7 +143,7 @@ class SimplePdfExporter<T> {
             }).toList();
             content.addAll(
               tableBody2(
-                data: body,
+                data: [1],
                 columns: columns,
               ),
             );
