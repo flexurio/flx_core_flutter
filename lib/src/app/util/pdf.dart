@@ -12,7 +12,11 @@ Future<(Uint8List logo, Uint8List logoNamed)> getCompanyLogoPdf() async {
   return (logo.buffer.asUint8List(), logoNamed.buffer.asUint8List());
 }
 
-Widget footerPdf({required Context context, required String printedBy}) {
+Widget footerPdf({
+  required Context context,
+  required String printedBy,
+  String? footNote,
+}) {
   final now = DateTime.now();
   final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
   return Stack(
@@ -55,30 +59,37 @@ Widget footerPdf({required Context context, required String printedBy}) {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 36),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Printed by: $printedBy',
-                          style: const TextStyle(
-                            fontSize: 8,
-                            color: PdfColors.blueGrey800,
-                          ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Printed by: $printedBy',
+                        style: const TextStyle(
+                          fontSize: 8,
+                          color: PdfColors.blueGrey800,
                         ),
-                        SizedBox(width: 6),
-                        Text(
-                          'Printed on: ${now.yMMMdHm} '
-                          'GMT+${now.timeZoneOffset.inHours}',
-                          style: const TextStyle(
-                            fontSize: 8,
-                            color: PdfColors.blueGrey800,
-                          ),
+                      ),
+                      SizedBox(width: 6),
+                      Text(
+                        'Printed on: ${now.yMMMdHm} '
+                        'GMT+${now.timeZoneOffset.inHours}',
+                        style: const TextStyle(
+                          fontSize: 8,
+                          color: PdfColors.blueGrey800,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
+                  if (footNote != null)
+                    Text(
+                      footNote,
+                      style: const TextStyle(
+                        fontSize: 8,
+                        color: PdfColors.blueGrey800,
+                      ),
+                    ),
                   Text(
                     'Page ${context.pageNumber} of ${context.pagesCount}',
                     style: const TextStyle(
@@ -263,41 +274,43 @@ List<Widget> tableBody2<T>({
   const paddingRow = EdgeInsets.symmetric(horizontal: 8);
   final children = <Widget>[];
   for (var i = 0; i < data.length; i++) {
-    children.add(Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 36),
-      child: Table(
-        border: TableBorder.all(color: PdfColors.white, width: 3),
-        columnWidths: {
-          for (var i = 0; i < columns.length; i++)
-            i: FlexColumnWidth(columns[i].flex.toDouble()),
-        },
-        children: [
-          TableRow(
-            children: List<Widget>.generate(
-              columns.length,
-              (column) => Container(
-                height: 30,
-                padding: paddingRow,
-                decoration: BoxDecoration(
-                  color: i.isEven ? PdfColors.grey100 : PdfColors.white,
-                  border: Border.all(
-                    width: 4,
-                    color: PdfColors.grey100,
+    children.add(
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 36),
+        child: Table(
+          border: TableBorder.all(color: PdfColors.white, width: 3),
+          columnWidths: {
+            for (var i = 0; i < columns.length; i++)
+              i: FlexColumnWidth(columns[i].flex.toDouble()),
+          },
+          children: [
+            TableRow(
+              children: List<Widget>.generate(
+                columns.length,
+                (column) => Container(
+                  height: 30,
+                  padding: paddingRow,
+                  decoration: BoxDecoration(
+                    color: i.isEven ? PdfColors.grey100 : PdfColors.white,
+                    border: Border.all(
+                      width: 4,
+                      color: PdfColors.grey100,
+                    ),
                   ),
-                ),
-                alignment: columns[column].numeric
-                    ? Alignment.centerRight
-                    : Alignment.centerLeft,
-                child: Text(
-                  columns[column].contentBuilder(data[i], i),
-                  style: const TextStyle(fontSize: 7),
+                  alignment: columns[column].numeric
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
+                  child: Text(
+                    columns[column].contentBuilder(data[i], i),
+                    style: const TextStyle(fontSize: 7),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),);
+    );
   }
   return children;
 }
@@ -812,6 +825,7 @@ Future<MultiPage> pdfTemplate({
   Widget? headerChild,
   PageOrientation? orientation,
   PdfPageFormat? pageFormat = PdfPageFormat.a4,
+  String? footerNote,
 }) async {
   final (companyLogo, companyLogoNamed) = await getCompanyLogoPdf();
   return MultiPage(
@@ -843,7 +857,8 @@ Future<MultiPage> pdfTemplate({
       title: headerTitle,
       child: headerChild,
     ),
-    footer: (context) => footerPdf(context: context, printedBy: printedBy),
+    footer: (context) =>
+        footerPdf(context: context, printedBy: printedBy, footNote: footerNote),
     build: build,
   );
 }

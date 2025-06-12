@@ -24,11 +24,13 @@ class GeneralExporter<T> {
     this.footerGroup2Builder,
     this.periodStart,
     this.periodEnd,
+    this.footNote,
   });
 
   final material.BuildContext context;
   final List<T> data;
   final String title;
+  final String? footNote;
   final List<PColumnHeader> headers;
   final List<PColumnBody<T>> body;
   final Map<ExportType, String> permissions;
@@ -104,6 +106,7 @@ class GeneralExporter<T> {
       footerGroup2Builder: footerGroup2Builder,
       periodStart: periodStart,
       periodEnd: periodEnd,
+      footNote: footNote,
     );
 
     final pdf = await pdfExporter.build();

@@ -20,6 +20,7 @@ class SimplePdfExporter<T> {
     this.periodEnd,
     this.group1,
     this.group2,
+    this.footNote,
   });
 
   final List<T> data;
@@ -28,6 +29,7 @@ class SimplePdfExporter<T> {
   final List<PColumnBodyN<T>> Function(List<T> data)? bodyFirstBuilder;
   final List<PColumnBody<T>> body;
   final String printedBy;
+  final String? footNote;
   final DateTime? periodStart;
   final DateTime? periodEnd;
 
@@ -53,6 +55,7 @@ class SimplePdfExporter<T> {
           headerChild: header,
           pageFormat: pageFormat,
           build: (_) => content,
+          footerNote: footNote,
         ),
       );
 
