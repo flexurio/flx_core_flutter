@@ -154,6 +154,7 @@ class GeneralExporter<T> {
     var footerGroup2Builder = this.footerGroup2Builder;
     var title = '${this.title}$period';
     var fileName = this.fileName;
+    var bodyFirstBuilder = this.bodyFirstBuilder;
 
     if (isWithoutGrouping) {
       title += ' Without Grouping';
@@ -190,6 +191,7 @@ class GeneralExporter<T> {
       footerBuilder = null;
       footerGroup1Builder = null;
       footerGroup2Builder = null;
+      bodyFirstBuilder = null;
     }
 
     final excel = SimpleExcelExporter<T>(
