@@ -51,34 +51,49 @@ class GeneralExporter<T> {
   Future<void> export() async {
     print('[export] length: ${data.length}');
 
-    final exportType = await showChooseExportType();
-    if (exportType == null) return;
+    final response = await showChooseExportType(
+      hasGroup: group1 != null || group2 != null,
+    );
+    if (response == null) return;
+
+    final exportType = response.$1;
+    final isWithoutGrouping = response.$2;
 
     switch (exportType) {
       case ExportType.pdf:
         await exportPdf();
       case ExportType.excel:
-        await exportExcel();
+        await exportExcel(isWithoutGrouping: isWithoutGrouping);
     }
   }
 
-  Future<ExportType?> showChooseExportType() async {
-    return material.showDialog<ExportType?>(
+  Future<(ExportType, bool)?> showChooseExportType(
+      {required bool hasGroup}) async {
+    return material.showDialog<(ExportType, bool)?>(
       context: context,
       builder: (context) {
         return CardForm(
           title: 'choose_export_type'.tr(),
-          actions: const [],
+          actions: [],
           popup: true,
           icon: material.Icons.download,
           child: material.Column(
             children: [
+              const Gap(24),
               ExportTypeButton(
                 permissions: permissions,
                 exportType: ExportType.excel,
                 action: DataAction.exportExcel,
               ),
               const Gap(6),
+              if (hasGroup) ...[
+                ExportTypeButton(
+                  permissions: permissions,
+                  exportType: ExportType.excel,
+                  action: DataAction.exportExcelWithoutGrouping,
+                ),
+                const Gap(6),
+              ],
               ExportTypeButton(
                 permissions: permissions,
                 exportType: ExportType.pdf,
@@ -129,11 +144,58 @@ class GeneralExporter<T> {
         .replaceAll(RegExp('_+'), '_');
   }
 
-  Future<void> exportExcel() async {
+  Future<void> exportExcel({bool isWithoutGrouping = false}) async {
+    var group1 = this.group1;
+    var group2 = this.group2;
+    final headers = this.headers;
+    final body = this.body;
+    var footerBuilder = this.footerBuilder;
+    var footerGroup1Builder = this.footerGroup1Builder;
+    var footerGroup2Builder = this.footerGroup2Builder;
+    var title = '${this.title}$period';
+    var fileName = this.fileName;
+
+    if (isWithoutGrouping) {
+      title += ' Without Grouping';
+      fileName += ' Without Grouping';
+
+      if (this.group2 != null) {
+        headers.insert(
+          0,
+          PColumnHeader(title: 'Group 2'),
+        );
+        body.insert(
+          0,
+          PColumnBody<T>(
+            contentBuilder: (d, i) => this.group2!(d),
+          ),
+        );
+      }
+
+      if (this.group1 != null) {
+        headers.insert(
+          0,
+          PColumnHeader(title: 'Group 1'),
+        );
+        body.insert(
+          0,
+          PColumnBody<T>(
+            contentBuilder: (d, i) => this.group1!(d),
+          ),
+        );
+      }
+
+      group1 = null;
+      group2 = null;
+      footerBuilder = null;
+      footerGroup1Builder = null;
+      footerGroup2Builder = null;
+    }
+
     final excel = SimpleExcelExporter<T>(
       data: data,
       headers: headers,
-      title: '$title$period',
+      title: title,
       body: body,
       printedBy: userName ?? '-',
       group1: group1,
@@ -168,11 +230,18 @@ class ExportTypeButton extends material.StatelessWidget {
           message: !hasPermission ? 'No permission: ${action.title}' : '',
           child: material.Opacity(
             opacity: hasPermission ? 1 : .5,
-            child: LBS_JANGAN_PAKE_INI_LAGI(
+            child: LightButtonSmall(
               action: action,
-              permission: null,
+              permissions: null,
               onPressed: hasPermission
-                  ? () => material.Navigator.pop(context, exportType)
+                  ? () {
+                      final isWithoutGrouping =
+                          action == DataAction.exportExcelWithoutGrouping;
+                      material.Navigator.pop(
+                        context,
+                        (exportType, isWithoutGrouping),
+                      );
+                    }
                   : null,
             ),
           ),
