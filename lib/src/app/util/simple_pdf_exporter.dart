@@ -166,6 +166,22 @@ class SimplePdfExporter<T> {
         content.addAll(_buildFooters(footerBuilder!(data)));
       }
     } else {
+      if (bodyFirstBuilder != null) {
+        final body = bodyFirstBuilder!(data);
+        final columns = body.map((e) {
+          return PColumnBody(
+            contentBuilder: (_, __) => e.content,
+            flex: e.flex,
+            numeric: e.numeric,
+          );
+        }).toList();
+        content.addAll(
+          tableBody2(
+            data: [1],
+            columns: columns,
+          ),
+        );
+      }
       content.addAll([
         ...tableBody2<T>(data: data, columns: body),
         if (footerBuilder != null) ..._buildFooters(footerBuilder!(data)),
