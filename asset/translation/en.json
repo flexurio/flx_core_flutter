@@ -164,6 +164,7 @@
     "product": "Product",
     "product_receive": "Product Receive",
     "product_request": "Product Request",
+    "product_request_external": "Product Request External",
     "product_return": "Product Return",
     "product_return_check": "Product Return Check",
     "product_return_detail": "Product Return Detail",
