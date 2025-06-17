@@ -314,6 +314,11 @@ class Entity extends EntityY {
         subtitleX: '',
         iconPath: 'parcel-care',
       );
+  static Entity get productionOrderExternal => const Entity(
+        titleX: 'Production Order External',
+        subtitleX: '',
+        iconPath: 'parcel-care',
+      );
   static Entity get productionOrderDetail => const Entity(
         titleX: 'Production Order Detail',
         subtitleX: '',
