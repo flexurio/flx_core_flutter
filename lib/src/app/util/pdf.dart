@@ -826,6 +826,7 @@ Future<MultiPage> pdfTemplate({
   PageOrientation? orientation,
   PdfPageFormat? pageFormat = PdfPageFormat.a4,
   String? footerNote,
+  String? qrCode,
 }) async {
   final (companyLogo, companyLogoNamed) = await getCompanyLogoPdf();
   return MultiPage(
@@ -851,11 +852,12 @@ Future<MultiPage> pdfTemplate({
         ),
       ),
     ),
-    header: (context) => headerPdf(
+    header: (context) => PdfHeaderWidget(
       companyLogo: companyLogo,
       companyLogoNamed: companyLogoNamed,
       title: headerTitle,
       child: headerChild,
+      qrCode: qrCode,
     ),
     footer: (context) =>
         footerPdf(context: context, printedBy: printedBy, footNote: footerNote),

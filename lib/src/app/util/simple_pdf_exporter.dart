@@ -21,6 +21,7 @@ class SimplePdfExporter<T> {
     this.group1,
     this.group2,
     this.footNote,
+    this.qrCode,
   });
 
   final List<T> data;
@@ -30,6 +31,7 @@ class SimplePdfExporter<T> {
   final List<PColumnBody<T>> body;
   final String printedBy;
   final String? footNote;
+  final String? qrCode;
   final DateTime? periodStart;
   final DateTime? periodEnd;
 
@@ -53,6 +55,7 @@ class SimplePdfExporter<T> {
           printedBy: printedBy,
           headerTitle: title,
           headerChild: header,
+          qrCode: qrCode,
           pageFormat: pageFormat,
           build: (_) => content,
           footerNote: footNote,

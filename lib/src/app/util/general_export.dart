@@ -25,6 +25,7 @@ class GeneralExporter<T> {
     this.periodStart,
     this.periodEnd,
     this.footNote,
+    this.qrCode,
   });
 
   final material.BuildContext context;
@@ -36,6 +37,7 @@ class GeneralExporter<T> {
   final Map<ExportType, String> permissions;
 
   final String? userName;
+  final String? qrCode;
   final String Function(T)? group1;
   final String Function(T)? group2;
 
@@ -122,6 +124,7 @@ class GeneralExporter<T> {
       periodStart: periodStart,
       periodEnd: periodEnd,
       footNote: footNote,
+      qrCode: qrCode,
     );
 
     final pdf = await pdfExporter.build();
