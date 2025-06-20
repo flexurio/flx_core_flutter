@@ -19,7 +19,6 @@ extension NumExtension on num {
     return NumberFormat.currency(
       symbol: '',
       decimalDigits: decimalDigits,
-      locale: 'id_ID',
     ).format(this);
   }
 
