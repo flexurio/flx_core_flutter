@@ -16,8 +16,11 @@ extension NumExtension on num {
   }
 
   String format([int decimalDigits = 2]) {
-    return NumberFormat.currency(symbol: '', decimalDigits: decimalDigits)
-        .format(this);
+    return NumberFormat.currency(
+      symbol: '',
+      decimalDigits: decimalDigits,
+      locale: 'id_ID',
+    ).format(this);
   }
 
   String formatWithSymbol() {
