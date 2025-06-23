@@ -1,6 +1,16 @@
 import 'package:intl/intl.dart';
 
 extension DateTimeExtension on DateTime {
+  bool isWithinPast(Duration duration) {
+    final now = DateTime.now();
+    return isAfter(now.subtract(duration));
+  }
+
+  bool isWithinFuture(Duration duration) {
+    final now = DateTime.now();
+    return isBefore(now.add(duration));
+  }
+
   bool get isLessThanOneYear => difference(DateTime.now()).inDays < 365;
 
   bool get isWeekend {
