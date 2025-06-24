@@ -237,7 +237,7 @@ Widget tableBody<T>({
         children: List<Widget>.generate(
           columns.length,
           (column) => Container(
-            height: 30,
+            height: 28,
             padding: paddingRow,
             decoration: BoxDecoration(
               color: row.isEven ? PdfColors.grey100 : PdfColors.white,
