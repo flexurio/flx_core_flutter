@@ -70,13 +70,13 @@ class GeneralExporter<T> {
   }
 
   Future<(ExportType, bool)?> showChooseExportType(
-      {required bool hasGroup}) async {
+      {required bool hasGroup,}) async {
     return material.showDialog<(ExportType, bool)?>(
       context: context,
       builder: (context) {
         return CardForm(
           title: 'choose_export_type'.tr(),
-          actions: [],
+          actions: const [],
           popup: true,
           icon: material.Icons.download,
           child: material.Column(

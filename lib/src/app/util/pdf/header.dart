@@ -116,7 +116,7 @@ class PdfHeaderWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Icon(const IconData(0xe0c8),
-                        size: 10, color: PdfColors.blueGrey400),
+                        size: 10, color: PdfColors.blueGrey400,),
                     SizedBox(width: 6),
                     Expanded(
                       child: Text(
