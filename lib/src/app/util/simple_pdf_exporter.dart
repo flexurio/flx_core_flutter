@@ -22,6 +22,7 @@ class SimplePdfExporter<T> {
     this.group2,
     this.footNote,
     this.qrCode,
+    this.legends,
   });
 
   final List<T> data;
@@ -41,6 +42,8 @@ class SimplePdfExporter<T> {
 
   final String Function(T)? group1;
   final String Function(T)? group2;
+
+  final List<String>? legends;
 
   Future<Document> build() async {
     final pageFormat =
@@ -189,6 +192,25 @@ class SimplePdfExporter<T> {
         ...tableBody2<T>(data: data, columns: body),
         if (footerBuilder != null) ..._buildFooters(footerBuilder!(data)),
       ]);
+    }
+
+    if (legends != null && legends!.isNotEmpty) {
+      content.add(SizedBox(height: 16));
+
+      for (final legend in legends!) {
+        content.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 2),
+            child: Text(
+              legend,
+              style: const TextStyle(
+                fontSize: 9,
+                color: PdfColors.black,
+              ),
+            ),
+          ),
+        );
+      }
     }
 
     return content;

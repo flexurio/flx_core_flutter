@@ -9,6 +9,7 @@ class SimpleExcelExporter<T> {
     required this.body,
     required this.title,
     required this.printedBy,
+    this.legends,
     this.bodyFirstBuilder,
     this.group1,
     this.group2,
@@ -25,6 +26,7 @@ class SimpleExcelExporter<T> {
   final List<PColumnBody<T>> body;
   final String title;
   final String printedBy;
+  final List<String>? legends;
 
   final String Function(T)? group1;
   final String Function(T)? group2;
@@ -53,6 +55,8 @@ class SimpleExcelExporter<T> {
         : _renderHeaders(headerStyle);
     _renderData(dataStartRow, evenStyle, oddStyle);
     _autoFitColumns();
+
+   _renderLegends(_sheet.maxRows + 1);
 
     return _excel.encode()!;
   }
@@ -388,4 +392,19 @@ class SimpleExcelExporter<T> {
         horizontalAlign: HorizontalAlign.Right,
         verticalAlign: VerticalAlign.Center,
       );
+
+      
+  void _renderLegends(int startRow) {
+    if (legends == null || legends!.isEmpty) return;
+
+    for (var i = 0; i < legends!.length; i++) {
+      final cell = _sheet.cell(
+        CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: startRow + i),
+      );
+      cell.value = TextCellValue(legends![i]);
+      cell.cellStyle = _infoStyle().copyWith(
+        horizontalAlignVal: HorizontalAlign.Left,
+      );
+    }
+  }
 }

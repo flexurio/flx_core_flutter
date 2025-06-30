@@ -15,6 +15,7 @@ class GeneralExporter<T> {
     required this.headers,
     required this.body,
     required this.permissions,
+    this.legends,
     this.bodyFirstBuilder,
     this.userName,
     this.group1,
@@ -30,6 +31,7 @@ class GeneralExporter<T> {
 
   final material.BuildContext context;
   final List<T> data;
+  final List<String>? legends;
   final String title;
   final String? footNote;
   final List<PColumnHeader> headers;
@@ -117,6 +119,7 @@ class GeneralExporter<T> {
       printedBy: userName ?? '-',
       group1: group1,
       group2: group2,
+      legends: legends,
       footerBuilder: footerBuilder,
       bodyFirstBuilder: bodyFirstBuilder,
       footerGroup1Builder: footerGroup1Builder,
@@ -202,6 +205,7 @@ class GeneralExporter<T> {
       headers: headers,
       title: title,
       body: body,
+      legends: legends,
       printedBy: userName ?? '-',
       group1: group1,
       group2: group2,
