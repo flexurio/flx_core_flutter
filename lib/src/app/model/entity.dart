@@ -84,11 +84,7 @@ class Entity extends EntityY {
         subtitleX: 'invoice_receive',
         iconPath: 'bill',
       );
-  static Entity get generalInvoice => const Entity(
-        titleX: 'general_invoice',
-        subtitleX: 'general_invoice',
-        iconPath: 'general_invoice',
-      );
+
   static Entity get invoiceReceiveDetail => const Entity(
         titleX: 'Invoice Receive Detail',
         subtitleX: '',
