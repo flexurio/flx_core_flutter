@@ -25,7 +25,7 @@ class Toast {
     // Sound.success();
     toastification.show(
       context: context,
-      title: Text(message),
+      title: Text(message, maxLines: 10),
       type: ToastificationType.success,
       style: ToastificationStyle.fillColored,
       autoCloseDuration: const Duration(seconds: 7),
@@ -46,7 +46,7 @@ class Toast {
     // Sound.fail();
     toastification.show(
       context: context,
-      title: Text(message),
+      title: Text(message, maxLines: 10),
       type: ToastificationType.error,
       style: ToastificationStyle.fillColored,
       autoCloseDuration: const Duration(seconds: 10),
