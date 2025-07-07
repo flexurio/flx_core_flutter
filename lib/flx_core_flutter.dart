@@ -86,6 +86,7 @@ export 'src/app/view/widget/popup.dart';
 export 'src/app/view/widget/row_fields.dart';
 export 'src/app/view/widget/search_box/search_box.dart';
 export 'src/app/view/widget/search_box/search_box_x.dart';
+export 'src/app/view/widget/select_field_chip.dart';
 export 'src/app/view/widget/simple_information.dart';
 export 'src/app/view/widget/single_form_panel.dart';
 export 'src/app/view/widget/sized_text.dart';
