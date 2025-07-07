@@ -77,6 +77,7 @@ enum DataAction {
   exportPdf('export_pdf', FontAwesomeIcons.filePdf, Colors.indigo),
   exportPdfWithoutTitle('', FontAwesomeIcons.filePdf, Colors.indigo),
   finish('finish', Icons.done, Colors.green),
+  unfinish('unfinish', Icons.cancel, Colors.red),
   hide('hide', Icons.restart_alt, Colors.purple),
   insertPrice('Insert Price', Icons.monetization_on_outlined, Colors.green),
   leadTime('lead_time', Icons.pending_actions, Colors.blue),
