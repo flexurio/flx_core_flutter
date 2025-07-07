@@ -76,7 +76,7 @@ enum DataAction {
   exportJobsheet('export_jobsheet', FontAwesomeIcons.filePdf, Colors.redAccent),
   exportPdf('export_pdf', FontAwesomeIcons.filePdf, Colors.indigo),
   exportPdfWithoutTitle('', FontAwesomeIcons.filePdf, Colors.indigo),
-  finish('finish', Icons.cancel, Colors.grey),
+  finish('finish', Icons.done, Colors.green),
   hide('hide', Icons.restart_alt, Colors.purple),
   insertPrice('Insert Price', Icons.monetization_on_outlined, Colors.green),
   leadTime('lead_time', Icons.pending_actions, Colors.blue),

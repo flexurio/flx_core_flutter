@@ -13,6 +13,7 @@ class CardForm extends StatelessWidget {
     this.popup = false,
     this.danger = false,
   });
+
   final String title;
   final IconData icon;
   final Widget child;
@@ -51,11 +52,10 @@ class CardForm extends StatelessWidget {
     );
 
     if (popup) {
-      const borderRadiusCard = 20.0;
       return SimpleDialog(
         backgroundColor: danger ? Colors.red : theme.cardColor,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadiusCard),
+          borderRadius: BorderRadius.circular(20),
         ),
         contentPadding: EdgeInsets.zero,
         children: [body],
@@ -159,6 +159,7 @@ class CardConfirmation extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final primaryColor = theme.colorScheme.primary;
+
     return CardForm(
       popup: true,
       danger: danger,
@@ -215,6 +216,7 @@ class CardConfirmationAnyAction extends StatelessWidget {
     Sound.alert();
     final theme = Theme.of(context);
     final primaryColor = theme.colorScheme.primary;
+
     return CardForm(
       popup: true,
       title: 'are_you_sure'.tr(),
@@ -234,7 +236,7 @@ class CardConfirmationAnyAction extends StatelessWidget {
           permission: null,
           isSecondary: true,
           isInProgress: isProgress,
-          onPressed: onActionOne.call,
+          onPressed: onActionOne,
           action: actionOne,
         ),
         const SizedBox(width: 10),
@@ -296,6 +298,7 @@ class CardConfirmationWithExplanation extends StatefulWidget {
     required this.label,
     required this.onConfirm,
     this.title,
+    this.initialValue,
     super.key,
   });
 
@@ -304,6 +307,7 @@ class CardConfirmationWithExplanation extends StatefulWidget {
   final DataAction action;
   final Entity data;
   final String label;
+  final String? initialValue;
   final void Function(String reason) onConfirm;
 
   @override
@@ -316,6 +320,18 @@ class _CardConfirmationWithExplanationState
   final _formKey = GlobalKey<FormState>();
   final _reasonController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    _reasonController.text = widget.initialValue ?? '';
+  }
+
+  @override
+  void dispose() {
+    _reasonController.dispose();
+    super.dispose();
+  }
+
   void _submit() {
     if (_formKey.currentState!.validate()) {
       widget.onConfirm(_reasonController.text);
@@ -326,7 +342,8 @@ class _CardConfirmationWithExplanationState
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final primaryColor = theme.colorScheme.primary;
-    final title = widget.title ?? 'Explanation';
+    final explanationTitle = widget.title ?? 'Explanation';
+
     return Form(
       key: _formKey,
       child: CardForm(
@@ -369,15 +386,14 @@ class _CardConfirmationWithExplanationState
             FTextFormField(
               maxLength: 100,
               controller: _reasonController,
-              labelText: title,
+              labelText: explanationTitle,
               maxLines: widget.title != null ? 1 : 3,
-              validator: requiredValidator.call,
+              validator: requiredValidator,
               showCounter: true,
             ),
             const Gap(3),
             Text(
-              'Please provide ${title.toLowerCase()} for '
-              '${widget.action.title}.',
+              'Please provide ${explanationTitle.toLowerCase()} for ${widget.action.title}.',
               style: const TextStyle(fontSize: 12, color: Colors.grey),
             ),
           ],
