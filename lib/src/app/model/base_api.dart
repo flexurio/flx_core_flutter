@@ -15,28 +15,44 @@ abstract class Api {
 }
 
 abstract class Repository {
-  Repository({required this.dio, required this.onUnauthorized});
-  final void Function() onUnauthorized;
+  Repository({
+    required this.dio,
+    required this.onUnauthorized,
+  });
 
   final Dio dio;
+  final void Function() onUnauthorized;
+
+  Options bearer(String accessToken) {
+    return Options(
+      headers: {RequestHeader.authorization: 'Bearer $accessToken'},
+    );
+  }
 
   Exception checkErrorApi(Object error) {
     if (error is DioException) {
-      if (error.response?.statusCode == 401) {
+      final statusCode = error.response?.statusCode;
+
+      if (statusCode == 401) {
         onUnauthorized();
         return ApiException.fromType(ExceptionType.tokenExpired);
-      } else if (error.message!
-          .contains('SocketException: Failed host lookup')) {
+      }
+
+      if (error.message?.contains('SocketException: Failed host lookup') ??
+          false) {
         return error;
-      } else if (error.response?.statusCode == 400 ||
-          error.response?.statusCode == 500) {
-        final message = error.response?.data as Map<String, dynamic>?;
-        if (message != null && message['message'] != null) {
-          final errorMessage = message['message'].toString();
+      }
+
+      if (statusCode == 400 || statusCode == 500) {
+        final data = error.response?.data as Map<String, dynamic>?;
+        final errorMessage = data?['message']?.toString();
+
+        if (errorMessage != null && errorMessage.isNotEmpty) {
           return ApiException(errorMessage);
         }
       }
     }
+
     return Exception('Error calling API: $error');
   }
 }
