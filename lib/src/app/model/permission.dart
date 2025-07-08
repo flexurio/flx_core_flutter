@@ -176,8 +176,9 @@ class Permission {
       'product_issue_report_delivery_export_pdf';
 
   // --
-  static String productRequestViewMenu({required bool isExternal}) =>
-      isExternal ? 'product_request_external_view_menu' : 'product_request_view_menu';
+  static String productRequestViewMenu({required bool isExternal}) => isExternal
+      ? 'product_request_external_view_menu'
+      : 'product_request_view_menu';
   static String productRequestCreate({required bool isExternal}) =>
       isExternal ? 'product_request_external_create' : 'product_request_create';
   static String productRequestDelete({required bool isExternal}) =>
@@ -304,7 +305,7 @@ class Permission {
     'view_menu',
     'activate',
     'deactivate',
-    'deactivate',
+    'processs',
   ];
 
   static String label(String permission) {
