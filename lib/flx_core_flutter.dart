@@ -29,6 +29,7 @@ export 'src/app/util/general_export.dart';
 export 'src/app/util/group_by.dart';
 export 'src/app/util/json_to_string_query.dart';
 export 'src/app/util/list_extension.dart';
+export 'src/app/util/loading.dart';
 export 'src/app/util/number_format.dart';
 export 'src/app/util/pdf.dart';
 export 'src/app/util/pdf/general_pdf.dart';
