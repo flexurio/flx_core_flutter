@@ -304,6 +304,7 @@ class Permission {
     'view_menu',
     'activate',
     'deactivate',
+    'deactivate',
   ];
 
   static String label(String permission) {
