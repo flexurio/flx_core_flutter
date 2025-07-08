@@ -29,9 +29,21 @@ class _DropDownSmallDateRangeState extends State<DropDownSmallDateRange> {
   @override
   void initState() {
     super.initState();
-    value = widget.initialValue != null
-        ? '${widget.initialValue!.startDate?.ddMMyyyySlash} - ${widget.initialValue!.endDate?.ddMMyyyySlash}'
-        : null;
+    _selectedDateRange = widget.initialValue;
+    value = _formatRange(_selectedDateRange);
+  }
+
+  String? _formatRange(PickerDateRange? range) {
+    if (range?.startDate == null || range?.endDate == null) return null;
+    return '${range!.startDate!.ddMMyyyySlash} - ${range.endDate!.ddMMyyyySlash}';
+  }
+
+  void _clearSelection() {
+    setState(() {
+      _selectedDateRange = null;
+      value = null;
+    });
+    widget.onChanged.call(const PickerDateRange(null, null));
   }
 
   void openDatePicker() {
@@ -60,11 +72,11 @@ class _DropDownSmallDateRangeState extends State<DropDownSmallDateRange> {
                 minDate: widget.minDate,
                 onChangeRange: (dates) {
                   if (dates.startDate == null || dates.endDate == null) return;
-                  value = '${dates.startDate?.ddMMyyyySlash} - '
-                      '${dates.endDate?.ddMMyyyySlash}';
+                  setState(() {
+                    _selectedDateRange = dates;
+                    value = _formatRange(dates);
+                  });
                   widget.onChanged.call(dates);
-                  _selectedDateRange = dates;
-                  setState(() {});
                 },
               ),
             ),
@@ -85,19 +97,36 @@ class _DropDownSmallDateRangeState extends State<DropDownSmallDateRange> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: openDatePicker,
-      child: AbsorbPointer(
-        child: DropDownSmall(
-          key: ValueKey(value),
-          icon: Icons.calendar_month,
-          labelText: widget.labelText,
-          initialValue: value,
-          itemAsString: (_) => value ?? '',
-          items: [value],
-          onChanged: (_) {},
+    return Stack(
+      alignment: Alignment.centerRight,
+      children: [
+        InkWell(
+          onTap: openDatePicker,
+          child: AbsorbPointer(
+            child: DropDownSmall(
+              key: ValueKey(value),
+              icon: Icons.calendar_month,
+              labelText: widget.labelText,
+              initialValue: value,
+              itemAsString: (_) => value ?? '',
+              items: [value],
+              onChanged: (_) {},
+            ),
+          ),
         ),
-      ),
+        if (value != null)
+          Positioned(
+            right: 10,
+            child: InkWell(
+              onTap: _clearSelection,
+              child: const Icon(
+                Icons.clear,
+                size: 18,
+                color: Colors.grey,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
