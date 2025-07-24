@@ -1,6 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
 
+class RequestHeader {
+  static const String authorization = 'Authorization';
+}
+
 abstract class Api {
   static final String urlApi = flavorConfig.apiUrl;
   static const String urlAuth = 'https://auth-api.flexurio.com';
