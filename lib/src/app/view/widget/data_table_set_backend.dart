@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flx_core_flutter/src/app/view/widget/data_set_action.dart';
+import 'package:flx_core_flutter/src/app/view/widget/yuhu_table/table_column.dart';
 import 'package:gap/gap.dart';
 import 'package:screen_identifier/screen_identifier.dart';
 
@@ -11,34 +12,14 @@ class DTHead<T> {
     this.backendKeySortDescending,
     this.numeric = false,
   });
-  final bool numeric;
+
   final String label;
   final String? backendKeySort;
   final String? backendKeySortDescending;
+  final bool numeric;
+
   DataColumn toDataColumn() {
     return DataColumn(label: Text(label), numeric: numeric);
-  }
-}
-
-class DTSource<T> extends DataTableSource {
-  DTSource({
-    required this.data,
-    required this.columns,
-  });
-  final List<T> data;
-  final List<DTColumn<T>> columns;
-
-  @override
-  bool get isRowCountApproximate => false;
-  @override
-  int get rowCount => data.length;
-  @override
-  int get selectedRowCount => 0;
-  @override
-  DataRow getRow(int index) {
-    return DataRow(
-      cells: [for (final column in columns) column.body(data[index])],
-    );
   }
 }
 
@@ -49,15 +30,42 @@ class DTColumn<T> {
     required this.widthFlex,
     this.text,
   });
+
   final DTHead<T> head;
   final double widthFlex;
-
   final DataCell Function(T) body;
   final Widget? text;
 }
 
+class DTSource<T> extends DataTableSource {
+  DTSource({
+    required this.data,
+    required this.columns,
+  });
+
+  final List<T> data;
+  final List<DTColumn<T>> columns;
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => data.length;
+
+  @override
+  int get selectedRowCount => 0;
+
+  @override
+  DataRow getRow(int index) {
+    return DataRow(
+      cells: [for (final column in columns) column.body(data[index])],
+    );
+  }
+}
+
 class DataTableBackend<T> extends StatelessWidget {
   const DataTableBackend({
+    super.key,
     required this.pageOptions,
     required this.columns,
     required this.actionRight,
@@ -65,58 +73,50 @@ class DataTableBackend<T> extends StatelessWidget {
     required this.status,
     required this.onChanged,
     this.actionLeft = const [],
-    super.key,
     this.freezeFirstColumn = false,
     this.freezeLastColumn = false,
     this.pagination = true,
   });
 
-  final void Function() onRefresh;
-  final List<Widget> Function(Widget refreshButton) actionRight;
-  final void Function(PageOptions<T> pageOptions) onChanged;
   final PageOptions<T> pageOptions;
-  final List<Widget> actionLeft;
   final List<DTColumn<T>> columns;
+  final List<Widget> Function(Widget refreshButton) actionRight;
+  final void Function() onRefresh;
+  final void Function(PageOptions<T>) onChanged;
   final Status status;
+  final List<Widget> actionLeft;
   final bool freezeFirstColumn;
   final bool freezeLastColumn;
   final bool pagination;
 
   @override
   Widget build(BuildContext context) {
-    var freezeFirstColumnLocal = freezeFirstColumn;
-    var freezeLastColumnLocal = freezeLastColumn;
     return ScreenIdentifierBuilder(
       builder: (context, screenIdentifier) {
         final isSmall = screenIdentifier.conditions(sm: true, md: false);
-        if (isSmall) {
-          freezeFirstColumnLocal = false;
-          freezeLastColumnLocal = false;
-        }
+        final freezeFirst = !isSmall && freezeFirstColumn;
+        final freezeLast = !isSmall && freezeLastColumn;
+
         return DataSetAction(
           onChanged: onChanged,
           pageOptions: pageOptions,
-          actionLeft: actionLeft,
-          actionRight: actionRight,
           onRefresh: onRefresh,
           status: status,
-          child: _buildTable(
-            context: context,
-            freezeLastColumnLocal: freezeLastColumnLocal,
-            freezeFirstColumnLocal: freezeFirstColumnLocal,
-          ),
+          actionLeft: actionLeft,
+          actionRight: actionRight,
+          child: _buildTable(context, freezeFirst, freezeLast),
         );
       },
     );
   }
 
-  Widget _buildTable({
-    required BuildContext context,
-    required bool freezeLastColumnLocal,
-    required bool freezeFirstColumnLocal,
-  }) {
-    final key = ValueKey('$freezeFirstColumnLocal $freezeLastColumnLocal');
+  Widget _buildTable(
+    BuildContext context,
+    bool freezeFirst,
+    bool freezeLast,
+  ) {
     final theme = Theme.of(context);
+    final key = ValueKey('$freezeFirst $freezeLast');
 
     return Row(
       children: [
@@ -129,55 +129,32 @@ class DataTableBackend<T> extends StatelessWidget {
                 children: [
                   YuhuTable<T>(
                     key: key,
-                    freezeFirstColumn: freezeFirstColumnLocal,
-                    freezeLastColumn: freezeLastColumnLocal,
+                    freezeFirstColumn: freezeFirst,
+                    freezeLastColumn: freezeLast,
                     width: columns.fold(
-                      0,
-                      (value, element) => (value ?? 0) + element.widthFlex * 25,
-                    ),
+                        0, (sum, col) => (sum ?? 0) + col.widthFlex * 25),
                     data: pageOptions.data,
                     rowsPerPage: 10,
-                    initialSortColumnIndex: columns.indexWhere(
-                      (e) => [
-                        e.head.backendKeySort,
-                        e.head.backendKeySortDescending,
-                      ].contains(pageOptions.sortBy),
-                    ),
+                    initialSortColumnIndex: _getSortColumnIndex(),
                     initialSortAscending: pageOptions.ascending,
-                    onSort: (index, ascending) {
-                      final sortKeyDefault = columns[index].head.backendKeySort;
-                      final sortKeyDescending =
-                          columns[index].head.backendKeySortDescending;
-                      final sort = ascending
-                          ? sortKeyDefault
-                          : (sortKeyDescending ?? sortKeyDefault);
-                      onChanged(
-                        pageOptions.copyWith(
-                          ascending: ascending,
-                          sortBy: sort,
+                    onSort: _onSortChanged,
+                    columns: columns.map((col) {
+                      return TableColumn<T>(
+                        alignment: col.head.numeric
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
+                        width: col.widthFlex * 25,
+                        title: col.head.label,
+                        builder: (data, _) => DefaultTextStyle(
+                          style: theme.textTheme.bodyMedium!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          child: col.body(data).child,
                         ),
                       );
-                    },
-                    columns: [
-                      for (final column in columns)
-                        TableColumn<T>(
-                          alignment: column.head.numeric
-                              ? Alignment.centerRight
-                              : Alignment.centerLeft,
-                          width: column.widthFlex * 25,
-                          title: column.head.label,
-                          builder: (data, _) {
-                            return DefaultTextStyle(
-                              style: theme.textTheme.bodyMedium!,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              child: column.body(data).child,
-                            );
-                          },
-                        ),
-                    ],
+                    }).toList(),
                   ),
-                  if (pagination) _buildPaginationNumber(),
+                  if (pagination) _buildPaginationControls(),
                 ],
               ),
             ),
@@ -187,11 +164,32 @@ class DataTableBackend<T> extends StatelessWidget {
     );
   }
 
+  int _getSortColumnIndex() {
+    return columns.indexWhere(
+      (col) => [
+        col.head.backendKeySort,
+        col.head.backendKeySortDescending,
+      ].contains(pageOptions.sortBy),
+    );
+  }
+
+  void _onSortChanged(int index, bool ascending) {
+    final column = columns[index].head;
+    final sortKey = ascending
+        ? column.backendKeySort
+        : column.backendKeySortDescending ?? column.backendKeySort;
+
+    onChanged(pageOptions.copyWith(
+      ascending: ascending,
+      sortBy: sortKey,
+    ));
+  }
+
   void _changePage(int page) {
     onChanged(pageOptions.copyWith(page: page, data: []));
   }
 
-  Padding _buildPaginationNumber() {
+  Widget _buildPaginationControls() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
       child: Row(
@@ -200,25 +198,25 @@ class DataTableBackend<T> extends StatelessWidget {
           Text(pageOptions.info),
           const Gap(12),
           IconButton(
-            onPressed: () => _changePage(1),
             icon: const Icon(Icons.first_page),
+            onPressed: () => _changePage(1),
           ),
           IconButton(
+            icon: const Icon(Icons.keyboard_arrow_left),
             onPressed: pageOptions.page > 1
                 ? () => _changePage(pageOptions.page - 1)
                 : null,
-            icon: const Icon(Icons.keyboard_arrow_left),
           ),
           const Gap(6),
           IconButton(
+            icon: const Icon(Icons.keyboard_arrow_right),
             onPressed: pageOptions.page < pageOptions.lastPage
                 ? () => _changePage(pageOptions.page + 1)
                 : null,
-            icon: const Icon(Icons.keyboard_arrow_right),
           ),
           IconButton(
-            onPressed: () => _changePage(pageOptions.lastPage),
             icon: const Icon(Icons.last_page),
+            onPressed: () => _changePage(pageOptions.lastPage),
           ),
         ],
       ),
