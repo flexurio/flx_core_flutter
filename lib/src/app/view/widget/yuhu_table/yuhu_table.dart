@@ -239,7 +239,18 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     bool isLast,
     ThemeData theme,
   ) {
-    final header = _buildTableHeader(0, column);
+    final headerDecoration = BoxDecoration(
+      color: theme.brightness == Brightness.dark
+          ? theme.colorScheme.primary.darken(.3)
+          : flavorConfig.colorSoft,
+    );
+
+    final header = TableRow(
+      decoration: headerDecoration,
+      children: [
+        _buildTableHeader(0, column),
+      ],
+    );
 
     final rows = List<TableRow>.generate(
       widget.data.length,
@@ -294,8 +305,8 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
             heightBody: widget.bodyHeight,
             columnWidths: {0: FixedColumnWidth(column.width ?? 0)},
             children: [
-              TableRow(children: [header]),
-              ...rows
+              header,
+              ...rows,
             ],
           ),
         ),
