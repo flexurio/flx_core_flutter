@@ -56,6 +56,7 @@ export 'src/app/view/widget/background.dart';
 export 'src/app/view/widget/block_note.dart';
 export 'src/app/view/widget/bool_icon.dart';
 export 'src/app/view/widget/button.dart';
+export 'src/app/view/widget/card_confirmation_form.dart';
 export 'src/app/view/widget/chart.dart';
 export 'src/app/view/widget/checkbox_with_text.dart';
 export 'src/app/view/widget/chip_type.dart';
