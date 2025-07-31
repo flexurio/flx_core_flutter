@@ -10,11 +10,13 @@ class PdfHeaderWidget extends StatelessWidget {
     required this.title,
     this.child,
     this.qrCode,
+    this.paddingHorizontal = 36,
   });
 
   final Uint8List companyLogo;
   final Uint8List companyLogoNamed;
   final String title;
+  final double paddingHorizontal;
   final Widget? child;
   final String? qrCode;
 
@@ -90,7 +92,12 @@ class PdfHeaderWidget extends StatelessWidget {
 
   Widget _buildCompanyHeader() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(36, 24, 48, 16),
+      padding: EdgeInsets.fromLTRB(
+        paddingHorizontal,
+        24,
+        48,
+        16,
+      ),
       decoration: BoxDecoration(
         border: Border(bottom: BorderSide(color: _primaryColor)),
       ),
@@ -115,8 +122,11 @@ class PdfHeaderWidget extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(const IconData(0xe0c8),
-                        size: 10, color: PdfColors.blueGrey400,),
+                    Icon(
+                      const IconData(0xe0c8),
+                      size: 10,
+                      color: PdfColors.blueGrey400,
+                    ),
                     SizedBox(width: 6),
                     Expanded(
                       child: Text(
@@ -137,7 +147,7 @@ class PdfHeaderWidget extends StatelessWidget {
 
   Widget _buildTitleSection() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 36),
+      padding: EdgeInsets.symmetric(horizontal: paddingHorizontal),
       child: Row(
         children: [
           Expanded(

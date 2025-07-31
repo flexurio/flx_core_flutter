@@ -16,6 +16,7 @@ Widget footerPdf({
   required Context context,
   required String printedBy,
   String? footNote,
+  double paddingHorizontal = 36,
 }) {
   final now = DateTime.now();
   final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
@@ -24,7 +25,10 @@ Widget footerPdf({
       Column(
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 36),
+            padding: EdgeInsets.symmetric(
+              vertical: 12,
+              horizontal: paddingHorizontal,
+            ),
             child: Row(
               children: [
                 Expanded(
@@ -57,7 +61,10 @@ Widget footerPdf({
               color: PdfColors.blueGrey50,
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 36),
+              padding: EdgeInsets.symmetric(
+                vertical: 12,
+                horizontal: paddingHorizontal,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -827,6 +834,7 @@ Future<MultiPage> pdfTemplate({
   PdfPageFormat? pageFormat = PdfPageFormat.a4,
   String? footerNote,
   String? qrCode,
+  double paddingHorizontal = 36,
 }) async {
   final (companyLogo, companyLogoNamed) = await getCompanyLogoPdf();
   return MultiPage(
@@ -858,9 +866,14 @@ Future<MultiPage> pdfTemplate({
       title: headerTitle,
       child: headerChild,
       qrCode: qrCode,
+      paddingHorizontal: paddingHorizontal,
     ),
-    footer: (context) =>
-        footerPdf(context: context, printedBy: printedBy, footNote: footerNote),
+    footer: (context) => footerPdf(
+      context: context,
+      printedBy: printedBy,
+      footNote: footerNote,
+      paddingHorizontal: paddingHorizontal,
+    ),
     build: build,
   );
 }
