@@ -56,7 +56,7 @@ class SimpleExcelExporter<T> {
     _renderData(dataStartRow, evenStyle, oddStyle);
     _autoFitColumns();
 
-   _renderLegends(_sheet.maxRows + 1);
+    _renderLegends(_sheet.maxRows + 1);
 
     return _excel.encode()!;
   }
@@ -75,19 +75,24 @@ class SimpleExcelExporter<T> {
   }
 
   void _renderGroupedData2Levels(
-      int startRow, CellStyle evenStyle, CellStyle oddStyle,) {
+    int startRow,
+    CellStyle evenStyle,
+    CellStyle oddStyle,
+  ) {
     final grouped1 = groupBy<T>(data, group1!);
     var currentRow = startRow;
 
     grouped1.forEach((key1, items1) {
       _sheet.cell(
-          CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: currentRow),)
+        CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: currentRow),
+      )
         ..value = TextCellValue('')
         ..cellStyle = CellStyle();
       currentRow++;
 
       _sheet.cell(
-          CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: currentRow),)
+        CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: currentRow),
+      )
         ..value = TextCellValue(key1)
         ..cellStyle = _groupHeaderStyle();
       currentRow++;
@@ -96,13 +101,15 @@ class SimpleExcelExporter<T> {
         final grouped2 = groupBy<T>(items1, group2!);
         grouped2.forEach((key2, items2) {
           _sheet.cell(
-              CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: currentRow),)
+            CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: currentRow),
+          )
             ..value = TextCellValue('')
             ..cellStyle = CellStyle();
           currentRow++;
 
           _sheet.cell(
-              CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: currentRow),)
+            CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: currentRow),
+          )
             ..value = TextCellValue(key2)
             ..cellStyle = _groupSubHeaderStyle();
           currentRow++;
@@ -160,7 +167,9 @@ class SimpleExcelExporter<T> {
         _sheet.merge(
           CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex),
           CellIndex.indexByColumnRow(
-              columnIndex: colIndex + flex - 1, rowIndex: rowIndex,),
+            columnIndex: colIndex + flex - 1,
+            rowIndex: rowIndex,
+          ),
         );
       }
 
@@ -191,7 +200,9 @@ class SimpleExcelExporter<T> {
         _sheet.merge(
           CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex),
           CellIndex.indexByColumnRow(
-              columnIndex: colIndex + span - 1, rowIndex: rowIndex,),
+            columnIndex: colIndex + span - 1,
+            rowIndex: rowIndex,
+          ),
         );
       }
 
@@ -226,11 +237,14 @@ class SimpleExcelExporter<T> {
         _sheet.merge(
           CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2),
           CellIndex.indexByColumnRow(
-              columnIndex: colIndex + span - 1, rowIndex: 2,),
+            columnIndex: colIndex + span - 1,
+            rowIndex: 2,
+          ),
         );
 
         _sheet.cell(
-            CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2),)
+          CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2),
+        )
           ..value = TextCellValue(header.title)
           ..cellStyle = style;
 
@@ -240,12 +254,15 @@ class SimpleExcelExporter<T> {
             _sheet.merge(
               CellIndex.indexByColumnRow(columnIndex: childCol, rowIndex: 3),
               CellIndex.indexByColumnRow(
-                  columnIndex: childCol + child.flex - 1, rowIndex: 3,),
+                columnIndex: childCol + child.flex - 1,
+                rowIndex: 3,
+              ),
             );
           }
 
           _sheet.cell(
-              CellIndex.indexByColumnRow(columnIndex: childCol, rowIndex: 3),)
+            CellIndex.indexByColumnRow(columnIndex: childCol, rowIndex: 3),
+          )
             ..value = TextCellValue(child.title)
             ..cellStyle = style;
 
@@ -260,7 +277,9 @@ class SimpleExcelExporter<T> {
           _sheet.merge(
             CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2),
             CellIndex.indexByColumnRow(
-                columnIndex: colIndex + span - 1, rowIndex: 3,),
+              columnIndex: colIndex + span - 1,
+              rowIndex: 3,
+            ),
           );
         } else {
           _sheet.merge(
@@ -270,7 +289,8 @@ class SimpleExcelExporter<T> {
         }
 
         _sheet.cell(
-            CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2),)
+          CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2),
+        )
           ..value = TextCellValue(header.title)
           ..cellStyle = style;
 
@@ -288,7 +308,9 @@ class SimpleExcelExporter<T> {
         _sheet.merge(
           CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: 2),
           CellIndex.indexByColumnRow(
-              columnIndex: colIndex + span - 1, rowIndex: 2,),
+            columnIndex: colIndex + span - 1,
+            rowIndex: 2,
+          ),
         );
       }
 
@@ -302,34 +324,83 @@ class SimpleExcelExporter<T> {
   }
 
   void _renderRow(
-      T item, int index, int rowIndex, CellStyle even, CellStyle odd,) {
+    T item,
+    int index,
+    int rowIndex,
+    CellStyle even,
+    CellStyle odd,
+  ) {
     final style = index.isEven ? even : odd;
     var colIndex = 0;
 
     for (var col = 0; col < body.length; col++) {
       final column = body[col];
       final flex = column.flex;
-      final value = column.contentBuilder(item, index);
+      final rawValue = column.contentBuilder(item, index);
 
       if (flex > 1) {
         _sheet.merge(
           CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex),
           CellIndex.indexByColumnRow(
-              columnIndex: colIndex + flex - 1, rowIndex: rowIndex,),
+            columnIndex: colIndex + flex - 1,
+            rowIndex: rowIndex,
+          ),
         );
       }
 
       final cell = _sheet.cell(
         CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex),
       );
-      cell.value = TextCellValue(value);
-      cell.cellStyle = style.copyWith(
-        horizontalAlignVal:
-            column.numeric ? HorizontalAlign.Right : HorizontalAlign.Left,
-      );
+
+      // Assign numeric value properly
+      if (column.numeric) {
+        final normalizedRawValue = rawValue.replaceAll(',', '');
+        final numValue = num.tryParse(normalizedRawValue);
+
+        if (numValue != null) {
+          if (numValue is int) {
+            cell.value = IntCellValue(numValue);
+            cell.cellStyle = style.copyWith(
+              horizontalAlignVal: HorizontalAlign.Right,
+              numberFormat: NumFormat.custom(formatCode: "#,##0"),
+            );
+          } else {
+            final decimalPlaces = _countDecimalPlaces(normalizedRawValue);
+            final formatCode = "#,##0.${'0' * decimalPlaces}";
+
+            cell.value = DoubleCellValue(numValue.toDouble());
+            cell.cellStyle = style.copyWith(
+              horizontalAlignVal: HorizontalAlign.Right,
+              numberFormat: NumFormat.custom(formatCode: formatCode),
+            );
+          }
+        } else {
+          // Fallback for unparsable numeric values
+          cell.value = TextCellValue(rawValue);
+          cell.cellStyle = style.copyWith(
+            horizontalAlignVal: HorizontalAlign.Right,
+          );
+        }
+      } else {
+        cell.value = TextCellValue(rawValue);
+        cell.cellStyle = style.copyWith(
+          horizontalAlignVal: HorizontalAlign.Left,
+        );
+      }
 
       colIndex += flex;
     }
+  }
+
+  int _countDecimalPlaces(String value) {
+    // Replace comma with dot if used as decimal separator
+    final normalized = value.replaceAll(',', '.');
+
+    final dotIndex = normalized.indexOf('.');
+    if (dotIndex == -1) return 0;
+
+    final decimalPart = normalized.substring(dotIndex + 1);
+    return decimalPart.length;
   }
 
   void _autoFitColumns() {
@@ -393,7 +464,6 @@ class SimpleExcelExporter<T> {
         verticalAlign: VerticalAlign.Center,
       );
 
-      
   void _renderLegends(int startRow) {
     if (legends == null || legends!.isEmpty) return;
 

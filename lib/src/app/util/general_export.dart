@@ -36,7 +36,7 @@ class GeneralExporter<T> {
   final String? footNote;
   final List<PColumnHeader> headers;
   final List<PColumnBody<T>> body;
-  final Map<ExportType, String> permissions;
+  final Map<ExportType, String>? permissions;
 
   final String? userName;
   final String? qrCode;
@@ -53,8 +53,6 @@ class GeneralExporter<T> {
   final DateTime? periodEnd;
 
   Future<void> export() async {
-    print('[export] length: ${data.length}');
-
     final response = await showChooseExportType(
       hasGroup: group1 != null || group2 != null,
     );
@@ -71,8 +69,9 @@ class GeneralExporter<T> {
     }
   }
 
-  Future<(ExportType, bool)?> showChooseExportType(
-      {required bool hasGroup,}) async {
+  Future<(ExportType, bool)?> showChooseExportType({
+    required bool hasGroup,
+  }) async {
     return material.showDialog<(ExportType, bool)?>(
       context: context,
       builder: (context) {
@@ -226,14 +225,14 @@ class ExportTypeButton extends material.StatelessWidget {
     required this.action,
     super.key,
   });
-  final Map<ExportType, String> permissions;
+  final Map<ExportType, String>? permissions;
   final ExportType exportType;
   final DataAction action;
 
   @override
   material.Widget build(material.BuildContext context) {
     return VisibilityPermissionBuilder(
-      permission: [permissions[exportType]!],
+      permission: permissions == null ? null : [permissions![exportType]!],
       builder: (hasPermission) {
         return material.Tooltip(
           message: !hasPermission ? 'No permission: ${action.title}' : '',
