@@ -9,6 +9,7 @@ class DropDownSmallDateRange extends StatefulWidget {
     this.initialValue,
     this.maxDate,
     this.minDate,
+    this.showClearButton = true,
     super.key,
   });
 
@@ -16,6 +17,7 @@ class DropDownSmallDateRange extends StatefulWidget {
   final PickerDateRange? initialValue;
   final DateTime? maxDate;
   final DateTime? minDate;
+  final bool showClearButton;
   final void Function(PickerDateRange dateRange) onChanged;
 
   @override
@@ -114,7 +116,7 @@ class _DropDownSmallDateRangeState extends State<DropDownSmallDateRange> {
             ),
           ),
         ),
-        if (value != null)
+        if (value != null && widget.showClearButton)
           Positioned(
             right: 10,
             child: InkWell(
