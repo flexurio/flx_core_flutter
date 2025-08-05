@@ -331,6 +331,7 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
     this.validator,
     this.onChanged,
     this.enabled = true,
+    this.showClearButton = false,
   });
 
   final void Function(T?)? onChanged;
@@ -345,6 +346,7 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
   final bool showSelectedItems;
   final bool enabled;
   final IconData iconField;
+  final bool showClearButton;
 
   @override
   Widget build(BuildContext context) {
@@ -382,6 +384,10 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
           onChanged: onChanged,
           selectedItem: initialValue,
           enabled: enabled,
+          clearButtonProps: ClearButtonProps(
+            icon: const Icon(Icons.clear, size: 14),
+            isVisible: showClearButton,
+          ),
         );
       },
       status: status,
