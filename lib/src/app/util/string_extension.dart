@@ -64,7 +64,7 @@ extension TextExtension on Text {
       builder: (context) {
         return Row(
           children: [
-            child,
+            Expanded(child: child),
             const Gap(6),
             InkWell(
               borderRadius: BorderRadius.circular(12),
