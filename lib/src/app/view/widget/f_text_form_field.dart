@@ -95,7 +95,7 @@ class FTextFormField extends FormField<String> {
                         filled: true,
                         fillColor: enabled
                             ? theme.modeCondition(
-                                Colors.blueGrey.shade50.withOpacity(.5),
+                                Colors.blueGrey.shade50.withOpacity(.6),
                                 MyTheme.black00dp,
                               )
                             : theme.modeCondition(
