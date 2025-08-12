@@ -41,7 +41,7 @@ extension TextExtension on Text {
     );
   }
 
-  Widget canCopy({VoidCallback? onTap}) {
+  Widget canCopy({VoidCallback? onTap, double? width}) {
     if (data == '') return Container();
 
     late Widget child;
@@ -64,7 +64,7 @@ extension TextExtension on Text {
       builder: (context) {
         return Row(
           children: [
-            child,
+            SizedBox(width: width, child: child),
             const Gap(6),
             InkWell(
               borderRadius: BorderRadius.circular(12),
