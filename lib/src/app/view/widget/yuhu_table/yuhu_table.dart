@@ -114,12 +114,14 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
         ),
         if (widget.status == Status.progress)
           const Padding(
-              padding: EdgeInsets.only(top: 20),
-              child: CupertinoActivityIndicator()),
+            padding: EdgeInsets.only(top: 20),
+            child: CupertinoActivityIndicator(),
+          ),
         if (widget.status == Status.error)
           const Padding(
-              padding: EdgeInsets.only(top: 20),
-              child: Icon(Icons.error, color: Colors.red)),
+            padding: EdgeInsets.only(top: 20),
+            child: Icon(Icons.error, color: Colors.red),
+          ),
       ],
     );
   }
@@ -128,7 +130,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     final headerDecoration = BoxDecoration(
       color: theme.brightness == Brightness.dark
           ? theme.colorScheme.primary.darken(.3)
-          : flavorConfig.colorSoft,
+          : const Color(0xFFF0F4F8),
     );
 
     final columnWidths = <int, TableColumnWidth>{};
@@ -145,10 +147,13 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
 
     if (widget.onSelectChanged != null) {
       columnWidths[_columns.length] = const FixedColumnWidth(80);
-      headers.add(TableHeader(
+      headers.add(
+        TableHeader(
           column: TableColumn(title: '', builder: (_, __) => Container()),
           isSort: false,
-          ascending: _ascending));
+          ascending: _ascending,
+        ),
+      );
     }
 
     final rows = _buildRows(borderSide);
@@ -157,8 +162,9 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       heightBody: widget.bodyHeight,
       columnWidths: columnWidths,
       border: TableBorder(
-          verticalInside:
-              borderSide.copyWith(color: borderSide.color.withOpacity(0.4))),
+        verticalInside:
+            borderSide.copyWith(color: borderSide.color.withOpacity(0.4)),
+      ),
       children: [
         TableRow(decoration: headerDecoration, children: headers),
         ...rows
@@ -203,7 +209,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       child: Checkbox(
         value: isSelected,
         onChanged: (value) {
-          if (value == true) {
+          if (value ?? false) {
             _selected.add(item);
           } else {
             _selected.remove(item);
@@ -242,7 +248,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     final headerDecoration = BoxDecoration(
       color: theme.brightness == Brightness.dark
           ? theme.colorScheme.primary.darken(.3)
-          : flavorConfig.colorSoft,
+          : const Color(0xFFF0F4F8),
     );
 
     final header = TableRow(

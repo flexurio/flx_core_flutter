@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flx_core_flutter/src/app/view/widget/yuhu_table/table_column.dart';
 
 class TableHeader<T> extends StatelessWidget {
@@ -30,8 +30,13 @@ class TableHeader<T> extends StatelessWidget {
             children: [
               Text(
                 column.title,
-                style:
-                TextStyle(fontWeight: FontWeight.bold, color: primaryColor),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: theme.modeCondition(
+                    Color(0xff374259),
+                    Colors.blueGrey.shade200,
+                  ),
+                ),
               ),
               if (isSort)
                 Padding(

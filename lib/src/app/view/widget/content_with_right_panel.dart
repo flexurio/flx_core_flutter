@@ -67,10 +67,21 @@ class _ContentWithRightPanelState extends State<ContentWithRightPanel> {
               borderRadius: const BorderRadius.horizontal(
                 right: Radius.circular(25),
               ),
-              color: theme.modeCondition(
-                const Color(0XFFEFF0F6),
-                const Color(0xff16171C),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: theme.modeCondition(
+                  const [
+                    Color(0xFFF1F4F8),
+                    Color(0xFFE3E8F8),
+                  ],
+                  [const Color(0xff16171C), const Color(0xff16171C)],
+                ),
               ),
+              // color: theme.modeCondition(
+              //   Color(0xFFF5F7FB),
+              //   const Color(0xff16171C),
+              // ),
             ),
             width: sideWidth,
             child: ClipRRect(

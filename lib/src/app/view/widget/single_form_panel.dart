@@ -36,11 +36,50 @@ class SingleFormPanel extends StatelessWidget {
         child: Container(
           margin: EdgeInsets.symmetric(vertical: hideHeader ? 0 : 24),
           width: size.width,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: theme.modeCondition(
+                Colors.blueGrey.shade100.withOpacity(.5),
+                Colors.black12,
+              ),
+            ),
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: theme.modeCondition(
+              [
+                const BoxShadow(
+                  color: Color(0x12020617), // rgba(2,6,23,0.07)
+                  offset: Offset(0, 10),
+                  blurRadius: 30,
+                  spreadRadius: 0,
+                ),
+                const BoxShadow(
+                  color: Color(0x08020617), // rgba(2,6,23,0.03)
+                  offset: Offset(0, 2),
+                  blurRadius: 6,
+                  spreadRadius: 0,
+                ),
+              ],
+              [
+                const BoxShadow(
+                  color: Color(0x73000000), // ~45% black
+                  offset: Offset(0, 12),
+                  blurRadius: 32,
+                  spreadRadius: 0,
+                ),
+                const BoxShadow(
+                  color: Color(0x26000000), // ~15% black
+                  offset: Offset(0, 2),
+                  blurRadius: 8,
+                  spreadRadius: 0,
+                ),
+              ],
+            ),
+          ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(30),
             child: Material(
               color: theme.modeCondition(
-                theme.scaffoldBackgroundColor.darken(.03),
+                const Color(0xFFF0F4F8),
                 theme.cardColor.lighten(.04),
               ),
               child: Column(

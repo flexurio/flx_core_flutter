@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flx_core_flutter/constant/size.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flx_core_flutter/src/app/bloc/theme/menu/menu_bloc.dart';
 import 'package:flx_core_flutter/src/app/bloc/theme/menu_collapse/menu_collapse.dart';
 import 'package:flx_core_flutter/src/app/view/widget/offline_indicator.dart';
@@ -39,8 +40,20 @@ class MenuContent extends StatelessWidget {
                   Expanded(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(24),
-                      child: ColoredBox(
-                        color: theme.scaffoldBackgroundColor,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: theme.modeCondition(
+                              const [Color(0xFFF5F7FB), Color(0xFFEEF2FF)],
+                              [
+                                theme.scaffoldBackgroundColor,
+                                theme.scaffoldBackgroundColor
+                              ],
+                            ),
+                          ),
+                        ),
                         child: Stack(
                           children: [
                             BlocBuilder<MenuBloc, MenuState>(

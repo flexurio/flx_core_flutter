@@ -122,41 +122,82 @@ class DataTableBackend<T> extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
-            child: ColoredBox(
-              color: theme.cardColor,
-              child: Column(
-                children: [
-                  YuhuTable<T>(
-                    key: key,
-                    freezeFirstColumn: freezeFirst,
-                    freezeLastColumn: freezeLast,
-                    width: columns.fold(
-                        0, (sum, col) => (sum ?? 0) + col.widthFlex * 25),
-                    data: pageOptions.data,
-                    rowsPerPage: 10,
-                    initialSortColumnIndex: _getSortColumnIndex(),
-                    initialSortAscending: pageOptions.ascending,
-                    onSort: _onSortChanged,
-                    columns: columns.map((col) {
-                      return TableColumn<T>(
-                        alignment: col.head.numeric
-                            ? Alignment.centerRight
-                            : Alignment.centerLeft,
-                        width: col.widthFlex * 25,
-                        title: col.head.label,
-                        builder: (data, _) => DefaultTextStyle(
-                          style: theme.textTheme.bodyMedium!,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          child: col.body(data).child,
-                        ),
-                      );
-                    }).toList(),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              border: Border.all(
+                color: theme.modeCondition(
+                  Colors.blueGrey.shade100.withOpacity(.5),
+                  Colors.black12,
+                ),
+              ),
+              boxShadow: theme.modeCondition(
+                [
+                  const BoxShadow(
+                    color: Color(0x12020617), // rgba(2,6,23,0.07)
+                    offset: Offset(0, 10),
+                    blurRadius: 30,
+                    spreadRadius: 0,
                   ),
-                  if (pagination) _buildPaginationControls(),
+                  const BoxShadow(
+                    color: Color(0x08020617), // rgba(2,6,23,0.03)
+                    offset: Offset(0, 2),
+                    blurRadius: 6,
+                    spreadRadius: 0,
+                  ),
                 ],
+                [
+                  const BoxShadow(
+                    color: Color(0x73000000), // ~45% black
+                    offset: Offset(0, 12),
+                    blurRadius: 32,
+                    spreadRadius: 0,
+                  ),
+                  const BoxShadow(
+                    color: Color(0x26000000), // ~15% black
+                    offset: Offset(0, 2),
+                    blurRadius: 8,
+                    spreadRadius: 0,
+                  ),
+                ],
+              ),
+            ),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              child: ColoredBox(
+                color: theme.cardColor,
+                child: Column(
+                  children: [
+                    YuhuTable<T>(
+                      key: key,
+                      freezeFirstColumn: freezeFirst,
+                      freezeLastColumn: freezeLast,
+                      width: columns.fold(
+                          0, (sum, col) => (sum ?? 0) + col.widthFlex * 25),
+                      data: pageOptions.data,
+                      rowsPerPage: 10,
+                      initialSortColumnIndex: _getSortColumnIndex(),
+                      initialSortAscending: pageOptions.ascending,
+                      onSort: _onSortChanged,
+                      columns: columns.map((col) {
+                        return TableColumn<T>(
+                          alignment: col.head.numeric
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
+                          width: col.widthFlex * 25,
+                          title: col.head.label,
+                          builder: (data, _) => DefaultTextStyle(
+                            style: theme.textTheme.bodyMedium!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            child: col.body(data).child,
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                    if (pagination) _buildPaginationControls(),
+                  ],
+                ),
               ),
             ),
           ),
