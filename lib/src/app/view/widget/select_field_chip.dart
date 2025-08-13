@@ -121,16 +121,14 @@ class SelectChipField<T> extends FormField<String> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(label,
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold)),
+                const Gap(6),
                 Row(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 14),
-                      child: Text(label),
-                    ),
-                    const Gap(24),
                     Expanded(
                       child: Wrap(
-                        alignment: WrapAlignment.end,
                         spacing: 12,
                         runSpacing: 12,
                         children: children,

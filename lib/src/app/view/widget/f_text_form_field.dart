@@ -2,6 +2,7 @@ import 'package:currency_text_input_formatter/currency_text_input_formatter.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
+import 'package:gap/gap.dart';
 
 final currencyFormatter = CurrencyTextInputFormatter.currency(
   symbol: '',
@@ -64,6 +65,12 @@ class FTextFormField extends FormField<String> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      labelText ?? '-',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    ),
+                    Gap(4),
                     TextField(
                       autofocus: autoFocus,
                       textAlign: isNumeric ? TextAlign.right : TextAlign.left,
@@ -89,13 +96,13 @@ class FTextFormField extends FormField<String> {
                       ),
                       decoration: InputDecoration(
                         counterText: showCounter ? null : '',
-                        labelText:
-                            (labelText ?? '') + (enabled ? '' : ' (Read Only)'),
+                        // labelText:
+                        //     (labelText ?? '') + (enabled ? '' : ' (Read Only)'),
                         hintText: hintText,
                         filled: true,
                         fillColor: enabled
                             ? theme.modeCondition(
-                                Colors.blueGrey.shade50.withOpacity(.6),
+                                theme.cardColor,
                                 MyTheme.black00dp,
                               )
                             : theme.modeCondition(

@@ -133,7 +133,7 @@ class FDropDownSearch<T> extends StatelessWidget {
       case Status.progress:
         icon = const CupertinoActivityIndicator();
       case Status.loaded:
-        icon = const Icon(Icons.arrow_drop_down, size: 24);
+        icon = const Icon(Icons.keyboard_arrow_down_rounded, size: 24);
     }
 
     final borderColor = theme.modeCondition(
@@ -142,7 +142,7 @@ class FDropDownSearch<T> extends StatelessWidget {
     );
     final backgroundColor = enabled
         ? theme.modeCondition(
-            Colors.blueGrey.shade50.withOpacity(.5),
+            theme.cardColor,
             MyTheme.black00dp,
           )
         : theme.modeCondition(
@@ -158,55 +158,65 @@ class FDropDownSearch<T> extends StatelessWidget {
       borderSide: const BorderSide(color: Colors.red),
     );
 
-    return DropdownSearch<T>(
-      validator: validator,
-      compareFn: compareFn,
-      dropdownButtonProps: DropdownButtonProps(icon: icon),
-      popupProps: PopupProps.menu(
-        showSelectedItems: showSelectedItems,
-        searchDelay: Duration.zero,
-        // showSelectedItems: true,
-        showSearchBox: true,
-        searchFieldProps: TextFieldProps(
-          style: TextStyle(
-            color: theme.modeCondition(null, Colors.white70),
-          ),
-          decoration: InputDecoration(
-            hintText: '${'search'.tr()}...',
-            border: border,
-            filled: true,
-            fillColor: backgroundColor,
-            enabledBorder: border,
-            disabledBorder: border,
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: theme.colorScheme.primary,
-                width: 2,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          labelText ?? '-',
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+        ),
+        Gap(4),
+        DropdownSearch<T>(
+          validator: validator,
+          compareFn: compareFn,
+          dropdownButtonProps: DropdownButtonProps(icon: icon),
+          popupProps: PopupProps.menu(
+            showSelectedItems: showSelectedItems,
+            searchDelay: Duration.zero,
+            // showSelectedItems: true,
+            showSearchBox: true,
+            searchFieldProps: TextFieldProps(
+              style: TextStyle(
+                color: theme.modeCondition(null, Colors.white70),
+              ),
+              decoration: InputDecoration(
+                hintText: '${'search'.tr()}...',
+                border: border,
+                filled: true,
+                fillColor: backgroundColor,
+                enabledBorder: border,
+                disabledBorder: border,
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: theme.colorScheme.primary,
+                    width: 2,
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-      ),
-      items: items,
-      itemAsString: itemAsString,
-      dropdownDecoratorProps: DropDownDecoratorProps(
-        dropdownSearchDecoration: InputDecoration(
-          errorStyle: const TextStyle(
-            color: Colors.red,
-            fontSize: 10,
+          items: items,
+          itemAsString: itemAsString,
+          dropdownDecoratorProps: DropDownDecoratorProps(
+            dropdownSearchDecoration: InputDecoration(
+              errorStyle: const TextStyle(
+                color: Colors.red,
+                fontSize: 10,
+              ),
+              enabledBorder: border,
+              disabledBorder: border,
+              errorBorder: borderError,
+              border: border,
+              filled: true,
+              fillColor: backgroundColor,
+              // labelText: '$labelText${enabled ? '' : ' (Read Only)'}',
+            ),
           ),
-          enabledBorder: border,
-          disabledBorder: border,
-          errorBorder: borderError,
-          border: border,
-          filled: true,
-          fillColor: backgroundColor,
-          labelText: '$labelText${enabled ? '' : ' (Read Only)'}',
+          onChanged: onChanged,
+          selectedItem: initialValue,
+          enabled: enabled,
         ),
-      ),
-      onChanged: onChanged,
-      selectedItem: initialValue,
-      enabled: enabled,
+      ],
     );
   }
 }
@@ -246,72 +256,81 @@ class FDropDownSearchMultiple<T> extends StatelessWidget {
       case Status.progress:
         icon = const CupertinoActivityIndicator();
       case Status.loaded:
-        icon = const Icon(Icons.arrow_drop_down, size: 24);
+        icon = const Icon(Icons.keyboard_arrow_down_rounded, size: 24);
     }
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.white,
-        border: Border.all(color: Colors.grey.shade300),
-      ),
-      child: DropdownSearch<T>.multiSelection(
-        validator: validator,
-        dropdownButtonProps: DropdownButtonProps(
-          icon: icon,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          labelText ?? '-',
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
-        popupProps: PopupPropsMultiSelection.menu(
-          selectionWidget: (context, item, isSelected) {
-            final theme = Theme.of(context);
-            return isSelected
-                ? Padding(
-                    padding: const EdgeInsets.only(right: 13),
-                    child: Icon(
-                      Icons.check_box_outlined,
-                      color: theme.colorScheme.primary,
-                    ),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.only(right: 13),
-                    child: Icon(
-                      Icons.square_outlined,
-                      color: theme.colorScheme.primary,
-                    ),
-                  );
-          },
-          searchDelay: Duration.zero,
-          showSearchBox: true,
-          searchFieldProps: TextFieldProps(
-            style: TextStyle(
-              color: theme.modeCondition(null, Colors.white70),
+        const Gap(4),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.white,
+            border: Border.all(color: Colors.grey.shade300),
+          ),
+          child: DropdownSearch<T>.multiSelection(
+            validator: validator,
+            dropdownButtonProps: DropdownButtonProps(
+              icon: icon,
             ),
-            decoration: InputDecoration(
-              hintText: '${'search'.tr()}...',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.shade300),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: theme.colorScheme.primary,
-                  width: 2,
+            popupProps: PopupPropsMultiSelection.menu(
+              selectionWidget: (context, item, isSelected) {
+                final theme = Theme.of(context);
+                return isSelected
+                    ? Padding(
+                        padding: const EdgeInsets.only(right: 13),
+                        child: Icon(
+                          Icons.check_box_outlined,
+                          color: theme.colorScheme.primary,
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(right: 13),
+                        child: Icon(
+                          Icons.square_outlined,
+                          color: theme.colorScheme.primary,
+                        ),
+                      );
+              },
+              searchDelay: Duration.zero,
+              showSearchBox: true,
+              searchFieldProps: TextFieldProps(
+                style: TextStyle(
+                  color: theme.modeCondition(null, Colors.white70),
+                ),
+                decoration: InputDecoration(
+                  hintText: '${'search'.tr()}...',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade300),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: theme.colorScheme.primary,
+                      width: 2,
+                    ),
+                  ),
                 ),
               ),
             ),
+            items: items,
+            itemAsString: itemAsString,
+            dropdownDecoratorProps: DropDownDecoratorProps(
+              dropdownSearchDecoration: InputDecoration(
+                enabledBorder: InputBorder.none,
+              ),
+            ),
+            onChanged: onChanged,
+            dropdownBuilder: dropdownBuilder,
+            selectedItems: selectedItems,
           ),
         ),
-        items: items,
-        itemAsString: itemAsString,
-        dropdownDecoratorProps: DropDownDecoratorProps(
-          dropdownSearchDecoration: InputDecoration(
-            enabledBorder: InputBorder.none,
-            labelText: labelText,
-          ),
-        ),
-        onChanged: onChanged,
-        dropdownBuilder: dropdownBuilder,
-        selectedItems: selectedItems,
-      ),
+      ],
     );
   }
 }
