@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flx_core_flutter/src/app/view/widget/data_set_action.dart';
+import 'package:flx_core_flutter/src/app/view/widget/data_table/widget/pagination_control.dart';
 import 'package:flx_core_flutter/src/app/view/widget/yuhu_table/table_column.dart';
 import 'package:gap/gap.dart';
 import 'package:screen_identifier/screen_identifier.dart';
@@ -190,36 +191,9 @@ class DataTableBackend<T> extends StatelessWidget {
   }
 
   Widget _buildPaginationControls() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Text(pageOptions.info),
-          const Gap(12),
-          IconButton(
-            icon: const Icon(Icons.first_page),
-            onPressed: () => _changePage(1),
-          ),
-          IconButton(
-            icon: const Icon(Icons.keyboard_arrow_left),
-            onPressed: pageOptions.page > 1
-                ? () => _changePage(pageOptions.page - 1)
-                : null,
-          ),
-          const Gap(6),
-          IconButton(
-            icon: const Icon(Icons.keyboard_arrow_right),
-            onPressed: pageOptions.page < pageOptions.lastPage
-                ? () => _changePage(pageOptions.page + 1)
-                : null,
-          ),
-          IconButton(
-            icon: const Icon(Icons.last_page),
-            onPressed: () => _changePage(pageOptions.lastPage),
-          ),
-        ],
-      ),
+    return PaginationControl<T>(
+      pageOptions: pageOptions,
+      changePage: _changePage,
     );
   }
 }
