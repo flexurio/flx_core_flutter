@@ -43,12 +43,21 @@ class Toast {
   }
 
   void fail(String message) {
-    // Sound.fail();
     toastification.show(
       context: context,
       title: Text(message, maxLines: 10),
       type: ToastificationType.error,
       style: ToastificationStyle.fillColored,
+      autoCloseDuration: const Duration(seconds: 10),
+    );
+  }
+
+  void warning(String message) {
+    toastification.show(
+      context: context,
+      title: Text(message, maxLines: 10),
+      type: ToastificationType.warning,
+      style: ToastificationStyle.flat,
       autoCloseDuration: const Duration(seconds: 10),
     );
   }
