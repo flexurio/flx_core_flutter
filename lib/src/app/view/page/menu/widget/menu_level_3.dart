@@ -15,7 +15,7 @@ class MenuLevel3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final borderRadius = BorderRadius.circular(6);
+    final borderRadius = BorderRadius.circular(8);
     final theme = Theme.of(context);
     return BlocBuilder<MenuBloc, MenuState>(
       bloc: MenuBloc.instance,
@@ -44,9 +44,29 @@ class MenuLevel3 extends StatelessWidget {
                     decoration: isSelected
                         ? BoxDecoration(
                             borderRadius: borderRadius,
-                            color: theme.modeCondition(
-                              theme.colorScheme.primary.lighten(.33),
-                              theme.colorScheme.primary.darken(.1),
+                            border: Border.all(
+                              color: theme.modeCondition(
+                                theme.colorScheme.primary.lighten(0.3),
+                                Colors.transparent,
+                              ),
+                            ),
+                            gradient: theme.modeCondition(
+                              LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  theme.colorScheme.primary.lighten(0.33),
+                                  theme.cardColor,
+                                ],
+                              ),
+                              LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  theme.colorScheme.primary.darken(.1),
+                                  theme.colorScheme.primary.darken(.1),
+                                ],
+                              ),
                             ),
                           )
                         : null,

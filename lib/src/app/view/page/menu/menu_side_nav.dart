@@ -164,9 +164,7 @@ class ToggleSideNav extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 6),
                 child: isCollapsed
-                    ? Logo(
-                        logoUrl: logoUrl,
-                      )
+                    ? Logo(logoUrl: logoUrl)
                     : Row(
                         children: [
                           Expanded(
