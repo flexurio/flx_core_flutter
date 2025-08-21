@@ -1,11 +1,10 @@
 import 'dart:io' show Platform;
 
-import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:gap/gap.dart';
-import 'package:hive/hive.dart';
 
 class BackButtonTitled extends StatelessWidget {
   const BackButtonTitled({
@@ -36,7 +35,6 @@ class Button extends StatelessWidget {
   const Button._({
     required this.action,
     required this.permission,
-    super.key,
     this.onPressed,
     this.color,
     this.isInProgress = false,
@@ -83,8 +81,7 @@ class Button extends StatelessWidget {
   factory Button.string({
     required String action,
     required bool isInProgress,
-    bool isSecondary = false,
-    required String? permission,
+    required String? permission, bool isSecondary = false,
     Color? color,
     void Function()? onPressed,
     bool rounded = false,
@@ -152,7 +149,7 @@ class Button extends StatelessWidget {
     }
 
     return VisibilityPermission(
-      permission: permission,
+      permission: permission == null ? null : [permission!],
       child: ElevatedButton(
         style: buttonStyle,
         onPressed: !isInProgress ? onPressed : null,
@@ -215,7 +212,7 @@ class IconButtonSmall extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return VisibilityPermission(
-      permission: permission,
+      permission: permission == null ? null : [permission!],
       child: Tooltip(
         message: tooltipMessage ?? action.title,
         child: TextButton(
@@ -228,54 +225,6 @@ class IconButtonSmall extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class VisibilityPermission extends StatefulWidget {
-  const VisibilityPermission({
-    required this.permission,
-    required this.child,
-    super.key,
-    this.orElse,
-  });
-
-  final String? permission;
-  final Widget child;
-  final Widget? orElse;
-
-  @override
-  State<VisibilityPermission> createState() => _VisibilityPermissionState();
-}
-
-class _VisibilityPermissionState extends State<VisibilityPermission> {
-  List<String> permissions = [];
-
-  @override
-  void initState() {
-    super.initState();
-
-    if (widget.permission != null) {
-      () async {
-        final userRepository = await Hive.openBox<dynamic>('user_repository');
-        permissions = userRepository.get('permission') as List<String>;
-        setState(() {});
-      }();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final visible =
-        widget.permission == null || permissions.contains(widget.permission);
-
-    if (widget.orElse == null) {
-      return Visibility(
-        visible: visible,
-        child: widget.child,
-      );
-    } else {
-      return visible ? widget.child : widget.orElse!;
-    }
   }
 }
 
@@ -311,7 +260,7 @@ class LightButton extends StatelessWidget {
     }
 
     return VisibilityPermission(
-      permission: permission,
+      permission: permission == null ? null : [permission!],
       child: ElevatedButton(
         style: ButtonStyle(
           overlayColor: WidgetStatePropertyAll(
@@ -371,6 +320,96 @@ class LightButton extends StatelessWidget {
 class LightButtonSmall extends StatelessWidget {
   const LightButtonSmall({
     required this.action,
+    required this.permissions,
+    this.entity,
+    super.key,
+    this.onPressed,
+    this.status,
+    this.title,
+  });
+  final void Function()? onPressed;
+
+  final DataAction action;
+  final Entity? entity;
+  final List<String>? permissions;
+  final Status? status;
+  final String? title;
+
+  @override
+  Widget build(BuildContext context) {
+    final noAction = onPressed == null;
+    final theme = Theme.of(context);
+
+    late Color badgeColor;
+    if (status == Status.loaded) {
+      badgeColor = Colors.green;
+    } else if (status == Status.error) {
+      badgeColor = Colors.red;
+    } else {
+      badgeColor = Colors.transparent;
+    }
+
+    final isProgress = status == Status.progress;
+
+    final foregroundColor =
+        isProgress ? Colors.blueGrey.shade200 : _foregroundColor(theme);
+
+    return VisibilityPermissionBuilder(
+      permission: permissions,
+      builder: (hasPermission) {
+        return Tooltip(
+          message: !hasPermission ? 'No permission' : action.title,
+          child: Opacity(
+            opacity: hasPermission ? 1 : .5,
+            child: Badge(
+              backgroundColor: badgeColor,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  padding: WidgetStateProperty.all(
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                  ),
+                  shadowColor:
+                      WidgetStateProperty.all(Colors.black.withOpacity(.3)),
+                  backgroundColor: WidgetStateProperty.all(
+                    noAction ? Colors.grey.shade100 : Colors.transparent,
+                  ),
+                  foregroundColor: WidgetStateProperty.all(foregroundColor),
+                ),
+                onPressed: !isProgress && hasPermission ? onPressed : null,
+                child: Row(
+                  children: [
+                    if (status != null && status == Status.progress)
+                      const CupertinoActivityIndicator()
+                    else
+                      IconTheme(
+                        data: IconThemeData(
+                          size: 18,
+                          color: foregroundColor,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 1),
+                          child: Icon(action.icon),
+                        ),
+                      ),
+                    const Gap(6),
+                    Text(
+                      '${action.title} ${entity?.title ?? title ?? ''}'.trim(),
+                      style: TextStyle(color: foregroundColor),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class LBS_JANGAN_PAKE_INI_LAGI extends StatelessWidget {
+  const LBS_JANGAN_PAKE_INI_LAGI({
+    required this.action,
     required this.permission,
     this.entity,
     super.key,
@@ -406,7 +445,7 @@ class LightButtonSmall extends StatelessWidget {
         isProgress ? Colors.blueGrey.shade200 : _foregroundColor(theme);
 
     return VisibilityPermission(
-      permission: permission,
+      permission: permission == null ? null : [permission!],
       child: Badge(
         backgroundColor: badgeColor,
         child: ElevatedButton(

@@ -1,7 +1,7 @@
-import 'package:flx_core_flutter/flx_core_flutter.dart';
-import 'package:flx_core_flutter/src/app/view/widget/keyboard_shortcut_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
+import 'package:flx_core_flutter/src/app/view/widget/keyboard_shortcut_info.dart';
 
 part 'menu_event.dart';
 part 'menu_state.dart';

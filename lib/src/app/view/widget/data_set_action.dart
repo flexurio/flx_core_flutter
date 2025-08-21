@@ -1,9 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/src/app/model/data_action.dart';
 import 'package:flx_core_flutter/src/app/model/page_options.dart';
 import 'package:flx_core_flutter/src/app/view/widget/button.dart';
 import 'package:flx_core_flutter/src/app/view/widget/f_drop_down.dart';
 import 'package:flx_core_flutter/src/app/view/widget/search_box/search_box_x.dart';
-import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:screen_identifier/screen_identifier.dart';
 
@@ -78,7 +78,7 @@ class DataSetAction<T> extends StatelessWidget {
       runAlignment: WrapAlignment.end,
       alignment: WrapAlignment.end,
       children: actionRight(
-        LightButtonSmall(
+        LBS_JANGAN_PAKE_INI_LAGI(
           permission: null,
           status: status,
           action: DataAction.refresh,

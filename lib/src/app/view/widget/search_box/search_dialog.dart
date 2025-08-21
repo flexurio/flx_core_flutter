@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flx_core_flutter/src/app/view/widget/search_box/item_search_list.dart';
-import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class SearchDialog extends StatefulWidget {

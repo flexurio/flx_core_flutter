@@ -48,6 +48,7 @@ enum DataAction {
   createSales('create_sales', Icons.add, Colors.green),
   createSalesOrder('Create SO', Icons.add, Colors.green),
   createSalesPaid('create_sales', Icons.paid, Colors.green),
+  createDestructionReport('create_destruction_report', Icons.add, Colors.green),
   deactivate('deactivate', Icons.cancel, Colors.red),
   deactivatePhaseOut('Deactivate Phase Out', Icons.add, Colors.green),
   delete('delete', Icons.delete_outline_rounded, Colors.red),
@@ -66,6 +67,8 @@ enum DataAction {
   exportBatch('export_batch', FontAwesomeIcons.filePdf, Colors.redAccent),
   exportDocument('Export Document', FontAwesomeIcons.filePdf, Colors.redAccent),
   exportExcel('export_excel', FontAwesomeIcons.fileExcel, Colors.indigo),
+  exportExcelWithoutGrouping(
+      'export_excel_without_grouping', FontAwesomeIcons.fileExcel, Colors.indigo),
   exportJobsheet('export_jobsheet', FontAwesomeIcons.filePdf, Colors.redAccent),
   exportPdf('export_pdf', FontAwesomeIcons.filePdf, Colors.indigo),
   exportPdfWithoutTitle('', FontAwesomeIcons.filePdf, Colors.indigo),
@@ -111,7 +114,7 @@ enum DataAction {
   resign('mark_as_resign', Icons.check, Colors.green),
   resetPassword('reset_password', Icons.key, Colors.green),
   retry('Retry', Icons.refresh, Colors.green),
-  retest('restest', Icons.check, Colors.green),
+  retest('Retest Date', Icons.check, Colors.green),
   rework('Rework', Icons.restart_alt, Colors.purple),
   scanQrCode('scan_qr_code', FontAwesomeIcons.qrcode, Colors.indigo),
   search('search', Icons.search, Colors.blue),
@@ -140,9 +143,9 @@ enum DataAction {
   viewImage('view_image', Icons.remove_red_eye, Colors.blue),
   viewJournal('view_journal', Icons.list, Colors.blue),
   viewPayment('View Payment', Icons.remove_red_eye, Colors.blue),
-  exportPdfMaterialUsageBatch(
-    'export_pdf_material_usage_batch',
-    FontAwesomeIcons.filePdf,
+  exportMaterialUsageBatch(
+    'export Material Usage Batch',
+    FontAwesomeIcons.file,
     Colors.indigo,
   ),
   viewTransactionJournal(

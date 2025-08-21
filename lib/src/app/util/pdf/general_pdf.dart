@@ -28,7 +28,13 @@ Future<Page> pdfGeneral({
     child: tableHeader(
       columns: keys
           .map(
-            (e) => PColumnHeader(title: e.replaceAll('_', ' ').toUpperCase()),
+            (e) {
+              final numeric = data.isNotEmpty && data[0][e] is num;
+              return PColumnHeader(
+                title: e.replaceAll('_', ' ').toUpperCase(), 
+                numeric: numeric,
+              );
+            },
           )
           .toList(),
     ),
@@ -68,7 +74,7 @@ Future<Page> pdfGeneral({
 
   return pdfTemplate(
     printedBy: printedBy,
-    pageFormat: PdfPageFormat.a3.landscape,
+    pageFormat: PdfPageFormat.a4.landscape,
     headerTitle: title,
     headerChild: header,
     build: (context) => body.toList(),

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flutter/services.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 
 class RequestHeader {
   static const String authorization = 'Authorization';
@@ -21,7 +21,7 @@ abstract class Repository {
   final Dio dio;
 
   Exception checkErrorApi(Object error) {
-    if (error is DioError) {
+    if (error is DioException) {
       if (error.response?.statusCode == 401) {
         onUnauthorized();
         return ApiException.fromType(ExceptionType.tokenExpired);
@@ -96,7 +96,7 @@ class BaseApi {
       } catch (e) {
         return {};
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (e.response == null) {
         throw PlatformException(
           code: errorConnectionRefused,

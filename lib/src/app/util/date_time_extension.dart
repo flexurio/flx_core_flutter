@@ -60,6 +60,14 @@ extension DateTimeExtension on DateTime {
     return DateFormat('dd/MM/yyyy').format(this);
   }
 
+  String get mmmDDy {
+    return DateFormat('MMM dd y').format(this);
+  }
+
+  String get mmmmDDyyyy {
+    return DateFormat('MMMM dd, yyyy').format(this);
+  }
+
   DateTime get startOfDay {
     return DateTime(year, month, day);
   }

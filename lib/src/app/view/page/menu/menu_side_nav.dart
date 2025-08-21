@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flx_core_flutter/flx_core_flutter.dart';
-import 'package:flx_core_flutter/src/app/bloc/theme/menu_collapse/menu_collapse.dart';
-import 'package:flx_core_flutter/src/app/view/page/menu/widget/menu_level_1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
+import 'package:flx_core_flutter/src/app/bloc/theme/menu_collapse/menu_collapse.dart';
+import 'package:flx_core_flutter/src/app/view/page/menu/widget/menu_level_1.dart';
 import 'package:gap/gap.dart';
 import 'package:screen_identifier/screen_identifier.dart';
 

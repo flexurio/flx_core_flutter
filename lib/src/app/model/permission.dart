@@ -170,8 +170,8 @@ class Permission {
   static String productIssueViewMenu = 'product_issue_view_menu';
   static String productIssueDeliveryCreate = 'product_issue_delivery_create';
   static String productIssueGlobalExportPdf = 'product_issue_global_export_pdf';
-  static String productIssueLeadTimeSJLExportPdf =
-      'product_issue_lead_time_sjl_export_pdf';
+  static String productIssueLeadTimeDeliveryOrderExportPdf =
+      'product_issue_{lead_time}_{delivery_order}_export_pdf';
   static String productIssueReportDeliveryExportPdf =
       'product_issue_report_delivery_export_pdf';
 
@@ -257,6 +257,7 @@ class Permission {
   static String vehicleRentActualStartDate = 'vehicle_rent_actual_start_date';
   static String vehicleRentActualEndDate = 'vehicle_rent_actual_end_date';
   static String vehicleRentExportExcel = 'vehicle_rent_export_excel';
+  static String vehicleRentExportPdf = 'vehicle_rent_export_pdf';
 
   static List<String> toListString(List<String> permissions) {
     return permissions.map((e) => e).toList();
@@ -308,8 +309,8 @@ class Permission {
         String? subWord;
 
         final regex = RegExp(r'\{(.*?)\}');
-        final Match? match = regex.firstMatch(entity);
-        if (match != null) {
+        final matches = regex.allMatches(entity);
+        for (final match in matches) {
           subWord = match.group(1);
           entity = entity.replaceAll('_{$subWord}', '');
         }

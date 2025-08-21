@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flx_core_flutter/src/app/view/page/menu/widget/menu_level_3.dart';
-import 'package:flutter/material.dart';
 
 ExpansionPanel? buildMenuLevel2({
   required Menu2 menu2,

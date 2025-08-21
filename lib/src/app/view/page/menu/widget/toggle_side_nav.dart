@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flx_core_flutter/flx_core_flutter.dart';
-import 'package:flx_core_flutter/src/app/bloc/theme/menu_collapse/menu_collapse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
+import 'package:flx_core_flutter/src/app/bloc/theme/menu_collapse/menu_collapse.dart';
 import 'package:screen_identifier/screen_identifier.dart';
 
 class ToggleSideNav extends StatelessWidget {

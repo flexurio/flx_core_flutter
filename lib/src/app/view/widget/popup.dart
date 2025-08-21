@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:gap/gap.dart';
 
 class CardForm extends StatelessWidget {
@@ -110,7 +110,6 @@ class CardConfirmation extends StatelessWidget {
     required this.action,
     required this.data,
     required this.onConfirm,
-    super.key,
     this.label,
     this.danger = false,
   });

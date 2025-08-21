@@ -1,9 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flx_core_flutter/src/app/util/fuzzy.dart';
 import 'package:flx_core_flutter/src/app/view/widget/search_box/menu_tile.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class ItemSearchList extends StatefulWidget {
   const ItemSearchList({
@@ -26,7 +25,7 @@ class ItemSearchList extends StatefulWidget {
 
 class _ItemSearchListState extends State<ItemSearchList> {
   late List<Widget> menuList;
-  var _selectedItemIndex = 0;
+  final _selectedItemIndex = 0;
   late FocusNode _focusNode;
 
   @override

@@ -1,5 +1,5 @@
-import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flutter/services.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
@@ -12,7 +12,11 @@ Future<(Uint8List logo, Uint8List logoNamed)> getCompanyLogoPdf() async {
   return (logo.buffer.asUint8List(), logoNamed.buffer.asUint8List());
 }
 
-Widget footerPdf({required Context context, required String printedBy}) {
+Widget footerPdf({
+  required Context context,
+  required String printedBy,
+  String? footNote,
+}) {
   final now = DateTime.now();
   final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
   return Stack(
@@ -55,30 +59,37 @@ Widget footerPdf({required Context context, required String printedBy}) {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 36),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Printed by: $printedBy',
-                          style: const TextStyle(
-                            fontSize: 8,
-                            color: PdfColors.blueGrey800,
-                          ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Printed by: $printedBy',
+                        style: const TextStyle(
+                          fontSize: 8,
+                          color: PdfColors.blueGrey800,
                         ),
-                        SizedBox(width: 6),
-                        Text(
-                          'Printed on: ${now.yMMMdHm} '
-                          'GMT+${now.timeZoneOffset.inHours}',
-                          style: const TextStyle(
-                            fontSize: 8,
-                            color: PdfColors.blueGrey800,
-                          ),
+                      ),
+                      SizedBox(width: 6),
+                      Text(
+                        'Printed on: ${now.yMMMdHm} '
+                        'GMT+${now.timeZoneOffset.inHours}',
+                        style: const TextStyle(
+                          fontSize: 8,
+                          color: PdfColors.blueGrey800,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
+                  if (footNote != null)
+                    Text(
+                      footNote,
+                      style: const TextStyle(
+                        fontSize: 8,
+                        color: PdfColors.blueGrey800,
+                      ),
+                    ),
                   Text(
                     'Page ${context.pageNumber} of ${context.pagesCount}',
                     style: const TextStyle(
@@ -140,7 +151,7 @@ class PColumn<T> {
     required this.title,
     required this.contentBuilder,
     this.footer,
-    this.flex,
+    this.flex = 1,
     this.numeric = false,
     this.primary = false,
   });
@@ -150,39 +161,51 @@ class PColumn<T> {
   final bool numeric;
   final bool primary;
   final String Function(T data, int index) contentBuilder;
-  final double? flex;
+  final int flex;
 }
 
 class PColumnFooter {
   PColumnFooter({
     this.footer,
-    this.flex,
+    this.flex = 1,
     this.numeric = false,
     this.borderTransparent = false,
   });
 
   final String? footer;
   final bool numeric;
-  final double? flex;
+  final int flex;
   final bool borderTransparent;
 }
 
 class PColumnBody<T> {
   PColumnBody({
     required this.contentBuilder,
-    this.flex,
+    this.flex = 1,
     this.numeric = false,
   });
 
   final bool numeric;
   final String Function(T data, int index) contentBuilder;
-  final double? flex;
+  final int flex;
+}
+
+class PColumnBodyN<T> {
+  PColumnBodyN({
+    required this.content,
+    this.flex = 1,
+    this.numeric = false,
+  });
+
+  final bool numeric;
+  final String content;
+  final int flex;
 }
 
 class PColumnHeader {
   PColumnHeader({
     required this.title,
-    this.flex,
+    this.flex = 1,
     this.numeric = false,
     this.children,
     this.primary = false,
@@ -192,7 +215,7 @@ class PColumnHeader {
   final bool numeric;
   final List<PColumnHeader>? children;
   final bool primary;
-  final double? flex;
+  final int flex;
 }
 
 Widget tableBody<T>({
@@ -206,7 +229,7 @@ Widget tableBody<T>({
     border: TableBorder.all(color: PdfColors.white, width: 3),
     columnWidths: {
       for (var i = 0; i < columns.length; i++)
-        i: FlexColumnWidth(columns[i].flex ?? 1),
+        i: FlexColumnWidth(columns[i].flex.toDouble()),
     },
     children: List<TableRow>.generate(
       data.length,
@@ -241,6 +264,55 @@ Widget tableBody<T>({
   } else {
     return table;
   }
+}
+
+List<Widget> tableBody2<T>({
+  required List<T> data,
+  required List<PColumnBody<T>> columns,
+  EdgeInsetsGeometry? padding,
+}) {
+  const paddingRow = EdgeInsets.symmetric(horizontal: 8);
+  final children = <Widget>[];
+  for (var i = 0; i < data.length; i++) {
+    children.add(
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 36),
+        child: Table(
+          border: TableBorder.all(color: PdfColors.white, width: 3),
+          columnWidths: {
+            for (var i = 0; i < columns.length; i++)
+              i: FlexColumnWidth(columns[i].flex.toDouble()),
+          },
+          children: [
+            TableRow(
+              children: List<Widget>.generate(
+                columns.length,
+                (column) => Container(
+                  height: 30,
+                  padding: paddingRow,
+                  decoration: BoxDecoration(
+                    color: i.isEven ? PdfColors.grey100 : PdfColors.white,
+                    border: Border.all(
+                      width: 4,
+                      color: PdfColors.grey100,
+                    ),
+                  ),
+                  alignment: columns[column].numeric
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
+                  child: Text(
+                    columns[column].contentBuilder(data[i], i),
+                    style: const TextStyle(fontSize: 7),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  return children;
 }
 
 Widget textGroup(String text) {
@@ -328,7 +400,7 @@ Table simpleTablePdf<T>({
     border: TableBorder.all(color: PdfColors.white, width: 3),
     columnWidths: {
       for (var i = 0; i < columns.length; i++)
-        i: FlexColumnWidth(columns[i].flex ?? 1),
+        i: FlexColumnWidth(columns[i].flex.toDouble()),
     },
     children: [
       TableRow(
@@ -424,7 +496,7 @@ Widget tableFooter({
     border: TableBorder.all(color: PdfColors.white, width: 3),
     columnWidths: {
       for (var i = 0; i < columns.length; i++)
-        i: FlexColumnWidth(columns[i].flex ?? 1),
+        i: FlexColumnWidth(columns[i].flex.toDouble()),
     },
     children: [TableRow(children: footer)],
   );
@@ -438,17 +510,17 @@ Widget tableFooter({
 
 Widget tableHeader({
   required List<PColumnHeader> columns,
-  bool hasChildren = false,
   EdgeInsetsGeometry? padding,
 }) {
   final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
   const paddingRow = EdgeInsets.symmetric(horizontal: 8);
+  final hasChildren = columns.any((e) => e.children?.isNotEmpty ?? false);
 
   final table = Table(
     border: TableBorder.all(color: PdfColors.white, width: 3),
     columnWidths: {
       for (var i = 0; i < columns.length; i++)
-        i: FlexColumnWidth(columns[i].flex ?? 1),
+        i: FlexColumnWidth(columns[i].flex.toDouble()),
     },
     children: [
       TableRow(
@@ -753,6 +825,7 @@ Future<MultiPage> pdfTemplate({
   Widget? headerChild,
   PageOrientation? orientation,
   PdfPageFormat? pageFormat = PdfPageFormat.a4,
+  String? footerNote,
 }) async {
   final (companyLogo, companyLogoNamed) = await getCompanyLogoPdf();
   return MultiPage(
@@ -784,7 +857,8 @@ Future<MultiPage> pdfTemplate({
       title: headerTitle,
       child: headerChild,
     ),
-    footer: (context) => footerPdf(context: context, printedBy: printedBy),
+    footer: (context) =>
+        footerPdf(context: context, printedBy: printedBy, footNote: footerNote),
     build: build,
   );
 }
