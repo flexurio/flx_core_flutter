@@ -15,7 +15,7 @@ dependencies:
   currency_text_input_formatter: ^2.1.10
   dio: ^5.8.0+1
   dotted_border: ^2.1.0
-  dropdown_search: ^5.0.5
+  dropdown_search: ^6.0.2
   easy_localization: ^3.0.7
   file_picker: ^9.0.2
   flutter:
