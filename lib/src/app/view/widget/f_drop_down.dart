@@ -41,7 +41,6 @@ class _DropDownSmallState<T> extends State<DropDownSmall<T>> {
   void initState() {
     super.initState();
     label = '${'choose'.tr()} ${widget.labelText}';
-
     if (widget.initialValue != null) {
       label = widget.itemAsString(widget.initialValue as T);
     }
@@ -122,14 +121,11 @@ class FDropDownSearch<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    late Widget? icon;
+    late final Widget icon;
 
     switch (status) {
       case Status.error:
-        icon = const Icon(
-          Icons.error,
-          color: Colors.red,
-        );
+        icon = const Icon(Icons.error, color: Colors.red);
       case Status.progress:
         icon = const CupertinoActivityIndicator();
       case Status.loaded:
@@ -162,18 +158,22 @@ class FDropDownSearch<T> extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          labelText ?? '-',
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          labelText,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
-        Gap(4),
+        const Gap(4),
         DropdownSearch<T>(
           validator: validator,
           compareFn: compareFn,
-          dropdownButtonProps: DropdownButtonProps(icon: icon),
+          suffixProps: DropdownSuffixProps(
+            dropdownButtonProps: DropdownButtonProps(
+              iconClosed: icon,
+              iconOpened: icon,
+            ),
+          ),
           popupProps: PopupProps.menu(
             showSelectedItems: showSelectedItems,
             searchDelay: Duration.zero,
-            // showSelectedItems: true,
             showSearchBox: true,
             searchFieldProps: TextFieldProps(
               style: TextStyle(
@@ -195,10 +195,10 @@ class FDropDownSearch<T> extends StatelessWidget {
               ),
             ),
           ),
-          items: items,
+          items: (f, p) => items,
           itemAsString: itemAsString,
-          dropdownDecoratorProps: DropDownDecoratorProps(
-            dropdownSearchDecoration: InputDecoration(
+          decoratorProps: DropDownDecoratorProps(
+            decoration: InputDecoration(
               errorStyle: const TextStyle(
                 color: Colors.red,
                 fontSize: 10,
@@ -209,7 +209,6 @@ class FDropDownSearch<T> extends StatelessWidget {
               border: border,
               filled: true,
               fillColor: backgroundColor,
-              // labelText: '$labelText${enabled ? '' : ' (Read Only)'}',
             ),
           ),
           onChanged: onChanged,
@@ -248,7 +247,7 @@ class FDropDownSearchMultiple<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    late Widget? icon;
+    late final Widget icon;
 
     switch (status) {
       case Status.error:
@@ -263,8 +262,8 @@ class FDropDownSearchMultiple<T> extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          labelText ?? '-',
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          labelText,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
         const Gap(4),
         Container(
@@ -276,27 +275,25 @@ class FDropDownSearchMultiple<T> extends StatelessWidget {
           ),
           child: DropdownSearch<T>.multiSelection(
             validator: validator,
-            dropdownButtonProps: DropdownButtonProps(
-              icon: icon,
+            suffixProps: DropdownSuffixProps(
+              dropdownButtonProps: DropdownButtonProps(
+                iconClosed: icon,
+                iconOpened: icon,
+              ),
             ),
             popupProps: PopupPropsMultiSelection.menu(
-              selectionWidget: (context, item, isSelected) {
+              checkBoxBuilder: (BuildContext context, T item, bool isDisabled,
+                  bool isSelected) {
                 final theme = Theme.of(context);
-                return isSelected
-                    ? Padding(
-                        padding: const EdgeInsets.only(right: 13),
-                        child: Icon(
-                          Icons.check_box_outlined,
-                          color: theme.colorScheme.primary,
-                        ),
-                      )
-                    : Padding(
-                        padding: const EdgeInsets.only(right: 13),
-                        child: Icon(
-                          Icons.square_outlined,
-                          color: theme.colorScheme.primary,
-                        ),
-                      );
+                return Padding(
+                  padding: const EdgeInsets.only(right: 13),
+                  child: Icon(
+                    isSelected
+                        ? Icons.check_box_outlined
+                        : Icons.square_outlined,
+                    color: theme.colorScheme.primary,
+                  ),
+                );
               },
               searchDelay: Duration.zero,
               showSearchBox: true,
@@ -318,10 +315,10 @@ class FDropDownSearchMultiple<T> extends StatelessWidget {
                 ),
               ),
             ),
-            items: items,
+            items: (f, p) => items,
             itemAsString: itemAsString,
-            dropdownDecoratorProps: DropDownDecoratorProps(
-              dropdownSearchDecoration: InputDecoration(
+            decoratorProps: const DropDownDecoratorProps(
+              decoration: InputDecoration(
                 enabledBorder: InputBorder.none,
               ),
             ),
@@ -375,14 +372,20 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
         border,
         dropdownButtonProps,
         popupProps,
-        dropdownDecoratorProps,
+        decoratorProps,
       ) {
         return DropdownSearch<T>(
           validator: validator,
           compareFn: compareFn,
-          dropdownButtonProps: dropdownButtonProps,
+          suffixProps: DropdownSuffixProps(
+            dropdownButtonProps: dropdownButtonProps,
+            clearButtonProps: ClearButtonProps(
+              icon: const Icon(Icons.clear, size: 14),
+              isVisible: showClearButton,
+            ),
+          ),
           popupProps: popupProps,
-          items: items,
+          items: (f, p) => items,
           itemAsString: itemAsString,
           dropdownBuilder: (context, selectedItem) {
             return Row(
@@ -399,14 +402,10 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
               ],
             );
           },
-          dropdownDecoratorProps: dropdownDecoratorProps,
+          decoratorProps: decoratorProps,
           onChanged: onChanged,
           selectedItem: initialValue,
           enabled: enabled,
-          clearButtonProps: ClearButtonProps(
-            icon: const Icon(Icons.clear, size: 14),
-            isVisible: showClearButton,
-          ),
         );
       },
       status: status,
@@ -455,14 +454,16 @@ class FDropDownSearchSmallMultiple<T> extends StatelessWidget {
         border,
         dropdownButtonProps,
         popupProps,
-        dropdownDecoratorProps,
+        decoratorProps,
       ) {
         return DropdownSearch<T>.multiSelection(
           validator: validator,
           compareFn: compareFn,
-          dropdownButtonProps: dropdownButtonProps,
+          suffixProps: DropdownSuffixProps(
+            dropdownButtonProps: dropdownButtonProps,
+          ),
           popupProps: popupProps,
-          items: items,
+          items: (f, p) => items,
           itemAsString: itemAsString,
           dropdownBuilder: (context, selectedItem) {
             return Row(
@@ -483,10 +484,9 @@ class FDropDownSearchSmallMultiple<T> extends StatelessWidget {
               ],
             );
           },
-          dropdownDecoratorProps: dropdownDecoratorProps,
+          decoratorProps: decoratorProps,
           onChanged: onChanged,
           selectedItems: initialValue,
-          // selectedItem: initialValue,
           enabled: enabled,
         );
       },
@@ -515,7 +515,7 @@ class _ContainerDropDown<T> extends StatelessWidget {
     OutlineInputBorder border,
     DropdownButtonProps dropdownButtonProps,
     PopupPropsMultiSelection<T> popupProps,
-    DropDownDecoratorProps dropdownDecoratorProps,
+    DropDownDecoratorProps decoratorProps,
   ) builder;
 
   @override
@@ -545,7 +545,8 @@ class _ContainerDropDown<T> extends StatelessWidget {
     final dropdownButtonProps = DropdownButtonProps(
       padding: EdgeInsets.zero,
       iconSize: 18,
-      icon: const Icon(Icons.keyboard_arrow_down_rounded),
+      iconClosed: const Icon(Icons.keyboard_arrow_down_rounded),
+      iconOpened: const Icon(Icons.keyboard_arrow_up_rounded),
       color: foregroundColor,
     );
 
@@ -569,8 +570,8 @@ class _ContainerDropDown<T> extends StatelessWidget {
       ),
     );
 
-    const dropdownDecoratorProps = DropDownDecoratorProps(
-      dropdownSearchDecoration: InputDecoration(
+    const decoratorProps = DropDownDecoratorProps(
+      decoration: InputDecoration(
         contentPadding: EdgeInsets.zero,
         enabledBorder: InputBorder.none,
       ),
@@ -589,7 +590,7 @@ class _ContainerDropDown<T> extends StatelessWidget {
         border,
         dropdownButtonProps,
         popupProps,
-        dropdownDecoratorProps,
+        decoratorProps,
       ),
     );
   }
