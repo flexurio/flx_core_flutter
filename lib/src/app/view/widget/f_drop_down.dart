@@ -164,7 +164,7 @@ class FDropDownSearch<T> extends StatelessWidget {
         const Gap(4),
         DropdownSearch<T>(
           validator: validator,
-          compareFn: compareFn,
+          compareFn: compareFn ?? (a, b) => a == b,
           suffixProps: DropdownSuffixProps(
             dropdownButtonProps: DropdownButtonProps(
               iconClosed: icon,
@@ -376,7 +376,7 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
       ) {
         return DropdownSearch<T>(
           validator: validator,
-          compareFn: compareFn,
+          compareFn: compareFn ?? (a, b) => a == b,
           suffixProps: DropdownSuffixProps(
             dropdownButtonProps: dropdownButtonProps,
             clearButtonProps: ClearButtonProps(
@@ -458,7 +458,7 @@ class FDropDownSearchSmallMultiple<T> extends StatelessWidget {
       ) {
         return DropdownSearch<T>.multiSelection(
           validator: validator,
-          compareFn: compareFn,
+          compareFn: compareFn ?? (a, b) => a == b,
           suffixProps: DropdownSuffixProps(
             dropdownButtonProps: dropdownButtonProps,
           ),
