@@ -65,12 +65,16 @@ class FTextFormField extends FormField<String> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      labelText ?? '-',
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                    ),
-                    Gap(4),
+                    if (labelText != null) ...[
+                      Text(
+                        labelText,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Gap(4)
+                    ],
                     TextField(
                       autofocus: autoFocus,
                       textAlign: isNumeric ? TextAlign.right : TextAlign.left,
