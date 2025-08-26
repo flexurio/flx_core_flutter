@@ -108,7 +108,7 @@ class FDropDownSearch<T> extends StatelessWidget {
   });
 
   final void Function(T?)? onChanged;
-  final String labelText;
+  final String? labelText;
   final T? initialValue;
   final List<T> items;
   final Status status;
@@ -157,11 +157,13 @@ class FDropDownSearch<T> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          labelText,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-        ),
-        const Gap(4),
+        if (labelText != null) ...[
+          Text(
+            labelText!,
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+          const Gap(4),
+        ],
         DropdownSearch<T>(
           validator: validator,
           compareFn: compareFn ?? (a, b) => a == b,
