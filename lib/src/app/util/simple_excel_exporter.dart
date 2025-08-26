@@ -358,22 +358,14 @@ class SimpleExcelExporter<T> {
         final numValue = num.tryParse(normalizedRawValue);
 
         if (numValue != null) {
-          if (numValue is int) {
-            cell.value = IntCellValue(numValue);
-            cell.cellStyle = style.copyWith(
-              horizontalAlignVal: HorizontalAlign.Right,
-              numberFormat: NumFormat.custom(formatCode: "#,##0"),
-            );
-          } else {
-            final decimalPlaces = _countDecimalPlaces(normalizedRawValue);
-            final formatCode = "#,##0.${'0' * decimalPlaces}";
+          final decimalPlaces = _countDecimalPlaces(normalizedRawValue);
+          final formatCode = "#,##0.${'0' * decimalPlaces}";
 
-            cell.value = DoubleCellValue(numValue.toDouble());
-            cell.cellStyle = style.copyWith(
-              horizontalAlignVal: HorizontalAlign.Right,
-              numberFormat: NumFormat.custom(formatCode: formatCode),
-            );
-          }
+          cell.value = DoubleCellValue(numValue.toDouble());
+          cell.cellStyle = style.copyWith(
+            horizontalAlignVal: HorizontalAlign.Right,
+            numberFormat: NumFormat.custom(formatCode: formatCode),
+          );
         } else {
           // Fallback for unparsable numeric values
           cell.value = TextCellValue(rawValue);
