@@ -15,19 +15,12 @@ class PaginationControl<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentPage = pageOptions.page;
-    final totalPage = pageOptions.lastPage;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
       child: Row(
         children: [
           Text(pageOptions.info),
           const Spacer(),
-          _buildIconButton(
-            context: context,
-            icon: const Icon(Icons.first_page_rounded),
-            onPressed: () => changePage(1),
-          ),
-          const Gap(6),
           _buildIconButton(
             context: context,
             icon: const Icon(Icons.keyboard_arrow_left_rounded),
@@ -37,22 +30,16 @@ class PaginationControl<T> extends StatelessWidget {
           ),
           const Gap(6),
           Text(
-            '$currentPage / $totalPage',
+            '$currentPage',
             style: const TextStyle(color: Color(0xff849198)),
           ),
           const Gap(6),
           _buildIconButton(
             context: context,
             icon: const Icon(Icons.keyboard_arrow_right_rounded),
-            onPressed: pageOptions.page < pageOptions.lastPage
+            onPressed: pageOptions.hasMore
                 ? () => changePage(pageOptions.page + 1)
                 : null,
-          ),
-          const Gap(6),
-          _buildIconButton(
-            context: context,
-            icon: const Icon(Icons.last_page_rounded),
-            onPressed: () => changePage(pageOptions.lastPage),
           ),
         ],
       ),

@@ -76,6 +76,8 @@ class PageOptions<T> {
 
   int get lastPage => (totalRows / rowsPerPage).ceil();
 
+  bool get hasMore => data.length >= rowsPerPage;
+
   String get info {
     var rowStart = 0;
     var rowEnd = 0;
