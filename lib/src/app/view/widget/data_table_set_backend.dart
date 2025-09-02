@@ -3,7 +3,6 @@ import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flx_core_flutter/src/app/view/widget/data_set_action.dart';
 import 'package:flx_core_flutter/src/app/view/widget/data_table/widget/pagination_control.dart';
 import 'package:flx_core_flutter/src/app/view/widget/yuhu_table/table_column.dart';
-import 'package:gap/gap.dart';
 import 'package:screen_identifier/screen_identifier.dart';
 
 class DTHead<T> {

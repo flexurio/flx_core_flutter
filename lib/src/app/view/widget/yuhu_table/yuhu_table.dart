@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flx_core_flutter/src/app/model/flavor_config.dart';
 import 'package:flx_core_flutter/src/app/util/color.dart';
 import 'package:flx_core_flutter/src/app/util/theme.dart';
 import 'package:flx_core_flutter/src/app/view/widget/f_drop_down.dart';
