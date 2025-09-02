@@ -20,6 +20,7 @@ class MenuPage extends StatefulWidget {
     this.searchData,
     this.logoUrl,
     this.logoNamed,
+    this.initialState,
   );
 
   final List<Widget> Function(BuildContext context, String query) searchData;
@@ -32,6 +33,7 @@ class MenuPage extends StatefulWidget {
   final String? logoNamed;
   final void Function() onLogout;
   final void Function(BuildContext context) onChangePassword;
+  final VoidCallback? initialState;
 
   static Widget prepare({
     required String appName,
@@ -45,6 +47,7 @@ class MenuPage extends StatefulWidget {
         searchData,
     String? logoUrl,
     String? logoNamed,
+    VoidCallback? initialState,
   }) {
     return MultiBlocProvider(
       providers: [
@@ -67,6 +70,7 @@ class MenuPage extends StatefulWidget {
         searchData,
         logoUrl,
         logoNamed,
+        initialState,
       ),
     );
   }
@@ -77,6 +81,12 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPageState extends State<MenuPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    widget.initialState?.call();
+  }
 
   Widget _buildContent(ScreenIdentifier screenIdentifier) {
     return Stack(
