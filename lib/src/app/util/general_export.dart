@@ -27,6 +27,7 @@ class GeneralExporter<T> {
     this.periodEnd,
     this.footNote,
     this.qrCode,
+    this.signatures = const [],
   });
 
   final material.BuildContext context;
@@ -37,6 +38,7 @@ class GeneralExporter<T> {
   final List<PColumnHeader> headers;
   final List<PColumnBody<T>> body;
   final Map<ExportType, String>? permissions;
+  final List<Signature> signatures;
 
   final String? userName;
   final String? qrCode;
@@ -119,6 +121,7 @@ class GeneralExporter<T> {
       group1: group1,
       group2: group2,
       legends: legends,
+      signatures: signatures,
       footerBuilder: footerBuilder,
       bodyFirstBuilder: bodyFirstBuilder,
       footerGroup1Builder: footerGroup1Builder,

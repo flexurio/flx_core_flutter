@@ -5,6 +5,13 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:toastification/toastification.dart';
 
+class Signature {
+  Signature({required this.name, required this.position});
+
+  final String name;
+  final String position;
+}
+
 class SimplePdfExporter<T> {
   SimplePdfExporter({
     required this.data,
@@ -23,8 +30,10 @@ class SimplePdfExporter<T> {
     this.footNote,
     this.qrCode,
     this.legends,
+    this.signatures = const [],
   });
 
+  final List<Signature> signatures;
   final List<T> data;
   final String title;
   final List<PColumnHeader> headers;
@@ -213,6 +222,11 @@ class SimplePdfExporter<T> {
       }
     }
 
+    // --- Signatures section ---
+    if (signatures.isNotEmpty) {
+      content.addAll(_buildSignatures());
+    }
+
     return content;
   }
 
@@ -225,5 +239,55 @@ class SimplePdfExporter<T> {
           ),
         )
         .toList();
+  }
+
+  // ===== Signatures implementation =====
+
+  List<Widget> _buildSignatures() {
+    return [
+      SizedBox(height: 32),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 36),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: signatures
+              .map(
+                (s) => _signatureBox(s),
+              )
+              .toList(),
+        ),
+      ),
+    ];
+  }
+
+  Widget _signatureBox(Signature s) {
+    // Fixed width box, centered content
+    return Container(
+      width: 140, // fixed width
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(height: 60), // space for handwritten signature
+          Container(height: 0.5, color: PdfColors.grey600),
+          SizedBox(height: 4),
+          Text(
+            s.name,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            s.position,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 9,
+              color: PdfColors.grey700,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
