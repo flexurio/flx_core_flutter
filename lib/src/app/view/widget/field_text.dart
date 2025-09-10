@@ -58,7 +58,7 @@ class FieldOptions extends StatelessWidget {
 
 class FieldText extends StatelessWidget {
   const FieldText({
-    this?.labelText,
+    this.labelText,
     super.key,
     this.maxLines = 1,
     this.controller,
