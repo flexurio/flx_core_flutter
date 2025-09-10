@@ -5,7 +5,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class FieldDatePicker extends StatefulWidget {
   const FieldDatePicker({
-    required this.labelText,
+    this.labelText,
     required this.controller,
     super.key,
     this.maxDate,
@@ -20,7 +20,7 @@ class FieldDatePicker extends StatefulWidget {
   final bool enabled;
   final DateTime? minDate;
   final String? errorText;
-  final String labelText;
+  final String? labelText;
   final DateTime? initialSelectedDate;
   final TextEditingController controller;
   final void Function(DateTime value)? onChanged;

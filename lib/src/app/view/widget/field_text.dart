@@ -58,7 +58,7 @@ class FieldOptions extends StatelessWidget {
 
 class FieldText extends StatelessWidget {
   const FieldText({
-    required this.labelText,
+    this?.labelText,
     super.key,
     this.maxLines = 1,
     this.controller,
@@ -79,7 +79,7 @@ class FieldText extends StatelessWidget {
   final bool obscureText;
   final bool autoFocus;
   final bool showCounter;
-  final String labelText;
+  final String? labelText;
   final FocusNode? focusNode;
   final String? errorText;
   final TextEditingController? controller;
