@@ -117,7 +117,7 @@ class CardConfirmation extends StatelessWidget {
 
   factory CardConfirmation.action({
     required bool isProgress,
-    required DataAction action,fg
+    required DataAction action,
     required Entity data,
     required void Function() onConfirm,
     String? label,
