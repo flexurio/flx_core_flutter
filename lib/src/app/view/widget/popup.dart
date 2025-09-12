@@ -112,15 +112,17 @@ class CardConfirmation extends StatelessWidget {
     required this.onConfirm,
     this.label,
     this.danger = false,
+    this.confirmationMessageText,
   });
 
   factory CardConfirmation.action({
     required bool isProgress,
-    required DataAction action,
+    required DataAction action,fg
     required Entity data,
     required void Function() onConfirm,
     String? label,
     bool danger = false,
+    String? confirmationMessageText,
   }) =>
       CardConfirmation._(
         isProgress: isProgress,
@@ -129,6 +131,7 @@ class CardConfirmation extends StatelessWidget {
         onConfirm: onConfirm,
         label: label,
         danger: danger,
+        confirmationMessageText: confirmationMessageText,
       );
 
   factory CardConfirmation.string({
@@ -154,6 +157,7 @@ class CardConfirmation extends StatelessWidget {
   final String? label;
   final bool danger;
   final void Function() onConfirm;
+  final String? confirmationMessageText;
 
   @override
   Widget build(BuildContext context) {
@@ -186,7 +190,8 @@ class CardConfirmation extends StatelessWidget {
           action: action,
         ),
       ],
-      child: Text(confirmationMessage(data, action, label)),
+      child: Text(
+          confirmationMessageText ?? confirmationMessage(data, action, label)),
     );
   }
 }
