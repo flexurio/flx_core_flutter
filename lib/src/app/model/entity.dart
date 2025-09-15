@@ -127,11 +127,6 @@ class Entity extends EntityY {
         subtitleX: 'accounts_receivable_global',
         iconPath: 'accountant',
       );
-  static Entity get accountsReceivableGrup => const Entity(
-        titleX: 'accounts_receivable_group',
-        subtitleX: 'accounts_receivable_group',
-        iconPath: 'accountant',
-      );
   static Entity get accountsReceivableMutation => const Entity(
         titleX: 'accounts_receivable_mutation',
         subtitleX: 'accounts_receivable_mutation',
