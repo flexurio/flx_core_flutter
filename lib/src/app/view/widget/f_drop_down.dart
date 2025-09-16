@@ -213,7 +213,7 @@ class FDropDownSearch<T> extends StatelessWidget {
               fillColor: backgroundColor,
             ),
           ),
-          onChanged: onChanged,
+          onSelected: onChanged,
           selectedItem: initialValue,
           enabled: enabled,
         ),
@@ -283,40 +283,40 @@ class FDropDownSearchMultiple<T> extends StatelessWidget {
                 iconOpened: icon,
               ),
             ),
-            popupProps: PopupPropsMultiSelection.menu(
-              checkBoxBuilder: (BuildContext context, T item, bool isDisabled,
-                  bool isSelected) {
-                final theme = Theme.of(context);
-                return Padding(
-                  padding: const EdgeInsets.only(right: 13),
-                  child: Icon(
-                    isSelected
-                        ? Icons.check_box_outlined
-                        : Icons.square_outlined,
-                    color: theme.colorScheme.primary,
-                  ),
-                );
-              },
-              searchDelay: Duration.zero,
-              showSearchBox: true,
-              searchFieldProps: TextFieldProps(
-                style: TextStyle(
-                  color: theme.modeCondition(null, Colors.white70),
-                ),
-                decoration: InputDecoration(
-                  hintText: '${'search'.tr()}...',
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.shade300),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.primary,
-                      width: 2,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            // popupProps: PopupPropsMultiSelection.menu(
+            //   checkBoxBuilder: (BuildContext context, T item, bool isDisabled,
+            //       bool isSelected) {
+            //     final theme = Theme.of(context);
+            //     return Padding(
+            //       padding: const EdgeInsets.only(right: 13),
+            //       child: Icon(
+            //         isSelected
+            //             ? Icons.check_box_outlined
+            //             : Icons.square_outlined,
+            //         color: theme.colorScheme.primary,
+            //       ),
+            //     );
+            //   },
+            //   searchDelay: Duration.zero,
+            //   showSearchBox: true,
+            //   searchFieldProps: TextFieldProps(
+            //     style: TextStyle(
+            //       color: theme.modeCondition(null, Colors.white70),
+            //     ),
+            //     decoration: InputDecoration(
+            //       hintText: '${'search'.tr()}...',
+            //       enabledBorder: OutlineInputBorder(
+            //         borderSide: BorderSide(color: Colors.grey.shade300),
+            //       ),
+            //       focusedBorder: OutlineInputBorder(
+            //         borderSide: BorderSide(
+            //           color: theme.colorScheme.primary,
+            //           width: 2,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
             items: (f, p) => items,
             itemAsString: itemAsString,
             decoratorProps: const DropDownDecoratorProps(
@@ -324,7 +324,7 @@ class FDropDownSearchMultiple<T> extends StatelessWidget {
                 enabledBorder: InputBorder.none,
               ),
             ),
-            onChanged: onChanged,
+            onSelected: onChanged,
             dropdownBuilder: dropdownBuilder,
             selectedItems: selectedItems,
           ),
@@ -405,7 +405,7 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
             );
           },
           decoratorProps: decoratorProps,
-          onChanged: onChanged,
+          onSelected: onChanged,
           selectedItem: initialValue,
           enabled: enabled,
         );
@@ -464,7 +464,7 @@ class FDropDownSearchSmallMultiple<T> extends StatelessWidget {
           suffixProps: DropdownSuffixProps(
             dropdownButtonProps: dropdownButtonProps,
           ),
-          popupProps: popupProps,
+          // popupProps: popupProps,
           items: (f, p) => items,
           itemAsString: itemAsString,
           dropdownBuilder: (context, selectedItem) {
@@ -487,7 +487,7 @@ class FDropDownSearchSmallMultiple<T> extends StatelessWidget {
             );
           },
           decoratorProps: decoratorProps,
-          onChanged: onChanged,
+          onSelected: onChanged,
           selectedItems: initialValue,
           enabled: enabled,
         );
@@ -516,7 +516,7 @@ class _ContainerDropDown<T> extends StatelessWidget {
     Color foregroundColor,
     OutlineInputBorder border,
     DropdownButtonProps dropdownButtonProps,
-    PopupPropsMultiSelection<T> popupProps,
+    PopupProps<T> popupProps,
     DropDownDecoratorProps decoratorProps,
   ) builder;
 
@@ -552,25 +552,25 @@ class _ContainerDropDown<T> extends StatelessWidget {
       color: foregroundColor,
     );
 
-    final popupProps = PopupPropsMultiSelection<T>.menu(
-      showSelectedItems: showSelectedItems,
-      searchDelay: Duration.zero,
-      showSearchBox: true,
-      searchFieldProps: TextFieldProps(
-        style: TextStyle(color: theme.modeCondition(null, Colors.white70)),
-        decoration: InputDecoration(
-          hintText: '${'search'.tr()}...',
-          enabledBorder: border,
-          border: border,
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: theme.colorScheme.primary,
-              width: 2,
-            ),
-          ),
-        ),
-      ),
-    );
+    // final popupProps = PopupPropsMultiSelection<T>.menu(
+    //   showSelectedItems: showSelectedItems,
+    //   searchDelay: Duration.zero,
+    //   showSearchBox: true,
+    //   searchFieldProps: TextFieldProps(
+    //     style: TextStyle(color: theme.modeCondition(null, Colors.white70)),
+    //     decoration: InputDecoration(
+    //       hintText: '${'search'.tr()}...',
+    //       enabledBorder: border,
+    //       border: border,
+    //       focusedBorder: OutlineInputBorder(
+    //         borderSide: BorderSide(
+    //           color: theme.colorScheme.primary,
+    //           width: 2,
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+    // );
 
     const decoratorProps = DropDownDecoratorProps(
       decoration: InputDecoration(
@@ -591,7 +591,7 @@ class _ContainerDropDown<T> extends StatelessWidget {
         foregroundColor,
         border,
         dropdownButtonProps,
-        popupProps,
+        PopupProps.menu(),
         decoratorProps,
       ),
     );

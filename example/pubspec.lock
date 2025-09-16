@@ -189,10 +189,10 @@ packages:
     dependency: transitive
     description:
       name: dropdown_search
-      sha256: c29b3e5147a82a06a4a08b3b574c51cb48cc17ad89893d53ee72a6f86643622e
+      sha256: "9fc92a540af8c02d75c1318241e751cbecdfd515f454bf513eec06fe8439c102"
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.2"
+    version: "7.0.0-pre6"
   easy_localization:
     dependency: transitive
     description:
