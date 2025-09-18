@@ -523,14 +523,15 @@ class _ContainerDropDown<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    late final Widget icon;
 
     switch (status) {
       case Status.error:
-        break;
+        icon = const Icon(Icons.error, color: Colors.red);
       case Status.progress:
-        break;
+        icon = const CupertinoActivityIndicator();
       case Status.loaded:
-        break;
+        icon = const Icon(Icons.keyboard_arrow_down_rounded, size: 24);
     }
 
     final borderColor = theme.modeCondition(
@@ -545,10 +546,10 @@ class _ContainerDropDown<T> extends StatelessWidget {
     final foregroundColor = dropDownSmallForegroundColor(theme);
 
     final dropdownButtonProps = DropdownButtonProps(
+      iconClosed: icon,
+      iconOpened: icon,
       padding: EdgeInsets.zero,
       iconSize: 18,
-      iconClosed: const Icon(Icons.keyboard_arrow_down_rounded),
-      iconOpened: const Icon(Icons.keyboard_arrow_up_rounded),
       color: foregroundColor,
     );
 
