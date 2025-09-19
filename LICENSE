@@ -1,21 +1,41 @@
-MIT License
+# Flexurio Software License
 
-Copyright (c) 2025 Flexurio
+This project is dual-licensed under:
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+1. **GNU Affero General Public License v3 (AGPL-3.0)**
+   You may use, copy, modify, and distribute this software under the terms of the AGPL-3.0.
+   A copy of the full license is available in the file `LICENSE-AGPL` or at:
+   https://www.gnu.org/licenses/agpl-3.0.html
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+   Key points:
+   - Free for personal, educational, research, and community use.
+   - Any modifications or derivative works that you distribute or host
+     (e.g., SaaS/web service) must also be licensed under the AGPL-3.0
+     and made available in source code form.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+2. **Commercial License**
+   If you wish to use this software for commercial purposes **without**
+   being bound by the requirements of AGPL-3.0 (for example, if you
+   want to keep your derivative works proprietary, or integrate this
+   software into a closed-source product), you must purchase a
+   commercial license from:
+
+   PT. Vneu Teknologi Indonesia
+   nunung.pamungkas@vneu.co.id
+
+   Commercial license holders receive:
+   - The right to use this software in proprietary/commercial projects.
+   - Exemption from the copyleft obligations of AGPL-3.0.
+   - Optional access to professional support and SLA (if applicable).
+
+---
+
+## Which license should I choose?
+
+- **I am a student, hobbyist, or researcher →** Use AGPL-3.0 for free.  
+- **I am building open source software →** Use AGPL-3.0 for free.  
+- **I am a company and I want to use this software in a closed-source or commercial product →** Contact us to obtain a commercial license.  
+
+---
+
+© 2025 Vneu Teknologi Indonesia. All rights reserved.
