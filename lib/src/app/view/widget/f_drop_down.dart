@@ -285,7 +285,7 @@ class FDropDownSearchMultiple<T> extends StatelessWidget {
             ),
             popupProps: PopupPropsMultiSelection.menu(
               checkBoxBuilder: (BuildContext context, T item, bool isDisabled,
-                  bool isSelected) {
+                  bool isSelected,) {
                 final theme = Theme.of(context);
                 return Padding(
                   padding: const EdgeInsets.only(right: 13),

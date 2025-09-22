@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flx_core_flutter/src/app/view/widget/data_set_action.dart';
 import 'package:flx_core_flutter/src/app/view/widget/data_table/widget/pagination_control.dart';
-import 'package:flx_core_flutter/src/app/view/widget/yuhu_table/table_column.dart';
 import 'package:screen_identifier/screen_identifier.dart';
 
 class DTHead<T> {
@@ -65,13 +64,7 @@ class DTSource<T> extends DataTableSource {
 
 class DataTableBackend<T> extends StatelessWidget {
   const DataTableBackend({
-    super.key,
-    required this.pageOptions,
-    required this.columns,
-    required this.actionRight,
-    required this.onRefresh,
-    required this.status,
-    required this.onChanged,
+    required this.pageOptions, required this.columns, required this.actionRight, required this.onRefresh, required this.status, required this.onChanged, super.key,
     this.actionLeft = const [],
     this.freezeFirstColumn = false,
     this.freezeLastColumn = false,
@@ -136,13 +129,11 @@ class DataTableBackend<T> extends StatelessWidget {
                     color: Color(0x12020617), // rgba(2,6,23,0.07)
                     offset: Offset(0, 10),
                     blurRadius: 30,
-                    spreadRadius: 0,
                   ),
                   const BoxShadow(
                     color: Color(0x08020617), // rgba(2,6,23,0.03)
                     offset: Offset(0, 2),
                     blurRadius: 6,
-                    spreadRadius: 0,
                   ),
                 ],
                 [
@@ -150,13 +141,11 @@ class DataTableBackend<T> extends StatelessWidget {
                     color: Color(0x73000000), // ~45% black
                     offset: Offset(0, 12),
                     blurRadius: 32,
-                    spreadRadius: 0,
                   ),
                   const BoxShadow(
                     color: Color(0x26000000), // ~15% black
                     offset: Offset(0, 2),
                     blurRadius: 8,
-                    spreadRadius: 0,
                   ),
                 ],
               ),
@@ -172,7 +161,7 @@ class DataTableBackend<T> extends StatelessWidget {
                       freezeFirstColumn: freezeFirst,
                       freezeLastColumn: freezeLast,
                       width: columns.fold(
-                          0, (sum, col) => (sum ?? 0) + col.widthFlex * 25),
+                          0, (sum, col) => (sum ?? 0) + col.widthFlex * 25,),
                       data: pageOptions.data,
                       rowsPerPage: 10,
                       initialSortColumnIndex: _getSortColumnIndex(),
@@ -223,7 +212,7 @@ class DataTableBackend<T> extends StatelessWidget {
     onChanged(pageOptions.copyWith(
       ascending: ascending,
       sortBy: sortKey,
-    ));
+    ),);
   }
 
   void _changePage(int page) {

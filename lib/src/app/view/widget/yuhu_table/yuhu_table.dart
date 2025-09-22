@@ -11,9 +11,7 @@ import 'package:gap/gap.dart';
 
 class YuhuTable<T> extends StatefulWidget {
   const YuhuTable({
-    super.key,
-    required this.data,
-    required this.columns,
+    required this.data, required this.columns, super.key,
     this.width,
     this.rowsPerPage,
     this.rowHeight = 48,
@@ -166,7 +164,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       ),
       children: [
         TableRow(decoration: headerDecoration, children: headers),
-        ...rows
+        ...rows,
       ],
     );
   }

@@ -3,7 +3,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flx_core_flutter/src/app/util/simple_excel_exporter.dart';
-import 'package:flx_core_flutter/src/app/util/simple_pdf_exporter.dart';
 import 'package:gap/gap.dart';
 import 'package:printing/printing.dart';
 

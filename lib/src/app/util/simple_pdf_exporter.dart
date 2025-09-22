@@ -252,7 +252,7 @@ class SimplePdfExporter<T> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: signatures
               .map(
-                (s) => _signatureBox(s),
+                _signatureBox,
               )
               .toList(),
         ),
@@ -281,7 +281,7 @@ class SimplePdfExporter<T> {
           Text(
             s.position,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 9,
               color: PdfColors.grey700,
             ),

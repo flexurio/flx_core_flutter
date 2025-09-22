@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
-import 'package:flx_core_flutter/src/app/model/page_options.dart';
 import 'package:gap/gap.dart';
 
 class PaginationControl<T> extends StatelessWidget {

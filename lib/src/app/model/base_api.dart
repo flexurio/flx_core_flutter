@@ -24,8 +24,7 @@ abstract class Api {
 
 abstract class Repository {
   Repository({
-    Dio? dio,
-    required this.onUnauthorized,
+    required this.onUnauthorized, Dio? dio,
   }) : dio = dio ?? Api.dio;
 
   final Dio dio;

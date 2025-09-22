@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
-import 'package:flx_core_flutter/src/app/view/widget/yuhu_table/table_column.dart';
 
 class TableHeader<T> extends StatelessWidget {
-  const TableHeader({
-    required this.column,
-    required this.isSort,
-    required this.ascending,
+  const TableHeader({required this.column, required this.isSort, required this.ascending, super.key,
     this.onTap,
   });
 
@@ -33,7 +29,7 @@ class TableHeader<T> extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: theme.modeCondition(
-                    Color(0xff374259),
+                    const Color(0xff374259),
                     Colors.blueGrey.shade200,
                   ),
                 ),

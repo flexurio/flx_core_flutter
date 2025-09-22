@@ -73,7 +73,7 @@ class FTextFormField extends FormField<String> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const Gap(4)
+                      const Gap(4),
                     ],
                     TextField(
                       autofocus: autoFocus,

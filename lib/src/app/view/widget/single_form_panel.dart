@@ -50,13 +50,11 @@ class SingleFormPanel extends StatelessWidget {
                   color: Color(0x12020617), // rgba(2,6,23,0.07)
                   offset: Offset(0, 10),
                   blurRadius: 30,
-                  spreadRadius: 0,
                 ),
                 const BoxShadow(
                   color: Color(0x08020617), // rgba(2,6,23,0.03)
                   offset: Offset(0, 2),
                   blurRadius: 6,
-                  spreadRadius: 0,
                 ),
               ],
               [
@@ -64,13 +62,11 @@ class SingleFormPanel extends StatelessWidget {
                   color: Color(0x73000000), // ~45% black
                   offset: Offset(0, 12),
                   blurRadius: 32,
-                  spreadRadius: 0,
                 ),
                 const BoxShadow(
                   color: Color(0x26000000), // ~15% black
                   offset: Offset(0, 2),
                   blurRadius: 8,
-                  spreadRadius: 0,
                 ),
               ],
             ),
