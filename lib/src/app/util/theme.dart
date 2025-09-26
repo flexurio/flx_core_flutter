@@ -79,7 +79,7 @@ class MyTheme {
         ),
       ),
       appBarTheme: theme.appBarTheme.copyWith(
-        color: Colors.white,
+        backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.blueGrey[900]),
         titleTextStyle: textTheme.titleMedium?.copyWith(
           color: Colors.blueGrey[900],

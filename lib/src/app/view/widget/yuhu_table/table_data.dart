@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TableData extends StatelessWidget {
-  const TableData({
-    required this.child,
-    required this.height,
-    required this.alignment,
-    required this.borderSide,
+  const TableData({required this.child, required this.height, required this.alignment, required this.borderSide, super.key,
   });
 
   final Widget child;

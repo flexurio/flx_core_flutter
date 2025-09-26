@@ -40,8 +40,8 @@ class _SelectChipState<T> extends State<SelectChip<T>> {
     for (final option in widget.options) {
       final label = widget.getLabel(option);
       final selectedValue =
-          label == (selected != null ? widget.getLabel(selected!) : null);
-      final onPressed = () {
+          label == (selected != null ? widget.getLabel(selected as T) : null);
+      void onPressed() {
         setState(() {
           if (option != selected) {
             selected = option;
@@ -50,7 +50,7 @@ class _SelectChipState<T> extends State<SelectChip<T>> {
           }
           widget.onChanged(selected);
         });
-      };
+      }
       children.add(
         widget.isOutlined
             ? _Chip(
@@ -123,7 +123,7 @@ class SelectChipField<T> extends FormField<String> {
               children: [
                 Text(label,
                     style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.bold)),
+                        fontSize: 14, fontWeight: FontWeight.bold,),),
                 const Gap(6),
                 Row(
                   children: [

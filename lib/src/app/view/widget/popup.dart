@@ -393,7 +393,7 @@ class _CardConfirmationWithExplanationState
               controller: _reasonController,
               labelText: explanationTitle,
               maxLines: widget.title != null ? 1 : 3,
-              validator: requiredValidator,
+              validator: requiredValidator.call,
               showCounter: true,
             ),
             const Gap(3),
