@@ -359,7 +359,9 @@ class SimpleExcelExporter<T> {
 
         if (numValue != null) {
           final decimalPlaces = _countDecimalPlaces(normalizedRawValue);
-          final formatCode = "#,##0.${'0' * decimalPlaces}";
+
+          final formatCode =
+              (decimalPlaces == 0) ? "#,##0" : "#,##0.${'0' * decimalPlaces}";
 
           cell.value = DoubleCellValue(numValue.toDouble());
           cell.cellStyle = style.copyWith(
@@ -367,7 +369,7 @@ class SimpleExcelExporter<T> {
             numberFormat: NumFormat.custom(formatCode: formatCode),
           );
         } else {
-          // Fallback for unparsable numeric values
+          // Fallback untuk nilai numerik yang tak bisa diparse
           cell.value = TextCellValue(rawValue);
           cell.cellStyle = style.copyWith(
             horizontalAlignVal: HorizontalAlign.Right,
