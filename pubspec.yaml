@@ -42,7 +42,6 @@ dependencies:
   page_transition: ^2.0.9
   pattern_formatter: ^4.0.0
   pdf: ^3.8.4
-  pinput: ^2.2.31
   printing: ^5.10.4
   screen_identifier: ^0.0.2
   side_panel: ^0.0.1
