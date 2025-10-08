@@ -289,6 +289,7 @@ class Permission {
     'confirm_marketing',
     'confirm_ppic',
     'print_document',
+    'print_voucher',
     'print_invoice',
     'print_report',
     'non_active',
