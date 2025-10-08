@@ -4,6 +4,7 @@ import 'package:flutter/material.dart' as material;
 import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flx_core_flutter/src/app/util/simple_excel_exporter.dart';
 import 'package:gap/gap.dart';
+import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 
 class GeneralExporter<T> {
@@ -26,6 +27,7 @@ class GeneralExporter<T> {
     this.periodEnd,
     this.footNote,
     this.qrCode,
+    this.pageFormat,
     this.signatures = const [],
   });
 
@@ -38,6 +40,7 @@ class GeneralExporter<T> {
   final List<PColumnBody<T>> body;
   final Map<ExportType, String>? permissions;
   final List<Signature> signatures;
+  final PdfPageFormat? pageFormat;
 
   final String? userName;
   final String? qrCode;
@@ -112,6 +115,7 @@ class GeneralExporter<T> {
 
   Future<void> exportPdf() async {
     final pdfExporter = SimplePdfExporter<T>(
+      pageFormat: pageFormat,
       data: data,
       title: '$title$period',
       headers: headers,

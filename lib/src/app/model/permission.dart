@@ -316,6 +316,7 @@ class Permission {
     'upload',
     'validate',
     'write',
+    'undo',
   ];
 
   static String label(String permission) {

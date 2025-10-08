@@ -30,6 +30,7 @@ class SimplePdfExporter<T> {
     this.footNote,
     this.qrCode,
     this.legends,
+    this.pageFormat,
     this.signatures = const [],
   });
 
@@ -44,6 +45,7 @@ class SimplePdfExporter<T> {
   final String? qrCode;
   final DateTime? periodStart;
   final DateTime? periodEnd;
+  final PdfPageFormat? pageFormat;
 
   final List<List<PColumnFooter>> Function(List<T> data)? footerBuilder;
   final List<List<PColumnFooter>> Function(List<T> data)? footerGroup1Builder;
@@ -55,8 +57,8 @@ class SimplePdfExporter<T> {
   final List<String>? legends;
 
   Future<Document> build() async {
-    final pageFormat =
-        body.length > 7 ? PdfPageFormat.a4.landscape : PdfPageFormat.a4;
+    final p = pageFormat ??
+        (body.length > 7 ? PdfPageFormat.a4.landscape : PdfPageFormat.a4);
 
     final header = _buildHeader(title);
     final content = _buildContent();
@@ -68,7 +70,7 @@ class SimplePdfExporter<T> {
           headerTitle: title,
           headerChild: header,
           qrCode: qrCode,
-          pageFormat: pageFormat,
+          pageFormat: p,
           build: (_) => content,
           footerNote: footNote,
         ),
