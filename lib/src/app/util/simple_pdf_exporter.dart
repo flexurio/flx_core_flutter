@@ -6,10 +6,11 @@ import 'package:pdf/widgets.dart';
 import 'package:toastification/toastification.dart';
 
 class Signature {
-  Signature({required this.name, required this.position});
+  Signature({required this.name, required this.position, this.date});
 
   final String name;
   final String position;
+  final String? date;
 }
 
 class SimplePdfExporter<T> {
@@ -269,6 +270,17 @@ class SimplePdfExporter<T> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (s.date != null && s.date!.trim().isNotEmpty) ...[
+            Text(
+              s.date!,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 8,
+                color: PdfColors.grey700,
+              ),
+            ),
+            SizedBox(height: 4),
+          ],
           SizedBox(height: 60), // space for handwritten signature
           Container(height: 0.5, color: PdfColors.grey600),
           SizedBox(height: 4),
