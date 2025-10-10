@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
+import 'dart:convert';
 
 class RequestHeader {
   static const String authorization = 'Authorization';
