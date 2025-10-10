@@ -24,7 +24,8 @@ abstract class Api {
 
 abstract class Repository {
   Repository({
-    required this.onUnauthorized, Dio? dio,
+    required this.onUnauthorized,
+    Dio? dio,
   }) : dio = dio ?? Api.dio;
 
   final Dio dio;
@@ -51,9 +52,24 @@ abstract class Repository {
       }
 
       if (statusCode == 400 || statusCode == 500) {
-        final data = error.response?.data as Map<String, dynamic>?;
-        final errorMessage = data?['message']?.toString();
+        dynamic rawData = error.response?.data;
+        Map<String, dynamic>? data;
 
+        // Cek apakah sudah Map atau masih String
+        if (rawData is Map<String, dynamic>) {
+          data = rawData;
+        } else if (rawData is String) {
+          try {
+            final decoded = jsonDecode(rawData);
+            if (decoded is Map<String, dynamic>) {
+              data = decoded;
+            }
+          } catch (_) {
+            // parsing gagal, biarkan null
+          }
+        }
+
+        final errorMessage = data?['message']?.toString();
         if (errorMessage != null && errorMessage.isNotEmpty) {
           return ApiException(errorMessage);
         }
