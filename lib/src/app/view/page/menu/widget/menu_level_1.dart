@@ -11,6 +11,7 @@ class MenuLevel1 extends StatelessWidget {
     required this.index,
     required this.isCollapsed,
     required this.accountPermissions,
+    required this.bypassPermission,
     super.key,
   });
 
@@ -18,6 +19,7 @@ class MenuLevel1 extends StatelessWidget {
   final int index;
   final bool isCollapsed;
   final List<String> accountPermissions;
+  final bool bypassPermission;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class MenuLevel1 extends StatelessWidget {
           final menu2 = menu1.menu[panelIndex];
           final menuKey = '${menu1.label}#${menu1.menu[panelIndex].label}';
           final child = buildMenuLevel2(
+            bypassPermission: bypassPermission,
             menu2: menu2,
             isExpanded: menuKey == state.menu2Expanded,
             isCollapsed: isCollapsed,

@@ -14,6 +14,7 @@ class MenuSideNav extends StatefulWidget {
     required this.accountPermission,
     required this.logoUrl,
     required this.logoNamedUrl,
+    required this.bypassPermission,
     this.noCollapse = false,
     this.drawerTriggered,
     super.key,
@@ -24,6 +25,7 @@ class MenuSideNav extends StatefulWidget {
   final void Function()? drawerTriggered;
   final String? logoUrl;
   final String? logoNamedUrl;
+  final bool bypassPermission;
 
   @override
   State<MenuSideNav> createState() => _MenuSideNavState();
@@ -46,6 +48,7 @@ class _MenuSideNavState extends State<MenuSideNav> {
     final menuFiltered = filterMenuByPermission(
       menu: widget.menu,
       permissions: widget.accountPermission,
+      bypassPermission: widget.bypassPermission,
     );
     return GestureDetector(
       onTap: () {
@@ -111,6 +114,7 @@ class _MenuSideNavState extends State<MenuSideNav> {
                               itemBuilder: (context, index) {
                                 final menu1 = menuFiltered[index];
                                 return MenuLevel1(
+                                  bypassPermission: widget.bypassPermission,
                                   accountPermissions: widget.accountPermission,
                                   menu1: menu1,
                                   index: index,
@@ -230,6 +234,7 @@ class _ButtonToggle extends StatelessWidget {
 List<Menu1> filterMenuByPermission({
   required List<Menu1> menu,
   required List<String> permissions,
+  required bool bypassPermission,
 }) {
   try {
     final menu1Filtered = <Menu1>[];
@@ -239,7 +244,8 @@ List<Menu1> filterMenuByPermission({
         final menu3Filtered = <Menu3>[];
         for (final menu3 in menu2.menu) {
           if (menu3.permission == null ||
-              permissions.contains(menu3.permission)) {
+              permissions.contains(menu3.permission) ||
+              bypassPermission) {
             menu3Filtered.add(menu3);
           }
         }

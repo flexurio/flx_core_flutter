@@ -8,13 +8,15 @@ ExpansionPanel? buildMenuLevel2({
   required bool isExpanded,
   required bool isCollapsed,
   required List<String> accountPermissions,
+  required bool bypassPermission,
 }) {
   var isEmpty = true;
   final children = <Widget>[];
   for (var index = 0; index < menu2.menu.length; index++) {
     final menu3 = menu2.menu[index];
     if (menu3.permission == null ||
-        accountPermissions.contains(menu3.permission)) {
+        accountPermissions.contains(menu3.permission) ||
+        bypassPermission) {
       isEmpty = false;
       children.add(MenuLevel3(isCollapsed: isCollapsed, menu3: menu3));
     }
