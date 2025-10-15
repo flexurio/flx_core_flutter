@@ -361,7 +361,7 @@ class SimpleExcelExporter<T> {
           final decimalPlaces = _countDecimalPlaces(normalizedRawValue);
 
           final formatCode =
-              (decimalPlaces == 0) ? "#,##0" : "#,##0.${'0' * decimalPlaces}";
+              (decimalPlaces == 0) ? '#,##0' : "#,##0.${'0' * decimalPlaces}";
 
           cell.value = DoubleCellValue(numValue.toDouble());
           cell.cellStyle = style.copyWith(

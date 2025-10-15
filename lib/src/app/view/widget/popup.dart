@@ -191,7 +191,7 @@ class CardConfirmation extends StatelessWidget {
         ),
       ],
       child: Text(
-          confirmationMessageText ?? confirmationMessage(data, action, label)),
+          confirmationMessageText ?? confirmationMessage(data, action, label),),
     );
   }
 }
