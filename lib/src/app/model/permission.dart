@@ -294,6 +294,7 @@ class Permission {
     'print_report',
     'non_active',
     'view_menu',
+    'document_receive',
     // 1 word
     'activate',
     'approve',
