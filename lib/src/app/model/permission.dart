@@ -318,6 +318,7 @@ class Permission {
     'validate',
     'write',
     'undo',
+    'receive',
   ];
 
   static String label(String permission) {
