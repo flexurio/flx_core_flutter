@@ -842,8 +842,8 @@ Future<MultiPage> pdfTemplate({
     pageTheme: PageTheme(
       orientation: orientation,
       theme: ThemeData.withFont(
-        base: await PdfGoogleFonts.openSansLight(),
-        bold: await PdfGoogleFonts.openSansSemiBold(),
+        base: await PdfGoogleFonts.openSansRegular(),
+        bold: await PdfGoogleFonts.openSansBold(),
         icons: await PdfGoogleFonts.materialIcons(),
       ),
       pageFormat: pageFormat,
@@ -861,7 +861,7 @@ Future<MultiPage> pdfTemplate({
         ),
       ),
     ),
-     header: (context) {
+    header: (context) {
       if (isTitleFirst) {
         final title = context.pageNumber == 1 ? headerTitle : '';
         return PdfHeaderWidget(
@@ -882,7 +882,6 @@ Future<MultiPage> pdfTemplate({
         paddingHorizontal: paddingHorizontal,
       );
     },
-
     footer: (context) => footerPdf(
       context: context,
       printedBy: printedBy,
