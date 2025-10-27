@@ -26,7 +26,7 @@ Widget footerPdf({
         children: [
           Container(
             padding: EdgeInsets.symmetric(
-              vertical: 12,
+              vertical: 8,
               horizontal: paddingHorizontal,
             ),
             child: Row(
@@ -38,16 +38,17 @@ Widget footerPdf({
                       Text(
                         'Authorized Access:',
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 9,
                           color: primaryColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      SizedBox(height: 2),
                       Text(
-                        'Only authorized personnel who have been specifically granted permission and have completed the necessary confidentiality training are allowed to print, handle, or view confidential documents. This ensures that sensitive information is protected from unauthorized access and potential breaches of confidentiality.',
+                        'Only authorized personnel who have been specifically granted permission and have completed the necessary confidentiality training are allowed to print, handle, or view confidential documents.',
                         style: const TextStyle(
-                          fontSize: 8,
-                          color: PdfColors.blueGrey800,
+                          fontSize: 7,
+                          color: PdfColors.blueGrey700,
                         ),
                       ),
                     ],
@@ -58,11 +59,11 @@ Widget footerPdf({
           ),
           Container(
             decoration: const BoxDecoration(
-              color: PdfColors.blueGrey50,
+              color: PdfColors.grey50,
             ),
             child: Padding(
               padding: EdgeInsets.symmetric(
-                vertical: 12,
+                vertical: 8,
                 horizontal: paddingHorizontal,
               ),
               child: Row(
@@ -74,16 +75,15 @@ Widget footerPdf({
                       Text(
                         'Printed by: $printedBy',
                         style: const TextStyle(
-                          fontSize: 8,
+                          fontSize: 7,
                           color: PdfColors.blueGrey800,
                         ),
                       ),
-                      SizedBox(width: 6),
+                      SizedBox(height: 2),
                       Text(
-                        'Printed on: ${now.yMMMdHm} '
-                        'GMT+${now.timeZoneOffset.inHours}',
+                        'Printed on: ${now.yMMMdHm} GMT+${now.timeZoneOffset.inHours}',
                         style: const TextStyle(
-                          fontSize: 8,
+                          fontSize: 7,
                           color: PdfColors.blueGrey800,
                         ),
                       ),
@@ -93,14 +93,14 @@ Widget footerPdf({
                     Text(
                       footNote,
                       style: const TextStyle(
-                        fontSize: 8,
+                        fontSize: 7,
                         color: PdfColors.blueGrey800,
                       ),
                     ),
                   Text(
                     'Page ${context.pageNumber} of ${context.pagesCount}',
                     style: const TextStyle(
-                      fontSize: 8,
+                      fontSize: 7,
                       color: PdfColors.blueGrey800,
                     ),
                   ),
@@ -114,8 +114,8 @@ Widget footerPdf({
         right: 0,
         bottom: 0,
         child: Container(
-          height: 200,
-          width: 6,
+          height: 150,
+          width: 4,
           color: PdfColor.fromInt(flavorConfig.color.lighten(.45).value),
         ),
       ),
@@ -123,15 +123,15 @@ Widget footerPdf({
         right: 0,
         bottom: 0,
         child: Container(
-          height: 46.2,
-          width: 6,
+          height: 38,
+          width: 4,
           color: PdfColor.fromInt(flavorConfig.color.lighten(.3).value),
         ),
       ),
       Positioned(
         right: 0,
         bottom: 0,
-        child: Container(width: 250, height: 2, color: primaryColor),
+        child: Container(width: 200, height: 1.5, color: primaryColor),
       ),
     ],
   );
@@ -225,15 +225,16 @@ class PColumnHeader {
   final int flex;
 }
 
+// IMPROVED: Compact table body dengan padding lebih kecil
 Widget tableBody<T>({
   required List<T> data,
   required List<PColumnBody<T>> columns,
   EdgeInsetsGeometry? padding,
 }) {
-  const paddingRow = EdgeInsets.symmetric(horizontal: 8);
+  const paddingRow = EdgeInsets.symmetric(horizontal: 6, vertical: 2);
 
   final table = Table(
-    border: TableBorder.all(color: PdfColors.white, width: 3),
+    border: TableBorder.all(color: PdfColors.grey200, width: 0.5),
     columnWidths: {
       for (var i = 0; i < columns.length; i++)
         i: FlexColumnWidth(columns[i].flex.toDouble()),
@@ -244,14 +245,10 @@ Widget tableBody<T>({
         children: List<Widget>.generate(
           columns.length,
           (column) => Container(
-            height: 28,
+            constraints: const BoxConstraints(minHeight: 20),
             padding: paddingRow,
             decoration: BoxDecoration(
-              color: row.isEven ? PdfColors.grey100 : PdfColors.white,
-              border: Border.all(
-                width: 4,
-                color: PdfColors.grey100,
-              ),
+              color: row.isEven ? PdfColors.grey50 : PdfColors.white,
             ),
             alignment: columns[column].numeric
                 ? Alignment.centerRight
@@ -273,19 +270,20 @@ Widget tableBody<T>({
   }
 }
 
+// IMPROVED: Compact table body 2
 List<Widget> tableBody2<T>({
   required List<T> data,
   required List<PColumnBody<T>> columns,
   EdgeInsetsGeometry? padding,
 }) {
-  const paddingRow = EdgeInsets.symmetric(horizontal: 8);
+  const paddingRow = EdgeInsets.symmetric(horizontal: 6, vertical: 2);
   final children = <Widget>[];
   for (var i = 0; i < data.length; i++) {
     children.add(
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 36),
         child: Table(
-          border: TableBorder.all(color: PdfColors.white, width: 3),
+          border: TableBorder.all(color: PdfColors.grey200, width: 0.5),
           columnWidths: {
             for (var i = 0; i < columns.length; i++)
               i: FlexColumnWidth(columns[i].flex.toDouble()),
@@ -295,14 +293,10 @@ List<Widget> tableBody2<T>({
               children: List<Widget>.generate(
                 columns.length,
                 (column) => Container(
-                  height: 30,
+                  constraints: const BoxConstraints(minHeight: 20),
                   padding: paddingRow,
                   decoration: BoxDecoration(
-                    color: i.isEven ? PdfColors.grey100 : PdfColors.white,
-                    border: Border.all(
-                      width: 4,
-                      color: PdfColors.grey100,
-                    ),
+                    color: i.isEven ? PdfColors.grey50 : PdfColors.white,
                   ),
                   alignment: columns[column].numeric
                       ? Alignment.centerRight
@@ -332,6 +326,7 @@ Widget textGroup(String text) {
   );
 }
 
+// IMPROVED: Simple table dengan style lebih compact
 List<Widget> simpleTablePdf2<T>({
   required List<T> data,
   required List<PColumn<T>> columns,
@@ -378,15 +373,16 @@ Table simpleTablePdf<T>({
   required List<PColumn<T>> columns,
 }) {
   final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
-  const paddingRow = EdgeInsets.symmetric(horizontal: 8);
+  const paddingRow = EdgeInsets.symmetric(horizontal: 6, vertical: 2);
   final footer = <Widget>[
     for (final column in columns)
       Container(
-        height: 30,
+        constraints: const BoxConstraints(minHeight: 22),
         padding: paddingRow,
-        decoration: const BoxDecoration(
-          border:
-              Border(top: BorderSide(color: PdfColors.blueGrey500, width: 4)),
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(color: primaryColor, width: 1.5),
+          ),
         ),
         child: Align(
           alignment:
@@ -404,7 +400,7 @@ Table simpleTablePdf<T>({
   ];
 
   return Table(
-    border: TableBorder.all(color: PdfColors.white, width: 3),
+    border: TableBorder.all(color: PdfColors.grey200, width: 0.5),
     columnWidths: {
       for (var i = 0; i < columns.length; i++)
         i: FlexColumnWidth(columns[i].flex.toDouble()),
@@ -414,10 +410,10 @@ Table simpleTablePdf<T>({
         children: [
           for (final column in columns)
             Container(
-              height: 30,
+              constraints: const BoxConstraints(minHeight: 24),
               padding: paddingRow,
               decoration: BoxDecoration(
-                color: column.primary ? primaryColor : PdfColors.blueGrey800,
+                color: column.primary ? primaryColor : PdfColors.blueGrey700,
               ),
               child: Align(
                 alignment: column.numeric
@@ -442,14 +438,10 @@ Table simpleTablePdf<T>({
           children: List<Widget>.generate(
             columns.length,
             (column) => Container(
-              height: 30,
+              constraints: const BoxConstraints(minHeight: 20),
               padding: paddingRow,
               decoration: BoxDecoration(
-                color: row.isEven ? PdfColors.grey100 : PdfColors.white,
-                border: Border.all(
-                  width: 4,
-                  color: PdfColors.grey100,
-                ),
+                color: row.isEven ? PdfColors.grey50 : PdfColors.white,
               ),
               alignment: columns[column].numeric
                   ? Alignment.centerRight
@@ -467,21 +459,23 @@ Table simpleTablePdf<T>({
   );
 }
 
+// IMPROVED: Table footer dengan style lebih compact
 Widget tableFooter({
   required List<PColumnFooter> columns,
   EdgeInsetsGeometry? padding,
 }) {
-  const paddingRow = EdgeInsets.symmetric(horizontal: 8);
+  final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
+  const paddingRow = EdgeInsets.symmetric(horizontal: 6, vertical: 2);
   final footer = <Widget>[
     for (final column in columns)
       Container(
-        height: 30,
+        constraints: const BoxConstraints(minHeight: 22),
         padding: paddingRow,
         decoration: BoxDecoration(
           border: column.borderTransparent
               ? const Border()
-              : const Border(
-                  top: BorderSide(color: PdfColors.blueGrey500, width: 4),
+              : Border(
+                  top: BorderSide(color: primaryColor, width: 1.5),
                 ),
         ),
         child: Align(
@@ -500,7 +494,7 @@ Widget tableFooter({
   ];
 
   final table = Table(
-    border: TableBorder.all(color: PdfColors.white, width: 3),
+    border: TableBorder.all(color: PdfColors.grey200, width: 0.5),
     columnWidths: {
       for (var i = 0; i < columns.length; i++)
         i: FlexColumnWidth(columns[i].flex.toDouble()),
@@ -515,16 +509,17 @@ Widget tableFooter({
   }
 }
 
+// IMPROVED: Table header dengan style lebih compact
 Widget tableHeader({
   required List<PColumnHeader> columns,
   EdgeInsetsGeometry? padding,
 }) {
   final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
-  const paddingRow = EdgeInsets.symmetric(horizontal: 8);
+  const paddingRow = EdgeInsets.symmetric(horizontal: 6, vertical: 2);
   final hasChildren = columns.any((e) => e.children?.isNotEmpty ?? false);
 
   final table = Table(
-    border: TableBorder.all(color: PdfColors.white, width: 3),
+    border: TableBorder.all(color: PdfColors.grey200, width: 0.5),
     columnWidths: {
       for (var i = 0; i < columns.length; i++)
         i: FlexColumnWidth(columns[i].flex.toDouble()),
@@ -536,15 +531,17 @@ Widget tableHeader({
             Column(
               children: [
                 Container(
-                  height: hasChildren
-                      ? (column.children?.isNotEmpty ?? false)
-                          ? 30
-                          : 60
-                      : 30,
+                  constraints: BoxConstraints(
+                    minHeight: hasChildren
+                        ? (column.children?.isNotEmpty ?? false)
+                            ? 24
+                            : 48
+                        : 24,
+                  ),
                   padding: paddingRow,
                   decoration: BoxDecoration(
                     color:
-                        column.primary ? primaryColor : PdfColors.blueGrey800,
+                        column.primary ? primaryColor : PdfColors.blueGrey700,
                   ),
                   child: Align(
                     alignment: column.numeric
@@ -581,21 +578,23 @@ Widget tableHeader({
   }
 }
 
+// IMPROVED: Table complex dengan style lebih compact
 Table simpleTablePdfX<T>({
   required List<T> data,
   required List<PGroup<T>> columns,
   List<String>? total,
 }) {
   final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
-  const paddingRow = EdgeInsets.symmetric(horizontal: 8);
+  const paddingRow = EdgeInsets.symmetric(horizontal: 6, vertical: 2);
   final footer = <Widget>[
     for (final column in columns)
       Container(
-        height: 30,
+        constraints: const BoxConstraints(minHeight: 22),
         padding: paddingRow,
-        decoration: const BoxDecoration(
-          border:
-              Border(top: BorderSide(color: PdfColors.blueGrey500, width: 4)),
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(color: primaryColor, width: 1.5),
+          ),
         ),
         child: Align(
           alignment:
@@ -613,7 +612,7 @@ Table simpleTablePdfX<T>({
   ];
 
   return Table(
-    border: TableBorder.all(color: PdfColors.white, width: 3),
+    border: TableBorder.all(color: PdfColors.grey200, width: 0.5),
     columnWidths: {
       for (var i = 0; i < columns.length; i++)
         i: columns[i].children.isEmpty || columns[i].children.length == 1
@@ -625,10 +624,10 @@ Table simpleTablePdfX<T>({
         children: [
           for (final column in columns)
             Container(
-              height: 30,
+              constraints: const BoxConstraints(minHeight: 24),
               padding: paddingRow,
               decoration: BoxDecoration(
-                color: column.primary ? primaryColor : PdfColors.blueGrey800,
+                color: column.primary ? primaryColor : PdfColors.blueGrey700,
               ),
               child: Align(
                 alignment: column.numeric
@@ -655,16 +654,16 @@ Table simpleTablePdfX<T>({
                 for (final subheader in column.children)
                   Expanded(
                     child: Container(
-                      height: 30,
+                      constraints: const BoxConstraints(minHeight: 24),
                       padding: paddingRow,
                       margin: column.children.length > 1 &&
                               column.children.last.title != subheader.title
-                          ? const EdgeInsets.only(right: 3)
+                          ? const EdgeInsets.only(right: 0.5)
                           : EdgeInsets.zero,
                       decoration: BoxDecoration(
                         color: subheader.primary
                             ? primaryColor
-                            : PdfColors.blueGrey800,
+                            : PdfColors.blueGrey700,
                       ),
                       child: Align(
                         alignment: subheader.numeric
@@ -696,23 +695,17 @@ Table simpleTablePdfX<T>({
             (column) => Row(
               children: List<Widget>.generate(
                 columns[column].children.length,
-                (x) =>
-                    //
-                    Expanded(
+                (x) => Expanded(
                   child: Container(
-                    height: 30,
+                    constraints: const BoxConstraints(minHeight: 20),
                     padding: paddingRow,
                     margin: columns[column].children.length > 1 &&
                             columns[column].children.last.title !=
                                 columns[column].children[x].title
-                        ? const EdgeInsets.only(right: 3)
+                        ? const EdgeInsets.only(right: 0.5)
                         : EdgeInsets.zero,
                     decoration: BoxDecoration(
-                      color: row.isEven ? PdfColors.grey100 : PdfColors.white,
-                      border: Border.all(
-                        width: 4,
-                        color: PdfColors.grey100,
-                      ),
+                      color: row.isEven ? PdfColors.grey50 : PdfColors.white,
                     ),
                     alignment: columns[column].children[x].numeric
                         ? Alignment.centerRight
@@ -725,8 +718,6 @@ Table simpleTablePdfX<T>({
                     ),
                   ),
                 ),
-
-                //
               ),
             ),
           ),
@@ -740,23 +731,17 @@ Table simpleTablePdfX<T>({
             (column) => Row(
               children: List<Widget>.generate(
                 columns[column].children.length,
-                (x) =>
-                    //
-                    Expanded(
+                (x) => Expanded(
                   child: Container(
-                    height: 30,
+                    constraints: const BoxConstraints(minHeight: 20),
                     padding: paddingRow,
                     margin: columns[column].children.length > 1 &&
                             columns[column].children.last.title !=
                                 columns[column].children[x].title
-                        ? const EdgeInsets.only(right: 3)
+                        ? const EdgeInsets.only(right: 0.5)
                         : EdgeInsets.zero,
                     decoration: BoxDecoration(
-                      color: row.isEven ? PdfColors.grey100 : PdfColors.white,
-                      border: Border.all(
-                        width: 4,
-                        color: PdfColors.grey100,
-                      ),
+                      color: row.isEven ? PdfColors.grey50 : PdfColors.white,
                     ),
                     alignment: columns[column].children[x].numeric
                         ? Alignment.centerRight
@@ -785,7 +770,7 @@ Widget tileDataHorizontal({
   TextStyle? labelStyle,
 }) {
   return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 12),
+    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 12),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -800,9 +785,6 @@ Widget tileDataHorizontal({
               style: labelStyle ??
                   TextStyle(
                     fontWeight: FontWeight.bold,
-                    // color: inverseColor
-                    //     ? Colors.white70
-                    //     : theme.modeCondition(Colors.black38, Colors.white30),
                     fontSize: 8,
                   ),
             ),
@@ -849,11 +831,11 @@ Future<MultiPage> pdfTemplate({
       pageFormat: pageFormat,
       margin: EdgeInsets.zero,
       buildBackground: (Context context) => Transform.translate(
-        offset: const PdfPoint(-100, 0),
+        offset: const PdfPoint(-80, 0),
         child: Container(
-          margin: const EdgeInsets.only(bottom: 140),
-          height: 220,
-          width: 220,
+          margin: const EdgeInsets.only(bottom: 120),
+          height: 180,
+          width: 180,
           decoration: BoxDecoration(
             color: PdfColor.fromInt(flavorConfig.color.lighten(.56).value),
             shape: BoxShape.circle,
