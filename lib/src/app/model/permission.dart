@@ -199,6 +199,7 @@ class Permission {
   static String supplierCreate = 'supplier_create';
   static String supplierDelete = 'supplier_delete';
   static String supplierEdit = 'supplier_edit';
+  static String supplierEditCertificate = 'supplier_edit_certificate';
   static String supplierExportExcel = 'supplier_export_excel';
 
   // --
@@ -377,4 +378,5 @@ class PermissionVendor {
   static String vendorCreate = 'vendor_create';
   static String vendorDelete = 'vendor_delete';
   static String vendorEdit = 'vendor_edit';
+  static String vendorEditCertificate = 'vendor_edit_certificate';
 }
