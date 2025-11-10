@@ -64,7 +64,13 @@ class DTSource<T> extends DataTableSource {
 
 class DataTableBackend<T> extends StatelessWidget {
   const DataTableBackend({
-    required this.pageOptions, required this.columns, required this.actionRight, required this.onRefresh, required this.status, required this.onChanged, super.key,
+    required this.pageOptions,
+    required this.columns,
+    required this.actionRight,
+    required this.onRefresh,
+    required this.status,
+    required this.onChanged,
+    super.key,
     this.actionLeft = const [],
     this.freezeFirstColumn = false,
     this.freezeLastColumn = false,
@@ -161,7 +167,9 @@ class DataTableBackend<T> extends StatelessWidget {
                       freezeFirstColumn: freezeFirst,
                       freezeLastColumn: freezeLast,
                       width: columns.fold(
-                          0, (sum, col) => (sum ?? 0) + col.widthFlex * 25,),
+                        0,
+                        (sum, col) => (sum ?? 0) + col.widthFlex * 25,
+                      ),
                       data: pageOptions.data,
                       rowsPerPage: 10,
                       initialSortColumnIndex: _getSortColumnIndex(),
@@ -209,10 +217,12 @@ class DataTableBackend<T> extends StatelessWidget {
         ? column.backendKeySort
         : column.backendKeySortDescending ?? column.backendKeySort;
 
-    onChanged(pageOptions.copyWith(
-      ascending: ascending,
-      sortBy: sortKey,
-    ),);
+    onChanged(
+      pageOptions.copyWith(
+        ascending: ascending,
+        sortBy: sortKey,
+      ),
+    );
   }
 
   void _changePage(int page) {

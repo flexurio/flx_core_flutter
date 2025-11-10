@@ -36,7 +36,8 @@ class VisibilityPermission extends StatelessWidget {
         final userPermissions = snapshot.data!;
         final hasPermission = permission!.any(userPermissions.contains);
         print(
-            '[VisibilityPermission] permission: $permission, hasPermission: $hasPermission',);
+          '[VisibilityPermission] permission: $permission, hasPermission: $hasPermission',
+        );
 
         if (orElse != null) {
           return hasPermission ? child : orElse!;

@@ -51,6 +51,7 @@ class _SelectChipState<T> extends State<SelectChip<T>> {
           widget.onChanged(selected);
         });
       }
+
       children.add(
         widget.isOutlined
             ? _Chip(
@@ -121,9 +122,13 @@ class SelectChipField<T> extends FormField<String> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label,
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.bold,),),
+                Text(
+                  label,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 const Gap(6),
                 Row(
                   children: [

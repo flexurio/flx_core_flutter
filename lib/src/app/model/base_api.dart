@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
-import 'dart:convert';
 
 class RequestHeader {
   static const String authorization = 'Authorization';
@@ -53,7 +54,7 @@ abstract class Repository {
       }
 
       if (statusCode == 400 || statusCode == 500) {
-        dynamic rawData = error.response?.data;
+        final dynamic rawData = error.response?.data;
         Map<String, dynamic>? data;
 
         // Cek apakah sudah Map atau masih String

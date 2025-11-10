@@ -5,7 +5,8 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class FieldDatePicker extends StatefulWidget {
   const FieldDatePicker({
-    required this.controller, this.labelText,
+    required this.controller,
+    this.labelText,
     super.key,
     this.maxDate,
     this.onChanged,

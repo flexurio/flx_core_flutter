@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
 
 class TableHeader<T> extends StatelessWidget {
-  const TableHeader({required this.column, required this.isSort, required this.ascending, super.key,
+  const TableHeader({
+    required this.column,
+    required this.isSort,
+    required this.ascending,
+    super.key,
     this.onTap,
   });
 

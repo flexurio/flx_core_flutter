@@ -81,7 +81,8 @@ class Button extends StatelessWidget {
   factory Button.string({
     required String action,
     required bool isInProgress,
-    required String? permission, bool isSecondary = false,
+    required String? permission,
+    bool isSecondary = false,
     Color? color,
     void Function()? onPressed,
     bool rounded = false,

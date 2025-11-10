@@ -26,17 +26,15 @@ Future<Page> pdfGeneral({
   final header = Padding(
     padding: const EdgeInsets.symmetric(horizontal: 36),
     child: tableHeader(
-      columns: keys
-          .map(
-            (e) {
-              final numeric = data.isNotEmpty && data[0][e] is num;
-              return PColumnHeader(
-                title: e.replaceAll('_', ' ').toUpperCase(), 
-                numeric: numeric,
-              );
-            },
-          )
-          .toList(),
+      columns: keys.map(
+        (e) {
+          final numeric = data.isNotEmpty && data[0][e] is num;
+          return PColumnHeader(
+            title: e.replaceAll('_', ' ').toUpperCase(),
+            numeric: numeric,
+          );
+        },
+      ).toList(),
     ),
   );
 
