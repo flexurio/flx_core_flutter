@@ -382,6 +382,7 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 12),
                         decoration: BoxDecoration(
+                          color: Colors.grey.shade50,
                           border: Border(
                             top: BorderSide(
                               color: theme.dividerColor.withOpacity(.4),
