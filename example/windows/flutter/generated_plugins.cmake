@@ -6,7 +6,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus
   just_audio_windows
   printing
-  smart_auth
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

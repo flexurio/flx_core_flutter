@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:download/download.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' as material;
@@ -136,7 +138,12 @@ class GeneralExporter<T> {
     );
 
     final pdf = await pdfExporter.build();
-    await Printing.sharePdf(bytes: await pdf.save(), filename: '$fileName.pdf');
+    await Printing.layoutPdf(
+      name: '$fileName.pdf',
+      onLayout: (format) async {
+        return pdf.save();
+      },
+    );
   }
 
   String get period {
