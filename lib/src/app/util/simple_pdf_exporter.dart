@@ -57,14 +57,14 @@ class SimplePdfExporter<T> {
 
   final List<String>? legends;
 
-  Future<Document> build() async {
+  Future<Document> build(String filename) async {
     final p = pageFormat ??
         (body.length > 7 ? PdfPageFormat.a4.landscape : PdfPageFormat.a4);
 
     final header = _buildHeader(title);
     final content = _buildContent();
 
-    final pdf = Document()
+    final pdf = Document(title: filename)
       ..addPage(
         await pdfTemplate(
           printedBy: printedBy,

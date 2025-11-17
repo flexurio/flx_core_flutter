@@ -137,9 +137,10 @@ class GeneralExporter<T> {
       qrCode: qrCode,
     );
 
-    final pdf = await pdfExporter.build();
+    final filename = '$fileName.pdf';
+    final pdf = await pdfExporter.build(filename);
     await Printing.layoutPdf(
-      name: '$fileName.pdf',
+      name: filename,
       onLayout: (format) async {
         return pdf.save();
       },
