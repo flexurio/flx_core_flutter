@@ -70,6 +70,7 @@ class Permission {
       'invoice_receive_confirm_finance';
   static String invoiceReceiveApproveHeadAccounting =
       'invoice_receive_approve_head_accounting';
+  static String invoiceReceiveReject = 'invoice_receive_reject';    
 
   // Journal Estimation
   static String journalEstimationViewMenu = 'journal_estimation_view_menu';
