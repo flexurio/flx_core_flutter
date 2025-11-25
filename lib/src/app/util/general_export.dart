@@ -1,13 +1,11 @@
-import 'dart:typed_data';
-
 import 'package:download/download.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flx_core_flutter/flx_core_flutter.dart';
+import 'package:flx_core_flutter/src/app/util/pdf_view.dart';
 import 'package:flx_core_flutter/src/app/util/simple_excel_exporter.dart';
 import 'package:gap/gap.dart';
 import 'package:pdf/pdf.dart';
-import 'package:printing/printing.dart';
 
 class GeneralExporter<T> {
   GeneralExporter({
@@ -139,11 +137,11 @@ class GeneralExporter<T> {
 
     final filename = '$fileName.pdf';
     final pdf = await pdfExporter.build(filename);
-    await Printing.layoutPdf(
-      name: filename,
-      onLayout: (format) async {
-        return pdf.save();
-      },
+    await showDialogViewPDF(
+      context: context,
+      pdfData: await pdf.save(),
+      actions: [],
+      fileName: filename,
     );
   }
 
