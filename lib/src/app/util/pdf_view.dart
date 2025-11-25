@@ -20,15 +20,14 @@ Future<void> showDialogViewPDF({
   await showDialog<void>(
     context: context,
     barrierDismissible: true,
+    useRootNavigator: true,
     builder: (BuildContext dialogContext) {
       final size = MediaQuery.of(dialogContext).size;
 
       return StatefulBuilder(
         builder: (context, setState) {
-          // Attach listener sekali saja supaya UI update ketika search berubah
           if (!searchListenerAttached) {
             textSearcher.addListener(() {
-              // update match count, index dll
               setState(() {});
             });
             searchListenerAttached = true;
@@ -91,7 +90,25 @@ Future<void> showDialogViewPDF({
                         ),
                       ),
 
-                      // Bar bawah (action + search)
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: Material(
+                          color: Colors.black54,
+                          shape: const CircleBorder(),
+                          child: IconButton(
+                            tooltip: 'Tutup',
+                            icon: const Icon(
+                              Icons.close,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              Navigator.of(dialogContext).pop();
+                            },
+                          ),
+                        ),
+                      ),
+
                       Positioned(
                         bottom: 0,
                         left: 0,
@@ -149,7 +166,7 @@ Future<void> showDialogViewPDF({
                                     ),
                                     IconButton(
                                       tooltip: 'Clear search',
-                                      icon: const Icon(Icons.close),
+                                      icon: const Icon(Icons.clear),
                                       onPressed: () {
                                         searchTextController.clear();
                                         textSearcher.resetTextSearch();
@@ -194,17 +211,28 @@ Future<void> showDialogViewPDF({
                                       ),
                                     ],
                                   ),
+
+                                  // Aksi custom + tombol "Tutup"
                                   Row(
                                     mainAxisSize: MainAxisSize.min,
-                                    children: actions
-                                        .map(
-                                          (w) => Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 4),
-                                            child: w,
+                                    children: [
+                                      ...actions.map(
+                                        (w) => Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 4,
                                           ),
-                                        )
-                                        .toList(),
+                                          child: w,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      TextButton.icon(
+                                        onPressed: () {
+                                          Navigator.of(dialogContext).pop();
+                                        },
+                                        icon: const Icon(Icons.close),
+                                        label: const Text('Tutup'),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
