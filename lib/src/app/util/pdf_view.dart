@@ -211,29 +211,6 @@ Future<void> showDialogViewPDF({
                                       ),
                                     ],
                                   ),
-
-                                  // Aksi custom + tombol "Tutup"
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      ...actions.map(
-                                        (w) => Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 4,
-                                          ),
-                                          child: w,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      TextButton.icon(
-                                        onPressed: () {
-                                          Navigator.of(dialogContext).pop();
-                                        },
-                                        icon: const Icon(Icons.close),
-                                        label: const Text('Tutup'),
-                                      ),
-                                    ],
-                                  ),
                                 ],
                               ),
                             ),
