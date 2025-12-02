@@ -203,6 +203,8 @@ class Permission {
   static String supplierEditCertificate = 'supplier_edit_certificate';
   static String supplierExportExcel = 'supplier_export_excel';
 
+  static String workOrderTypeViewMenu = 'work_order_types_view_menu';
+
   // --
   static String taxInvoiceNumberViewMenu = 'tax_invoice_number_view_menu';
   static String taxInvoiceNumberCreate = 'tax_invoice_number_create';
