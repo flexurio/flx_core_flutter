@@ -75,6 +75,7 @@ export 'src/app/view/widget/f_card.dart';
 export 'src/app/view/widget/f_drop_down.dart';
 export 'src/app/view/widget/f_text_form_field.dart';
 export 'src/app/view/widget/field_date_picker.dart';
+export 'src/app/view/widget/field_date_time_input.dart';
 export 'src/app/view/widget/field_month_picker.dart';
 export 'src/app/view/widget/field_text.dart';
 export 'src/app/view/widget/field_time_picker.dart';
