@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:pinput/pinput.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -14,6 +15,7 @@ class FieldDatePicker extends StatefulWidget {
     this.minDate,
     this.validator,
     this.errorText,
+    this.dateFormat,
     this.enabled = true,
   });
   final DateTime? maxDate;
@@ -25,6 +27,7 @@ class FieldDatePicker extends StatefulWidget {
   final TextEditingController controller;
   final void Function(DateTime value)? onChanged;
   final String? Function(DateTime?)? validator;
+  final String? dateFormat;
 
   @override
   State<FieldDatePicker> createState() => _FieldDatePickerState();
@@ -58,7 +61,7 @@ class _FieldDatePickerState extends State<FieldDatePicker> {
                 maxDate: widget.maxDate,
                 minDate: widget.minDate,
                 onChangeSingle: (value) {
-                  widget.controller.text = value.yMMMMd;
+                  widget.controller.text = _getFormattedDate(value);
                   widget.onChanged?.call(value);
                   _dateTimeSelected = value;
                   Navigator.pop(context);
@@ -76,7 +79,7 @@ class _FieldDatePickerState extends State<FieldDatePicker> {
     super.initState();
     _dateTimeSelected = widget.initialSelectedDate;
     if (_dateTimeSelected != null) {
-      widget.controller.setText(_dateTimeSelected!.yMMMMd);
+      widget.controller.setText(_getFormattedDate(_dateTimeSelected!));
     }
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
@@ -84,6 +87,17 @@ class _FieldDatePickerState extends State<FieldDatePicker> {
         _focusNode.unfocus();
       }
     });
+  }
+
+  String _getFormattedDate(DateTime date) {
+    if (widget.dateFormat != null && widget.dateFormat!.isNotEmpty) {
+      try {
+        return DateFormat(widget.dateFormat).format(date);
+      } catch (e) {
+        return date.yMMMMd;
+      }
+    }
+    return date.yMMMMd;
   }
 
   @override
