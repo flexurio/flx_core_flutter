@@ -12,6 +12,7 @@ class CardForm extends StatelessWidget {
     super.key,
     this.popup = false,
     this.danger = false,
+    this.width,
   });
 
   final String title;
@@ -20,6 +21,7 @@ class CardForm extends StatelessWidget {
   final List<Widget> actions;
   final bool popup;
   final bool danger;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +60,12 @@ class CardForm extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
         contentPadding: EdgeInsets.zero,
-        children: [body],
+        children: [
+          SizedBox(
+            width: width,
+            child: body,
+          )
+        ],
       );
     } else {
       return Card(
