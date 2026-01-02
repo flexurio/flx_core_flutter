@@ -231,7 +231,7 @@ class IconButtonSmall extends StatelessWidget {
 
 class LightButton extends StatelessWidget {
   const LightButton({
-    required this.action,
+    this.action,
     required this.permission,
     this.entity,
     super.key,
@@ -243,7 +243,7 @@ class LightButton extends StatelessWidget {
   final void Function()? onPressed;
 
   final String? permission;
-  final DataAction action;
+  final DataAction? action;
   final EntityY? entity;
   final String? title;
   final bool isInProgress;
@@ -255,11 +255,23 @@ class LightButton extends StatelessWidget {
     final theme = Theme.of(context);
     final foregroundColor =
         theme.modeCondition(Colors.blueGrey.shade700, Colors.white70);
-    var titleX = action.title;
+    final effectiveAction = action ?? DataAction.none;
+    final actionColor = action?.color ?? Colors.blueGrey;
+    final actionIcon = action?.icon ?? iconOverride ?? Icons.circle;
+
+    var titleX = effectiveAction.title;
     if (title != null) {
-      titleX += ' $title';
+      if (titleX.isEmpty) {
+        titleX = title!;
+      } else {
+        titleX += ' $title';
+      }
     } else if (entity != null) {
-      titleX += ' ${entity!.title}';
+      if (titleX.isEmpty) {
+        titleX = entity!.title;
+      } else {
+        titleX += ' ${entity!.title}';
+      }
     }
 
     return VisibilityPermission(
@@ -267,7 +279,7 @@ class LightButton extends StatelessWidget {
       child: ElevatedButton(
         style: ButtonStyle(
           overlayColor: WidgetStatePropertyAll(
-            action.color.withOpacity(theme.modeCondition(.08, .03)),
+            actionColor.withOpacity(theme.modeCondition(.08, .03)),
           ),
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
@@ -305,10 +317,12 @@ class LightButton extends StatelessWidget {
               child: isInProgress
                   ? const CupertinoActivityIndicator()
                   : Icon(
-                      iconOverride ?? action.icon,
+                      iconOverride ?? actionIcon,
                       color: noAction
                           ? theme.modeCondition(Colors.grey, Colors.white10)
-                          : action.color,
+                          : (effectiveAction == DataAction.none
+                              ? foregroundColor
+                              : actionColor),
                     ),
             ),
             const Gap(6),
