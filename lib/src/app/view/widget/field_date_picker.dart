@@ -79,7 +79,7 @@ class _FieldDatePickerState extends State<FieldDatePicker> {
     super.initState();
     _dateTimeSelected = widget.initialSelectedDate;
     if (_dateTimeSelected != null) {
-      widget.controller.setText(_getFormattedDate(_dateTimeSelected!));
+      widget.controller.text = _getFormattedDate(_dateTimeSelected!);
     }
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
