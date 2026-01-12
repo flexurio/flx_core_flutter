@@ -555,4 +555,15 @@ class Entity extends EntityY {
 
   static Entity get workHourShift =>
       const Entity(titleX: 'Work Hour Shift', subtitleX: '', iconPath: 'bill');
+  static Entity get invoiceRecapBySalesGlobalSpecialAll => const Entity(
+        titleX: 'invoice_recap_by_sales_global_special_all',
+        subtitleX: 'invoice_recap_by_sales_global_special_all',
+        iconPath: 'bill',
+      );
+
+  static Entity get invoiceRecapBySalesDetailSpecial => const Entity(
+        titleX: 'invoice_recap_by_sales_detail_pecial',
+        subtitleX: 'invoice_recap_by_sales_detail_pecial',
+        iconPath: 'bill',
+      );
 }
