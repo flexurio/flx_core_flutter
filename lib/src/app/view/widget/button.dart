@@ -263,7 +263,9 @@ class LightButton extends StatelessWidget {
 
     var titleX = effectiveAction.title;
     if (title != null) {
-      if (titleX.isEmpty) {
+      if (effectiveAction == DataAction.confirm) {
+        titleX = title!;
+      } else if (titleX.isEmpty) {
         titleX = title!;
       } else {
         titleX += ' $title';
@@ -420,7 +422,10 @@ class LightButtonSmall extends StatelessWidget {
                       ),
                     const Gap(6),
                     Text(
-                      '${action.title} ${entity?.title ?? title ?? ''}'.trim(),
+                      (action == DataAction.confirm
+                              ? (entity?.title ?? title ?? '')
+                              : '${action.title} ${entity?.title ?? title ?? ''}')
+                          .trim(),
                       style: TextStyle(color: foregroundColor),
                     ),
                   ],
