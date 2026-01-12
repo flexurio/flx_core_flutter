@@ -239,6 +239,7 @@ class LightButton extends StatelessWidget {
     this.title,
     this.isInProgress = false,
     this.iconOverride,
+    this.iconColor,
   });
   final void Function()? onPressed;
 
@@ -248,6 +249,7 @@ class LightButton extends StatelessWidget {
   final String? title;
   final bool isInProgress;
   final IconData? iconOverride;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -320,9 +322,10 @@ class LightButton extends StatelessWidget {
                       iconOverride ?? actionIcon,
                       color: noAction
                           ? theme.modeCondition(Colors.grey, Colors.white10)
-                          : (effectiveAction == DataAction.none
-                              ? foregroundColor
-                              : actionColor),
+                          : (iconColor ??
+                              (effectiveAction == DataAction.none
+                                  ? foregroundColor
+                                  : actionColor)),
                     ),
             ),
             const Gap(6),
@@ -344,6 +347,7 @@ class LightButtonSmall extends StatelessWidget {
     this.status,
     this.title,
     this.iconOverride,
+    this.iconColor,
   });
   final void Function()? onPressed;
 
@@ -353,6 +357,7 @@ class LightButtonSmall extends StatelessWidget {
   final Status? status;
   final String? title;
   final IconData? iconOverride;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -407,7 +412,10 @@ class LightButtonSmall extends StatelessWidget {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 1),
-                          child: Icon(iconOverride ?? action.icon),
+                          child: Icon(
+                            iconOverride ?? action.icon,
+                            color: iconColor,
+                          ),
                         ),
                       ),
                     const Gap(6),
