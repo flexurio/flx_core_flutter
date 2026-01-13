@@ -7,10 +7,7 @@ import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:gap/gap.dart';
 
 class BackButtonTitled extends StatelessWidget {
-  const BackButtonTitled({
-    required this.title,
-    super.key,
-  });
+  const BackButtonTitled({required this.title, super.key});
   final String title;
 
   @override
@@ -53,8 +50,8 @@ class Button extends StatelessWidget {
     this.isSecondary = false,
     this.rounded = false,
     this.entity,
-  })  : padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-        action = action.title;
+  }) : padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+       action = action.title;
 
   factory Button.action({
     required DataAction action,
@@ -138,9 +135,9 @@ class Button extends StatelessWidget {
         color == Colors.white || isSecondary
             ? (isSecondary ? (color ?? Colors.grey[600]) : Colors.grey[600])
             : theme.modeCondition(
-                Colors.white,
-                onPressed == null ? Colors.white12 : Colors.white,
-              ),
+              Colors.white,
+              onPressed == null ? Colors.white12 : Colors.white,
+            ),
       ),
     );
 
@@ -154,27 +151,24 @@ class Button extends StatelessWidget {
       child: ElevatedButton(
         style: buttonStyle,
         onPressed: !isInProgress ? onPressed : null,
-        child: isInProgress
-            ? const SizedBox(
-                height: 20,
-                width: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 3,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                ),
-              )
-            : Text(title),
+        child:
+            isInProgress
+                ? const SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
+                )
+                : Text(title),
       ),
     );
   }
 }
 
 class FabMini extends StatelessWidget {
-  const FabMini({
-    required this.action,
-    required this.onPressed,
-    super.key,
-  });
+  const FabMini({required this.action, required this.onPressed, super.key});
   final void Function() onPressed;
 
   final DataAction action;
@@ -239,6 +233,7 @@ class LightButton extends StatelessWidget {
     this.title,
     this.isInProgress = false,
     this.iconOverride,
+    this.iconColor,
   });
   final void Function()? onPressed;
 
@@ -248,13 +243,16 @@ class LightButton extends StatelessWidget {
   final String? title;
   final bool isInProgress;
   final IconData? iconOverride;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
     final noAction = onPressed == null;
     final theme = Theme.of(context);
-    final foregroundColor =
-        theme.modeCondition(Colors.blueGrey.shade700, Colors.white70);
+    final foregroundColor = theme.modeCondition(
+      Colors.blueGrey.shade700,
+      Colors.white70,
+    );
     var titleX = action.title;
     if (title != null) {
       titleX += ' $title';
@@ -276,16 +274,17 @@ class LightButton extends StatelessWidget {
             const EdgeInsets.symmetric(horizontal: 12),
           ),
           shadowColor: WidgetStateProperty.all(Colors.black.withOpacity(.3)),
-          side: noAction
-              ? null
-              : WidgetStateProperty.all(
-                  BorderSide(
-                    color: theme.modeCondition(
-                      Colors.grey.shade300,
-                      MyTheme.black16dp,
+          side:
+              noAction
+                  ? null
+                  : WidgetStateProperty.all(
+                    BorderSide(
+                      color: theme.modeCondition(
+                        Colors.grey.shade300,
+                        MyTheme.black16dp,
+                      ),
                     ),
                   ),
-                ),
           backgroundColor: WidgetStateProperty.all(
             noAction
                 ? theme.modeCondition(Colors.white, MyTheme.black04dp)
@@ -302,14 +301,20 @@ class LightButton extends StatelessWidget {
           children: [
             IconTheme(
               data: const IconThemeData(size: 18),
-              child: isInProgress
-                  ? const CupertinoActivityIndicator()
-                  : Icon(
-                      iconOverride ?? action.icon,
-                      color: noAction
-                          ? theme.modeCondition(Colors.grey, Colors.white10)
-                          : action.color,
-                    ),
+              child:
+                  isInProgress
+                      ? const CupertinoActivityIndicator()
+                      : Icon(
+                        iconOverride ?? action.icon,
+                        color:
+                            iconColor ??
+                            (noAction
+                                ? theme.modeCondition(
+                                  Colors.grey,
+                                  Colors.white10,
+                                )
+                                : action.color),
+                      ),
             ),
             const Gap(6),
             Text(titleX),
@@ -330,6 +335,7 @@ class LightButtonSmall extends StatelessWidget {
     this.status,
     this.title,
     this.iconOverride,
+    this.iconColor,
   });
   final void Function()? onPressed;
 
@@ -339,6 +345,7 @@ class LightButtonSmall extends StatelessWidget {
   final Status? status;
   final String? title;
   final IconData? iconOverride;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -373,8 +380,9 @@ class LightButtonSmall extends StatelessWidget {
                   padding: WidgetStateProperty.all(
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                   ),
-                  shadowColor:
-                      WidgetStateProperty.all(Colors.black.withOpacity(.3)),
+                  shadowColor: WidgetStateProperty.all(
+                    Colors.black.withOpacity(.3),
+                  ),
                   backgroundColor: WidgetStateProperty.all(
                     noAction ? Colors.grey.shade100 : Colors.transparent,
                   ),
@@ -389,7 +397,7 @@ class LightButtonSmall extends StatelessWidget {
                       IconTheme(
                         data: IconThemeData(
                           size: 18,
-                          color: foregroundColor,
+                          color: iconColor ?? foregroundColor,
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 1),
@@ -471,10 +479,7 @@ class LBS_JANGAN_PAKE_INI_LAGI extends StatelessWidget {
                 const CupertinoActivityIndicator()
               else
                 IconTheme(
-                  data: IconThemeData(
-                    size: 18,
-                    color: foregroundColor,
-                  ),
+                  data: IconThemeData(size: 18, color: foregroundColor),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 1),
                     child: Icon(action.icon),
@@ -540,10 +545,7 @@ class DropDownSmallButton extends StatelessWidget {
           Text(label),
           const Gap(6),
           IconTheme(
-            data: IconThemeData(
-              size: 18,
-              color: foregroundColor,
-            ),
+            data: IconThemeData(size: 18, color: foregroundColor),
             child: const Icon(Icons.keyboard_arrow_down_rounded),
           ),
         ],
@@ -582,8 +584,9 @@ class BackButtonWithTitle extends StatelessWidget {
         children: [
           BackButton(
             style: ButtonStyle(
-              foregroundColor:
-                  WidgetStatePropertyAll(foregroundColor.withAlpha(170)),
+              foregroundColor: WidgetStatePropertyAll(
+                foregroundColor.withAlpha(170),
+              ),
               side: WidgetStateProperty.all(
                 BorderSide(color: foregroundColor.withAlpha(50)),
               ),
@@ -597,9 +600,6 @@ class BackButtonWithTitle extends StatelessWidget {
         ],
       );
     }
-    return Padding(
-      padding: const EdgeInsets.only(top: 12),
-      child: text,
-    );
+    return Padding(padding: const EdgeInsets.only(top: 12), child: text);
   }
 }

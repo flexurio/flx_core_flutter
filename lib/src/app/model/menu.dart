@@ -27,11 +27,14 @@ class Menu3 {
   Menu3({
     required this.label,
     required this.home,
-    required this.permissions,
-    required this.permission,
+    @Deprecated('Use permissionProvider instead') this.permissions = const [],
+    this.permission,
+    this.permissionProvider,
   });
   final String label;
   final Widget home;
   final String? permission;
+  @Deprecated('Use permissionProvider instead')
   final List<String> permissions;
+  final Future<List<String>> Function()? permissionProvider;
 }
