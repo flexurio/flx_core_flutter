@@ -37,7 +37,7 @@ class _FieldTimePickerState extends State<FieldTimePicker> {
     super.initState();
     _timeSelected = widget.initialSelectedTime;
     if (_timeSelected != null) {
-      widget.controller.setText(_timeSelected!.yMMMdHm);
+      widget.controller.text = _timeSelected!.yMMMdHm;
     }
     focusNode.addListener(() {
       if (focusNode.hasFocus) {

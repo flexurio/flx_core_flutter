@@ -50,8 +50,8 @@ class Button extends StatelessWidget {
     this.isSecondary = false,
     this.rounded = false,
     this.entity,
-  }) : padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-       action = action.title;
+  })  : padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+        action = action.title;
 
   factory Button.action({
     required DataAction action,
@@ -135,9 +135,9 @@ class Button extends StatelessWidget {
         color == Colors.white || isSecondary
             ? (isSecondary ? (color ?? Colors.grey[600]) : Colors.grey[600])
             : theme.modeCondition(
-              Colors.white,
-              onPressed == null ? Colors.white12 : Colors.white,
-            ),
+                Colors.white,
+                onPressed == null ? Colors.white12 : Colors.white,
+              ),
       ),
     );
 
@@ -151,17 +151,16 @@ class Button extends StatelessWidget {
       child: ElevatedButton(
         style: buttonStyle,
         onPressed: !isInProgress ? onPressed : null,
-        child:
-            isInProgress
-                ? const SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 3,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                  ),
-                )
-                : Text(title),
+        child: isInProgress
+            ? const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
+            : Text(title),
       ),
     );
   }
@@ -225,7 +224,7 @@ class IconButtonSmall extends StatelessWidget {
 
 class LightButton extends StatelessWidget {
   const LightButton({
-    required this.action,
+    this.action,
     required this.permission,
     this.entity,
     super.key,
@@ -238,7 +237,7 @@ class LightButton extends StatelessWidget {
   final void Function()? onPressed;
 
   final String? permission;
-  final DataAction action;
+  final DataAction? action;
   final EntityY? entity;
   final String? title;
   final bool isInProgress;
@@ -249,15 +248,27 @@ class LightButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final noAction = onPressed == null;
     final theme = Theme.of(context);
-    final foregroundColor = theme.modeCondition(
-      Colors.blueGrey.shade700,
-      Colors.white70,
-    );
-    var titleX = action.title;
+    final foregroundColor =
+        theme.modeCondition(Colors.blueGrey.shade700, Colors.white70);
+    final effectiveAction = action ?? DataAction.none;
+    final actionColor = action?.color ?? Colors.blueGrey;
+    final actionIcon = action?.icon ?? iconOverride ?? Icons.circle;
+
+    var titleX = effectiveAction.title;
     if (title != null) {
-      titleX += ' $title';
+      if (effectiveAction == DataAction.confirm) {
+        titleX = title!;
+      } else if (titleX.isEmpty) {
+        titleX = title!;
+      } else {
+        titleX += ' $title';
+      }
     } else if (entity != null) {
-      titleX += ' ${entity!.title}';
+      if (titleX.isEmpty) {
+        titleX = entity!.title;
+      } else {
+        titleX += ' ${entity!.title}';
+      }
     }
 
     return VisibilityPermission(
@@ -265,7 +276,7 @@ class LightButton extends StatelessWidget {
       child: ElevatedButton(
         style: ButtonStyle(
           overlayColor: WidgetStatePropertyAll(
-            action.color.withOpacity(theme.modeCondition(.08, .03)),
+            actionColor.withOpacity(theme.modeCondition(.08, .03)),
           ),
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
@@ -274,17 +285,16 @@ class LightButton extends StatelessWidget {
             const EdgeInsets.symmetric(horizontal: 12),
           ),
           shadowColor: WidgetStateProperty.all(Colors.black.withOpacity(.3)),
-          side:
-              noAction
-                  ? null
-                  : WidgetStateProperty.all(
-                    BorderSide(
-                      color: theme.modeCondition(
-                        Colors.grey.shade300,
-                        MyTheme.black16dp,
-                      ),
+          side: noAction
+              ? null
+              : WidgetStateProperty.all(
+                  BorderSide(
+                    color: theme.modeCondition(
+                      Colors.grey.shade300,
+                      MyTheme.black16dp,
                     ),
                   ),
+                ),
           backgroundColor: WidgetStateProperty.all(
             noAction
                 ? theme.modeCondition(Colors.white, MyTheme.black04dp)
@@ -301,20 +311,17 @@ class LightButton extends StatelessWidget {
           children: [
             IconTheme(
               data: const IconThemeData(size: 18),
-              child:
-                  isInProgress
-                      ? const CupertinoActivityIndicator()
-                      : Icon(
-                        iconOverride ?? action.icon,
-                        color:
-                            iconColor ??
-                            (noAction
-                                ? theme.modeCondition(
-                                  Colors.grey,
-                                  Colors.white10,
-                                )
-                                : action.color),
-                      ),
+              child: isInProgress
+                  ? const CupertinoActivityIndicator()
+                  : Icon(
+                      iconOverride ?? actionIcon,
+                      color: noAction
+                          ? theme.modeCondition(Colors.grey, Colors.white10)
+                          : (iconColor ??
+                              (effectiveAction == DataAction.none
+                                  ? foregroundColor
+                                  : actionColor)),
+                    ),
             ),
             const Gap(6),
             Text(titleX),
@@ -401,12 +408,18 @@ class LightButtonSmall extends StatelessWidget {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 1),
-                          child: Icon(iconOverride ?? action.icon),
+                          child: Icon(
+                            iconOverride ?? action.icon,
+                            color: iconColor,
+                          ),
                         ),
                       ),
                     const Gap(6),
                     Text(
-                      '${action.title} ${entity?.title ?? title ?? ''}'.trim(),
+                      (action == DataAction.confirm
+                              ? (entity?.title ?? title ?? '')
+                              : '${action.title} ${entity?.title ?? title ?? ''}')
+                          .trim(),
                       style: TextStyle(color: foregroundColor),
                     ),
                   ],

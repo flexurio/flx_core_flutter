@@ -62,7 +62,7 @@ class _FieldYearPickerState extends State<FieldYearPicker> {
       if (value != null) {
         _yearSelected = value;
         widget.onChanged?.call(value);
-        widget.controller.setText(_yearSelected.toString());
+        widget.controller.text = _yearSelected.toString();
         setState(() {});
       }
     });
@@ -73,7 +73,7 @@ class _FieldYearPickerState extends State<FieldYearPicker> {
     super.initState();
     _yearSelected = widget.initialYear;
     if (_yearSelected != null) {
-      widget.controller.setText(_yearSelected.toString());
+      widget.controller.text = _yearSelected.toString();
     }
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
