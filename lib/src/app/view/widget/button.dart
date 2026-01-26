@@ -7,10 +7,7 @@ import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:gap/gap.dart';
 
 class BackButtonTitled extends StatelessWidget {
-  const BackButtonTitled({
-    required this.title,
-    super.key,
-  });
+  const BackButtonTitled({required this.title, super.key});
   final String title;
 
   @override
@@ -170,11 +167,7 @@ class Button extends StatelessWidget {
 }
 
 class FabMini extends StatelessWidget {
-  const FabMini({
-    required this.action,
-    required this.onPressed,
-    super.key,
-  });
+  const FabMini({required this.action, required this.onPressed, super.key});
   final void Function() onPressed;
 
   final DataAction action;
@@ -393,8 +386,9 @@ class LightButtonSmall extends StatelessWidget {
                   padding: WidgetStateProperty.all(
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                   ),
-                  shadowColor:
-                      WidgetStateProperty.all(Colors.black.withOpacity(.3)),
+                  shadowColor: WidgetStateProperty.all(
+                    Colors.black.withOpacity(.3),
+                  ),
                   backgroundColor: WidgetStateProperty.all(
                     noAction ? Colors.grey.shade100 : Colors.transparent,
                   ),
@@ -409,7 +403,7 @@ class LightButtonSmall extends StatelessWidget {
                       IconTheme(
                         data: IconThemeData(
                           size: 18,
-                          color: foregroundColor,
+                          color: iconColor ?? foregroundColor,
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 1),
@@ -497,10 +491,7 @@ class LBS_JANGAN_PAKE_INI_LAGI extends StatelessWidget {
                 const CupertinoActivityIndicator()
               else
                 IconTheme(
-                  data: IconThemeData(
-                    size: 18,
-                    color: foregroundColor,
-                  ),
+                  data: IconThemeData(size: 18, color: foregroundColor),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 1),
                     child: Icon(action.icon),
@@ -566,10 +557,7 @@ class DropDownSmallButton extends StatelessWidget {
           Text(label),
           const Gap(6),
           IconTheme(
-            data: IconThemeData(
-              size: 18,
-              color: foregroundColor,
-            ),
+            data: IconThemeData(size: 18, color: foregroundColor),
             child: const Icon(Icons.keyboard_arrow_down_rounded),
           ),
         ],
@@ -608,8 +596,9 @@ class BackButtonWithTitle extends StatelessWidget {
         children: [
           BackButton(
             style: ButtonStyle(
-              foregroundColor:
-                  WidgetStatePropertyAll(foregroundColor.withAlpha(170)),
+              foregroundColor: WidgetStatePropertyAll(
+                foregroundColor.withAlpha(170),
+              ),
               side: WidgetStateProperty.all(
                 BorderSide(color: foregroundColor.withAlpha(50)),
               ),
@@ -623,9 +612,6 @@ class BackButtonWithTitle extends StatelessWidget {
         ],
       );
     }
-    return Padding(
-      padding: const EdgeInsets.only(top: 12),
-      child: text,
-    );
+    return Padding(padding: const EdgeInsets.only(top: 12), child: text);
   }
 }
