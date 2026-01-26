@@ -206,6 +206,8 @@ class Permission {
   static String workOrderTypeViewMenu = 'work_order_types_view_menu';
 
   static String workOrderLeadtimeViewMenu = 'work_order_leadtimes_view_menu';
+
+  static String userViewMenu = 'user_view_menu';
   
   // --
   static String taxInvoiceNumberViewMenu = 'tax_invoice_number_view_menu';
