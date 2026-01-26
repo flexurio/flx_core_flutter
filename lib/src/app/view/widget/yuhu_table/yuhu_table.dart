@@ -106,9 +106,10 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
               ],
             ),
             if (_frozenStart != null)
-              _buildFrozenColumn(_frozenStart!, borderSide, false, theme),
+              _buildFrozenColumn(0, _frozenStart!, borderSide, false, theme),
             if (_frozenEnd != null)
-              _buildFrozenColumn(_frozenEnd!, borderSide, true, theme),
+              _buildFrozenColumn(widget.columns.length - 1, _frozenEnd!,
+                  borderSide, true, theme),
           ],
         ),
         if (widget.status == Status.progress)
@@ -239,6 +240,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
   }
 
   Widget _buildFrozenColumn(
+    int index,
     TableColumn<T> column,
     BorderSide borderSide,
     bool isLast,
@@ -253,7 +255,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     final header = TableRow(
       decoration: headerDecoration,
       children: [
-        _buildTableHeader(0, column),
+        _buildTableHeader(index, column),
       ],
     );
 

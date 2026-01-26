@@ -137,7 +137,8 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
 
     // Key untuk memaksa re-render saat mode freeze/multi berubah
     final key = ValueKey(
-        'freezeFirst:$freezeFirst|freezeLast:$freezeLast|hasMulti:$hasMulti|freezeTwo:$freezeTwo',);
+      'freezeFirst:$freezeFirst|freezeLast:$freezeLast|hasMulti:$hasMulti|freezeTwo:$freezeTwo',
+    );
 
     // Hitung total lebar
     final baseWidth = widget.columns.fold<double>(
@@ -294,7 +295,7 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
         _getSortColumnIndex(widget.pageOptions, widget.columns);
     int initialSortColumnIndex;
     if (originalSortIdx < 0) {
-      initialSortColumnIndex = freezeTwo ? 0 : (hasMulti ? 1 : 0);
+      initialSortColumnIndex = -1;
     } else {
       if (freezeTwo) {
         // kolom pertama asli jadi index 0; sisanya geser -1
@@ -380,7 +381,9 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
                       Container(
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12,),
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.grey.shade50,
                           border: Border(
@@ -412,7 +415,11 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
   }
 
   void _onSortChanged(
-      int index, bool ascending, bool hasMulti, bool freezeTwo,) {
+    int index,
+    bool ascending,
+    bool hasMulti,
+    bool freezeTwo,
+  ) {
     // Abaikan sort pada kolom checkbox murni (mode hasMulti tanpa freezeTwo)
     if (!freezeTwo && hasMulti && index == 0) return;
 
