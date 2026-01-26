@@ -233,6 +233,7 @@ class LightButton extends StatelessWidget {
     this.isInProgress = false,
     this.iconOverride,
     this.iconColor,
+    this.expanded = false,
   });
   final void Function()? onPressed;
 
@@ -243,6 +244,7 @@ class LightButton extends StatelessWidget {
   final bool isInProgress;
   final IconData? iconOverride;
   final Color? iconColor;
+  final bool expanded;
 
   @override
   Widget build(BuildContext context) {
@@ -308,7 +310,7 @@ class LightButton extends StatelessWidget {
         ),
         onPressed: isInProgress ? null : onPressed,
         child: Row(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
           children: [
             IconTheme(
               data: const IconThemeData(size: 18),
@@ -344,6 +346,7 @@ class LightButtonSmall extends StatelessWidget {
     this.title,
     this.iconOverride,
     this.iconColor,
+    this.expanded = false,
   });
   final void Function()? onPressed;
 
@@ -354,6 +357,7 @@ class LightButtonSmall extends StatelessWidget {
   final String? title;
   final IconData? iconOverride;
   final Color? iconColor;
+  final bool expanded;
 
   @override
   Widget build(BuildContext context) {
@@ -398,7 +402,7 @@ class LightButtonSmall extends StatelessWidget {
                 ),
                 onPressed: !isProgress && hasPermission ? onPressed : null,
                 child: Row(
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
                   children: [
                     if (status != null && status == Status.progress)
                       const CupertinoActivityIndicator()
