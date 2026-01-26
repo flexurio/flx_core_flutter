@@ -224,7 +224,8 @@ class IconButtonSmall extends StatelessWidget {
 
 class LightButton extends StatelessWidget {
   const LightButton({
-    required this.permission, this.action,
+    required this.permission,
+    this.action,
     this.entity,
     super.key,
     this.onPressed,
@@ -307,6 +308,7 @@ class LightButton extends StatelessWidget {
         ),
         onPressed: isInProgress ? null : onPressed,
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             IconTheme(
               data: const IconThemeData(size: 18),
@@ -396,6 +398,7 @@ class LightButtonSmall extends StatelessWidget {
                 ),
                 onPressed: !isProgress && hasPermission ? onPressed : null,
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     if (status != null && status == Status.progress)
                       const CupertinoActivityIndicator()
@@ -486,6 +489,7 @@ class LBS_JANGAN_PAKE_INI_LAGI extends StatelessWidget {
           ),
           onPressed: !isProgress ? onPressed : null,
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               if (status != null && status == Status.progress)
                 const CupertinoActivityIndicator()
@@ -547,6 +551,7 @@ class DropDownSmallButton extends StatelessWidget {
       ),
       onPressed: onPressed,
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null)
             Padding(
