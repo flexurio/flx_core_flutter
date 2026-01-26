@@ -19,8 +19,6 @@ Future<void> showDialogViewPDF({
 
   await showDialog<void>(
     context: context,
-    barrierDismissible: true,
-    useRootNavigator: true,
     builder: (BuildContext dialogContext) {
       final size = MediaQuery.of(dialogContext).size;
 
@@ -41,8 +39,6 @@ Future<void> showDialogViewPDF({
             }
             textSearcher.startTextSearch(
               query,
-              caseInsensitive: true,
-              goToFirstMatch: true,
             );
           }
 
@@ -184,7 +180,6 @@ Future<void> showDialogViewPDF({
                               padding: const EdgeInsets.all(8),
                               color: const Color(0xFFEDE6F3),
                               child: Row(
-                                mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [

@@ -64,7 +64,7 @@ class CardForm extends StatelessWidget {
           SizedBox(
             width: width,
             child: body,
-          )
+          ),
         ],
       );
     } else {

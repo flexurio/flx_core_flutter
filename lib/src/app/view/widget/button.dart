@@ -231,8 +231,7 @@ class IconButtonSmall extends StatelessWidget {
 
 class LightButton extends StatelessWidget {
   const LightButton({
-    this.action,
-    required this.permission,
+    required this.permission, this.action,
     this.entity,
     super.key,
     this.onPressed,

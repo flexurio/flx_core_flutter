@@ -137,14 +137,14 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
 
     // Key untuk memaksa re-render saat mode freeze/multi berubah
     final key = ValueKey(
-        'freezeFirst:$freezeFirst|freezeLast:$freezeLast|hasMulti:$hasMulti|freezeTwo:$freezeTwo');
+        'freezeFirst:$freezeFirst|freezeLast:$freezeLast|hasMulti:$hasMulti|freezeTwo:$freezeTwo',);
 
     // Hitung total lebar
-    final double baseWidth = widget.columns.fold<double>(
+    final baseWidth = widget.columns.fold<double>(
       0,
       (sum, col) => sum + (col.widthFlex * 25),
     );
-    final double totalWidth = freezeTwo
+    final totalWidth = freezeTwo
         ? baseWidth // tidak menambah kolom baru; kolom 1 digabung dengan checkbox
         : (hasMulti
             ? baseWidth + 25
@@ -178,7 +178,7 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
                       value: checked,
                       onChanged: (v) {
                         setState(() {
-                          if (v == true) {
+                          if (v ?? false) {
                             _selectedRowIndexes.add(idx);
                           } else {
                             _selectedRowIndexes.remove(idx);
@@ -204,7 +204,7 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
       );
 
       // Tambahkan sisa kolom mulai dari index 1
-      for (int i = 1; i < widget.columns.length; i++) {
+      for (var i = 1; i < widget.columns.length; i++) {
         final col = widget.columns[i];
         yuhuColumns.add(
           TableColumn<T>(
@@ -236,7 +236,7 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
                 value: checked,
                 onChanged: (v) {
                   setState(() {
-                    if (v == true) {
+                    if (v ?? false) {
                       _selectedRowIndexes.add(idx);
                     } else {
                       _selectedRowIndexes.remove(idx);
@@ -307,12 +307,12 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
     }
 
     // Kumpulkan item terpilih (untuk actionMultiple)
-    final List<T> selectedItems = _selectedRowIndexes
+    final selectedItems = _selectedRowIndexes
         .where((i) => i >= 0 && i < widget.pageOptions.data.length)
         .map((i) => widget.pageOptions.data[i])
         .toList();
 
-    final Widget? multipleActionWidget =
+    final multipleActionWidget =
         (widget.actionMultiple != null && selectedItems.isNotEmpty)
             ? widget.actionMultiple!(selectedItems)
             : null;
@@ -380,7 +380,7 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
                       Container(
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
+                            horizontal: 16, vertical: 12,),
                         decoration: BoxDecoration(
                           color: Colors.grey.shade50,
                           border: Border(
@@ -412,7 +412,7 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
   }
 
   void _onSortChanged(
-      int index, bool ascending, bool hasMulti, bool freezeTwo) {
+      int index, bool ascending, bool hasMulti, bool freezeTwo,) {
     // Abaikan sort pada kolom checkbox murni (mode hasMulti tanpa freezeTwo)
     if (!freezeTwo && hasMulti && index == 0) return;
 
@@ -446,9 +446,7 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
 
   void _changePage(int page) {
     // Saat pindah halaman, bersihkan pilihan
-    setState(() {
-      _selectedRowIndexes.clear();
-    });
+    setState(_selectedRowIndexes.clear);
     widget.onChanged(widget.pageOptions.copyWith(page: page, data: []));
   }
 
