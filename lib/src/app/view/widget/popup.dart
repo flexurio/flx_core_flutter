@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
+import 'package:clipboard/clipboard.dart';
 import 'package:gap/gap.dart';
 
 class CardForm extends StatelessWidget {
@@ -64,7 +65,7 @@ class CardForm extends StatelessWidget {
           SizedBox(
             width: width,
             child: body,
-          )
+          ),
         ],
       );
     } else {
@@ -411,6 +412,64 @@ class _CardConfirmationWithExplanationState
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CardSuccessWithData extends StatelessWidget {
+  const CardSuccessWithData({
+    required this.title,
+    required this.message,
+    required this.copyLabel,
+    required this.copyValue,
+    super.key,
+  });
+
+  final String title;
+  final String message;
+  final String copyLabel;
+  final String copyValue;
+
+  @override
+  Widget build(BuildContext context) {
+    Sound.alert();
+    final theme = Theme.of(context);
+
+    return CardForm(
+      popup: true,
+      title: title,
+      icon: FontAwesomeIcons.checkCircle,
+      actions: [
+        Button.action(
+          permission: null,
+          isSecondary: true,
+          onPressed: () => Navigator.pop(context),
+          action: DataAction.confirm,
+        ),
+      ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(message),
+          if (copyValue.isNotEmpty) ...[
+            const Gap(16),
+            Align(
+              alignment: Alignment.centerRight,
+              child: LightButton(
+                permission: null,
+                action: DataAction.none,
+                title: copyLabel,
+                iconOverride: Icons.copy,
+                onPressed: () {
+                  FlutterClipboard.copy(copyValue).then(
+                    (value) => Toast(context).notify('Copied to clipboard'),
+                  );
+                },
+              ),
+            ),
+          ],
+        ],
       ),
     );
   }

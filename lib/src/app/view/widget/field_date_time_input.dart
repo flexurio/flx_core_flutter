@@ -4,9 +4,7 @@ import 'package:intl/intl.dart';
 
 class FieldDateWithMaskedTime extends StatefulWidget {
   const FieldDateWithMaskedTime({
-    super.key,
-    required this.dateController,
-    required this.timeController,
+    required this.dateController, required this.timeController, super.key,
     this.labelText,
     this.initialSelectedTime,
     this.onChanged,
