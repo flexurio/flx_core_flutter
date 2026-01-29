@@ -2,6 +2,9 @@ export 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 export 'constant/size.dart';
 export 'src/app/bloc/theme/menu/menu_bloc.dart';
+export 'src/app/bloc/theme/menu_collapse/menu_collapse.dart';
+export 'src/app/bloc/theme/theme_bloc.dart';
+
 // Model
 export 'src/app/model/base_api.dart';
 export 'src/app/model/color_type.dart';
