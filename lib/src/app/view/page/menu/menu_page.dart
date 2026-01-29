@@ -108,6 +108,7 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
+    final collapse = context.read<MenuCollapseBloc>();
     return Shortcuts(
       shortcuts: {
         LogicalKeySet(
@@ -120,6 +121,8 @@ class _MenuPageState extends State<MenuPage> {
           LogicalKeyboardKey.alt,
           LogicalKeyboardKey.keyT,
         ): GoToTicketIntent(),
+        LogicalKeySet(LogicalKeyboardKey.alt, LogicalKeyboardKey.keyD):
+            MenuCollapseIntent(),
       },
       child: Actions(
         actions: {
@@ -131,6 +134,12 @@ class _MenuPageState extends State<MenuPage> {
                 accountPermissions: widget.accountPermissions,
                 searchData: widget.searchData,
               );
+              return null;
+            },
+          ),
+          MenuCollapseIntent: CallbackAction(
+            onInvoke: (i) {
+              collapse.add(!collapse.state);
               return null;
             },
           ),
@@ -278,3 +287,5 @@ class VersionInfo extends StatelessWidget {
 }
 
 class GoToTicketIntent extends Intent {}
+
+class MenuCollapseIntent extends Intent {}
