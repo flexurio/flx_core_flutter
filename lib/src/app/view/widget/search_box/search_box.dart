@@ -9,12 +9,14 @@ class SearchBoxLarge extends StatelessWidget {
     required this.menu,
     required this.permissions,
     required this.searchData,
+    this.placeholderMenuList,
     super.key,
   });
 
   final List<Menu1> menu;
   final List<String> permissions;
   final List<Widget> Function(BuildContext context, String query) searchData;
+  final Widget? placeholderMenuList;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,7 @@ class SearchBoxLarge extends StatelessWidget {
               menu: menu,
               accountPermissions: permissions,
               searchData: searchData,
+              placeholderMenuList: placeholderMenuList,
             );
           },
           child: Container(
@@ -57,6 +60,7 @@ Future<void> showSearchDialog({
   required List<Menu1> menu,
   required List<String> accountPermissions,
   required List<Widget> Function(BuildContext context, String query) searchData,
+  Widget? placeholderMenuList,
 }) {
   final menuBloc = MenuBloc.instance;
   return showDialog<void>(
@@ -66,6 +70,7 @@ Future<void> showSearchDialog({
         searchData: searchData,
         menu: menu,
         permissions: accountPermissions,
+        placeholderMenuList: placeholderMenuList,
         onTap: (menu, menu2) {
           menuBloc
             ..add(Menu2Expanded(menu2))

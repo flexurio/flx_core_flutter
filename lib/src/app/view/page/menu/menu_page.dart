@@ -22,6 +22,7 @@ class MenuPage extends StatefulWidget {
     this.logoNamed,
     this.initialState,
     this.bypassPermission,
+    this.placeholderMenuList,
   );
 
   final List<Widget> Function(BuildContext context, String query) searchData;
@@ -36,6 +37,7 @@ class MenuPage extends StatefulWidget {
   final void Function(BuildContext context) onChangePassword;
   final VoidCallback? initialState;
   final bool bypassPermission;
+  final Widget? placeholderMenuList;
 
   static Widget prepare({
     required String appName,
@@ -51,6 +53,7 @@ class MenuPage extends StatefulWidget {
     String? logoNamed,
     VoidCallback? initialState,
     bool bypassPermission = false,
+    Widget? placeholderMenuList,
   }) {
     return MultiBlocProvider(
       providers: [
@@ -75,6 +78,7 @@ class MenuPage extends StatefulWidget {
         logoNamed,
         initialState,
         bypassPermission,
+        placeholderMenuList,
       ),
     );
   }
@@ -133,6 +137,7 @@ class _MenuPageState extends State<MenuPage> {
                 menu: widget.menu,
                 accountPermissions: widget.accountPermissions,
                 searchData: widget.searchData,
+                placeholderMenuList: widget.placeholderMenuList,
               );
               return null;
             },
@@ -216,6 +221,7 @@ class _MenuPageState extends State<MenuPage> {
       accountPermission: widget.accountPermissions,
       onLogout: widget.onLogout,
       onChangePassword: widget.onChangePassword,
+      placeholderMenuList: widget.placeholderMenuList,
       drawerTriggered: () {
         _scaffoldKey.currentState?.openDrawer();
       },
