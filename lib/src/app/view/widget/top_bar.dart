@@ -2,8 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
-import 'package:flx_core_flutter/src/app/bloc/theme/menu_collapse/menu_collapse.dart';
-import 'package:flx_core_flutter/src/app/bloc/theme/theme_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:screen_identifier/screen_identifier.dart';
 
@@ -18,6 +16,7 @@ class TopBar extends StatelessWidget {
     required this.onChangePassword,
     required this.searchData,
     required this.logoNamedUrl,
+    this.placeholderMenuList,
     super.key,
   });
 
@@ -30,6 +29,7 @@ class TopBar extends StatelessWidget {
   final void Function() onLogout;
   final void Function() drawerTriggered;
   final void Function(BuildContext context) onChangePassword;
+  final Widget? placeholderMenuList;
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +103,7 @@ class TopBar extends StatelessWidget {
                 menu: menu,
                 permissions: accountPermission,
                 searchData: searchData,
+                placeholderMenuList: placeholderMenuList,
               ),
             ),
             const SizedBox(width: 24),

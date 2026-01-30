@@ -11,6 +11,7 @@ class ItemSearchList extends StatefulWidget {
     required this.menu,
     required this.permissions,
     required this.searchData,
+    this.placeholderMenuList,
     super.key,
   });
   final String query;
@@ -18,6 +19,7 @@ class ItemSearchList extends StatefulWidget {
   final List<Menu1> menu;
   final List<String> permissions;
   final List<Widget> Function(BuildContext context, String query) searchData;
+  final Widget? placeholderMenuList;
 
   @override
   State<ItemSearchList> createState() => _ItemSearchListState();
@@ -78,14 +80,9 @@ class _ItemSearchListState extends State<ItemSearchList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: menuList,
-    );
-    // return KeyboardListener(
-    //   focusNode: _focusNode,
-    //   child: ListView(
-    //     children: menuList,
-    //   ),
-    // );
+    if (widget.placeholderMenuList != null && widget.query.trim().isEmpty) {
+      return ListView(children: [widget.placeholderMenuList!]);
+    }
+    return ListView(children: menuList);
   }
 }

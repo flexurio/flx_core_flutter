@@ -10,12 +10,14 @@ class SearchDialog extends StatefulWidget {
     required this.menu,
     required this.permissions,
     required this.searchData,
+    this.placeholderMenuList,
     super.key,
   });
   final void Function(Menu3, String) onTap;
   final List<Menu1> menu;
   final List<String> permissions;
   final List<Widget> Function(BuildContext context, String query) searchData;
+  final Widget? placeholderMenuList;
 
   @override
   State<SearchDialog> createState() => _SearchDialogState();
@@ -94,6 +96,7 @@ class _SearchDialogState extends State<SearchDialog> {
               menu: widget.menu,
               permissions: widget.permissions,
               searchData: widget.searchData,
+              placeholderMenuList: widget.placeholderMenuList,
             ),
           ),
           const Divider(),
