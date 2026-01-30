@@ -98,32 +98,32 @@ class DataSetAction<T> extends StatelessWidget {
   }
 
   Widget _buildSearchBox() {
+    Debouncer? debouncer;
+    Debouncer db() => debouncer ??= Debouncer();
     return ScreenIdentifierBuilder(
       builder: (context, screenIdentifier) {
         return SizedBox(
           width: screenIdentifier.conditions(sm: true, md: false) ? null : 300,
           child: SearchBoxX(
+            autoFocus: MenuPage.tableSearchMode == DataTableSearchMode.direct &&
+                pageOptions.search.isNotEmpty,
             onSubmitted: MenuPage.tableSearchMode == DataTableSearchMode.submit
                 ? _searchBoxOnSubmit
                 : null,
             onChanged: MenuPage.tableSearchMode == DataTableSearchMode.direct
-                ? _searchBoxOnChanged
+                ? (value) {
+                    db()(() {
+                      onChanged.call(
+                        pageOptions.copyWith(data: [], search: value),
+                      );
+                    });
+                  }
                 : null,
             initial: pageOptions.search,
           ),
         );
       },
     );
-  }
-
-  void _searchBoxOnChanged(String value) {
-    Debouncer? debouncer;
-    Debouncer db() => debouncer ??= Debouncer();
-    db()(() {
-      onChanged.call(
-        pageOptions.copyWith(page: 1, data: [], search: value.trim()),
-      );
-    });
   }
 
   void _searchBoxOnSubmit(String value) {
