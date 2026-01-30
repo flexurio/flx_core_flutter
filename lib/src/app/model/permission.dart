@@ -70,7 +70,7 @@ class Permission {
       'invoice_receive_confirm_finance';
   static String invoiceReceiveApproveHeadAccounting =
       'invoice_receive_approve_head_accounting';
-  static String invoiceReceiveReject = 'invoice_receive_reject';    
+  static String invoiceReceiveReject = 'invoice_receive_reject';
 
   // Journal Estimation
   static String journalEstimationViewMenu = 'journal_estimation_view_menu';
@@ -208,7 +208,7 @@ class Permission {
   static String workOrderLeadtimeViewMenu = 'work_order_leadtimes_view_menu';
 
   static String userViewMenu = 'user_view_menu';
-  
+
   // --
   static String taxInvoiceNumberViewMenu = 'tax_invoice_number_view_menu';
   static String taxInvoiceNumberCreate = 'tax_invoice_number_create';
