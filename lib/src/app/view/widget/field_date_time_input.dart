@@ -4,7 +4,9 @@ import 'package:intl/intl.dart';
 
 class FieldDateWithMaskedTime extends StatefulWidget {
   const FieldDateWithMaskedTime({
-    required this.dateController, required this.timeController, super.key,
+    required this.dateController,
+    required this.timeController,
+    super.key,
     this.labelText,
     this.initialSelectedTime,
     this.onChanged,
@@ -101,17 +103,14 @@ class _FieldDateWithMaskedTimeState extends State<FieldDateWithMaskedTime> {
   void _validateAndEmit() {
     final dateTime = _composeDateTime();
 
-  
     if (_selectedDate != null && widget.timeController.text.isEmpty) {
       _errorText = 'Please fill in this field';
-    } else if (_selectedDate == null &&
-        widget.timeController.text.isNotEmpty) {
+    } else if (_selectedDate == null && widget.timeController.text.isNotEmpty) {
       _errorText = 'Please fill in this field';
     } else if (widget.timeController.text.isNotEmpty &&
         !_isValidTime(widget.timeController.text)) {
       _errorText = 'Format time not valid';
     } else {
-    
       _errorText = widget.validator?.call(dateTime);
     }
 
@@ -148,7 +147,6 @@ class _FieldDateWithMaskedTimeState extends State<FieldDateWithMaskedTime> {
           ),
         Row(
           children: [
-          
             Expanded(
               child: InkWell(
                 onTap: _pickDate,
@@ -177,8 +175,6 @@ class _FieldDateWithMaskedTimeState extends State<FieldDateWithMaskedTime> {
               ),
             ),
             const SizedBox(width: 12),
-
-          
             Expanded(
               child: Container(
                 height: 49,
