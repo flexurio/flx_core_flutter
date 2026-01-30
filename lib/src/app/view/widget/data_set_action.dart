@@ -114,7 +114,7 @@ class DataSetAction<T> extends StatelessWidget {
                 ? (value) {
                     db()(() {
                       onChanged.call(
-                        pageOptions.copyWith(data: [], search: value.trim()),
+                        pageOptions.copyWith(data: [], search: value),
                       );
                     });
                   }
