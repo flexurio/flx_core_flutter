@@ -20,6 +20,13 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
+        },
+        {
+            "name": "Widgetbook",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/lib/widgetbook.dart",
+            "cwd": "${workspaceFolder}/example"
         }
     ]
 }

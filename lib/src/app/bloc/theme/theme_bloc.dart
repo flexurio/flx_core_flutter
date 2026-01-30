@@ -10,6 +10,12 @@ class ThemeBloc extends HydratedBloc<ThemeMode, ThemeMode> {
 
   static ThemeBloc instance = ThemeBloc();
 
+  static void toggleTheme() {
+    instance.add(
+      instance.state == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark,
+    );
+  }
+
   @override
   ThemeMode? fromJson(Map<String, dynamic> json) {
     final theme = json['theme'] as String;

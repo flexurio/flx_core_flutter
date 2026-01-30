@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "85.0.0"
+  accessibility_tools:
+    dependency: transitive
+    description:
+      name: accessibility_tools
+      sha256: "088cfe6d3520dbe86bb5259059c0d5f478fe113e09311023b0485e68879b34b2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.7.1"
   analyzer:
     dependency: transitive
     description:
@@ -225,6 +233,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.11"
+  device_frame_plus:
+    dependency: transitive
+    description:
+      name: device_frame_plus
+      sha256: ccc94abccd4d9f0a9f19ef239001b3a59896e678ad42601371d7065889f2bf78
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.0"
   dio:
     dependency: transitive
     description:
@@ -540,6 +556,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.3.0"
+  inspector:
+    dependency: transitive
+    description:
+      name: inspector
+      sha256: a01ea538b15947a9189835cc910041bab91aea3ad7c421684118aa1040189ded
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
   internet_connection_checker:
     dependency: transitive
     description:
@@ -980,6 +1004,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.2"
+  resizable_widget:
+    dependency: transitive
+    description:
+      name: resizable_widget
+      sha256: db2919754b93f386b9b3fb15e9f48f6c9d6d41f00a24397629133c99df86606a
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5"
   retry:
     dependency: transitive
     description:
@@ -1441,6 +1473,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.1"
+  widgetbook:
+    dependency: transitive
+    description:
+      name: widgetbook
+      sha256: "0ffadb039b1811870b2f643e1730d419d38435b0e1931cc83f32ecd7e50200e4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.20.2"
+  widgetbook_annotation:
+    dependency: transitive
+    description:
+      name: widgetbook_annotation
+      sha256: "55504431b15eedef3c1fc4af2d108ac98b32610b59d4a4e2eea87a8515d17eef"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.9.0"
   win32:
     dependency: transitive
     description:

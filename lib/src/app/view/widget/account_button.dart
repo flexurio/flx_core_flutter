@@ -18,6 +18,24 @@ class AccountButton extends StatelessWidget {
   final void Function() onLogout;
   final void Function(BuildContext context) onChangePassword;
 
+  static void showProfilePopUp({
+    required BuildContext context,
+    required String title,
+    required String subtitle,
+    required void Function() onLogout,
+    required void Function(BuildContext context) onChangePassword,
+  }) {
+    showDialog<void>(
+      context: context,
+      builder: (context) => _PopUpDialogProfile(
+        title,
+        subtitle,
+        onLogout,
+        onChangePassword,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(

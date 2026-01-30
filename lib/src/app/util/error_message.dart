@@ -1,9 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
 
+bool _isSnakeCase(String input) {
+  final regex = RegExp(r'^[a-z]+(_[a-z]+)*$');
+  return regex.hasMatch(input);
+}
+
 String errorMessage(dynamic error) {
   if (error is ApiException) {
-    return 'error.${error.message}'.tr();
+    if (_isSnakeCase(error.message)) {
+      return 'error.${error.message}'.tr();
+    } else {
+      return error.message;
+    }
   } else {
     return errorSomethingWentWrong;
   }

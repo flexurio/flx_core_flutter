@@ -5,6 +5,31 @@ import 'package:hive/hive.dart';
 class SwitchLanguage extends StatefulWidget {
   const SwitchLanguage({super.key});
 
+  static final GlobalKey<_SwitchLanguageState> globalKey =
+      GlobalKey<_SwitchLanguageState>();
+
+  static Future<void> switchLanguage(
+    BuildContext context,
+    String languageCode,
+  ) async {
+    final locale = Locale(languageCode);
+    await context.setLocale(locale);
+
+    final settings = await Hive.openBox<String>('settings');
+    await settings.put('language', languageCode);
+    globalKey.currentState?._updateLocale(locale);
+  }
+
+  static Future<void> toggleLanguage(BuildContext context) async {
+    final currentLocale = context.locale;
+    final newLanguageCode = currentLocale.languageCode == 'en' ? 'id' : 'en';
+    await switchLanguage(context, newLanguageCode);
+  }
+
+  static String getCurrentLanguage(BuildContext context) {
+    return context.locale.languageCode;
+  }
+
   @override
   State<SwitchLanguage> createState() => _SwitchLanguageState();
 }
@@ -35,12 +60,20 @@ class _SwitchLanguageState extends State<SwitchLanguage> {
     setState(() {});
   }
 
+  void _updateLocale(Locale newLocale) {
+    if (mounted && locale.languageCode != newLocale.languageCode) {
+      setState(() {
+        locale = newLocale;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         _Language(
-          state: locale,
+          state: context.locale,
           locale: const Locale('en'),
           onTap: onChanged,
         ),
@@ -51,7 +84,7 @@ class _SwitchLanguageState extends State<SwitchLanguage> {
           color: Colors.blueGrey.shade400,
         ),
         _Language(
-          state: locale,
+          state: context.locale,
           locale: const Locale('id'),
           onTap: onChanged,
         ),

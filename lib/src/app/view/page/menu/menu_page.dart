@@ -5,6 +5,7 @@ import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flx_core_flutter/src/app/bloc/theme/menu_collapse/menu_collapse.dart';
 import 'package:flx_core_flutter/src/app/view/page/menu/menu_side_nav.dart';
 import 'package:flx_core_flutter/src/app/view/page/menu/widget/menu_content.dart';
+import 'package:flx_core_flutter/src/app/view/widget/data_set_action.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:screen_identifier/screen_identifier.dart';
 
@@ -22,6 +23,8 @@ class MenuPage extends StatefulWidget {
     this.logoNamed,
     this.initialState,
     this.bypassPermission,
+    this.placeholderMenuList,
+    this.searchMode,
   );
 
   final List<Widget> Function(BuildContext context, String query) searchData;
@@ -36,6 +39,10 @@ class MenuPage extends StatefulWidget {
   final void Function(BuildContext context) onChangePassword;
   final VoidCallback? initialState;
   final bool bypassPermission;
+  final Widget? placeholderMenuList;
+  final DataTableSearchMode searchMode;
+
+  static DataTableSearchMode tableSearchMode = DataTableSearchMode.submit;
 
   static Widget prepare({
     required String appName,
@@ -51,7 +58,10 @@ class MenuPage extends StatefulWidget {
     String? logoNamed,
     VoidCallback? initialState,
     bool bypassPermission = false,
+    Widget? placeholderMenuList,
+    DataTableSearchMode searchMode = DataTableSearchMode.submit,
   }) {
+    tableSearchMode = searchMode;
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -75,6 +85,8 @@ class MenuPage extends StatefulWidget {
         logoNamed,
         initialState,
         bypassPermission,
+        placeholderMenuList,
+        searchMode,
       ),
     );
   }
@@ -108,6 +120,7 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
+    final collapse = context.read<MenuCollapseBloc>();
     return Shortcuts(
       shortcuts: {
         LogicalKeySet(
@@ -120,6 +133,8 @@ class _MenuPageState extends State<MenuPage> {
           LogicalKeyboardKey.alt,
           LogicalKeyboardKey.keyT,
         ): GoToTicketIntent(),
+        LogicalKeySet(LogicalKeyboardKey.alt, LogicalKeyboardKey.keyD):
+            MenuCollapseIntent(),
       },
       child: Actions(
         actions: {
@@ -130,7 +145,14 @@ class _MenuPageState extends State<MenuPage> {
                 menu: widget.menu,
                 accountPermissions: widget.accountPermissions,
                 searchData: widget.searchData,
+                placeholderMenuList: widget.placeholderMenuList,
               );
+              return null;
+            },
+          ),
+          MenuCollapseIntent: CallbackAction(
+            onInvoke: (i) {
+              collapse.add(!collapse.state);
               return null;
             },
           ),
@@ -207,6 +229,7 @@ class _MenuPageState extends State<MenuPage> {
       accountPermission: widget.accountPermissions,
       onLogout: widget.onLogout,
       onChangePassword: widget.onChangePassword,
+      placeholderMenuList: widget.placeholderMenuList,
       drawerTriggered: () {
         _scaffoldKey.currentState?.openDrawer();
       },
@@ -278,3 +301,5 @@ class VersionInfo extends StatelessWidget {
 }
 
 class GoToTicketIntent extends Intent {}
+
+class MenuCollapseIntent extends Intent {}

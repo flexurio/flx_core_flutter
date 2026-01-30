@@ -8,6 +8,7 @@ import 'package:flx_core_flutter/src/app/view/widget/yuhu_table/table_column.dar
 import 'package:flx_core_flutter/src/app/view/widget/yuhu_table/table_data.dart';
 import 'package:flx_core_flutter/src/app/view/widget/yuhu_table/table_header.dart';
 import 'package:gap/gap.dart';
+import 'package:screen_identifier/screen_identifier.dart';
 
 class YuhuTable<T> extends StatefulWidget {
   const YuhuTable({
@@ -46,22 +47,33 @@ class YuhuTable<T> extends StatefulWidget {
 }
 
 class _YuhuTableState<T> extends State<YuhuTable<T>> {
-  late List<TableColumn<T>> _columns;
-  TableColumn<T>? _frozenStart;
-  TableColumn<T>? _frozenEnd;
-
   int? _sortIndex;
   bool _ascending = true;
   final List<T> _selected = [];
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
-    _columns = List.of(widget.columns);
-    if (widget.freezeFirstColumn) _frozenStart = _columns.removeAt(0);
-    if (widget.freezeLastColumn) _frozenEnd = _columns.removeLast();
     _sortIndex = widget.initialSortColumnIndex;
     _ascending = widget.initialSortAscending ?? true;
+  }
+
+  @override
+  void didUpdateWidget(covariant YuhuTable<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialSortColumnIndex != oldWidget.initialSortColumnIndex) {
+      _sortIndex = widget.initialSortColumnIndex;
+    }
+    if (widget.initialSortAscending != oldWidget.initialSortAscending) {
+      _ascending = widget.initialSortAscending ?? true;
+    }
   }
 
   @override
@@ -73,60 +85,98 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
           : Colors.grey.shade300,
     );
 
-    final table = _buildTable(theme, borderSide);
-    final scrollController = ScrollController();
+    return ScreenIdentifierBuilder(
+      builder: (context, screenIdentifier) {
+        // Use a more inclusive check for mobile layout
+        final isSmall =
+            screenIdentifier.conditions(md: false, sm: true) == true ||
+                MediaQuery.of(context).size.width < 600;
+        final freezeFirst = !isSmall && widget.freezeFirstColumn;
+        final freezeLast = !isSmall && widget.freezeLastColumn;
 
-    return Column(
-      children: [
-        Stack(
+        final scrollableColumns = List.of(widget.columns);
+        TableColumn<T>? frozenStart;
+        TableColumn<T>? frozenEnd;
+
+        if (freezeFirst && scrollableColumns.isNotEmpty) {
+          frozenStart = scrollableColumns.removeAt(0);
+        }
+        if (freezeLast && scrollableColumns.isNotEmpty) {
+          frozenEnd = scrollableColumns.removeLast();
+        }
+
+        final table = _buildTable(
+          theme,
+          borderSide,
+          scrollableColumns,
+          freezeFirst,
+          freezeLast,
+        );
+
+        return Column(
           children: [
-            Row(
+            Stack(
               children: [
-                Gap(_frozenStart?.width ?? 0),
-                Expanded(
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      final maxWidth = constraints.maxWidth;
-                      final tableWidth = (widget.width ?? maxWidth)
-                          .clamp(maxWidth, double.infinity);
-                      return Scrollbar(
-                        controller: scrollController,
-                        interactive: true,
-                        thumbVisibility: true,
-                        child: SingleChildScrollView(
-                          controller: scrollController,
-                          scrollDirection: Axis.horizontal,
-                          child: SizedBox(width: tableWidth, child: table),
-                        ),
-                      );
-                    },
-                  ),
+                Row(
+                  children: [
+                    Gap(frozenStart?.width ?? 0),
+                    Expanded(
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final maxWidth = constraints.maxWidth;
+                          final tableWidth = (widget.width ?? maxWidth)
+                              .clamp(maxWidth, double.infinity);
+                          return Scrollbar(
+                            controller: _scrollController,
+                            interactive: true,
+                            thumbVisibility: true,
+                            child: SingleChildScrollView(
+                              controller: _scrollController,
+                              scrollDirection: Axis.horizontal,
+                              child: SizedBox(width: tableWidth, child: table),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    Gap(frozenEnd?.width ?? 0),
+                  ],
                 ),
-                Gap(_frozenEnd?.width ?? 0),
+                if (frozenStart != null)
+                  _buildFrozenColumn(0, frozenStart, borderSide, false, theme),
+                if (frozenEnd != null)
+                  _buildFrozenColumn(
+                    widget.columns.length - 1,
+                    frozenEnd,
+                    borderSide,
+                    true,
+                    theme,
+                  ),
               ],
             ),
-            if (_frozenStart != null)
-              _buildFrozenColumn(0, _frozenStart!, borderSide, false, theme),
-            if (_frozenEnd != null)
-              _buildFrozenColumn(widget.columns.length - 1, _frozenEnd!,
-                  borderSide, true, theme),
+            if (widget.status == Status.progress)
+              const Padding(
+                padding: EdgeInsets.only(top: 20),
+                child: CupertinoActivityIndicator(),
+              ),
+            if (widget.status == Status.error)
+              const Padding(
+                padding: EdgeInsets.only(top: 20),
+                child: Icon(Icons.error, color: Colors.red),
+              ),
           ],
-        ),
-        if (widget.status == Status.progress)
-          const Padding(
-            padding: EdgeInsets.only(top: 20),
-            child: CupertinoActivityIndicator(),
-          ),
-        if (widget.status == Status.error)
-          const Padding(
-            padding: EdgeInsets.only(top: 20),
-            child: Icon(Icons.error, color: Colors.red),
-          ),
-      ],
+        );
+      },
     );
   }
 
-  Widget _buildTable(ThemeData theme, BorderSide borderSide) {
+  Widget _buildTable(
+    ThemeData theme,
+    BorderSide borderSide,
+    List<TableColumn<T>> scrollableColumns,
+    bool freezeFirst,
+    bool freezeLast,
+  ) {
     final headerDecoration = BoxDecoration(
       color: theme.brightness == Brightness.dark
           ? theme.colorScheme.primary.darken(.3)
@@ -134,19 +184,19 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     );
 
     final columnWidths = <int, TableColumnWidth>{};
-    for (var i = 0; i < _columns.length; i++) {
-      final width = _columns[i].width;
+    for (var i = 0; i < scrollableColumns.length; i++) {
+      final width = scrollableColumns[i].width;
       if (width != null) columnWidths[i] = FixedColumnWidth(width);
     }
 
-    final headers = List.generate(_columns.length, (i) {
-      final column = _columns[i];
-      final index = widget.freezeFirstColumn ? i + 1 : i;
+    final headers = List.generate(scrollableColumns.length, (i) {
+      final column = scrollableColumns[i];
+      final index = freezeFirst ? i + 1 : i;
       return _buildTableHeader(index, column);
     });
 
     if (widget.onSelectChanged != null) {
-      columnWidths[_columns.length] = const FixedColumnWidth(80);
+      columnWidths[scrollableColumns.length] = const FixedColumnWidth(80);
       headers.add(
         TableHeader(
           column: TableColumn(title: '', builder: (_, __) => Container()),
@@ -156,7 +206,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       );
     }
 
-    final rows = _buildRows(borderSide);
+    final rows = _buildRows(borderSide, scrollableColumns);
 
     return TableWithBodyScroll(
       heightBody: widget.bodyHeight,
@@ -172,15 +222,21 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     );
   }
 
-  List<TableRow> _buildRows(BorderSide borderSide) {
+  List<TableRow> _buildRows(
+    BorderSide borderSide,
+    List<TableColumn<T>> scrollableColumns,
+  ) {
     final rows = List<TableRow>.generate(widget.data.length, (rowIndex) {
       final row = <Widget>[
-        for (var colIndex = 0; colIndex < _columns.length; colIndex++)
+        for (var colIndex = 0; colIndex < scrollableColumns.length; colIndex++)
           TableData(
             height: widget.rowHeight,
-            alignment: _columns[colIndex].alignment,
+            alignment: scrollableColumns[colIndex].alignment,
             borderSide: borderSide,
-            child: _columns[colIndex].builder(widget.data[rowIndex], rowIndex),
+            child: scrollableColumns[colIndex].builder(
+              widget.data[rowIndex],
+              rowIndex,
+            ),
           ),
       ];
 
@@ -192,7 +248,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     });
 
     if (widget.rowsPerPage != null && rows.length < widget.rowsPerPage!) {
-      rows.addAll(_buildEmptyRows(borderSide));
+      rows.addAll(_buildEmptyRows(borderSide, scrollableColumns));
     }
 
     return rows;
@@ -221,16 +277,20 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     );
   }
 
-  List<TableRow> _buildEmptyRows(BorderSide borderSide) {
+  List<TableRow> _buildEmptyRows(
+    BorderSide borderSide,
+    List<TableColumn<T>> scrollableColumns,
+  ) {
     return List.generate(
       widget.rowsPerPage! - widget.data.length,
       (_) => TableRow(
         children: List.generate(
-          _columns.length + (widget.onSelectChanged != null ? 1 : 0),
+          scrollableColumns.length + (widget.onSelectChanged != null ? 1 : 0),
           (i) => TableData(
             height: widget.rowHeight,
-            alignment:
-                i < _columns.length ? _columns[i].alignment : Alignment.center,
+            alignment: i < scrollableColumns.length
+                ? scrollableColumns[i].alignment
+                : Alignment.center,
             borderSide: borderSide,
             child: Container(),
           ),
