@@ -234,6 +234,7 @@ class FDropDownSearchMultiple<T> extends StatelessWidget {
     this.initialValue,
     this.validator,
     this.onChanged,
+    this.compareFn,
   });
 
   final String labelText;
@@ -245,6 +246,7 @@ class FDropDownSearchMultiple<T> extends StatelessWidget {
   final String Function(T) itemAsString;
   final Widget Function(BuildContext, List<T>)? dropdownBuilder;
   final List<T> selectedItems;
+  final bool Function(T, T)? compareFn;
 
   @override
   Widget build(BuildContext context) {
@@ -260,6 +262,16 @@ class FDropDownSearchMultiple<T> extends StatelessWidget {
         icon = const Icon(Icons.keyboard_arrow_down_rounded, size: 24);
     }
 
+    final borderColor = theme.modeCondition(
+      Colors.blueGrey.shade100,
+      const Color(0xff343640),
+    );
+
+    final backgroundColor = theme.modeCondition(
+      theme.cardColor,
+      MyTheme.black00dp,
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -272,10 +284,11 @@ class FDropDownSearchMultiple<T> extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Colors.white,
-            border: Border.all(color: Colors.grey.shade300),
+            color: backgroundColor,
+            border: Border.all(color: borderColor),
           ),
           child: DropdownSearch<T>.multiSelection(
+            compareFn: compareFn ?? (a, b) => a == b,
             validator: validator,
             suffixProps: DropdownSuffixProps(
               dropdownButtonProps: DropdownButtonProps(
