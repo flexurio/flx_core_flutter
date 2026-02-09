@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/src/app/util/color.dart';
 import 'package:flx_core_flutter/src/app/util/theme.dart';
+import 'package:flx_core_flutter/src/app/view/page/menu/menu_page.dart';
 import 'package:flx_core_flutter/src/app/view/widget/f_drop_down.dart';
 import 'package:flx_core_flutter/src/app/view/widget/table_with_body_scroll.dart';
 import 'package:flx_core_flutter/src/app/view/widget/yuhu_table/table_column.dart';
@@ -51,6 +52,29 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
   bool _ascending = true;
   final List<T> _selected = [];
   final ScrollController _scrollController = ScrollController();
+  int? _hoveredRowIndex;
+
+  bool get enableHoverEffect => MenuPage.enableHoverEffect;
+
+  ThemeData get _theme => Theme.of(context);
+  BorderSide get _borderSide => BorderSide(
+        color: _theme.brightness == Brightness.dark
+            ? MyTheme.black06dp
+            : Colors.grey.shade300,
+      );
+  BoxDecoration get _headerDecoration => BoxDecoration(
+        color: _theme.brightness == Brightness.dark
+            ? _theme.colorScheme.primary.darken(.3)
+            : const Color(0xFFF0F4F8),
+      );
+  Color get _hoverColor {
+    final primary = _theme.colorScheme.primary;
+    return _theme.modeCondition(
+      Color.alphaBlend(
+          primary.lighten(.5).withValues(alpha: .15), _theme.cardColor),
+      Color.alphaBlend(primary.withValues(alpha: .2), _theme.cardColor),
+    );
+  }
 
   @override
   void dispose() {
@@ -87,7 +111,6 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
 
     return ScreenIdentifierBuilder(
       builder: (context, screenIdentifier) {
-        // Use a more inclusive check for mobile layout
         final isSmall =
             screenIdentifier.conditions(md: false, sm: true) == true ||
                 MediaQuery.of(context).size.width < 600;
@@ -143,14 +166,12 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                   ],
                 ),
                 if (frozenStart != null)
-                  _buildFrozenColumn(0, frozenStart, borderSide, false, theme),
+                  _buildFrozenColumn(0, frozenStart, false),
                 if (frozenEnd != null)
                   _buildFrozenColumn(
                     widget.columns.length - 1,
                     frozenEnd,
-                    borderSide,
                     true,
-                    theme,
                   ),
               ],
             ),
@@ -206,7 +227,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       );
     }
 
-    final rows = _buildRows(borderSide, scrollableColumns);
+    final rows = _buildRows(scrollableColumns);
 
     return TableWithBodyScroll(
       heightBody: widget.bodyHeight,
@@ -222,46 +243,72 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     );
   }
 
-  List<TableRow> _buildRows(
-    BorderSide borderSide,
-    List<TableColumn<T>> scrollableColumns,
-  ) {
-    final rows = List<TableRow>.generate(widget.data.length, (rowIndex) {
-      final row = <Widget>[
-        for (var colIndex = 0; colIndex < scrollableColumns.length; colIndex++)
-          TableData(
-            height: widget.rowHeight,
-            alignment: scrollableColumns[colIndex].alignment,
-            borderSide: borderSide,
-            child: scrollableColumns[colIndex].builder(
-              widget.data[rowIndex],
-              rowIndex,
+  List<TableRow> _buildRows(List<TableColumn<T>> scrollableColumns) {
+    return _generateTableRows(
+      cellBuilder: (rowIndex, item) {
+        final row = <Widget>[
+          for (var colIndex = 0;
+              colIndex < scrollableColumns.length;
+              colIndex++)
+            TableData(
+              height: widget.rowHeight,
+              alignment: scrollableColumns[colIndex].alignment,
+              borderSide: _borderSide,
+              child: scrollableColumns[colIndex].builder(item, rowIndex),
             ),
+        ];
+
+        if (widget.onSelectChanged != null) {
+          row.add(_buildSelectCheckboxCell(rowIndex));
+        }
+        return row;
+      },
+      emptyCellBuilder: (rowIndex) {
+        return List.generate(
+          scrollableColumns.length + (widget.onSelectChanged != null ? 1 : 0),
+          (i) => TableData(
+            height: widget.rowHeight,
+            alignment: i < scrollableColumns.length
+                ? scrollableColumns[i].alignment
+                : Alignment.center,
+            borderSide: _borderSide,
+            child: Container(),
           ),
-      ];
-
-      if (widget.onSelectChanged != null) {
-        row.add(_buildSelectCheckboxCell(rowIndex, borderSide));
-      }
-
-      return TableRow(children: row);
-    });
-
-    if (widget.rowsPerPage != null && rows.length < widget.rowsPerPage!) {
-      rows.addAll(_buildEmptyRows(borderSide, scrollableColumns));
-    }
-
-    return rows;
+        );
+      },
+    );
   }
 
-  Widget _buildSelectCheckboxCell(int rowIndex, BorderSide borderSide) {
+  Widget _wrapWithHover({required int rowIndex, required Widget child}) {
+    if (!enableHoverEffect) return child;
+
+    return MouseRegion(
+      hitTestBehavior: HitTestBehavior.opaque,
+      onEnter: (_) {
+        if (_hoveredRowIndex != rowIndex) {
+          setState(() => _hoveredRowIndex = rowIndex);
+        }
+      },
+      onExit: (_) {
+        if (_hoveredRowIndex == rowIndex) {
+          setState(() => _hoveredRowIndex = null);
+        }
+      },
+      child: ColoredBox(
+        color: Colors.transparent,
+        child: child,
+      ),
+    );
+  }
+
+  Widget _buildSelectCheckboxCell(int rowIndex) {
     final item = widget.data[rowIndex];
     final isSelected = _selected.contains(item);
 
     return TableData(
       height: widget.rowHeight,
       alignment: Alignment.center,
-      borderSide: borderSide,
+      borderSide: _borderSide,
       child: Checkbox(
         value: isSelected,
         onChanged: (value) {
@@ -277,81 +324,81 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     );
   }
 
-  List<TableRow> _buildEmptyRows(
-    BorderSide borderSide,
-    List<TableColumn<T>> scrollableColumns,
-  ) {
-    return List.generate(
-      widget.rowsPerPage! - widget.data.length,
-      (_) => TableRow(
-        children: List.generate(
-          scrollableColumns.length + (widget.onSelectChanged != null ? 1 : 0),
-          (i) => TableData(
-            height: widget.rowHeight,
-            alignment: i < scrollableColumns.length
-                ? scrollableColumns[i].alignment
-                : Alignment.center,
-            borderSide: borderSide,
-            child: Container(),
-          ),
+  List<TableRow> _generateTableRows({
+    required List<Widget> Function(int rowIndex, T item) cellBuilder,
+    required List<Widget> Function(int rowIndex) emptyCellBuilder,
+    Color? baseColor,
+  }) {
+    final rows = List<TableRow>.generate(widget.data.length, (rowIndex) {
+      final isHovered = enableHoverEffect && _hoveredRowIndex == rowIndex;
+      return TableRow(
+        decoration: BoxDecoration(
+          color: isHovered ? _hoverColor : baseColor,
         ),
-      ),
-    );
+        children: cellBuilder(rowIndex, widget.data[rowIndex])
+            .map((child) => _wrapWithHover(rowIndex: rowIndex, child: child))
+            .toList(),
+      );
+    });
+
+    if (widget.rowsPerPage != null && rows.length < widget.rowsPerPage!) {
+      final emptyRowsCount = widget.rowsPerPage! - rows.length;
+      rows.addAll(
+        List.generate(
+          emptyRowsCount,
+          (emptyIndex) {
+            final rowIndex = widget.data.length + emptyIndex;
+            final isHovered = enableHoverEffect && _hoveredRowIndex == rowIndex;
+            return TableRow(
+              decoration: BoxDecoration(
+                color: isHovered ? _hoverColor : baseColor,
+              ),
+              children: emptyCellBuilder(rowIndex)
+                  .map(
+                    (child) => enableHoverEffect
+                        ? _wrapWithHover(rowIndex: rowIndex, child: child)
+                        : child,
+                  )
+                  .toList(),
+            );
+          },
+        ),
+      );
+    }
+    return rows;
   }
 
   Widget _buildFrozenColumn(
     int index,
     TableColumn<T> column,
-    BorderSide borderSide,
     bool isLast,
-    ThemeData theme,
   ) {
-    final headerDecoration = BoxDecoration(
-      color: theme.brightness == Brightness.dark
-          ? theme.colorScheme.primary.darken(.3)
-          : const Color(0xFFF0F4F8),
-    );
-
     final header = TableRow(
-      decoration: headerDecoration,
+      decoration: _headerDecoration,
       children: [
         _buildTableHeader(index, column),
       ],
     );
 
-    final rows = List<TableRow>.generate(
-      widget.data.length,
-      (i) => TableRow(
-        decoration: BoxDecoration(color: theme.cardColor),
-        children: [
-          TableData(
-            height: widget.rowHeight,
-            alignment: column.alignment,
-            borderSide: borderSide,
-            child: column.builder(widget.data[i], i),
-          ),
-        ],
-      ),
-    );
-
-    if (widget.rowsPerPage != null && rows.length < widget.rowsPerPage!) {
-      rows.addAll(
-        List.generate(
-          widget.rowsPerPage! - rows.length,
-          (_) => TableRow(
-            decoration: BoxDecoration(color: theme.cardColor),
-            children: [
-              TableData(
-                height: widget.rowHeight,
-                alignment: column.alignment,
-                borderSide: borderSide,
-                child: Container(),
-              ),
-            ],
-          ),
+    final rows = _generateTableRows(
+      baseColor: _theme.cardColor,
+      cellBuilder: (rowIndex, item) => [
+        TableData(
+          height: widget.rowHeight,
+          alignment: column.alignment,
+          borderSide: _borderSide,
+          child: column.builder(item, rowIndex),
         ),
-      );
-    }
+      ],
+      emptyCellBuilder: (rowIndex) => [
+        TableData(
+          height: widget.rowHeight,
+          alignment: column.alignment,
+          borderSide: _borderSide,
+          child: Container(),
+        ),
+      ],
+    );
 
     return Align(
       alignment: isLast ? Alignment.centerRight : Alignment.centerLeft,
@@ -362,7 +409,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: theme.modeCondition(Colors.black12, Colors.black54),
+                color: _theme.modeCondition(Colors.black12, Colors.black54),
                 blurRadius: 5,
                 offset: Offset(isLast ? -3 : 3, -2),
               ),

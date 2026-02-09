@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
-import 'package:flx_core_flutter/src/app/bloc/theme/menu_collapse/menu_collapse.dart';
 import 'package:flx_core_flutter/src/app/view/page/menu/menu_side_nav.dart';
 import 'package:flx_core_flutter/src/app/view/page/menu/widget/menu_content.dart';
 import 'package:flx_core_flutter/src/app/view/widget/data_set_action.dart';
@@ -25,6 +24,7 @@ class MenuPage extends StatefulWidget {
     this.bypassPermission,
     this.placeholderMenuList,
     this.searchMode,
+    this.tableHoverEffect,
   );
 
   final List<Widget> Function(BuildContext context, String query) searchData;
@@ -41,8 +41,9 @@ class MenuPage extends StatefulWidget {
   final bool bypassPermission;
   final Widget? placeholderMenuList;
   final DataTableSearchMode searchMode;
-
+  final bool tableHoverEffect;
   static DataTableSearchMode tableSearchMode = DataTableSearchMode.submit;
+  static bool enableHoverEffect = false;
 
   static Widget prepare({
     required String appName,
@@ -60,8 +61,10 @@ class MenuPage extends StatefulWidget {
     bool bypassPermission = false,
     Widget? placeholderMenuList,
     DataTableSearchMode searchMode = DataTableSearchMode.submit,
+    bool tableHoverEffect = false,
   }) {
     tableSearchMode = searchMode;
+    enableHoverEffect = tableHoverEffect;
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -87,6 +90,7 @@ class MenuPage extends StatefulWidget {
         bypassPermission,
         placeholderMenuList,
         searchMode,
+        tableHoverEffect,
       ),
     );
   }
