@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flx_core_flutter/src/app/util/theme.dart';
+// Import the generated file
+import 'package:flx_core_flutter/widgetbook.directories.g.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
-
-import 'package:flx_core_flutter/src/app/util/theme.dart';
-
-// Import the generated file
-import 'widgetbook.directories.g.dart';
 
 void main() {
   runApp(const WidgetbookApp());
