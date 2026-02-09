@@ -16,6 +16,7 @@ class TopBar extends StatelessWidget {
     required this.onChangePassword,
     required this.searchData,
     required this.logoNamedUrl,
+    this.placeholderMenuList,
     super.key,
   });
 
@@ -28,6 +29,7 @@ class TopBar extends StatelessWidget {
   final void Function() onLogout;
   final void Function() drawerTriggered;
   final void Function(BuildContext context) onChangePassword;
+  final Widget? placeholderMenuList;
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +103,7 @@ class TopBar extends StatelessWidget {
                 menu: menu,
                 permissions: accountPermission,
                 searchData: searchData,
+                placeholderMenuList: placeholderMenuList,
               ),
             ),
             const SizedBox(width: 24),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum DataAction {
+  apply('apply', Icons.check, Colors.green),
   addTransaction('add_transaction', Icons.add, Colors.green),
   reportAll('report', Icons.print_outlined, Colors.blue),
   filter('filter', Icons.filter_list, Colors.blueGrey),
