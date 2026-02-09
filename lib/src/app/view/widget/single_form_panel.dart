@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:gap/gap.dart';
@@ -15,6 +16,8 @@ class SingleFormPanel extends StatelessWidget {
     this.visibleBackButton = true,
     this.size = SingleFormPanelSize.normal,
     this.padding,
+    this.titlePage = '',
+    this.rightWidget,
   });
 
   final DataAction action;
@@ -27,6 +30,8 @@ class SingleFormPanel extends StatelessWidget {
   final SingleFormPanelSize size;
   final bool hideHeader;
   final EdgeInsetsGeometry? padding;
+  final String titlePage;
+  final Widget? rightWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -127,6 +132,7 @@ class SingleFormPanel extends StatelessWidget {
       child: BackButtonWithTitle(
         title: '${action.title} ${entity.title} $suffixText',
         visibleBackButton: visibleBackButton,
+        rightWidget: rightWidget,
       ),
     );
   }
@@ -186,4 +192,31 @@ enum SingleFormPanelSize {
 
   const SingleFormPanelSize(this.width);
   final double width;
+}
+
+class BackIconButton extends StatelessWidget {
+  const BackIconButton({
+    super.key,
+    this.color,
+    this.canPop = true,
+    this.onBack,
+  });
+
+  final Color? color;
+  final bool canPop;
+  final void Function()? onBack;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back, color: color),
+      tooltip: 'back'.tr(),
+      onPressed: () {
+        onBack?.call();
+        if (canPop) {
+          Navigator.pop(context);
+        }
+      },
+    );
+  }
 }

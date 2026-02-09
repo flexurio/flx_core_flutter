@@ -25,6 +25,7 @@ class MenuPage extends StatefulWidget {
     this.placeholderMenuList,
     this.searchMode,
     this.tableHoverEffect,
+    this.welcomePage,
   );
 
   final List<Widget> Function(BuildContext context, String query) searchData;
@@ -42,8 +43,13 @@ class MenuPage extends StatefulWidget {
   final Widget? placeholderMenuList;
   final DataTableSearchMode searchMode;
   final bool tableHoverEffect;
+  final Widget? welcomePage;
+
+  // Static Getter
+
   static DataTableSearchMode tableSearchMode = DataTableSearchMode.submit;
   static bool enableHoverEffect = false;
+  static Widget? customWelcomePage;
 
   static Widget prepare({
     required String appName,
@@ -60,9 +66,11 @@ class MenuPage extends StatefulWidget {
     VoidCallback? initialState,
     bool bypassPermission = false,
     Widget? placeholderMenuList,
+    Widget? welcomePage,
     DataTableSearchMode searchMode = DataTableSearchMode.submit,
     bool tableHoverEffect = false,
   }) {
+    customWelcomePage = welcomePage;
     tableSearchMode = searchMode;
     enableHoverEffect = tableHoverEffect;
     return MultiBlocProvider(
@@ -91,6 +99,7 @@ class MenuPage extends StatefulWidget {
         placeholderMenuList,
         searchMode,
         tableHoverEffect,
+        welcomePage,
       ),
     );
   }
