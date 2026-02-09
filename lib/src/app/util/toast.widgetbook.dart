@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/src/app/model/entity.dart';
 import 'package:flx_core_flutter/src/app/util/toast.dart';
-import 'package:flutter/material.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 
 @UseCase(name: 'All Toasts', type: Toast)
@@ -9,7 +9,6 @@ Widget toastUseCase(BuildContext context) {
     width: double.infinity,
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ElevatedButton(
           onPressed: () {
