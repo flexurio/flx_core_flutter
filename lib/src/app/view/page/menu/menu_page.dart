@@ -24,6 +24,7 @@ class MenuPage extends StatefulWidget {
     this.bypassPermission,
     this.placeholderMenuList,
     this.searchMode,
+    this.tableHoverEffect,
   );
 
   final List<Widget> Function(BuildContext context, String query) searchData;
@@ -40,8 +41,9 @@ class MenuPage extends StatefulWidget {
   final bool bypassPermission;
   final Widget? placeholderMenuList;
   final DataTableSearchMode searchMode;
-
+  final bool tableHoverEffect;
   static DataTableSearchMode tableSearchMode = DataTableSearchMode.submit;
+  static bool enableHoverEffect = false;
 
   static Widget prepare({
     required String appName,
@@ -59,8 +61,10 @@ class MenuPage extends StatefulWidget {
     bool bypassPermission = false,
     Widget? placeholderMenuList,
     DataTableSearchMode searchMode = DataTableSearchMode.submit,
+    bool tableHoverEffect = false,
   }) {
     tableSearchMode = searchMode;
+    enableHoverEffect = tableHoverEffect;
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -86,6 +90,7 @@ class MenuPage extends StatefulWidget {
         bypassPermission,
         placeholderMenuList,
         searchMode,
+        tableHoverEffect,
       ),
     );
   }
