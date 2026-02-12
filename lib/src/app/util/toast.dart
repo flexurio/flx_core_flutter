@@ -43,10 +43,12 @@ class Toast {
   }
 
   void fail(String message) {
+    final isError = message.toLowerCase().contains('error');
+
     toastification.show(
       context: context,
       title: Text(message, maxLines: 10),
-      type: ToastificationType.error,
+      type: isError ? ToastificationType.error : ToastificationType.warning,
       style: ToastificationStyle.fillColored,
       autoCloseDuration: const Duration(seconds: 10),
     );
