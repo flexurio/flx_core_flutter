@@ -73,7 +73,7 @@ abstract class Repository {
 
         final errorMessage = data?['message']?.toString();
         if (errorMessage != null && errorMessage.isNotEmpty) {
-          return ApiException(errorMessage);
+          return ApiException('$statusCode::$errorMessage');
         }
       }
     }
