@@ -33,6 +33,7 @@ class DataSetAction<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const Gap(12),
         ScreenIdentifierBuilder(
           builder: (context, screenIdentifier) {
             return screenIdentifier.conditions(
