@@ -38,10 +38,12 @@ class DataSetAction<T> extends StatelessWidget {
           builder: (context, screenIdentifier) {
             return screenIdentifier.conditions(
               sm: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [_buildActionRight()],
+                  // Action Right (Refresh, Create, etc) align to end for standard look, but allowed to wrap
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: _buildActionRight(),
                   ),
                   if (actionLeft.isNotEmpty)
                     Padding(
@@ -56,7 +58,12 @@ class DataSetAction<T> extends StatelessWidget {
               md: Row(
                 children: [
                   _buildActionLeft(),
-                  Expanded(child: _buildActionRight()),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: _buildActionRight(),
+                    ),
+                  ),
                 ],
               ),
             );
@@ -77,6 +84,7 @@ class DataSetAction<T> extends StatelessWidget {
   Widget _buildActionRight() {
     return Wrap(
       spacing: 12,
+      runSpacing: 12,
       crossAxisAlignment: WrapCrossAlignment.end,
       runAlignment: WrapAlignment.end,
       alignment: WrapAlignment.end,

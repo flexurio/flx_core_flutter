@@ -15,51 +15,53 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
             label: 'Home',
             menu2Expanded: '',
             menu3Selected: '',
-            home: ContentWithRightPanel(
-              rightPanel: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24),
-                child: KeyboardShortcutInfo(),
-              ),
-              child: Opacity(
-                opacity: 0.2,
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ColorFiltered(
-                        colorFilter: const ColorFilter.matrix(<double>[
-                          0.2126,
-                          0.7152,
-                          0.0722,
-                          0,
-                          0,
-                          0.2126,
-                          0.7152,
-                          0.0722,
-                          0,
-                          0,
-                          0.2126,
-                          0.7152,
-                          0.0722,
-                          0,
-                          0,
-                          0,
-                          0,
-                          0,
-                          1,
-                          0,
-                        ]),
-                        child: LogoNamed(
-                          height: 70,
-                          logoUrl: logoUrl,
-                          logoNamedUrl: logoNamedUrl,
+            home: MenuPage.customWelcomePage != null
+                ? MenuPage.customWelcomePage!
+                : ContentWithRightPanel(
+                    rightPanel: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24),
+                      child: KeyboardShortcutInfo(),
+                    ),
+                    child: Opacity(
+                      opacity: 0.2,
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ColorFiltered(
+                              colorFilter: const ColorFilter.matrix(<double>[
+                                0.2126,
+                                0.7152,
+                                0.0722,
+                                0,
+                                0,
+                                0.2126,
+                                0.7152,
+                                0.0722,
+                                0,
+                                0,
+                                0.2126,
+                                0.7152,
+                                0.0722,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                1,
+                                0,
+                              ]),
+                              child: LogoNamed(
+                                height: 70,
+                                logoUrl: logoUrl,
+                                logoNamedUrl: logoNamedUrl,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
             triggerCloseDrawer: false,
           ),
         ) {

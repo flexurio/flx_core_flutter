@@ -605,42 +605,53 @@ Color _foregroundColor(ThemeData theme) {
 class BackButtonWithTitle extends StatelessWidget {
   const BackButtonWithTitle({
     required this.title,
+    this.rightWidget,
+    this.leftWidget,
     super.key,
     this.visibleBackButton = true,
+    this.visibleIcon = true,
+    this.color,
+    this.onBack,
+    this.canPop = true,
   });
 
   final String title;
   final bool visibleBackButton;
+  final bool visibleIcon;
+  final Widget? rightWidget;
+  final Widget? leftWidget;
+  final Color? color;
+  final bool canPop;
+  final void Function()? onBack;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final text = Text(
       title,
-      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: color),
     );
-    final foregroundColor = theme.textTheme.bodyMedium!.color!;
     if (visibleBackButton) {
       return Row(
         children: [
-          BackButton(
-            style: ButtonStyle(
-              foregroundColor: WidgetStatePropertyAll(
-                foregroundColor.withAlpha(170),
-              ),
-              side: WidgetStateProperty.all(
-                BorderSide(color: foregroundColor.withAlpha(50)),
-              ),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          const Gap(12),
+          leftWidget ?? const SizedBox.shrink(),
+          if (visibleIcon) ...[
+            BackIconButton(color: color, onBack: onBack, canPop: canPop),
+            const Gap(12),
+          ],
           text,
+          const Spacer(),
+          rightWidget ?? const SizedBox.shrink(),
+        ],
+      );
+    } else {
+      return Row(
+        children: [
+          leftWidget ?? const SizedBox.shrink(),
+          text,
+          const Spacer(),
+          rightWidget ?? const SizedBox.shrink(),
         ],
       );
     }
-    return Padding(padding: const EdgeInsets.only(top: 12), child: text);
   }
 }
