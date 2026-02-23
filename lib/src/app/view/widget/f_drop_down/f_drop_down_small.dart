@@ -28,6 +28,8 @@ class DropDownSmall<T> extends StatefulWidget {
 
 class _DropDownSmallState<T> extends State<DropDownSmall<T>> {
   late String label;
+  final GlobalKey<PopupMenuButtonState<T>> _popupKey =
+      GlobalKey<PopupMenuButtonState<T>>();
 
   @override
   void initState() {
@@ -55,6 +57,7 @@ class _DropDownSmallState<T> extends State<DropDownSmall<T>> {
     }
 
     return PopupMenuButton<T>(
+      key: _popupKey,
       onSelected: (T value) {
         widget.onChanged?.call(value);
         setState(() {
@@ -74,7 +77,9 @@ class _DropDownSmallState<T> extends State<DropDownSmall<T>> {
       child: DropDownSmallButton(
         icon: widget.icon,
         label: label,
-        onPressed: () {},
+        onPressed: () {
+          _popupKey.currentState?.showButtonMenu();
+        },
         onClear: widget.onClear,
       ),
     );
