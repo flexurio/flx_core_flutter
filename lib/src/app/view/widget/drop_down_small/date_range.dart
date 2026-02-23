@@ -99,36 +99,19 @@ class _DropDownSmallDateRangeState extends State<DropDownSmallDateRange> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.centerRight,
-      children: [
-        InkWell(
-          onTap: openDatePicker,
-          child: AbsorbPointer(
-            child: DropDownSmall(
-              key: ValueKey(value),
-              icon: Icons.calendar_month,
-              labelText: widget.labelText,
-              initialValue: value,
-              itemAsString: (_) => value ?? '',
-              items: [value],
-              onChanged: (_) {},
-            ),
-          ),
-        ),
-        if (value != null && widget.showClearButton)
-          Positioned(
-            right: 10,
-            child: InkWell(
-              onTap: _clearSelection,
-              child: const Icon(
-                Icons.clear,
-                size: 18,
-                color: Colors.grey,
-              ),
-            ),
-          ),
-      ],
+    return InkWell(
+      onTap: openDatePicker,
+      child: DropDownSmall(
+        key: ValueKey(value),
+        icon: Icons.calendar_month,
+        labelText: widget.labelText,
+        initialValue: value,
+        itemAsString: (_) => value ?? '',
+        items: [value],
+        onClear:
+            (value != null && widget.showClearButton) ? _clearSelection : null,
+        onChanged: (_) {},
+      ),
     );
   }
 }

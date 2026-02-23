@@ -43,9 +43,14 @@ class Toast {
   }
 
   void fail(String message) {
+    if (message.startsWith('400::')) {
+      warning(message.substring(5));
+      return;
+    }
+    final cleanMessage = message.replaceFirst(RegExp(r'^\d+::'), '');
     toastification.show(
       context: context,
-      title: Text(message, maxLines: 10),
+      title: Text(cleanMessage, maxLines: 10),
       type: ToastificationType.error,
       style: ToastificationStyle.fillColored,
       autoCloseDuration: const Duration(seconds: 10),

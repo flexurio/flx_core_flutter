@@ -8,8 +8,18 @@ bool _isSnakeCase(String input) {
 
 String errorMessage(dynamic error) {
   if (error is ApiException) {
-    if (_isSnakeCase(error.message)) {
-      return 'error.${error.message}'.tr();
+    String message = error.message;
+    String prefix = '';
+
+    final regex = RegExp(r'^(\d+::)(.*)');
+    final match = regex.firstMatch(message);
+    if (match != null) {
+      prefix = match.group(1)!;
+      message = match.group(2)!;
+    }
+
+    if (_isSnakeCase(message)) {
+      return '$prefix${'error.$message'.tr()}';
     } else {
       return error.message;
     }

@@ -62,12 +62,13 @@ class Button extends StatelessWidget {
     Color? color,
     bool rounded = false,
     Entity? entity,
+    String? label,
   }) {
     return Button._(
       permission: permission,
       color: color,
       onPressed: onPressed,
-      action: action.title,
+      action: label ?? action.title,
       isInProgress: isInProgress,
       isSecondary: isSecondary,
       rounded: rounded,
@@ -523,9 +524,11 @@ class DropDownSmallButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.icon,
+    this.onClear,
     super.key,
   });
-  final void Function() onPressed;
+  final VoidCallback onPressed;
+  final VoidCallback? onClear;
   final String label;
   final IconData? icon;
 
@@ -536,8 +539,10 @@ class DropDownSmallButton extends StatelessWidget {
     return ElevatedButton(
       style: ButtonStyle(
         padding: WidgetStateProperty.all(
-          const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+          const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
         ),
+        minimumSize: WidgetStateProperty.all(Size.zero),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         side: WidgetStateProperty.all(
           BorderSide(
             color: theme.modeCondition(
@@ -562,9 +567,24 @@ class DropDownSmallButton extends StatelessWidget {
               padding: const EdgeInsets.only(right: 6),
               child: Icon(icon, size: 16),
             ),
-          const Gap(12),
+          const Gap(4),
           Text(label),
-          const Gap(6),
+          const Gap(4),
+          if (onClear != null)
+            GestureDetector(
+              onTap: () {
+                onClear?.call();
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Icon(
+                  Icons.close_rounded,
+                  size: 16,
+                  color: foregroundColor.withOpacity(.6),
+                ),
+              ),
+            ),
+          const Gap(4),
           IconTheme(
             data: IconThemeData(size: 18, color: foregroundColor),
             child: const Icon(Icons.keyboard_arrow_down_rounded),
