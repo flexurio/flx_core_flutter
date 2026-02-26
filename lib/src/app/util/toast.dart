@@ -43,12 +43,15 @@ class Toast {
   }
 
   void fail(String message) {
-    final isError = message.toLowerCase().contains('error');
-
+    if (message.startsWith('400::')) {
+      warning(message.substring(5));
+      return;
+    }
+    final cleanMessage = message.replaceFirst(RegExp(r'^\d+::'), '');
     toastification.show(
       context: context,
-      title: Text(message, maxLines: 10),
-      type: isError ? ToastificationType.error : ToastificationType.warning,
+      title: Text(cleanMessage, maxLines: 10),
+      type: ToastificationType.error,
       style: ToastificationStyle.fillColored,
       autoCloseDuration: const Duration(seconds: 10),
     );

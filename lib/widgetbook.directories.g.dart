@@ -12,6 +12,10 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:flx_core_flutter/src/app/util/toast.widgetbook.dart'
     as _flx_core_flutter_src_app_util_toast_widgetbook;
+import 'package:flx_core_flutter/src/app/view/widget/f_drop_down/f_drop_down_search_small.widgetbook.dart'
+    as _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_search_small_widgetbook;
+import 'package:flx_core_flutter/src/app/view/widget/f_drop_down/f_drop_down_small.widgetbook.dart'
+    as _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_small_widgetbook;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
@@ -32,7 +36,80 @@ final directories = <_widgetbook.WidgetbookNode>[
             ],
           )
         ],
-      )
+      ),
+      _widgetbook.WidgetbookFolder(
+        name: 'view',
+        children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'widget',
+            children: [
+              _widgetbook.WidgetbookFolder(
+                name: 'f_drop_down',
+                children: [
+                  _widgetbook.WidgetbookComponent(
+                    name: 'DropDownSmall',
+                    useCases: [
+                      _widgetbook.WidgetbookUseCase(
+                        name: 'Default',
+                        builder:
+                            _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_small_widgetbook
+                                .dropDownSmallDefault,
+                      ),
+                      _widgetbook.WidgetbookUseCase(
+                        name: 'With Clear Button',
+                        builder:
+                            _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_small_widgetbook
+                                .dropDownSmallWithClearButton,
+                      ),
+                      _widgetbook.WidgetbookUseCase(
+                        name: 'With Icon',
+                        builder:
+                            _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_small_widgetbook
+                                .dropDownSmallWithIcon,
+                      ),
+                      _widgetbook.WidgetbookUseCase(
+                        name: 'With Initial Value',
+                        builder:
+                            _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_small_widgetbook
+                                .dropDownSmallWithInitialValue,
+                      ),
+                    ],
+                  ),
+                  _widgetbook.WidgetbookComponent(
+                    name: 'FDropDownSearchSmall',
+                    useCases: [
+                      _widgetbook.WidgetbookUseCase(
+                        name: 'Default',
+                        builder:
+                            _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_search_small_widgetbook
+                                .fDropDownSearchSmallDefault,
+                      ),
+                      _widgetbook.WidgetbookUseCase(
+                        name: 'Disabled',
+                        builder:
+                            _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_search_small_widgetbook
+                                .fDropDownSearchSmallDisabled,
+                      ),
+                      _widgetbook.WidgetbookUseCase(
+                        name: 'With Clear Button',
+                        builder:
+                            _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_search_small_widgetbook
+                                .fDropDownSearchSmallWithClearButton,
+                      ),
+                      _widgetbook.WidgetbookUseCase(
+                        name: 'With Initial Value',
+                        builder:
+                            _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_search_small_widgetbook
+                                .fDropDownSearchSmallWithInitialValue,
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            ],
+          )
+        ],
+      ),
     ],
   )
 ];

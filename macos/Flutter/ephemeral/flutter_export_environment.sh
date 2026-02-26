@@ -1,12 +1,11 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=C:\Users\muali\Documents\Development\sdk\flutter_3"
-export "FLUTTER_APPLICATION_PATH=C:\Users\muali\Documents\Development\project\vneu\chiron\modules\flexurio-erp-core"
+export "FLUTTER_ROOT=/Users/suhal/Documents/Development/sdk/flutter"
+export "FLUTTER_APPLICATION_PATH=/Users/suhal/Documents/Development/projects/vneu/flx_studio/packages/flx_nocode_flutter/packages/flx_core_flutter"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=1.0.0.9"
 export "FLUTTER_BUILD_NUMBER=1.0.0.9"
-export "FLUTTER_CLI_BUILD_MODE=debug"
 export "DART_OBFUSCATION=false"
 export "TRACK_WIDGET_CREATION=true"
 export "TREE_SHAKE_ICONS=false"
