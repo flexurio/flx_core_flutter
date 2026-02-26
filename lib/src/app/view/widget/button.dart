@@ -536,62 +536,64 @@ class DropDownSmallButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final foregroundColor = _foregroundColor(theme);
-    return ElevatedButton(
-      style: ButtonStyle(
-        padding: WidgetStateProperty.all(
-          const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-        ),
-        minimumSize: WidgetStateProperty.all(Size.zero),
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        side: WidgetStateProperty.all(
-          BorderSide(
-            color: theme.modeCondition(
-              Colors.grey.shade400.withOpacity(.7),
-              MyTheme.black16dp,
+    return SizedBox(
+        height: isPlatformMobile() ? 36 : 32,
+        child: ElevatedButton(
+          style: ButtonStyle(
+            padding: WidgetStateProperty.all(
+              const EdgeInsets.symmetric(horizontal: 12),
             ),
-          ),
-        ),
-        shape: WidgetStateProperty.all(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-        ),
-        shadowColor: WidgetStateProperty.all(Colors.black.withOpacity(.3)),
-        backgroundColor: WidgetStateProperty.all(theme.cardColor),
-        foregroundColor: WidgetStateProperty.all(foregroundColor),
-      ),
-      onPressed: onPressed,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (icon != null)
-            Padding(
-              padding: const EdgeInsets.only(right: 6),
-              child: Icon(icon, size: 16),
-            ),
-          const Gap(4),
-          Text(label),
-          const Gap(4),
-          if (onClear != null)
-            GestureDetector(
-              onTap: () {
-                onClear?.call();
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: Icon(
-                  Icons.close_rounded,
-                  size: 16,
-                  color: foregroundColor.withOpacity(.6),
+            minimumSize: WidgetStateProperty.all(Size.zero),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            side: WidgetStateProperty.all(
+              BorderSide(
+                color: theme.modeCondition(
+                  Colors.grey.shade400.withOpacity(.7),
+                  MyTheme.black16dp,
                 ),
               ),
             ),
-          const Gap(4),
-          IconTheme(
-            data: IconThemeData(size: 18, color: foregroundColor),
-            child: const Icon(Icons.keyboard_arrow_down_rounded),
+            shape: WidgetStateProperty.all(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+            ),
+            shadowColor: WidgetStateProperty.all(Colors.black.withOpacity(.3)),
+            backgroundColor: WidgetStateProperty.all(theme.cardColor),
+            foregroundColor: WidgetStateProperty.all(foregroundColor),
           ),
-        ],
-      ),
-    );
+          onPressed: onPressed,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (icon != null)
+                Padding(
+                  padding: const EdgeInsets.only(right: 6),
+                  child: Icon(icon, size: 16),
+                ),
+              const Gap(4),
+              Text(label),
+              const Gap(4),
+              if (onClear != null)
+                GestureDetector(
+                  onTap: () {
+                    onClear?.call();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Icon(
+                      Icons.close_rounded,
+                      size: 16,
+                      color: foregroundColor.withOpacity(.6),
+                    ),
+                  ),
+                ),
+              const Gap(4),
+              IconTheme(
+                data: IconThemeData(size: 18, color: foregroundColor),
+                child: const Icon(Icons.keyboard_arrow_down_rounded),
+              ),
+            ],
+          ),
+        ));
   }
 }
 

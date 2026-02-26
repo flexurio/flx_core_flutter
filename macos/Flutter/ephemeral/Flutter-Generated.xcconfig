@@ -1,6 +1,6 @@
 // This is a generated file; do not edit or check into version control.
 FLUTTER_ROOT=/Users/suhal/Documents/Development/sdk/flutter
-FLUTTER_APPLICATION_PATH=/Users/suhal/Documents/Development/projects/vneu/flx_studio/packages/flx_core_flutter
+FLUTTER_APPLICATION_PATH=/Users/suhal/Documents/Development/projects/vneu/flx_studio/packages/flx_nocode_flutter/packages/flx_core_flutter
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_BUILD_DIR=build
 FLUTTER_BUILD_NAME=1.0.0.9
