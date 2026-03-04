@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class FieldDatePicker extends StatefulWidget {
@@ -89,19 +88,7 @@ class _FieldDatePickerState extends State<FieldDatePicker> {
   }
 
   String _getFormattedDate(DateTime date) {
-    if (widget.dateFormat != null && widget.dateFormat!.isNotEmpty) {
-      try {
-        DateTime dateToFormat = date;
-        // If format contains 'Z', it usually implies UTC requirement
-        if (widget.dateFormat!.contains('Z')) {
-          dateToFormat = date.toUtc();
-        }
-        return DateFormat(widget.dateFormat).format(dateToFormat);
-      } catch (e) {
-        return date.yMMMMd;
-      }
-    }
-    return date.yMMMMd;
+    return FlxDateFormat(widget.dateFormat ?? '').format(date);
   }
 
   @override

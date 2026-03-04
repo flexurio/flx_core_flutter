@@ -27,6 +27,7 @@ export 'src/app/util/duration_extension.dart';
 export 'src/app/util/error_message.dart';
 export 'src/app/util/exception.dart';
 export 'src/app/util/general_export.dart';
+export 'src/app/util/flx_date_format.dart';
 export 'src/app/util/generate_hierarchy.dart';
 export 'src/app/util/group_by.dart';
 export 'src/app/util/icon_util.dart';
