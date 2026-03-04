@@ -3,11 +3,11 @@ import 'package:flx_core_flutter/src/app/util/flx_date_format.dart';
 
 void main() {
   group('FlxDateFormat Unit Tests', () {
-    final baseDate = DateTime(2024, 11, 30, 17, 0, 0); // 17:00 Local
+    final baseDate = DateTime(2024, 11, 30, 17); // 17:00 Local
 
     test('isUtc should be true if pattern contains Z', () {
       expect(FlxDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").isUtc, isTrue);
-      expect(FlxDateFormat("yyyy-MM-dd").isUtc, isFalse);
+      expect(FlxDateFormat('yyyy-MM-dd').isUtc, isFalse);
     });
 
     test('format should return local time for non-UTC patterns', () {

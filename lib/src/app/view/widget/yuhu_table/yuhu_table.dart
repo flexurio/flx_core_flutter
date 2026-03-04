@@ -71,7 +71,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     final primary = _theme.colorScheme.primary;
     return _theme.modeCondition(
       Color.alphaBlend(
-          primary.lighten(.5).withValues(alpha: .15), _theme.cardColor),
+          primary.lighten(.5).withValues(alpha: .15), _theme.cardColor,),
       Color.alphaBlend(primary.withValues(alpha: .2), _theme.cardColor),
     );
   }

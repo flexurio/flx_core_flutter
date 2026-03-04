@@ -8,8 +8,8 @@ bool _isSnakeCase(String input) {
 
 String errorMessage(dynamic error) {
   if (error is ApiException) {
-    String message = error.message;
-    String prefix = '';
+    var message = error.message;
+    var prefix = '';
 
     final regex = RegExp(r'^(\d+::)(.*)');
     final match = regex.firstMatch(message);
