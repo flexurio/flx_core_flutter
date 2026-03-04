@@ -91,7 +91,12 @@ class _FieldDatePickerState extends State<FieldDatePicker> {
   String _getFormattedDate(DateTime date) {
     if (widget.dateFormat != null && widget.dateFormat!.isNotEmpty) {
       try {
-        return DateFormat(widget.dateFormat).format(date);
+        DateTime dateToFormat = date;
+        // If format contains 'Z', it usually implies UTC requirement
+        if (widget.dateFormat!.contains('Z')) {
+          dateToFormat = date.toUtc();
+        }
+        return DateFormat(widget.dateFormat).format(dateToFormat);
       } catch (e) {
         return date.yMMMMd;
       }
