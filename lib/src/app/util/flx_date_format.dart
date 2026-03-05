@@ -2,9 +2,9 @@ import 'package:intl/intl.dart';
 
 /// A utility class to handle date formatting with smart UTC conversion.
 class FlxDateFormat {
-  final String pattern;
 
   FlxDateFormat(this.pattern);
+  final String pattern;
 
   /// Checks if the pattern implies a UTC format (contains 'Z').
   bool get isUtc => pattern.contains('Z');
@@ -15,7 +15,7 @@ class FlxDateFormat {
     if (pattern.isEmpty) return DateFormat.yMMMMd().format(date);
 
     try {
-      final DateTime dateToFormat = isUtc ? date.toUtc() : date;
+      final dateToFormat = isUtc ? date.toUtc() : date;
       return DateFormat(pattern).format(dateToFormat);
     } catch (e) {
       // Fallback to default format if pattern is invalid
