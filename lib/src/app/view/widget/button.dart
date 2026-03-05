@@ -593,7 +593,7 @@ class DropDownSmallButton extends StatelessWidget {
               ),
             ],
           ),
-        ));
+        ),);
   }
 }
 
