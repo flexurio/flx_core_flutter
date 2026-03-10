@@ -31,6 +31,23 @@ class WidgetbookApp extends StatelessWidget {
             ),
           ],
         ),
+        LocalizationAddon(
+          locales: [
+            const Locale('en', 'US'),
+            const Locale('id', 'ID'),
+          ],
+          localizationsDelegates: [
+            DefaultWidgetsLocalizations.delegate,
+            DefaultMaterialLocalizations.delegate,
+          ],
+        ),
+        DeviceFrameAddon(
+          devices: [
+            Devices.ios.iPhone13,
+            Devices.android.samsungGalaxyS20,
+            Devices.windows.laptop,
+          ],
+        ),
       ],
     );
   }

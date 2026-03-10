@@ -91,6 +91,7 @@ class MenuLevel1 extends StatelessWidget {
                               menu1.menu[index].labelShort ??
                                   menu1.menu[index].label.tr(),
                               style: const TextStyle(fontSize: 10),
+                              textAlign: TextAlign.center,
                             ),
                           ],
                         ),
