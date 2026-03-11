@@ -56,8 +56,8 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
   final ScrollController _vEndController = ScrollController();
   int? _hoveredRowIndex;
   bool _isSyncing = false;
-  late bool _freezeFirst;
-  late bool _freezeLast;
+  final Set<int> _pinnedLeft = {};
+  final Set<int> _pinnedRight = {};
 
   bool get enableHoverEffect => MenuPage.enableHoverEffect;
 
@@ -97,8 +97,10 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     super.initState();
     _sortIndex = widget.initialSortColumnIndex;
     _ascending = widget.initialSortAscending ?? true;
-    _freezeFirst = widget.freezeFirstColumn;
-    _freezeLast = widget.freezeLastColumn;
+    if (widget.freezeFirstColumn) _pinnedLeft.add(0);
+    if (widget.freezeLastColumn && widget.columns.isNotEmpty) {
+      _pinnedRight.add(widget.columns.length - 1);
+    }
 
     _vMiddleController.addListener(() => _syncScroll(_vMiddleController));
     _vStartController.addListener(() => _syncScroll(_vStartController));
@@ -115,10 +117,18 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       _ascending = widget.initialSortAscending ?? true;
     }
     if (widget.freezeFirstColumn != oldWidget.freezeFirstColumn) {
-      _freezeFirst = widget.freezeFirstColumn;
+      if (widget.freezeFirstColumn) {
+        _pinnedLeft.add(0);
+      } else {
+        _pinnedLeft.remove(0);
+      }
     }
     if (widget.freezeLastColumn != oldWidget.freezeLastColumn) {
-      _freezeLast = widget.freezeLastColumn;
+      if (widget.freezeLastColumn && widget.columns.isNotEmpty) {
+        _pinnedRight.add(widget.columns.length - 1);
+      } else {
+        _pinnedRight.remove(widget.columns.length - 1);
+      }
     }
   }
 
@@ -129,32 +139,34 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
         final isSmall =
             screenIdentifier.conditions(md: false, sm: true) == true ||
                 MediaQuery.of(context).size.width < 1000;
-        final freezeFirst = !isSmall && _freezeFirst;
-        final freezeLast = !isSmall && _freezeLast;
 
-        final scrollableColumns = List.of(widget.columns);
-        TableColumn<T>? frozenStart;
-        TableColumn<T>? frozenEnd;
+        final leftPinnedEntries = <(int, TableColumn<T>)>[];
+        final centerPinnedEntries = <(int, TableColumn<T>)>[];
+        final rightPinnedEntries = <(int, TableColumn<T>)>[];
 
-        if (freezeFirst && scrollableColumns.isNotEmpty) {
-          frozenStart = scrollableColumns.removeAt(0);
-        }
-        if (freezeLast && scrollableColumns.isNotEmpty) {
-          frozenEnd = scrollableColumns.removeLast();
+        for (var i = 0; i < widget.columns.length; i++) {
+          final entry = (i, widget.columns[i]);
+          if (!isSmall && _pinnedLeft.contains(i)) {
+            leftPinnedEntries.add(entry);
+          } else if (!isSmall && _pinnedRight.contains(i)) {
+            rightPinnedEntries.add(entry);
+          } else {
+            centerPinnedEntries.add(entry);
+          }
         }
 
         final table = _buildTable(
           _theme,
           _borderSide,
-          scrollableColumns,
-          freezeFirst,
-          freezeLast,
+          centerPinnedEntries,
           _vMiddleController,
-          showScrollbar: !freezeLast, // Only show middle if no end column
+          showScrollbar: rightPinnedEntries.isEmpty,
         );
 
-        final startWidth = frozenStart?.width ?? 0;
-        final endWidth = frozenEnd?.width ?? 0;
+        final startWidth =
+            leftPinnedEntries.fold<double>(0, (p, c) => p + (c.$2.width ?? 0));
+        final endWidth =
+            rightPinnedEntries.fold<double>(0, (p, c) => p + (c.$2.width ?? 0));
 
         return Column(
           children: [
@@ -162,17 +174,16 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
               builder: (context, constraints) {
                 final maxWidth = constraints.maxWidth;
 
-                // Calculate total width of scrollable columns
-                final totalScrollableWidth = scrollableColumns.fold<double>(
+                final totalCenterWidth = centerPinnedEntries.fold<double>(
                       0.0,
-                      (prev, col) => prev + (col.width ?? 0),
+                      (prev, col) => prev + (col.$2.width ?? 0),
                     ) +
                     (widget.onSelectChanged != null ? 80 : 0);
 
                 final maxScrollWidth = (maxWidth - startWidth - endWidth)
                     .clamp(0.0, double.infinity);
                 final actualScrollWidth =
-                    totalScrollableWidth.clamp(0.0, maxScrollWidth);
+                    totalCenterWidth.clamp(0.0, maxScrollWidth);
                 final totalTableWidth =
                     startWidth + actualScrollWidth + endWidth;
 
@@ -182,7 +193,6 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        // Main Scrollable Content
                         Padding(
                           padding: EdgeInsets.only(
                               left: startWidth, right: endWidth),
@@ -197,44 +207,37 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                                 scrollDirection: Axis.horizontal,
                                 physics: const ClampingScrollPhysics(),
                                 child: SizedBox(
-                                  width: totalScrollableWidth,
+                                  width: totalCenterWidth,
                                   child: table,
                                 ),
                               ),
                             ),
                           ),
                         ),
-
-                        // Frozen Start Column
-                        if (frozenStart != null)
+                        if (leftPinnedEntries.isNotEmpty)
                           Positioned(
                             left: 0,
                             top: 0,
                             bottom: 0,
                             width: startWidth,
-                            child: _buildFrozenColumn(
-                              0,
-                              frozenStart,
+                            child: _buildFrozenSection(
+                              leftPinnedEntries,
                               false,
                               _vStartController,
                               showScrollbar: false,
                             ),
                           ),
-
-                        // Frozen End Column
-                        if (frozenEnd != null)
+                        if (rightPinnedEntries.isNotEmpty)
                           Positioned(
                             right: 0,
                             top: 0,
                             bottom: 0,
                             width: endWidth,
-                            child: _buildFrozenColumn(
-                              widget.columns.length - 1,
-                              frozenEnd,
+                            child: _buildFrozenSection(
+                              rightPinnedEntries,
                               true,
                               _vEndController,
-                              showScrollbar:
-                                  true, // Show vertical scrollbar here
+                              showScrollbar: true,
                             ),
                           ),
                       ],
@@ -374,42 +377,36 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
   Widget _buildTable(
     ThemeData theme,
     BorderSide borderSide,
-    List<TableColumn<T>> scrollableColumns,
-    bool freezeFirst,
-    bool freezeLast,
+    List<(int, TableColumn<T>)> entries,
     ScrollController? vController, {
     bool showScrollbar = true,
   }) {
     final columnWidths = <int, TableColumnWidth>{};
-    for (var i = 0; i < scrollableColumns.length; i++) {
-      final width = scrollableColumns[i].width;
+    for (var i = 0; i < entries.length; i++) {
+      final width = entries[i].$2.width;
       if (width != null) columnWidths[i] = FixedColumnWidth(width);
     }
 
-    final headers = List.generate(scrollableColumns.length, (i) {
-      final column = scrollableColumns[i];
-      final index = freezeFirst ? i + 1 : i;
-      final isPinnableStart = i == 0 && !freezeFirst;
-      final isPinnableEnd = !freezeLast && i == scrollableColumns.length - 1;
-
+    final headers = List.generate(entries.length, (i) {
+      final index = entries[i].$1;
+      final column = entries[i].$2;
       return _buildTableHeader(
         index,
         column,
         isPinned: false,
-        onPinChanged: (isPinnableStart || isPinnableEnd)
-            ? (p) => setState(() {
-                  if (isPinnableStart) {
-                    _freezeFirst = p;
-                  } else {
-                    _freezeLast = p;
-                  }
-                })
-            : null,
+        onPinChanged: (p) => setState(() {
+          if (p) {
+            _pinnedLeft.add(index);
+          } else {
+            _pinnedLeft.remove(index);
+            _pinnedRight.remove(index);
+          }
+        }),
       );
     });
 
     if (widget.onSelectChanged != null) {
-      columnWidths[scrollableColumns.length] = const FixedColumnWidth(80);
+      columnWidths[entries.length] = const FixedColumnWidth(80);
       headers.add(
         TableHeader(
           column: TableColumn(title: '', builder: (_, __) => Container()),
@@ -419,7 +416,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       );
     }
 
-    final rows = _buildRows(scrollableColumns);
+    final rows = _buildRows(entries);
 
     return TableWithBodyScroll(
       heightBody: widget.bodyHeight,
@@ -438,18 +435,16 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     );
   }
 
-  List<TableRow> _buildRows(List<TableColumn<T>> scrollableColumns) {
+  List<TableRow> _buildRows(List<(int, TableColumn<T>)> entries) {
     return _generateTableRows(
       cellBuilder: (rowIndex, item) {
         final row = <Widget>[
-          for (var colIndex = 0;
-              colIndex < scrollableColumns.length;
-              colIndex++)
+          for (var i = 0; i < entries.length; i++)
             TableData(
               height: widget.rowHeight,
-              alignment: scrollableColumns[colIndex].alignment,
+              alignment: entries[i].$2.alignment,
               borderSide: _borderSide,
-              child: scrollableColumns[colIndex].builder(item, rowIndex),
+              child: entries[i].$2.builder(item, rowIndex),
             ),
         ];
 
@@ -460,10 +455,10 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       },
       emptyCellBuilder: (rowIndex) {
         final cells = <Widget>[
-          for (var i = 0; i < scrollableColumns.length; i++)
+          for (var i = 0; i < entries.length; i++)
             TableData(
               height: widget.rowHeight,
-              alignment: scrollableColumns[i].alignment,
+              alignment: entries[i].$2.alignment,
               borderSide: _borderSide,
               child: Container(),
             ),
@@ -482,64 +477,70 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     );
   }
 
-  Widget _buildFrozenColumn(
-    int index,
-    TableColumn<T> column,
-    bool isLast,
+  Widget _buildFrozenSection(
+    List<(int, TableColumn<T>)> entries,
+    bool isRightSection,
     ScrollController? vController, {
     bool showScrollbar = true,
   }) {
-    final header = TableRow(
-      decoration: _headerDecoration,
-      children: [
-        _buildTableHeader(
-          index,
-          column,
-          isPinned: true,
-          onPinChanged: (p) => setState(() {
-            if (index == 0) {
-              _freezeFirst = p;
-            } else {
-              _freezeLast = p;
-            }
-          }),
-        ),
-      ],
-    );
+    final columnWidths = <int, TableColumnWidth>{};
+    for (var i = 0; i < entries.length; i++) {
+      final width = entries[i].$2.width;
+      if (width != null) columnWidths[i] = FixedColumnWidth(width);
+    }
+
+    final headers = List.generate(entries.length, (i) {
+      final index = entries[i].$1;
+      final column = entries[i].$2;
+      return _buildTableHeader(
+        index,
+        column,
+        isPinned: true,
+        onPinChanged: (_) => setState(() {
+          _pinnedLeft.remove(index);
+          _pinnedRight.remove(index);
+        }),
+      );
+    });
 
     final rows = _generateTableRows(
-      baseColor: _theme.cardColor,
-      cellBuilder: (rowIndex, item) => [
-        TableData(
-          height: widget.rowHeight,
-          alignment: column.alignment,
-          borderSide: _borderSide,
-          child: column.builder(item, rowIndex),
-        ),
-      ],
-      emptyCellBuilder: (rowIndex) => [
-        TableData(
-          height: widget.rowHeight,
-          alignment: column.alignment,
-          borderSide: _borderSide,
-          child: Container(),
-        ),
-      ],
+      cellBuilder: (rowIndex, item) {
+        return List.generate(entries.length, (i) {
+          final column = entries[i].$2;
+          return TableData(
+            height: widget.rowHeight,
+            alignment: column.alignment,
+            borderSide: _borderSide,
+            child: column.builder(item, rowIndex),
+          );
+        });
+      },
+      emptyCellBuilder: (rowIndex) {
+        return List.generate(entries.length, (i) {
+          final column = entries[i].$2;
+          return TableData(
+            height: widget.rowHeight,
+            alignment: column.alignment,
+            borderSide: _borderSide,
+            child: Container(),
+          );
+        });
+      },
     );
 
     return Align(
-      alignment: isLast ? Alignment.centerRight : Alignment.centerLeft,
+      alignment: isRightSection ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         decoration: BoxDecoration(
           color: _theme.cardColor,
           border: Border(
-            left: isLast ? _borderSide : BorderSide.none,
-            right: isLast ? BorderSide.none : _borderSide,
+            left: isRightSection ? _borderSide : BorderSide.none,
+            right: isRightSection ? BorderSide.none : _borderSide,
           ),
         ),
         child: TableWithBodyScroll(
           heightBody: widget.bodyHeight,
-          columnWidths: {0: FixedColumnWidth(column.width ?? 0)},
+          columnWidths: columnWidths,
           controller: vController,
           physics: const ClampingScrollPhysics(),
           showScrollbar: showScrollbar,
@@ -548,7 +549,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                 _borderSide.copyWith(color: _borderSide.color.withOpacity(0.4)),
           ),
           children: [
-            header,
+            TableRow(decoration: _headerDecoration, children: headers),
             ...rows,
           ],
         ),
