@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
 
-class TableHeader<T> extends StatelessWidget {
+class TableHeader<T> extends StatefulWidget {
   const TableHeader({
     required this.column,
     required this.isSort,
@@ -23,8 +23,15 @@ class TableHeader<T> extends StatelessWidget {
   final bool ascending;
   final TablePinPosition pinnedPosition;
 
+  @override
+  State<TableHeader<T>> createState() => _TableHeaderState<T>();
+}
+
+class _TableHeaderState<T> extends State<TableHeader<T>> {
+  bool _isHovered = false;
+
   void _showContextMenu(BuildContext context, Offset position) {
-    if (onPinnedPositionChanged == null) return;
+    if (widget.onPinnedPositionChanged == null) return;
 
     final theme = Theme.of(context);
     final overlay = Overlay.of(context);
@@ -63,9 +70,9 @@ class TableHeader<T> extends StatelessWidget {
       shadowColor: Colors.black.withValues(alpha: .3),
       color: theme.colorScheme.surface.withValues(alpha: 0.98),
       items: [
-        _buildPopupHeader(column.title),
+        _buildPopupHeader(widget.column.title),
         const PopupMenuDivider(height: 1),
-        if (pinnedPosition == TablePinPosition.none) ...[
+        if (widget.pinnedPosition == TablePinPosition.none) ...[
           _buildPopupItem(
             value: TablePinPosition.left,
             icon: Icons.align_horizontal_left_rounded,
@@ -78,7 +85,7 @@ class TableHeader<T> extends StatelessWidget {
             label: 'Freeze to Right',
             style: textStyle,
           ),
-        ] else if (pinnedPosition == TablePinPosition.left) ...[
+        ] else if (widget.pinnedPosition == TablePinPosition.left) ...[
           _buildPopupItem(
             value: TablePinPosition.none,
             icon: Icons.pin_end_rounded,
@@ -91,7 +98,7 @@ class TableHeader<T> extends StatelessWidget {
             label: 'Move to Right Pin',
             style: textStyle,
           ),
-        ] else if (pinnedPosition == TablePinPosition.right) ...[
+        ] else if (widget.pinnedPosition == TablePinPosition.right) ...[
           _buildPopupItem(
             value: TablePinPosition.none,
             icon: Icons.pin_end_rounded,
@@ -108,7 +115,7 @@ class TableHeader<T> extends StatelessWidget {
       ],
     ).then((value) {
       if (value != null) {
-        onPinnedPositionChanged!(value);
+        widget.onPinnedPositionChanged!(value);
       }
     });
   }
@@ -155,78 +162,106 @@ class TableHeader<T> extends StatelessWidget {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final primaryColor = theme.colorScheme.primary;
-    final isPinned = pinnedPosition != TablePinPosition.none;
+    final isPinned = widget.pinnedPosition != TablePinPosition.none;
 
     return Stack(
       children: [
-        GestureDetector(
-          onSecondaryTapDown: (details) =>
-              _showContextMenu(context, details.globalPosition),
-          child: InkWell(
-            onTap: onTap,
-            child: Container(
-              color: Colors.transparent,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-              child: Align(
-                alignment: column.alignment,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        column.title,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: theme.modeCondition(
-                            const Color(0xff374259),
-                            Colors.blueGrey.shade200,
+        MouseRegion(
+          onEnter: (_) => setState(() => _isHovered = true),
+          onExit: (_) => setState(() => _isHovered = false),
+          child: GestureDetector(
+            onSecondaryTapDown: (details) =>
+                _showContextMenu(context, details.globalPosition),
+            child: InkWell(
+              onTap: widget.onTap,
+              child: Container(
+                color: Colors.transparent,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                child: Align(
+                  alignment: widget.column.alignment,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          widget.column.title,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: theme.modeCondition(
+                              const Color(0xff374259),
+                              Colors.blueGrey.shade200,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    if (isSort)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 6),
-                        child: Icon(
-                          ascending ? Icons.arrow_downward : Icons.arrow_upward,
-                          size: 16,
-                          color: primaryColor.withAlpha(120),
+                      if (widget.isSort)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 6),
+                          child: Icon(
+                            widget.ascending
+                                ? Icons.arrow_downward
+                                : Icons.arrow_upward,
+                            size: 16,
+                            color: primaryColor.withAlpha(120),
+                          ),
                         ),
-                      ),
-                    if (onPinnedPositionChanged != null && isPinned)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 6),
-                        child: Icon(
-                          Icons.push_pin,
-                          size: 14,
-                          color: primaryColor.withAlpha(180),
+                      if (widget.onPinnedPositionChanged != null && isPinned)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 6),
+                          child: Icon(
+                            Icons.push_pin,
+                            size: 14,
+                            color: primaryColor.withAlpha(180),
+                          ),
                         ),
-                      ),
-                  ],
+                      if (widget.onPinnedPositionChanged != null &&
+                          !isPinned &&
+                          _isHovered)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 6),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () => widget.onPinnedPositionChanged!(
+                                TablePinPosition.left,
+                              ),
+                              borderRadius: BorderRadius.circular(4),
+                              child: Container(
+                                padding: const EdgeInsets.all(2),
+                                child: Icon(
+                                  Icons.push_pin_outlined,
+                                  size: 14,
+                                  color: primaryColor.withValues(alpha: 0.4),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
         // Resize Handle
-        if (onResizing != null)
+        if (widget.onResizing != null)
           Positioned(
             right: 0,
             top: 0,
             bottom: 0,
             child: GestureDetector(
               onHorizontalDragUpdate: (details) {
-                onResizing!(details.delta.dx);
+                widget.onResizing!(details.delta.dx);
               },
               onHorizontalDragEnd: (_) {
-                onResizeEnd?.call();
+                widget.onResizeEnd?.call();
               },
               child: MouseRegion(
                 cursor: SystemMouseCursors.resizeLeftRight,
@@ -250,4 +285,5 @@ class TableHeader<T> extends StatelessWidget {
     );
   }
 }
+
 
