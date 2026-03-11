@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/src/app/model/data_action.dart';
 import 'package:flx_core_flutter/src/app/model/page_options.dart';
 import 'package:flx_core_flutter/src/app/util/debounce.dart';
-import 'package:flx_core_flutter/src/app/view/page/menu/menu_page.dart';
+import 'package:flx_core_flutter/features/sidebar/presentation/menu_page.dart';
 import 'package:flx_core_flutter/src/app/view/widget/button.dart';
 import 'package:flx_core_flutter/src/app/view/widget/f_drop_down.dart';
 import 'package:flx_core_flutter/src/app/view/widget/search_box/search_box_x.dart';

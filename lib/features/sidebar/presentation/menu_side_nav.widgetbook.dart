@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
-import 'package:flx_core_flutter/src/app/view/page/menu/menu_side_nav.dart';
+import 'package:flx_core_flutter/features/sidebar/presentation/menu_side_nav.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 
 @UseCase(name: 'Default Side Nav', type: MenuSideNav)

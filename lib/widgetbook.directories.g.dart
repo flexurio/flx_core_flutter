@@ -10,10 +10,10 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:flx_core_flutter/features/sidebar/presentation/menu_side_nav.widgetbook.dart'
+    as _flx_core_flutter_features_sidebar_presentation_menu_side_nav_widgetbook;
 import 'package:flx_core_flutter/src/app/util/toast.widgetbook.dart'
     as _flx_core_flutter_src_app_util_toast_widgetbook;
-import 'package:flx_core_flutter/src/app/view/page/menu/menu_side_nav.widgetbook.dart'
-    as _flx_core_flutter_src_app_view_page_menu_menu_side_nav_widgetbook;
 import 'package:flx_core_flutter/src/app/view/widget/f_drop_down/f_drop_down_search_small.widgetbook.dart'
     as _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_search_small_widgetbook;
 import 'package:flx_core_flutter/src/app/view/widget/f_drop_down/f_drop_down_small.widgetbook.dart'
@@ -42,27 +42,6 @@ final directories = <_widgetbook.WidgetbookNode>[
       _widgetbook.WidgetbookFolder(
         name: 'view',
         children: [
-          _widgetbook.WidgetbookFolder(
-            name: 'page',
-            children: [
-              _widgetbook.WidgetbookFolder(
-                name: 'menu',
-                children: [
-                  _widgetbook.WidgetbookComponent(
-                    name: 'MenuSideNav',
-                    useCases: [
-                      _widgetbook.WidgetbookUseCase(
-                        name: 'Default Side Nav',
-                        builder:
-                            _flx_core_flutter_src_app_view_page_menu_menu_side_nav_widgetbook
-                                .menuSideNavUseCase,
-                      )
-                    ],
-                  )
-                ],
-              )
-            ],
-          ),
           _widgetbook.WidgetbookFolder(
             name: 'widget',
             children: [
@@ -130,9 +109,35 @@ final directories = <_widgetbook.WidgetbookNode>[
                 ],
               )
             ],
-          ),
+          )
         ],
       ),
     ],
-  )
+  ),
+  _widgetbook.WidgetbookFolder(
+    name: 'features',
+    children: [
+      _widgetbook.WidgetbookFolder(
+        name: 'sidebar',
+        children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'presentation',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'MenuSideNav',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Default Side Nav',
+                    builder:
+                        _flx_core_flutter_features_sidebar_presentation_menu_side_nav_widgetbook
+                            .menuSideNavUseCase,
+                  )
+                ],
+              )
+            ],
+          )
+        ],
+      )
+    ],
+  ),
 ];

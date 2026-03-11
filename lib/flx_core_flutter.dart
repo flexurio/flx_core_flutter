@@ -1,18 +1,21 @@
 export 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 export 'constant/size.dart';
-export 'src/app/bloc/theme/menu/menu_bloc.dart';
-export 'src/app/bloc/theme/menu_collapse/menu_collapse.dart';
 export 'src/app/bloc/theme/theme_bloc.dart';
+export 'features/sidebar/application/menu/menu_bloc.dart';
+export 'features/sidebar/application/menu_collapse/menu_collapse.dart';
+
 // Model
 export 'src/app/model/base_api.dart';
 export 'src/app/model/color_type.dart';
 export 'src/app/model/data_action.dart';
 export 'src/app/model/entity.dart';
 export 'src/app/model/flavor_config.dart';
-export 'src/app/model/menu.dart';
 export 'src/app/model/page_options.dart';
 export 'src/app/model/permission.dart';
+export 'features/sidebar/domain/menu.dart';
+
+
 export 'src/app/model/sound.dart';
 export 'src/app/model/string.dart';
 // Util
@@ -49,7 +52,8 @@ export 'src/app/util/toast.dart';
 export 'src/app/util/validator.dart';
 export 'src/app/util/widget_extension.dart';
 // Page
-export 'src/app/view/page/menu/menu_page.dart';
+export 'features/sidebar/presentation/menu_page.dart';
+
 export 'src/app/view/page/splash/splash_page.dart';
 // Widget
 export 'src/app/view/widget/account_button.dart';
