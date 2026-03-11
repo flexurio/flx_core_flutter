@@ -42,6 +42,19 @@ Widget menuSideNavUseCase(BuildContext context) {
         ),
       ],
     ),
+    Menu1(
+      label: 'Human Resource Management',
+      menu: [
+        Menu2(
+          label: 'Talent Acquisition',
+          icon: Icons.person_add,
+          menu: [
+            Menu3(label: 'Job Postings', home: const SizedBox()),
+            Menu3(label: 'Candidates', home: const SizedBox()),
+          ],
+        ),
+      ],
+    ),
   ];
 
   return Scaffold(
@@ -71,4 +84,3 @@ Widget menuSideNavUseCase(BuildContext context) {
     ),
   );
 }
-

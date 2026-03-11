@@ -18,29 +18,22 @@ class LogoNamed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late Widget logo;
-    late Widget logoNamed;
-    if (logoUrl != null) {
-      logo = Image.network(
-        logoUrl!,
-        height: height,
-        width: height,
-      );
-    } else {
-      logo = Image.asset(
-        'asset/image/logo-company-${flavorConfig.companyId}.png',
-        height: height,
-        width: height,
-      );
-    }
-
     return Padding(
       padding: padding,
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          logo,
+          Logo(
+            logoUrl: logoUrl,
+            size: height,
+            padding: EdgeInsets.zero,
+          ),
           const Gap(12),
-          Flexible(child: Named(logoNamedUrl: logoNamedUrl)),
+          Flexible(
+            child: Named(
+              logoNamedUrl: logoNamedUrl,
+            ),
+          ),
         ],
       ),
     );
@@ -54,46 +47,132 @@ class Named extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late Widget logoNamed;
-    if (logoNamedUrl != null) {
-      logoNamed = Image.network(
+    final theme = Theme.of(context);
+    final textStyle = TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: theme.colorScheme.onSurface.withOpacity(0.9),
+      letterSpacing: 0.5,
+    );
+
+    if (logoNamedUrl != null && logoNamedUrl!.isNotEmpty) {
+      return Image.network(
         logoNamedUrl!,
         height: 40,
-      );
-    } else {
-      logoNamed = Image.asset(
-        'asset/image/logo-name-company-${flavorConfig.companyId}.png',
-        height: 40,
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) =>
+            _NamedFallback(style: textStyle),
       );
     }
-    return logoNamed;
+
+    return Image.asset(
+      'asset/image/logo-name-company-${flavorConfig.companyId}.png',
+      height: 40,
+      fit: BoxFit.contain,
+      errorBuilder: (context, error, stackTrace) =>
+          _NamedFallback(style: textStyle),
+    );
+  }
+}
+
+class _NamedFallback extends StatelessWidget {
+  const _NamedFallback({required this.style});
+  final TextStyle style;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      flavorConfig.companyName,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: style,
+    );
   }
 }
 
 class Logo extends StatelessWidget {
-  const Logo({super.key, this.logoUrl});
+  const Logo({
+    this.logoUrl,
+    this.size = 40,
+    this.padding = const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+    super.key,
+  });
 
   final String? logoUrl;
+  final double size;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
-    late Widget logo;
-    if (logoUrl != null) {
-      logo = Image.network(
+    Widget image;
+
+    if (logoUrl != null && logoUrl!.isNotEmpty) {
+      image = Image.network(
         logoUrl!,
-        height: 40,
-        width: 40,
+        height: size,
+        width: size,
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) => _LogoFallback(size: size),
       );
     } else {
-      logo = Image.asset(
+      image = Image.asset(
         'asset/image/logo-company-${flavorConfig.companyId}.png',
-        height: 40,
-        width: 40,
+        height: size,
+        width: size,
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) => _LogoFallback(size: size),
       );
     }
+
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-      child: logo,
+      padding: padding,
+      child: image,
+    );
+  }
+}
+
+class _LogoFallback extends StatelessWidget {
+  const _LogoFallback({required this.size});
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    final String initial = flavorConfig.companyName.trim().isNotEmpty
+        ? flavorConfig.companyName.trim()[0].toUpperCase()
+        : '?';
+
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            flavorConfig.color,
+            flavorConfig.color.withOpacity(0.7),
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: flavorConfig.color.withOpacity(0.3),
+            blurRadius: 8,
+            spreadRadius: 1,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Center(
+        child: Text(
+          initial,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: size * 0.5,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
     );
   }
 }
