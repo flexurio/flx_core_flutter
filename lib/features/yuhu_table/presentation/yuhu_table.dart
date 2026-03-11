@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flx_core_flutter/features/menu/presentation/menu_page.dart';
+import 'package:flx_core_flutter/features/yuhu_table/presentation/table_column.dart';
+import 'package:flx_core_flutter/features/yuhu_table/presentation/table_data.dart';
+import 'package:flx_core_flutter/features/yuhu_table/presentation/table_header.dart';
 import 'package:flx_core_flutter/src/app/util/color.dart';
 import 'package:flx_core_flutter/src/app/util/theme.dart';
-import 'package:flx_core_flutter/features/menu/presentation/menu_page.dart';
 import 'package:flx_core_flutter/src/app/view/widget/f_drop_down.dart';
 import 'package:flx_core_flutter/src/app/view/widget/table_with_body_scroll.dart';
-import 'table_column.dart';
-import 'table_data.dart';
-import 'table_header.dart';
 import 'package:screen_identifier/screen_identifier.dart';
 
 class YuhuTable<T> extends StatefulWidget {
@@ -58,6 +58,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
   bool _isSyncing = false;
   final Set<int> _pinnedLeft = {};
   final Set<int> _pinnedRight = {};
+  final Map<int, double> _columnWidths = {};
 
   bool get enableHoverEffect => MenuPage.enableHoverEffect;
 
@@ -100,6 +101,12 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     if (widget.freezeFirstColumn) _pinnedLeft.add(0);
     if (widget.freezeLastColumn && widget.columns.isNotEmpty) {
       _pinnedRight.add(widget.columns.length - 1);
+    }
+
+    for (var i = 0; i < widget.columns.length; i++) {
+      if (widget.columns[i].width != null) {
+        _columnWidths[i] = widget.columns[i].width!;
+      }
     }
 
     _vMiddleController.addListener(() => _syncScroll(_vMiddleController));
@@ -163,10 +170,14 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
           showScrollbar: rightPinnedEntries.isEmpty,
         );
 
-        final startWidth =
-            leftPinnedEntries.fold<double>(0, (p, c) => p + (c.$2.width ?? 0));
-        final endWidth =
-            rightPinnedEntries.fold<double>(0, (p, c) => p + (c.$2.width ?? 0));
+        final startWidth = leftPinnedEntries.fold<double>(
+          0,
+          (p, c) => p + (_columnWidths[c.$1] ?? c.$2.width ?? 0),
+        );
+        final endWidth = rightPinnedEntries.fold<double>(
+          0,
+          (p, c) => p + (_columnWidths[c.$1] ?? c.$2.width ?? 0),
+        );
 
         return Column(
           children: [
@@ -175,8 +186,9 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                 final maxWidth = constraints.maxWidth;
 
                 final totalCenterWidth = centerPinnedEntries.fold<double>(
-                      0.0,
-                      (prev, col) => prev + (col.$2.width ?? 0),
+                      0,
+                      (prev, col) =>
+                          prev + (_columnWidths[col.$1] ?? col.$2.width ?? 0),
                     ) +
                     (widget.onSelectChanged != null ? 80 : 0);
 
@@ -195,7 +207,9 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(
-                              left: startWidth, right: endWidth),
+                            left: startWidth,
+                            right: endWidth,
+                          ),
                           child: SizedBox(
                             width: actualScrollWidth,
                             child: Scrollbar(
@@ -383,7 +397,8 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
   }) {
     final columnWidths = <int, TableColumnWidth>{};
     for (var i = 0; i < entries.length; i++) {
-      final width = entries[i].$2.width;
+      final index = entries[i].$1;
+      final width = _columnWidths[index] ?? entries[i].$2.width;
       if (width != null) columnWidths[i] = FixedColumnWidth(width);
     }
 
@@ -426,9 +441,9 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       showScrollbar: showScrollbar,
       border: TableBorder(
         verticalInside:
-            borderSide.copyWith(color: borderSide.color.withOpacity(0.4)),
+            borderSide.copyWith(color: borderSide.color.withAlpha(102)),
       ),
-      children: [
+      children: <TableRow>[
         TableRow(decoration: _headerDecoration, children: headers),
         ...rows,
       ],
@@ -470,7 +485,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
             alignment: Alignment.center,
             borderSide: _borderSide,
             child: Container(),
-          ));
+          ),);
         }
         return cells;
       },
@@ -485,7 +500,8 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
   }) {
     final columnWidths = <int, TableColumnWidth>{};
     for (var i = 0; i < entries.length; i++) {
-      final width = entries[i].$2.width;
+      final index = entries[i].$1;
+      final width = _columnWidths[index] ?? entries[i].$2.width;
       if (width != null) columnWidths[i] = FixedColumnWidth(width);
     }
 
@@ -546,9 +562,9 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
           showScrollbar: showScrollbar,
           border: TableBorder(
             verticalInside:
-                _borderSide.copyWith(color: _borderSide.color.withOpacity(0.4)),
+                _borderSide.copyWith(color: _borderSide.color.withAlpha(102)),
           ),
-          children: [
+          children: <TableRow>[
             TableRow(decoration: _headerDecoration, children: headers),
             ...rows,
           ],
@@ -569,6 +585,12 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       isSort: _sortIndex == index,
       isPinned: isPinned,
       onPinChanged: onPinChanged,
+      onResizing: (delta) {
+        setState(() {
+          final currentWidth = _columnWidths[index] ?? column.width ?? 100.0;
+          _columnWidths[index] = (currentWidth + delta).clamp(50.0, 1000.0);
+        });
+      },
       onTap: () {
         if (column.sortNum == null && column.sortString == null) {
           widget.onSort?.call(index, !_ascending);

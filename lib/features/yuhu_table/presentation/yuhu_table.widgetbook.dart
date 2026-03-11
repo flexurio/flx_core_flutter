@@ -13,14 +13,6 @@ Widget yuhuTableManyColumnsUseCase(BuildContext context) {
 }
 
 class Product {
-  final String name;
-  final String category;
-  final String brand;
-  final int quantity;
-  final double price;
-  final bool inStock;
-  final String location;
-
   Product({
     required this.name,
     required this.category,
@@ -30,6 +22,14 @@ class Product {
     required this.inStock,
     required this.location,
   });
+
+  final String name;
+  final String category;
+  final String brand;
+  final int quantity;
+  final double price;
+  final bool inStock;
+  final String location;
 }
 
 class YuhuTableExample extends StatefulWidget {
@@ -64,7 +64,7 @@ class _YuhuTableExampleState extends State<YuhuTableExample> {
       category: 'Smartphone',
       brand: 'Xiaomi',
       quantity: 5,
-      price: 699.00,
+      price: 699,
       inStock: false,
       location: 'Warehouse C',
     ),
@@ -155,49 +155,42 @@ class _YuhuTableExampleState extends State<YuhuTableExample> {
                         ? a.name.compareTo(b.name)
                         : b.name.compareTo(a.name),
                   );
-                  break;
                 case 1:
                   products.sort(
                     (a, b) => ascending
                         ? a.category.compareTo(b.category)
                         : b.category.compareTo(a.category),
                   );
-                  break;
                 case 2:
                   products.sort(
                     (a, b) => ascending
                         ? a.brand.compareTo(b.brand)
                         : b.brand.compareTo(a.brand),
                   );
-                  break;
                 case 3:
                   products.sort(
                     (a, b) => ascending
                         ? a.quantity.compareTo(b.quantity)
                         : b.quantity.compareTo(a.quantity),
                   );
-                  break;
                 case 4:
                   products.sort(
                     (a, b) => ascending
                         ? a.price.compareTo(b.price)
                         : b.price.compareTo(a.price),
                   );
-                  break;
                 case 5:
                   products.sort(
                     (a, b) => ascending
                         ? (a.inStock ? 1 : 0).compareTo(b.inStock ? 1 : 0)
                         : (b.inStock ? 1 : 0).compareTo(a.inStock ? 1 : 0),
                   );
-                  break;
                 case 6:
                   products.sort(
                     (a, b) => ascending
                         ? a.location.compareTo(b.location)
                         : b.location.compareTo(a.location),
                   );
-                  break;
               }
             });
           },
@@ -230,7 +223,7 @@ class YuhuTableManyColumnsExample extends StatelessWidget {
         'col7': 'Data 7-$index',
         'col8': 'Data 8-$index',
         'col9': 'Data 9-$index',
-        'status': index % 2 == 0 ? 'Active' : 'Inactive',
+        'status': index.isEven ? 'Active' : 'Inactive',
       },
     );
 
@@ -273,8 +266,8 @@ class YuhuTableManyColumnsExample extends StatelessWidget {
                   style: const TextStyle(fontSize: 10),
                 ),
                 backgroundColor: item['status'] == 'Active'
-                    ? Colors.green.withOpacity(0.1)
-                    : Colors.red.withOpacity(0.1),
+                    ? Colors.green.withAlpha(26)
+                    : Colors.red.withAlpha(26),
               ),
             ),
           ],
