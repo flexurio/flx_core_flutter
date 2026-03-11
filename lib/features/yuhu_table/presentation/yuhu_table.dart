@@ -5,10 +5,9 @@ import 'package:flx_core_flutter/src/app/util/theme.dart';
 import 'package:flx_core_flutter/features/menu/presentation/menu_page.dart';
 import 'package:flx_core_flutter/src/app/view/widget/f_drop_down.dart';
 import 'package:flx_core_flutter/src/app/view/widget/table_with_body_scroll.dart';
-import 'package:flx_core_flutter/src/app/view/widget/yuhu_table/table_column.dart';
-import 'package:flx_core_flutter/src/app/view/widget/yuhu_table/table_data.dart';
-import 'package:flx_core_flutter/src/app/view/widget/yuhu_table/table_header.dart';
-import 'package:gap/gap.dart';
+import 'table_column.dart';
+import 'table_data.dart';
+import 'table_header.dart';
 import 'package:screen_identifier/screen_identifier.dart';
 
 class YuhuTable<T> extends StatefulWidget {
@@ -136,44 +135,79 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
           freezeLast,
         );
 
+        final startWidth = frozenStart?.width ?? 0;
+        final endWidth = frozenEnd?.width ?? 0;
+
         return Column(
           children: [
-            Stack(
-              children: [
-                Row(
-                  children: [
-                    Gap(frozenStart?.width ?? 0),
-                    Expanded(
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          final maxWidth = constraints.maxWidth;
-                          final tableWidth = (widget.width ?? maxWidth)
-                              .clamp(maxWidth, double.infinity);
-                          return Scrollbar(
-                            controller: _scrollController,
-                            interactive: true,
-                            thumbVisibility: true,
-                            child: SingleChildScrollView(
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final maxWidth = constraints.maxWidth;
+                
+                // Calculate total width of scrollable columns
+                final totalScrollableWidth = scrollableColumns.fold<double>(
+                  0.0, (prev, col) => prev + (col.width ?? 0),
+                ) + (widget.onSelectChanged != null ? 80 : 0);
+                
+                final maxScrollWidth = (maxWidth - startWidth - endWidth).clamp(0.0, double.infinity);
+                final actualScrollWidth = totalScrollableWidth.clamp(0.0, maxScrollWidth);
+                final totalTableWidth = startWidth + actualScrollWidth + endWidth;
+
+                return Center(
+                  child: SizedBox(
+                    width: totalTableWidth,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        // Main Scrollable Content
+                        Padding(
+                          padding: EdgeInsets.only(left: startWidth, right: endWidth),
+                          child: SizedBox(
+                            width: actualScrollWidth,
+                            child: Scrollbar(
                               controller: _scrollController,
-                              scrollDirection: Axis.horizontal,
-                              child: SizedBox(width: tableWidth, child: table),
+                              interactive: true,
+                              thumbVisibility: true,
+                              child: SingleChildScrollView(
+                                controller: _scrollController,
+                                scrollDirection: Axis.horizontal,
+                                child: SizedBox(
+                                  width: totalScrollableWidth,
+                                  child: table,
+                                ),
+                              ),
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        ),
+                        
+                        // Frozen Start Column
+                        if (frozenStart != null)
+                          Positioned(
+                            left: 0,
+                            top: 0,
+                            bottom: 0,
+                            width: startWidth,
+                            child: _buildFrozenColumn(0, frozenStart, false),
+                          ),
+                        
+                        // Frozen End Column
+                        if (frozenEnd != null)
+                          Positioned(
+                            right: 0,
+                            top: 0,
+                            bottom: 0,
+                            width: endWidth,
+                            child: _buildFrozenColumn(
+                              widget.columns.length - 1,
+                              frozenEnd,
+                              true,
+                            ),
+                          ),
+                      ],
                     ),
-                    Gap(frozenEnd?.width ?? 0),
-                  ],
-                ),
-                if (frozenStart != null)
-                  _buildFrozenColumn(0, frozenStart, false),
-                if (frozenEnd != null)
-                  _buildFrozenColumn(
-                    widget.columns.length - 1,
-                    frozenEnd,
-                    true,
                   ),
-              ],
+                );
+              },
             ),
             if (widget.status == Status.progress)
               const Padding(
@@ -329,11 +363,12 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     required List<Widget> Function(int rowIndex) emptyCellBuilder,
     Color? baseColor,
   }) {
+    final effectiveBaseColor = baseColor ?? _theme.cardColor;
     final rows = List<TableRow>.generate(widget.data.length, (rowIndex) {
       final isHovered = enableHoverEffect && _hoveredRowIndex == rowIndex;
       return TableRow(
         decoration: BoxDecoration(
-          color: isHovered ? _hoverColor : baseColor,
+          color: isHovered ? _hoverColor : effectiveBaseColor,
         ),
         children: cellBuilder(rowIndex, widget.data[rowIndex])
             .map((child) => _wrapWithHover(rowIndex: rowIndex, child: child))
@@ -351,7 +386,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
             final isHovered = enableHoverEffect && _hoveredRowIndex == rowIndex;
             return TableRow(
               decoration: BoxDecoration(
-                color: isHovered ? _hoverColor : baseColor,
+                color: isHovered ? _hoverColor : effectiveBaseColor,
               ),
               children: emptyCellBuilder(rowIndex)
                   .map(
@@ -402,27 +437,25 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
 
     return Align(
       alignment: isLast ? Alignment.centerRight : Alignment.centerLeft,
-      child: ClipRRect(
-        child: Container(
-          margin:
-              EdgeInsets.only(left: isLast ? 30 : 0, right: isLast ? 0 : 30),
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: _theme.modeCondition(Colors.black12, Colors.black54),
-                blurRadius: 5,
-                offset: Offset(isLast ? -3 : 3, -2),
-              ),
-            ],
+      child: Container(
+        decoration: BoxDecoration(
+          color: _theme.cardColor,
+          border: Border(
+            left: isLast ? _borderSide : BorderSide.none,
+            right: isLast ? BorderSide.none : _borderSide,
           ),
-          child: TableWithBodyScroll(
-            heightBody: widget.bodyHeight,
-            columnWidths: {0: FixedColumnWidth(column.width ?? 0)},
-            children: [
-              header,
-              ...rows,
-            ],
+        ),
+        child: TableWithBodyScroll(
+          heightBody: widget.bodyHeight,
+          columnWidths: {0: FixedColumnWidth(column.width ?? 0)},
+          border: TableBorder(
+            verticalInside:
+                _borderSide.copyWith(color: _borderSide.color.withOpacity(0.4)),
           ),
+          children: [
+            header,
+            ...rows,
+          ],
         ),
       ),
     );

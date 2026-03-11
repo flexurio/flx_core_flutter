@@ -1,65 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
 
-void main() {
-  flavorConfig = FlavorConfig(
-    companyId: '02',
-    companyName: 'PT. Tirta Lestari',
-    companyPhone: '(031) 8787654',
-    companyWebsite: 'www.tirtalestari.co.id',
-    companyAddress: 'Jl. Raya Waru No.10, Sidoarjo, Jawa Timur 61256',
-    apiUrl: 'https://erp-tirta-lestari-api-dev.flexurio.com',
-    colorSoft: const Color(0XFF28B463).lighten(.3),
-    color: const Color(0XFF28B463),
-    backgroundLoginPage: 'asset/image/background-2.jpg',
-    applicationConfig: null,
-  );
-  runApp(const MyApp());
-}
-
-class Product {
-  final String name;
-  final String category;
-  final String brand;
-  final int quantity;
-  final double price;
-  final bool inStock;
-  final String location;
-
-  Product({
-    required this.name,
-    required this.category,
-    required this.brand,
-    required this.quantity,
-    required this.price,
-    required this.inStock,
-    required this.location,
-  });
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class YuhuTablePage extends StatefulWidget {
+  const YuhuTablePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'YuhuTable Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const TablePage(),
-    );
-  }
+  State<YuhuTablePage> createState() => _YuhuTablePageState();
 }
 
-class TablePage extends StatefulWidget {
-  const TablePage({super.key});
-
-  @override
-  State<TablePage> createState() => _TablePageState();
-}
-
-class _TablePageState extends State<TablePage> {
-  List<Product> products = [
-    Product(
+class _YuhuTablePageState extends State<YuhuTablePage> {
+  List<ProductDemo> products = [
+    ProductDemo(
       name: 'Apple iPhone 14',
       category: 'Smartphone',
       brand: 'Apple',
@@ -68,7 +19,7 @@ class _TablePageState extends State<TablePage> {
       inStock: true,
       location: 'Warehouse A',
     ),
-    Product(
+    ProductDemo(
       name: 'Galaxy S23',
       category: 'Smartphone',
       brand: 'Samsung',
@@ -77,7 +28,7 @@ class _TablePageState extends State<TablePage> {
       inStock: true,
       location: 'Warehouse B',
     ),
-    Product(
+    ProductDemo(
       name: 'Xiaomi Mi 11',
       category: 'Smartphone',
       brand: 'Xiaomi',
@@ -86,7 +37,7 @@ class _TablePageState extends State<TablePage> {
       inStock: false,
       location: 'Warehouse C',
     ),
-    Product(
+    ProductDemo(
       name: 'Dell XPS 13',
       category: 'Laptop',
       brand: 'Dell',
@@ -95,7 +46,25 @@ class _TablePageState extends State<TablePage> {
       inStock: true,
       location: 'Warehouse A',
     ),
-    Product(
+    ProductDemo(
+      name: 'MacBook Pro',
+      category: 'Laptop',
+      brand: 'Apple',
+      quantity: 7,
+      price: 1899.99,
+      inStock: false,
+      location: 'Warehouse B',
+    ),
+    ProductDemo(
+      name: 'Dell XPS 13',
+      category: 'Laptop',
+      brand: 'Dell',
+      quantity: 10,
+      price: 1199.99,
+      inStock: true,
+      location: 'Warehouse A',
+    ),
+    ProductDemo(
       name: 'MacBook Pro',
       category: 'Laptop',
       brand: 'Apple',
@@ -109,45 +78,45 @@ class _TablePageState extends State<TablePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('YuhuTable with 7 Columns')),
+      appBar: AppBar(title: const Text('YuhuTable Demo')),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: YuhuTable<Product>(
+        child: YuhuTable<ProductDemo>(
           data: products,
           columns: [
-            TableColumn<Product>(
+            TableColumn<ProductDemo>(
               title: 'Name',
               width: 180,
               builder: (item, _) => Text(item.name),
               sortString: (item) => item.name,
             ),
-            TableColumn<Product>(
+            TableColumn<ProductDemo>(
               title: 'Category',
               width: 120,
               builder: (item, _) => Text(item.category),
               sortString: (item) => item.category,
             ),
-            TableColumn<Product>(
+            TableColumn<ProductDemo>(
               title: 'Brand',
               width: 120,
               builder: (item, _) => Text(item.brand),
               sortString: (item) => item.brand,
             ),
-            TableColumn<Product>(
+            TableColumn<ProductDemo>(
               title: 'Quantity',
               width: 100,
               alignment: Alignment.center,
               builder: (item, _) => Text('${item.quantity}'),
               sortNum: (item) => item.quantity,
             ),
-            TableColumn<Product>(
+            TableColumn<ProductDemo>(
               title: 'Price',
               width: 100,
               alignment: Alignment.centerRight,
               builder: (item, _) => Text('\$${item.price.toStringAsFixed(2)}'),
               sortNum: (item) => item.price,
             ),
-            TableColumn<Product>(
+            TableColumn<ProductDemo>(
               title: 'In Stock',
               width: 100,
               alignment: Alignment.center,
@@ -157,7 +126,7 @@ class _TablePageState extends State<TablePage> {
               ),
               sortNum: (item) => item.inStock ? 1 : 0,
             ),
-            TableColumn<Product>(
+            TableColumn<ProductDemo>(
               title: 'Location',
               width: 120,
               builder: (item, _) => Text(item.location),
@@ -227,4 +196,24 @@ class _TablePageState extends State<TablePage> {
       ),
     );
   }
+}
+
+class ProductDemo {
+  final String name;
+  final String category;
+  final String brand;
+  final int quantity;
+  final double price;
+  final bool inStock;
+  final String location;
+
+  ProductDemo({
+    required this.name,
+    required this.category,
+    required this.brand,
+    required this.quantity,
+    required this.price,
+    required this.inStock,
+    required this.location,
+  });
 }
