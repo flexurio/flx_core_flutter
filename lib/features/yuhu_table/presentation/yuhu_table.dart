@@ -424,19 +424,18 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       return _buildTableHeader(
         index,
         column,
-        isPinned: isPinned,
-        onPinChanged: (p) => setState(() {
-          if (p) {
-            if (isRightSection) {
-              _pinnedRight.add(index);
-              _pinnedLeft.remove(index);
-            } else {
-              _pinnedLeft.add(index);
-              _pinnedRight.remove(index);
-            }
-          } else {
-            _pinnedLeft.remove(index);
-            _pinnedRight.remove(index);
+        pinnedPosition: _pinnedLeft.contains(index)
+            ? TablePinPosition.left
+            : (_pinnedRight.contains(index)
+                ? TablePinPosition.right
+                : TablePinPosition.none),
+        onPinnedPositionChanged: (p) => setState(() {
+          _pinnedLeft.remove(index);
+          _pinnedRight.remove(index);
+          if (p == TablePinPosition.left) {
+            _pinnedLeft.add(index);
+          } else if (p == TablePinPosition.right) {
+            _pinnedRight.add(index);
           }
         }),
       );
@@ -527,18 +526,18 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
   Widget _buildTableHeader(
     int index,
     TableColumn<T> column, {
-    bool isPinned = false,
-    void Function(bool)? onPinChanged,
+    TablePinPosition pinnedPosition = TablePinPosition.none,
+    void Function(TablePinPosition)? onPinnedPositionChanged,
   }) {
     return YuhuTableDraggableHeader<T>(
       index: index,
       column: column,
       isSort: _sortIndex == index,
       ascending: _ascending,
-      isPinned: isPinned,
+      pinnedPosition: pinnedPosition,
       currentWidth: _columnWidths[index] ?? column.width ?? 100.0,
       headerDecoration: _headerDecoration,
-      onPinChanged: onPinChanged,
+      onPinnedPositionChanged: onPinnedPositionChanged,
       onResizing: (delta) {
         setState(() {
           final currentWidth = _columnWidths[index] ?? column.width ?? 100.0;
@@ -562,7 +561,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       onDrop: (fromIndex) {
         setState(() {
           // Adopt the pinning status of the target section
-          if (isPinned) {
+          if (pinnedPosition != TablePinPosition.none) {
             if (_pinnedLeft.contains(index)) {
               _pinnedLeft.add(fromIndex);
               _pinnedRight.remove(fromIndex);

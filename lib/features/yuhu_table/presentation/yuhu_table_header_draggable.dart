@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/features/yuhu_table/presentation/table_column.dart';
 import 'package:flx_core_flutter/features/yuhu_table/presentation/table_header.dart';
+import 'package:flutter/material.dart';
 
 class YuhuTableDraggableHeader<T> extends StatelessWidget {
   const YuhuTableDraggableHeader({
@@ -8,10 +8,10 @@ class YuhuTableDraggableHeader<T> extends StatelessWidget {
     required this.column,
     required this.isSort,
     required this.ascending,
-    required this.isPinned,
+    required this.pinnedPosition,
     required this.currentWidth,
     required this.headerDecoration,
-    required this.onPinChanged,
+    required this.onPinnedPositionChanged,
     required this.onResizing,
     required this.onTap,
     required this.onDrop,
@@ -22,10 +22,10 @@ class YuhuTableDraggableHeader<T> extends StatelessWidget {
   final TableColumn<T> column;
   final bool isSort;
   final bool ascending;
-  final bool isPinned;
+  final TablePinPosition pinnedPosition;
   final double currentWidth;
   final BoxDecoration headerDecoration;
-  final void Function(bool)? onPinChanged;
+  final void Function(TablePinPosition)? onPinnedPositionChanged;
   final void Function(double delta)? onResizing;
   final void Function()? onTap;
   final void Function(int fromIndex) onDrop;
@@ -38,11 +38,12 @@ class YuhuTableDraggableHeader<T> extends StatelessWidget {
       column: column,
       ascending: ascending,
       isSort: isSort,
-      isPinned: isPinned,
-      onPinChanged: onPinChanged,
+      pinnedPosition: pinnedPosition,
+      onPinnedPositionChanged: onPinnedPositionChanged,
       onResizing: onResizing,
       onTap: onTap,
     );
+
 
     return DragTarget<int>(
       onWillAcceptWithDetails: (details) => details.data != index,

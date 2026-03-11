@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+enum TablePinPosition { none, left, right }
+
 class TableColumn<T> {
   TableColumn({
     required this.title,
@@ -17,3 +19,4 @@ class TableColumn<T> {
   final num Function(T)? sortNum;
   final Widget Function(T, int) builder;
 }
+
