@@ -137,7 +137,7 @@ class _LogoFallback extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String initial = flavorConfig.companyName.trim().isNotEmpty
+    final initial = flavorConfig.companyName.trim().isNotEmpty
         ? flavorConfig.companyName.trim()[0].toUpperCase()
         : '?';
 

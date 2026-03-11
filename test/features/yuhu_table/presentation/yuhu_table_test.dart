@@ -7,7 +7,7 @@ import 'package:flx_core_flutter/src/app/view/widget/f_drop_down.dart';
 
 void main() {
   group('YuhuTable', () {
-    final List<Map<String, dynamic>> testData = [
+    final testData = <Map<String, dynamic>>[
       {'id': 1, 'name': 'Alice', 'age': 30},
       {'id': 2, 'name': 'Bob', 'age': 25},
     ];
@@ -97,12 +97,12 @@ void main() {
           sortedCol = col;
           isAscending = asc;
         },
-      ));
+      ),);
       await tester.pumpAndSettle();
 
       // Tap the 'Name' column header (index 1) which is represented by TableHeader
       final headers = find.byWidgetPredicate(
-          (w) => w.runtimeType.toString().contains('TableHeader'));
+          (w) => w.runtimeType.toString().contains('TableHeader'),);
 
       // Tap the InkWell inside the second header (index 1 corresponds to 'Name')
       final headerInkWell = find
@@ -127,7 +127,7 @@ void main() {
         onSelectChanged: (items) {
           selectedItems = items;
         },
-      ));
+      ),);
       await tester.pumpAndSettle();
 
       // Checkboxes exist because onSelectChanged was provided
@@ -147,7 +147,7 @@ void main() {
       await tester.pumpWidget(createTestWidget(
         freezeFirstColumn: true,
         freezeLastColumn: true,
-      ));
+      ),);
       await tester.pumpAndSettle();
 
       expect(find.text('ID'), findsOneWidget);

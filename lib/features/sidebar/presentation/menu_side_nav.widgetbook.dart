@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flx_core_flutter/features/sidebar/presentation/menu_side_nav.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 
 @UseCase(name: 'Default Side Nav', type: MenuSideNav)
@@ -73,7 +73,7 @@ Widget menuSideNavUseCase(BuildContext context) {
         ),
         // Placeholder for the rest of the application body.
         Expanded(
-          child: Container(
+          child: ColoredBox(
             color: Theme.of(context).scaffoldBackgroundColor,
             child: const Center(
               child: Text('Main Content Area'),

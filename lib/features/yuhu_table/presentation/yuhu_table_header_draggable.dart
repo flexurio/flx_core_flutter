@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/features/yuhu_table/presentation/table_column.dart';
 import 'package:flx_core_flutter/features/yuhu_table/presentation/table_header.dart';
-import 'package:flutter/material.dart';
 
 class YuhuTableDraggableHeader<T> extends StatelessWidget {
   const YuhuTableDraggableHeader({

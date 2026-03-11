@@ -58,7 +58,7 @@ class _SwitchLanguageState extends State<SwitchLanguage> {
     }();
   }
 
-  void onChanged(Locale value) async {
+  Future<void> onChanged(Locale value) async {
     locale = value;
     final easy = EasyLocalization.of(context);
     if (easy != null) {
