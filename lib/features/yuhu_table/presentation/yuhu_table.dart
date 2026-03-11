@@ -56,6 +56,8 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
   final ScrollController _vEndController = ScrollController();
   int? _hoveredRowIndex;
   bool _isSyncing = false;
+  late bool _freezeFirst;
+  late bool _freezeLast;
 
   bool get enableHoverEffect => MenuPage.enableHoverEffect;
 
@@ -90,12 +92,13 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     super.dispose();
   }
 
-
   @override
   void initState() {
     super.initState();
     _sortIndex = widget.initialSortColumnIndex;
     _ascending = widget.initialSortAscending ?? true;
+    _freezeFirst = widget.freezeFirstColumn;
+    _freezeLast = widget.freezeLastColumn;
 
     _vMiddleController.addListener(() => _syncScroll(_vMiddleController));
     _vStartController.addListener(() => _syncScroll(_vStartController));
@@ -111,6 +114,12 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     if (widget.initialSortAscending != oldWidget.initialSortAscending) {
       _ascending = widget.initialSortAscending ?? true;
     }
+    if (widget.freezeFirstColumn != oldWidget.freezeFirstColumn) {
+      _freezeFirst = widget.freezeFirstColumn;
+    }
+    if (widget.freezeLastColumn != oldWidget.freezeLastColumn) {
+      _freezeLast = widget.freezeLastColumn;
+    }
   }
 
   @override
@@ -120,8 +129,8 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
         final isSmall =
             screenIdentifier.conditions(md: false, sm: true) == true ||
                 MediaQuery.of(context).size.width < 1000;
-        final freezeFirst = !isSmall && widget.freezeFirstColumn;
-        final freezeLast = !isSmall && widget.freezeLastColumn;
+        final freezeFirst = !isSmall && _freezeFirst;
+        final freezeLast = !isSmall && _freezeLast;
 
         final scrollableColumns = List.of(widget.columns);
         TableColumn<T>? frozenStart;
@@ -224,7 +233,8 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                               frozenEnd,
                               true,
                               _vEndController,
-                              showScrollbar: true, // Show vertical scrollbar here
+                              showScrollbar:
+                                  true, // Show vertical scrollbar here
                             ),
                           ),
                       ],
@@ -379,7 +389,23 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     final headers = List.generate(scrollableColumns.length, (i) {
       final column = scrollableColumns[i];
       final index = freezeFirst ? i + 1 : i;
-      return _buildTableHeader(index, column);
+      final isPinnableStart = i == 0 && !freezeFirst;
+      final isPinnableEnd = !freezeLast && i == scrollableColumns.length - 1;
+
+      return _buildTableHeader(
+        index,
+        column,
+        isPinned: false,
+        onPinChanged: (isPinnableStart || isPinnableEnd)
+            ? (p) => setState(() {
+                  if (isPinnableStart) {
+                    _freezeFirst = p;
+                  } else {
+                    _freezeLast = p;
+                  }
+                })
+            : null,
+      );
     });
 
     if (widget.onSelectChanged != null) {
@@ -466,7 +492,18 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     final header = TableRow(
       decoration: _headerDecoration,
       children: [
-        _buildTableHeader(index, column),
+        _buildTableHeader(
+          index,
+          column,
+          isPinned: true,
+          onPinChanged: (p) => setState(() {
+            if (index == 0) {
+              _freezeFirst = p;
+            } else {
+              _freezeLast = p;
+            }
+          }),
+        ),
       ],
     );
 
@@ -519,11 +556,18 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     );
   }
 
-  TableHeader<T> _buildTableHeader(int index, TableColumn<T> column) {
+  TableHeader<T> _buildTableHeader(
+    int index,
+    TableColumn<T> column, {
+    bool isPinned = false,
+    void Function(bool)? onPinChanged,
+  }) {
     return TableHeader(
       column: column,
       ascending: _ascending,
       isSort: _sortIndex == index,
+      isPinned: isPinned,
+      onPinChanged: onPinChanged,
       onTap: () {
         if (column.sortNum == null && column.sortString == null) {
           widget.onSort?.call(index, !_ascending);

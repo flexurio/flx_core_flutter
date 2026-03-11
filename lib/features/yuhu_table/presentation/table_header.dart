@@ -8,12 +8,16 @@ class TableHeader<T> extends StatelessWidget {
     required this.ascending,
     super.key,
     this.onTap,
+    this.isPinned = false,
+    this.onPinChanged,
   });
 
   final TableColumn<T> column;
   final void Function()? onTap;
+  final void Function(bool)? onPinChanged;
   final bool isSort;
   final bool ascending;
+  final bool isPinned;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +49,20 @@ class TableHeader<T> extends StatelessWidget {
                     ascending ? Icons.arrow_downward : Icons.arrow_upward,
                     size: 16,
                     color: primaryColor.withAlpha(120),
+                  ),
+                ),
+              if (onPinChanged != null)
+                Padding(
+                  padding: const EdgeInsets.only(left: 6),
+                  child: IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    icon: Icon(
+                      isPinned ? Icons.push_pin : Icons.push_pin_outlined,
+                      size: 16,
+                      color: primaryColor.withAlpha(isPinned ? 180 : 80),
+                    ),
+                    onPressed: () => onPinChanged!(isPinned ? false : true),
                   ),
                 ),
             ],
