@@ -214,15 +214,28 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
                       if (widget.onPinnedPositionChanged != null && isPinned)
                         Padding(
                           padding: const EdgeInsets.only(left: 6),
-                          child: Icon(
-                            Icons.push_pin,
-                            size: 14,
-                            color: primaryColor.withAlpha(180),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () => widget.onPinnedPositionChanged!(
+                                TablePinPosition.none,
+                              ),
+                              borderRadius: BorderRadius.circular(4),
+                              child: Container(
+                                padding: const EdgeInsets.all(2),
+                                child: Icon(
+                                  Icons.push_pin,
+                                  size: 14,
+                                  color: primaryColor.withAlpha(180),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       if (widget.onPinnedPositionChanged != null &&
                           !isPinned &&
                           _isHovered)
+
                         Padding(
                           padding: const EdgeInsets.only(left: 6),
                           child: Material(
