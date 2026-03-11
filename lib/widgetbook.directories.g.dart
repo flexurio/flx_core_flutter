@@ -200,7 +200,13 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder:
                         _flx_core_flutter_features_yuhu_table_presentation_yuhu_table_widgetbook
                             .yuhuTableUseCase,
-                  )
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Many Columns',
+                    builder:
+                        _flx_core_flutter_features_yuhu_table_presentation_yuhu_table_widgetbook
+                            .yuhuTableManyColumnsUseCase,
+                  ),
                 ],
               )
             ],

@@ -50,8 +50,12 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
   int? _sortIndex;
   bool _ascending = true;
   final List<T> _selected = [];
-  final ScrollController _scrollController = ScrollController();
+  final ScrollController _horizontalScrollController = ScrollController();
+  final ScrollController _vMiddleController = ScrollController();
+  final ScrollController _vStartController = ScrollController();
+  final ScrollController _vEndController = ScrollController();
   int? _hoveredRowIndex;
+  bool _isSyncing = false;
 
   bool get enableHoverEffect => MenuPage.enableHoverEffect;
 
@@ -70,22 +74,32 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     final primary = _theme.colorScheme.primary;
     return _theme.modeCondition(
       Color.alphaBlend(
-          primary.lighten(.5).withValues(alpha: .15), _theme.cardColor,),
+        primary.lighten(.5).withValues(alpha: .15),
+        _theme.cardColor,
+      ),
       Color.alphaBlend(primary.withValues(alpha: .2), _theme.cardColor),
     );
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    _horizontalScrollController.dispose();
+    _vMiddleController.dispose();
+    _vStartController.dispose();
+    _vEndController.dispose();
     super.dispose();
   }
+
 
   @override
   void initState() {
     super.initState();
     _sortIndex = widget.initialSortColumnIndex;
     _ascending = widget.initialSortAscending ?? true;
+
+    _vMiddleController.addListener(() => _syncScroll(_vMiddleController));
+    _vStartController.addListener(() => _syncScroll(_vStartController));
+    _vEndController.addListener(() => _syncScroll(_vEndController));
   }
 
   @override
@@ -101,18 +115,11 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final borderSide = BorderSide(
-      color: theme.brightness == Brightness.dark
-          ? MyTheme.black06dp
-          : Colors.grey.shade300,
-    );
-
     return ScreenIdentifierBuilder(
       builder: (context, screenIdentifier) {
         final isSmall =
             screenIdentifier.conditions(md: false, sm: true) == true ||
-                MediaQuery.of(context).size.width < 600;
+                MediaQuery.of(context).size.width < 1000;
         final freezeFirst = !isSmall && widget.freezeFirstColumn;
         final freezeLast = !isSmall && widget.freezeLastColumn;
 
@@ -128,11 +135,13 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
         }
 
         final table = _buildTable(
-          theme,
-          borderSide,
+          _theme,
+          _borderSide,
           scrollableColumns,
           freezeFirst,
           freezeLast,
+          _vMiddleController,
+          showScrollbar: !freezeLast, // Only show middle if no end column
         );
 
         final startWidth = frozenStart?.width ?? 0;
@@ -143,15 +152,20 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
             LayoutBuilder(
               builder: (context, constraints) {
                 final maxWidth = constraints.maxWidth;
-                
+
                 // Calculate total width of scrollable columns
                 final totalScrollableWidth = scrollableColumns.fold<double>(
-                  0.0, (prev, col) => prev + (col.width ?? 0),
-                ) + (widget.onSelectChanged != null ? 80 : 0);
-                
-                final maxScrollWidth = (maxWidth - startWidth - endWidth).clamp(0.0, double.infinity);
-                final actualScrollWidth = totalScrollableWidth.clamp(0.0, maxScrollWidth);
-                final totalTableWidth = startWidth + actualScrollWidth + endWidth;
+                      0.0,
+                      (prev, col) => prev + (col.width ?? 0),
+                    ) +
+                    (widget.onSelectChanged != null ? 80 : 0);
+
+                final maxScrollWidth = (maxWidth - startWidth - endWidth)
+                    .clamp(0.0, double.infinity);
+                final actualScrollWidth =
+                    totalScrollableWidth.clamp(0.0, maxScrollWidth);
+                final totalTableWidth =
+                    startWidth + actualScrollWidth + endWidth;
 
                 return Center(
                   child: SizedBox(
@@ -161,16 +175,18 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                       children: [
                         // Main Scrollable Content
                         Padding(
-                          padding: EdgeInsets.only(left: startWidth, right: endWidth),
+                          padding: EdgeInsets.only(
+                              left: startWidth, right: endWidth),
                           child: SizedBox(
                             width: actualScrollWidth,
                             child: Scrollbar(
-                              controller: _scrollController,
+                              controller: _horizontalScrollController,
                               interactive: true,
                               thumbVisibility: true,
                               child: SingleChildScrollView(
-                                controller: _scrollController,
+                                controller: _horizontalScrollController,
                                 scrollDirection: Axis.horizontal,
+                                physics: const ClampingScrollPhysics(),
                                 child: SizedBox(
                                   width: totalScrollableWidth,
                                   child: table,
@@ -179,7 +195,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                             ),
                           ),
                         ),
-                        
+
                         // Frozen Start Column
                         if (frozenStart != null)
                           Positioned(
@@ -187,9 +203,15 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                             top: 0,
                             bottom: 0,
                             width: startWidth,
-                            child: _buildFrozenColumn(0, frozenStart, false),
+                            child: _buildFrozenColumn(
+                              0,
+                              frozenStart,
+                              false,
+                              _vStartController,
+                              showScrollbar: false,
+                            ),
                           ),
-                        
+
                         // Frozen End Column
                         if (frozenEnd != null)
                           Positioned(
@@ -201,6 +223,8 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                               widget.columns.length - 1,
                               frozenEnd,
                               true,
+                              _vEndController,
+                              showScrollbar: true, // Show vertical scrollbar here
                             ),
                           ),
                       ],
@@ -225,91 +249,26 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     );
   }
 
-  Widget _buildTable(
-    ThemeData theme,
-    BorderSide borderSide,
-    List<TableColumn<T>> scrollableColumns,
-    bool freezeFirst,
-    bool freezeLast,
-  ) {
-    final headerDecoration = BoxDecoration(
-      color: theme.brightness == Brightness.dark
-          ? theme.colorScheme.primary.darken(.3)
-          : const Color(0xFFF0F4F8),
-    );
+  Widget _buildSelectCheckboxCell(int rowIndex) {
+    final item = widget.data[rowIndex];
+    final isSelected = _selected.contains(item);
 
-    final columnWidths = <int, TableColumnWidth>{};
-    for (var i = 0; i < scrollableColumns.length; i++) {
-      final width = scrollableColumns[i].width;
-      if (width != null) columnWidths[i] = FixedColumnWidth(width);
-    }
-
-    final headers = List.generate(scrollableColumns.length, (i) {
-      final column = scrollableColumns[i];
-      final index = freezeFirst ? i + 1 : i;
-      return _buildTableHeader(index, column);
-    });
-
-    if (widget.onSelectChanged != null) {
-      columnWidths[scrollableColumns.length] = const FixedColumnWidth(80);
-      headers.add(
-        TableHeader(
-          column: TableColumn(title: '', builder: (_, __) => Container()),
-          isSort: false,
-          ascending: _ascending,
-        ),
-      );
-    }
-
-    final rows = _buildRows(scrollableColumns);
-
-    return TableWithBodyScroll(
-      heightBody: widget.bodyHeight,
-      columnWidths: columnWidths,
-      border: TableBorder(
-        verticalInside:
-            borderSide.copyWith(color: borderSide.color.withOpacity(0.4)),
+    return TableData(
+      height: widget.rowHeight,
+      alignment: Alignment.center,
+      borderSide: _borderSide,
+      child: Checkbox(
+        value: isSelected,
+        onChanged: (value) {
+          if (value ?? false) {
+            _selected.add(item);
+          } else {
+            _selected.remove(item);
+          }
+          setState(() {});
+          widget.onSelectChanged?.call(_selected);
+        },
       ),
-      children: [
-        TableRow(decoration: headerDecoration, children: headers),
-        ...rows,
-      ],
-    );
-  }
-
-  List<TableRow> _buildRows(List<TableColumn<T>> scrollableColumns) {
-    return _generateTableRows(
-      cellBuilder: (rowIndex, item) {
-        final row = <Widget>[
-          for (var colIndex = 0;
-              colIndex < scrollableColumns.length;
-              colIndex++)
-            TableData(
-              height: widget.rowHeight,
-              alignment: scrollableColumns[colIndex].alignment,
-              borderSide: _borderSide,
-              child: scrollableColumns[colIndex].builder(item, rowIndex),
-            ),
-        ];
-
-        if (widget.onSelectChanged != null) {
-          row.add(_buildSelectCheckboxCell(rowIndex));
-        }
-        return row;
-      },
-      emptyCellBuilder: (rowIndex) {
-        return List.generate(
-          scrollableColumns.length + (widget.onSelectChanged != null ? 1 : 0),
-          (i) => TableData(
-            height: widget.rowHeight,
-            alignment: i < scrollableColumns.length
-                ? scrollableColumns[i].alignment
-                : Alignment.center,
-            borderSide: _borderSide,
-            child: Container(),
-          ),
-        );
-      },
     );
   }
 
@@ -331,29 +290,6 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       child: ColoredBox(
         color: Colors.transparent,
         child: child,
-      ),
-    );
-  }
-
-  Widget _buildSelectCheckboxCell(int rowIndex) {
-    final item = widget.data[rowIndex];
-    final isSelected = _selected.contains(item);
-
-    return TableData(
-      height: widget.rowHeight,
-      alignment: Alignment.center,
-      borderSide: _borderSide,
-      child: Checkbox(
-        value: isSelected,
-        onChanged: (value) {
-          if (value ?? false) {
-            _selected.add(item);
-          } else {
-            _selected.remove(item);
-          }
-          setState(() {});
-          widget.onSelectChanged?.call(_selected);
-        },
       ),
     );
   }
@@ -403,11 +339,130 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     return rows;
   }
 
+  void _syncScroll(ScrollController source) {
+    if (_isSyncing) return;
+    _isSyncing = true;
+    final offset = source.offset;
+    if (_vMiddleController.hasClients &&
+        _vMiddleController != source &&
+        _vMiddleController.offset != offset) {
+      _vMiddleController.jumpTo(offset);
+    }
+    if (_vStartController.hasClients &&
+        _vStartController != source &&
+        _vStartController.offset != offset) {
+      _vStartController.jumpTo(offset);
+    }
+    if (_vEndController.hasClients &&
+        _vEndController != source &&
+        _vEndController.offset != offset) {
+      _vEndController.jumpTo(offset);
+    }
+    _isSyncing = false;
+  }
+
+  Widget _buildTable(
+    ThemeData theme,
+    BorderSide borderSide,
+    List<TableColumn<T>> scrollableColumns,
+    bool freezeFirst,
+    bool freezeLast,
+    ScrollController? vController, {
+    bool showScrollbar = true,
+  }) {
+    final columnWidths = <int, TableColumnWidth>{};
+    for (var i = 0; i < scrollableColumns.length; i++) {
+      final width = scrollableColumns[i].width;
+      if (width != null) columnWidths[i] = FixedColumnWidth(width);
+    }
+
+    final headers = List.generate(scrollableColumns.length, (i) {
+      final column = scrollableColumns[i];
+      final index = freezeFirst ? i + 1 : i;
+      return _buildTableHeader(index, column);
+    });
+
+    if (widget.onSelectChanged != null) {
+      columnWidths[scrollableColumns.length] = const FixedColumnWidth(80);
+      headers.add(
+        TableHeader(
+          column: TableColumn(title: '', builder: (_, __) => Container()),
+          isSort: false,
+          ascending: _ascending,
+        ),
+      );
+    }
+
+    final rows = _buildRows(scrollableColumns);
+
+    return TableWithBodyScroll(
+      heightBody: widget.bodyHeight,
+      columnWidths: columnWidths,
+      controller: vController,
+      physics: const ClampingScrollPhysics(),
+      showScrollbar: showScrollbar,
+      border: TableBorder(
+        verticalInside:
+            borderSide.copyWith(color: borderSide.color.withOpacity(0.4)),
+      ),
+      children: [
+        TableRow(decoration: _headerDecoration, children: headers),
+        ...rows,
+      ],
+    );
+  }
+
+  List<TableRow> _buildRows(List<TableColumn<T>> scrollableColumns) {
+    return _generateTableRows(
+      cellBuilder: (rowIndex, item) {
+        final row = <Widget>[
+          for (var colIndex = 0;
+              colIndex < scrollableColumns.length;
+              colIndex++)
+            TableData(
+              height: widget.rowHeight,
+              alignment: scrollableColumns[colIndex].alignment,
+              borderSide: _borderSide,
+              child: scrollableColumns[colIndex].builder(item, rowIndex),
+            ),
+        ];
+
+        if (widget.onSelectChanged != null) {
+          row.add(_buildSelectCheckboxCell(rowIndex));
+        }
+        return row;
+      },
+      emptyCellBuilder: (rowIndex) {
+        final cells = <Widget>[
+          for (var i = 0; i < scrollableColumns.length; i++)
+            TableData(
+              height: widget.rowHeight,
+              alignment: scrollableColumns[i].alignment,
+              borderSide: _borderSide,
+              child: Container(),
+            ),
+        ];
+
+        if (widget.onSelectChanged != null) {
+          cells.add(TableData(
+            height: widget.rowHeight,
+            alignment: Alignment.center,
+            borderSide: _borderSide,
+            child: Container(),
+          ));
+        }
+        return cells;
+      },
+    );
+  }
+
   Widget _buildFrozenColumn(
     int index,
     TableColumn<T> column,
     bool isLast,
-  ) {
+    ScrollController? vController, {
+    bool showScrollbar = true,
+  }) {
     final header = TableRow(
       decoration: _headerDecoration,
       children: [
@@ -448,6 +503,9 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
         child: TableWithBodyScroll(
           heightBody: widget.bodyHeight,
           columnWidths: {0: FixedColumnWidth(column.width ?? 0)},
+          controller: vController,
+          physics: const ClampingScrollPhysics(),
+          showScrollbar: showScrollbar,
           border: TableBorder(
             verticalInside:
                 _borderSide.copyWith(color: _borderSide.color.withOpacity(0.4)),

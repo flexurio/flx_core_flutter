@@ -7,6 +7,11 @@ Widget yuhuTableUseCase(BuildContext context) {
   return const YuhuTableExample();
 }
 
+@UseCase(name: 'Many Columns', type: YuhuTable)
+Widget yuhuTableManyColumnsUseCase(BuildContext context) {
+  return const YuhuTableManyColumnsExample();
+}
+
 class Product {
   final String name;
   final String category;
@@ -200,6 +205,79 @@ class _YuhuTableExampleState extends State<YuhuTableExample> {
           freezeLastColumn: true,
           rowsPerPage: 6,
           bodyHeight: 360,
+        ),
+      ),
+    );
+  }
+}
+
+class YuhuTableManyColumnsExample extends StatelessWidget {
+  const YuhuTableManyColumnsExample({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final data = List.generate(
+      20,
+      (index) => {
+        'id': 'ID-$index',
+        'name': 'Item Name $index',
+        'col1': 'Data 1-$index',
+        'col2': 'Data 2-$index',
+        'col3': 'Data 3-$index',
+        'col4': 'Data 4-$index',
+        'col5': 'Data 5-$index',
+        'col6': 'Data 6-$index',
+        'col7': 'Data 7-$index',
+        'col8': 'Data 8-$index',
+        'col9': 'Data 9-$index',
+        'status': index % 2 == 0 ? 'Active' : 'Inactive',
+      },
+    );
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Many Columns Demo')),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: YuhuTable<Map<String, String>>(
+          data: data,
+          freezeFirstColumn: true,
+          freezeLastColumn: true,
+          rowsPerPage: 10,
+          bodyHeight: 500,
+          columns: [
+            TableColumn(
+              title: 'ID',
+              width: 80,
+              builder: (item, _) => Text(item['id']!),
+            ),
+            TableColumn(
+              title: 'Name',
+              width: 150,
+              builder: (item, _) => Text(item['name']!),
+            ),
+            ...List.generate(
+              9,
+              (index) => TableColumn<Map<String, String>>(
+                title: 'Column ${index + 1}',
+                width: 120,
+                builder: (item, _) => Text(item['col${index + 1}']!),
+              ),
+            ),
+            TableColumn(
+              title: 'Status',
+              width: 100,
+              alignment: Alignment.center,
+              builder: (item, _) => Chip(
+                label: Text(
+                  item['status']!,
+                  style: const TextStyle(fontSize: 10),
+                ),
+                backgroundColor: item['status'] == 'Active'
+                    ? Colors.green.withOpacity(0.1)
+                    : Colors.red.withOpacity(0.1),
+              ),
+            ),
+          ],
         ),
       ),
     );
