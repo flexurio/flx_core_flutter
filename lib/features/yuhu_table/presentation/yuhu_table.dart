@@ -4,10 +4,11 @@ import 'package:flx_core_flutter/features/menu/presentation/menu_page.dart';
 import 'package:flx_core_flutter/features/yuhu_table/presentation/table_column.dart';
 import 'package:flx_core_flutter/features/yuhu_table/presentation/table_data.dart';
 import 'package:flx_core_flutter/features/yuhu_table/presentation/table_header.dart';
+import 'package:flx_core_flutter/features/yuhu_table/presentation/yuhu_table_header_draggable.dart';
+import 'package:flx_core_flutter/features/yuhu_table/presentation/yuhu_table_section.dart';
 import 'package:flx_core_flutter/src/app/util/color.dart';
 import 'package:flx_core_flutter/src/app/util/theme.dart';
 import 'package:flx_core_flutter/src/app/view/widget/f_drop_down.dart';
-import 'package:flx_core_flutter/src/app/view/widget/table_with_body_scroll.dart';
 import 'package:screen_identifier/screen_identifier.dart';
 
 class YuhuTable<T> extends StatefulWidget {
@@ -59,6 +60,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
   final Set<int> _pinnedLeft = {};
   final Set<int> _pinnedRight = {};
   final Map<int, double> _columnWidths = {};
+  List<int> _columnOrder = [];
 
   bool get enableHoverEffect => MenuPage.enableHoverEffect;
 
@@ -98,6 +100,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     super.initState();
     _sortIndex = widget.initialSortColumnIndex;
     _ascending = widget.initialSortAscending ?? true;
+    _columnOrder = List.generate(widget.columns.length, (index) => index);
     if (widget.freezeFirstColumn) _pinnedLeft.add(0);
     if (widget.freezeLastColumn && widget.columns.isNotEmpty) {
       _pinnedRight.add(widget.columns.length - 1);
@@ -137,6 +140,20 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
         _pinnedRight.remove(widget.columns.length - 1);
       }
     }
+
+    if (widget.columns.length != oldWidget.columns.length) {
+      final newIndices = List.generate(
+        widget.columns.length,
+        (index) => index,
+      );
+      // Keep existing order for common indices, add new ones at the end,
+      // remove gone ones
+      final keptOrder =
+          _columnOrder.where((i) => i < widget.columns.length).toList();
+      final addedIndices =
+          newIndices.where((i) => !_columnOrder.contains(i)).toList();
+      _columnOrder = [...keptOrder, ...addedIndices];
+    }
   }
 
   @override
@@ -151,7 +168,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
         final centerPinnedEntries = <(int, TableColumn<T>)>[];
         final rightPinnedEntries = <(int, TableColumn<T>)>[];
 
-        for (var i = 0; i < widget.columns.length; i++) {
+        for (final i in _columnOrder) {
           final entry = (i, widget.columns[i]);
           if (!isSmall && _pinnedLeft.contains(i)) {
             leftPinnedEntries.add(entry);
@@ -162,11 +179,9 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
           }
         }
 
-        final table = _buildTable(
-          _theme,
-          _borderSide,
-          centerPinnedEntries,
-          _vMiddleController,
+        final table = _buildSection(
+          entries: centerPinnedEntries,
+          vController: _vMiddleController,
           showScrollbar: rightPinnedEntries.isEmpty,
         );
 
@@ -234,10 +249,10 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                             top: 0,
                             bottom: 0,
                             width: startWidth,
-                            child: _buildFrozenSection(
-                              leftPinnedEntries,
-                              false,
-                              _vStartController,
+                            child: _buildSection(
+                              entries: leftPinnedEntries,
+                              isPinned: true,
+                              vController: _vStartController,
                               showScrollbar: false,
                             ),
                           ),
@@ -247,10 +262,11 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                             top: 0,
                             bottom: 0,
                             width: endWidth,
-                            child: _buildFrozenSection(
-                              rightPinnedEntries,
-                              true,
-                              _vEndController,
+                            child: _buildSection(
+                              entries: rightPinnedEntries,
+                              isPinned: true,
+                              isRightSection: true,
+                              vController: _vEndController,
                               showScrollbar: true,
                             ),
                           ),
@@ -388,11 +404,11 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     _isSyncing = false;
   }
 
-  Widget _buildTable(
-    ThemeData theme,
-    BorderSide borderSide,
-    List<(int, TableColumn<T>)> entries,
-    ScrollController? vController, {
+  Widget _buildSection({
+    required List<(int, TableColumn<T>)> entries,
+    required ScrollController? vController,
+    bool isPinned = false,
+    bool isRightSection = false,
     bool showScrollbar = true,
   }) {
     final columnWidths = <int, TableColumnWidth>{};
@@ -408,10 +424,16 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       return _buildTableHeader(
         index,
         column,
-        isPinned: false,
+        isPinned: isPinned,
         onPinChanged: (p) => setState(() {
           if (p) {
-            _pinnedLeft.add(index);
+            if (isRightSection) {
+              _pinnedRight.add(index);
+              _pinnedLeft.remove(index);
+            } else {
+              _pinnedLeft.add(index);
+              _pinnedRight.remove(index);
+            }
           } else {
             _pinnedLeft.remove(index);
             _pinnedRight.remove(index);
@@ -420,7 +442,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       );
     });
 
-    if (widget.onSelectChanged != null) {
+    if (!isPinned && widget.onSelectChanged != null) {
       columnWidths[entries.length] = const FixedColumnWidth(80);
       headers.add(
         TableHeader(
@@ -431,26 +453,34 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       );
     }
 
-    final rows = _buildRows(entries);
+    final rows = _buildRows(entries, isPinned: isPinned);
 
-    return TableWithBodyScroll(
-      heightBody: widget.bodyHeight,
+    return YuhuTableSection(
       columnWidths: columnWidths,
-      controller: vController,
-      physics: const ClampingScrollPhysics(),
+      headers: headers,
+      rows: rows,
+      borderSide: _borderSide,
+      headerDecoration: _headerDecoration,
+      bodyHeight: widget.bodyHeight,
+      vController: vController,
       showScrollbar: showScrollbar,
-      border: TableBorder(
-        verticalInside:
-            borderSide.copyWith(color: borderSide.color.withAlpha(102)),
-      ),
-      children: <TableRow>[
-        TableRow(decoration: _headerDecoration, children: headers),
-        ...rows,
-      ],
+      alignment: isRightSection ? Alignment.centerRight : Alignment.centerLeft,
+      decoration: isPinned
+          ? BoxDecoration(
+              color: _theme.cardColor,
+              border: Border(
+                left: isRightSection ? _borderSide : BorderSide.none,
+                right: isRightSection ? BorderSide.none : _borderSide,
+              ),
+            )
+          : null,
     );
   }
 
-  List<TableRow> _buildRows(List<(int, TableColumn<T>)> entries) {
+  List<TableRow> _buildRows(
+    List<(int, TableColumn<T>)> entries, {
+    bool isPinned = false,
+  }) {
     return _generateTableRows(
       cellBuilder: (rowIndex, item) {
         final row = <Widget>[
@@ -463,7 +493,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
             ),
         ];
 
-        if (widget.onSelectChanged != null) {
+        if (!isPinned && widget.onSelectChanged != null) {
           row.add(_buildSelectCheckboxCell(rowIndex));
         }
         return row;
@@ -479,111 +509,35 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
             ),
         ];
 
-        if (widget.onSelectChanged != null) {
-          cells.add(TableData(
-            height: widget.rowHeight,
-            alignment: Alignment.center,
-            borderSide: _borderSide,
-            child: Container(),
-          ),);
+        if (!isPinned && widget.onSelectChanged != null) {
+          cells.add(
+            TableData(
+              height: widget.rowHeight,
+              alignment: Alignment.center,
+              borderSide: _borderSide,
+              child: Container(),
+            ),
+          );
         }
         return cells;
       },
     );
   }
 
-  Widget _buildFrozenSection(
-    List<(int, TableColumn<T>)> entries,
-    bool isRightSection,
-    ScrollController? vController, {
-    bool showScrollbar = true,
-  }) {
-    final columnWidths = <int, TableColumnWidth>{};
-    for (var i = 0; i < entries.length; i++) {
-      final index = entries[i].$1;
-      final width = _columnWidths[index] ?? entries[i].$2.width;
-      if (width != null) columnWidths[i] = FixedColumnWidth(width);
-    }
-
-    final headers = List.generate(entries.length, (i) {
-      final index = entries[i].$1;
-      final column = entries[i].$2;
-      return _buildTableHeader(
-        index,
-        column,
-        isPinned: true,
-        onPinChanged: (_) => setState(() {
-          _pinnedLeft.remove(index);
-          _pinnedRight.remove(index);
-        }),
-      );
-    });
-
-    final rows = _generateTableRows(
-      cellBuilder: (rowIndex, item) {
-        return List.generate(entries.length, (i) {
-          final column = entries[i].$2;
-          return TableData(
-            height: widget.rowHeight,
-            alignment: column.alignment,
-            borderSide: _borderSide,
-            child: column.builder(item, rowIndex),
-          );
-        });
-      },
-      emptyCellBuilder: (rowIndex) {
-        return List.generate(entries.length, (i) {
-          final column = entries[i].$2;
-          return TableData(
-            height: widget.rowHeight,
-            alignment: column.alignment,
-            borderSide: _borderSide,
-            child: Container(),
-          );
-        });
-      },
-    );
-
-    return Align(
-      alignment: isRightSection ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        decoration: BoxDecoration(
-          color: _theme.cardColor,
-          border: Border(
-            left: isRightSection ? _borderSide : BorderSide.none,
-            right: isRightSection ? BorderSide.none : _borderSide,
-          ),
-        ),
-        child: TableWithBodyScroll(
-          heightBody: widget.bodyHeight,
-          columnWidths: columnWidths,
-          controller: vController,
-          physics: const ClampingScrollPhysics(),
-          showScrollbar: showScrollbar,
-          border: TableBorder(
-            verticalInside:
-                _borderSide.copyWith(color: _borderSide.color.withAlpha(102)),
-          ),
-          children: <TableRow>[
-            TableRow(decoration: _headerDecoration, children: headers),
-            ...rows,
-          ],
-        ),
-      ),
-    );
-  }
-
-  TableHeader<T> _buildTableHeader(
+  Widget _buildTableHeader(
     int index,
     TableColumn<T> column, {
     bool isPinned = false,
     void Function(bool)? onPinChanged,
   }) {
-    return TableHeader(
+    return YuhuTableDraggableHeader<T>(
+      index: index,
       column: column,
-      ascending: _ascending,
       isSort: _sortIndex == index,
+      ascending: _ascending,
       isPinned: isPinned,
+      currentWidth: _columnWidths[index] ?? column.width ?? 100.0,
+      headerDecoration: _headerDecoration,
       onPinChanged: onPinChanged,
       onResizing: (delta) {
         setState(() {
@@ -604,6 +558,31 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
             }
           });
         }
+      },
+      onDrop: (fromIndex) {
+        setState(() {
+          // Adopt the pinning status of the target section
+          if (isPinned) {
+            if (_pinnedLeft.contains(index)) {
+              _pinnedLeft.add(fromIndex);
+              _pinnedRight.remove(fromIndex);
+            } else if (_pinnedRight.contains(index)) {
+              _pinnedRight.add(fromIndex);
+              _pinnedLeft.remove(fromIndex);
+            }
+          } else {
+            _pinnedLeft.remove(fromIndex);
+            _pinnedRight.remove(fromIndex);
+          }
+
+          final oldPos = _columnOrder.indexOf(fromIndex);
+          final newPos = _columnOrder.indexOf(index);
+          if (oldPos != -1 && newPos != -1) {
+            _columnOrder
+              ..removeAt(oldPos)
+              ..insert(newPos, fromIndex);
+          }
+        });
       },
     );
   }

@@ -33,6 +33,7 @@ class TableHeader<T> extends StatelessWidget {
         InkWell(
           onTap: onTap,
           child: Container(
+            color: Colors.transparent,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             child: Align(
               alignment: column.alignment,
