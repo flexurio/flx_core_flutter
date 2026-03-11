@@ -6,6 +6,7 @@ class TableData extends StatelessWidget {
     required this.height,
     required this.alignment,
     required this.borderSide,
+    this.showRightBorder = false,
     this.backgroundColor,
     super.key,
   });
@@ -14,6 +15,7 @@ class TableData extends StatelessWidget {
   final double height;
   final Alignment alignment;
   final BorderSide borderSide;
+  final bool showRightBorder;
   final Color? backgroundColor;
 
   @override
@@ -24,6 +26,7 @@ class TableData extends StatelessWidget {
         color: backgroundColor,
         border: Border(
           bottom: borderSide,
+          right: showRightBorder ? borderSide : BorderSide.none,
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12),

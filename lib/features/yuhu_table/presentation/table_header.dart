@@ -362,11 +362,10 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
                   color: Colors.transparent,
                   alignment: Alignment.centerRight,
                   child: Container(
-                    width: 2,
-                    height: 24,
+                    width: 1,
+                    height: double.infinity, // Full height
                     decoration: BoxDecoration(
-                      color: theme.dividerColor.withAlpha(51),
-                      borderRadius: BorderRadius.circular(1),
+                      color: theme.dividerColor, // Full opacity
                     ),
                   ),
                 ),

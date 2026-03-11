@@ -62,13 +62,12 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
   final Map<int, Color?> _columnColors = {};
   List<int> _columnOrder = [];
 
-
   bool get enableHoverEffect => true;
 
   ThemeData get _theme => Theme.of(context);
   BorderSide get _borderSide => BorderSide(
-        color: _theme.dividerColor.withValues(alpha: 0.15),
-        width: 0.5,
+        color: _theme.dividerColor.withValues(alpha: 1.0),
+        width: 1.0,
       );
 
   BoxDecoration get _headerDecoration => BoxDecoration(
@@ -220,8 +219,9 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
 
                 final maxScrollWidth = (maxWidth - startWidth - endWidth)
                     .clamp(0.0, double.infinity);
-                final actualScrollWidth =
-                    totalCenterWidth < maxScrollWidth ? maxScrollWidth : totalCenterWidth;
+                final actualScrollWidth = totalCenterWidth < maxScrollWidth
+                    ? maxScrollWidth
+                    : totalCenterWidth;
                 final totalTableWidth =
                     startWidth + actualScrollWidth + endWidth;
 
@@ -326,6 +326,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       height: widget.rowHeight,
       alignment: Alignment.center,
       borderSide: _borderSide,
+      showRightBorder: true,
       child: Checkbox(
         value: isSelected,
         onChanged: (value) {
@@ -473,7 +474,6 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
         onColorChanged: (color) => setState(() {
           _columnColors[index] = color;
         }),
-
       );
     });
 
@@ -540,10 +540,11 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
               height: widget.rowHeight,
               alignment: entries[i].$2.alignment,
               borderSide: _borderSide,
-              backgroundColor: _columnColors[entries[i].$1] ?? entries[i].$2.backgroundColor,
+              showRightBorder: true,
+              backgroundColor:
+                  _columnColors[entries[i].$1] ?? entries[i].$2.backgroundColor,
               child: entries[i].$2.builder(item, rowIndex),
             ),
-
         ];
 
         if (!isPinned && widget.onSelectChanged != null) {
@@ -561,10 +562,11 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
               height: widget.rowHeight,
               alignment: entries[i].$2.alignment,
               borderSide: _borderSide,
-              backgroundColor: _columnColors[entries[i].$1] ?? entries[i].$2.backgroundColor,
+              showRightBorder: true,
+              backgroundColor:
+                  _columnColors[entries[i].$1] ?? entries[i].$2.backgroundColor,
               child: Container(),
             ),
-
         ];
 
         if (!isPinned && widget.onSelectChanged != null) {
@@ -573,6 +575,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
               height: widget.rowHeight,
               alignment: Alignment.center,
               borderSide: _borderSide,
+              showRightBorder: true,
               child: Container(),
             ),
           );
@@ -593,7 +596,6 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     void Function(Color?)? onColorChanged,
   }) {
     return YuhuTableDraggableHeader<T>(
-
       index: index,
       column: column,
       isSort: _sortIndex == index,
@@ -604,7 +606,6 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       onPinnedPositionChanged: onPinnedPositionChanged,
       onColorChanged: onColorChanged,
       onResizing: (delta) {
-
         setState(() {
           final currentWidth = _columnWidths[index] ?? column.width ?? 100.0;
           _columnWidths[index] = (currentWidth + delta).clamp(50.0, 1000.0);
