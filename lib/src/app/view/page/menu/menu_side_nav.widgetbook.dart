@@ -44,10 +44,8 @@ Widget menuSideNavUseCase(BuildContext context) {
     ),
   ];
 
-  return SizedBox(
-    width: double.infinity,
-    height: double.infinity,
-    child: Row(
+  return Scaffold(
+    body: Row(
       children: [
         // Ensure that MenuCollapseBloc is available in the context.
         BlocProvider<MenuCollapseBloc>(
@@ -73,3 +71,4 @@ Widget menuSideNavUseCase(BuildContext context) {
     ),
   );
 }
+

@@ -1,13 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flx_core_flutter/src/app/util/theme.dart';
 // Import the generated file
 import 'package:flx_core_flutter/widgetbook.directories.g.dart';
+import 'package:flx_core_flutter/src/app/util/storage_init.dart';
 import 'package:widgetbook/widgetbook.dart';
+
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Initialize flavorConfig for widgets that depend on it (like LogoNamed)
+  flavorConfig = FlavorConfig(
+    companyId: 'chiron',
+    companyName: 'Chiron',
+    companyPhone: '-',
+    companyWebsite: '-',
+    companyAddress: '-',
+    apiUrl: '-',
+    color: Colors.blue,
+    colorSoft: Colors.blue.withOpacity(0.1),
+    backgroundLoginPage: '',
+    applicationConfig: null,
+  );
+
+  await storageInit(flavorConfig.companyId);
+
   runApp(const WidgetbookApp());
 }
+
 
 @widgetbook.App()
 class WidgetbookApp extends StatelessWidget {

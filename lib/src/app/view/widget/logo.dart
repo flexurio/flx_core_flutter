@@ -40,7 +40,7 @@ class LogoNamed extends StatelessWidget {
         children: [
           logo,
           const Gap(12),
-          Named(logoNamedUrl: logoNamedUrl),
+          Flexible(child: Named(logoNamedUrl: logoNamedUrl)),
         ],
       ),
     );

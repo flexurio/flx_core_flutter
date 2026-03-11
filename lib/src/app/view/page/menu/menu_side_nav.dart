@@ -65,19 +65,17 @@ class _MenuSideNavState extends State<MenuSideNav> {
   }
 
   Widget _buildSideNav(List<Menu1> menuFiltered) {
-    return ScreenIdentifierBuilder(
-      builder: (context, screenIdentifier) {
-        final theme = Theme.of(context);
-        return BlocBuilder<MenuCollapseBloc, bool>(
-          builder: (context, collapsedX) {
-            return ScreenIdentifierBuilder(
-              builder: (context, screenIdentifier) {
-                final collapsed = screenIdentifier.conditions(
-                  md: collapsedX,
-                  sm: true,
-                );
+    final theme = Theme.of(context);
+    return BlocBuilder<MenuCollapseBloc, bool>(
+      builder: (context, collapsedX) {
+        return ScreenIdentifierBuilder(
+          builder: (context, screenIdentifier) {
+            final collapsed = screenIdentifier.conditions(
+              md: collapsedX,
+              sm: true,
+            );
 
-                return Material(
+            return Material(
                   color: theme.cardColor,
                   shadowColor: Colors.black,
                   elevation: collapsed && _hovered ? 8 : 0,
@@ -129,8 +127,6 @@ class _MenuSideNavState extends State<MenuSideNav> {
                     ),
                   ),
                 );
-              },
-            );
           },
         );
       },

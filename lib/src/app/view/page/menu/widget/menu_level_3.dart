@@ -74,7 +74,9 @@ class MenuLevel3 extends StatelessWidget {
                     child: Text(
                       menu3.label.tr(),
                       maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
+
                         fontWeight: isSelected ? FontWeight.bold : null,
                         color: isSelected
                             ? theme.modeCondition(

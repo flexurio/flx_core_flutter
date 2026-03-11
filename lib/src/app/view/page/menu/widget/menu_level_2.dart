@@ -47,13 +47,17 @@ ExpansionPanel? buildMenuLevel2({
               ),
             ),
             const SizedBox(width: 12),
-            Text(
-              menu2.label.tr(),
-              maxLines: 1,
-              style: TextStyle(
-                fontWeight: isExpanded ? FontWeight.bold : null,
+            Expanded(
+              child: Text(
+                menu2.label.tr(),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontWeight: isExpanded ? FontWeight.bold : null,
+                ),
               ),
             ),
+
           ],
         ),
       );
