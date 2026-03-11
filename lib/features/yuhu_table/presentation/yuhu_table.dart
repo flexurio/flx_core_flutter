@@ -221,7 +221,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                 final maxScrollWidth = (maxWidth - startWidth - endWidth)
                     .clamp(0.0, double.infinity);
                 final actualScrollWidth =
-                    totalCenterWidth.clamp(0.0, maxScrollWidth);
+                    totalCenterWidth < maxScrollWidth ? maxScrollWidth : totalCenterWidth;
                 final totalTableWidth =
                     startWidth + actualScrollWidth + endWidth;
 
@@ -261,7 +261,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                                   scrollDirection: Axis.horizontal,
                                   physics: const ClampingScrollPhysics(),
                                   child: SizedBox(
-                                    width: totalCenterWidth,
+                                    width: actualScrollWidth,
                                     child: table,
                                   ),
                                 ),
@@ -477,8 +477,9 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       );
     });
 
+    int nextColIndex = entries.length;
     if (!isPinned && widget.onSelectChanged != null) {
-      columnWidths[entries.length] = const FixedColumnWidth(80);
+      columnWidths[nextColIndex] = const FixedColumnWidth(80);
       headers.add(
         TableHeader(
           column: TableColumn(title: '', builder: (_, __) => Container()),
@@ -486,6 +487,12 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
           ascending: _ascending,
         ),
       );
+      nextColIndex++;
+    }
+
+    if (!isPinned) {
+      columnWidths[nextColIndex] = const FlexColumnWidth();
+      headers.add(const SizedBox());
     }
 
     final rows = _buildRows(entries, isPinned: isPinned);
@@ -542,6 +549,9 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
         if (!isPinned && widget.onSelectChanged != null) {
           row.add(_buildSelectCheckboxCell(rowIndex));
         }
+        if (!isPinned) {
+          row.add(const SizedBox());
+        }
         return row;
       },
       emptyCellBuilder: (rowIndex) {
@@ -566,6 +576,9 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
               child: Container(),
             ),
           );
+        }
+        if (!isPinned) {
+          cells.add(const SizedBox());
         }
         return cells;
       },
