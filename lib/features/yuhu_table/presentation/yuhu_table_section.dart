@@ -35,10 +35,10 @@ class YuhuTableSection extends StatelessWidget {
       controller: vController,
       physics: const ClampingScrollPhysics(),
       showScrollbar: showScrollbar,
-      border: TableBorder(
-        verticalInside:
-            borderSide.copyWith(color: borderSide.color.withAlpha(102)),
+      border: const TableBorder(
+        verticalInside: BorderSide.none,
       ),
+
       children: <TableRow>[
         TableRow(decoration: headerDecoration, children: headers),
         ...rows,

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flx_core_flutter/features/menu/presentation/menu_page.dart';
 import 'package:flx_core_flutter/features/yuhu_table/presentation/table_column.dart';
 import 'package:flx_core_flutter/features/yuhu_table/presentation/table_data.dart';
 import 'package:flx_core_flutter/features/yuhu_table/presentation/table_header.dart';
@@ -62,28 +61,38 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
   final Map<int, double> _columnWidths = {};
   List<int> _columnOrder = [];
 
-  bool get enableHoverEffect => MenuPage.enableHoverEffect;
+  bool get enableHoverEffect => true;
 
   ThemeData get _theme => Theme.of(context);
   BorderSide get _borderSide => BorderSide(
-        color: _theme.brightness == Brightness.dark
-            ? MyTheme.black06dp
-            : Colors.grey.shade300,
+        color: _theme.dividerColor.withValues(alpha: 0.15),
+        width: 0.5,
       );
+
   BoxDecoration get _headerDecoration => BoxDecoration(
         color: _theme.brightness == Brightness.dark
-            ? _theme.colorScheme.primary.darken(.3)
-            : const Color(0xFFF0F4F8),
+            ? const Color(0xFF1E293B) // Slate navy for dark mode header
+            : const Color(0xFFF1F5F9), // Soft grey-blue for light mode
+        border: Border(
+          bottom: BorderSide(
+            color: _theme.colorScheme.primary.withValues(alpha: .2),
+            width: 1.5,
+          ),
+        ),
       );
+
   Color get _hoverColor {
     final primary = _theme.colorScheme.primary;
     return _theme.modeCondition(
-      Color.alphaBlend(
-        primary.lighten(.5).withValues(alpha: .15),
-        _theme.cardColor,
-      ),
-      Color.alphaBlend(primary.withValues(alpha: .2), _theme.cardColor),
+      primary.withValues(alpha: .08),
+      primary.withValues(alpha: .15),
     );
+  }
+
+  Color get _stripedColor {
+    return _theme.brightness == Brightness.dark
+        ? _theme.cardColor.lighten(.02)
+        : const Color(0xFFF9FAFB);
   }
 
   @override
@@ -215,62 +224,77 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                     startWidth + actualScrollWidth + endWidth;
 
                 return Center(
-                  child: SizedBox(
-                    width: totalTableWidth,
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: startWidth,
-                            right: endWidth,
-                          ),
-                          child: SizedBox(
-                            width: actualScrollWidth,
-                            child: Scrollbar(
-                              controller: _horizontalScrollController,
-                              interactive: true,
-                              thumbVisibility: true,
-                              child: SingleChildScrollView(
+                  child: Container(
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      color: _theme.cardColor,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: _borderSide.color, width: 0.5),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: .03),
+                          blurRadius: 15,
+                          offset: const Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: SizedBox(
+                      width: totalTableWidth,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: startWidth,
+                              right: endWidth,
+                            ),
+                            child: SizedBox(
+                              width: actualScrollWidth,
+                              child: Scrollbar(
                                 controller: _horizontalScrollController,
-                                scrollDirection: Axis.horizontal,
-                                physics: const ClampingScrollPhysics(),
-                                child: SizedBox(
-                                  width: totalCenterWidth,
-                                  child: table,
+                                interactive: true,
+                                thumbVisibility: true,
+                                child: SingleChildScrollView(
+                                  controller: _horizontalScrollController,
+                                  scrollDirection: Axis.horizontal,
+                                  physics: const ClampingScrollPhysics(),
+                                  child: SizedBox(
+                                    width: totalCenterWidth,
+                                    child: table,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        if (leftPinnedEntries.isNotEmpty)
-                          Positioned(
-                            left: 0,
-                            top: 0,
-                            bottom: 0,
-                            width: startWidth,
-                            child: _buildSection(
-                              entries: leftPinnedEntries,
-                              isPinned: true,
-                              vController: _vStartController,
-                              showScrollbar: false,
+                          if (leftPinnedEntries.isNotEmpty)
+                            Positioned(
+                              left: 0,
+                              top: 0,
+                              bottom: 0,
+                              width: startWidth,
+                              child: _buildSection(
+                                entries: leftPinnedEntries,
+                                isPinned: true,
+                                vController: _vStartController,
+                                showScrollbar: false,
+                              ),
                             ),
-                          ),
-                        if (rightPinnedEntries.isNotEmpty)
-                          Positioned(
-                            right: 0,
-                            top: 0,
-                            bottom: 0,
-                            width: endWidth,
-                            child: _buildSection(
-                              entries: rightPinnedEntries,
-                              isPinned: true,
-                              isRightSection: true,
-                              vController: _vEndController,
-                              showScrollbar: true,
+                          if (rightPinnedEntries.isNotEmpty)
+                            Positioned(
+                              right: 0,
+                              top: 0,
+                              bottom: 0,
+                              width: endWidth,
+                              child: _buildSection(
+                                entries: rightPinnedEntries,
+                                isPinned: true,
+                                isRightSection: true,
+                                vController: _vEndController,
+                                showScrollbar: true,
+                              ),
                             ),
-                          ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -345,9 +369,12 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     final effectiveBaseColor = baseColor ?? _theme.cardColor;
     final rows = List<TableRow>.generate(widget.data.length, (rowIndex) {
       final isHovered = enableHoverEffect && _hoveredRowIndex == rowIndex;
+      final rowColor = isHovered
+          ? _hoverColor
+          : (rowIndex % 2 != 0 ? _stripedColor : effectiveBaseColor);
       return TableRow(
         decoration: BoxDecoration(
-          color: isHovered ? _hoverColor : effectiveBaseColor,
+          color: rowColor,
         ),
         children: cellBuilder(rowIndex, widget.data[rowIndex])
             .map((child) => _wrapWithHover(rowIndex: rowIndex, child: child))
@@ -363,9 +390,12 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
           (emptyIndex) {
             final rowIndex = widget.data.length + emptyIndex;
             final isHovered = enableHoverEffect && _hoveredRowIndex == rowIndex;
+            final rowColor = isHovered
+                ? _hoverColor
+                : (rowIndex % 2 != 0 ? _stripedColor : effectiveBaseColor);
             return TableRow(
               decoration: BoxDecoration(
-                color: isHovered ? _hoverColor : effectiveBaseColor,
+                color: rowColor,
               ),
               children: emptyCellBuilder(rowIndex)
                   .map(
@@ -469,8 +499,17 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
         border: isPinned
             ? Border(
                 left: isRightSection ? _borderSide : BorderSide.none,
-                right: isRightSection ? BorderSide.none : _borderSide,
+                right: !isRightSection ? _borderSide : BorderSide.none,
               )
+            : null,
+        boxShadow: isPinned
+            ? [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: .04),
+                  blurRadius: 10,
+                  offset: Offset(isRightSection ? -4 : 4, 0),
+                ),
+              ]
             : null,
       ),
     );

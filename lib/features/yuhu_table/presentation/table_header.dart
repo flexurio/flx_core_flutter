@@ -192,12 +192,14 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
                           widget.column.title,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
+                            fontSize: 13,
                             fontWeight: FontWeight.bold,
                             color: theme.modeCondition(
-                              const Color(0xff374259),
-                              Colors.blueGrey.shade200,
+                              const Color(0xFF505F79), // Greyish-blue for headers
+                              Colors.white.withValues(alpha: 0.9), // Lighter for dark
                             ),
                           ),
+
                         ),
                       ),
                       if (widget.isSort)
@@ -207,10 +209,11 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
                             widget.ascending
                                 ? Icons.arrow_downward
                                 : Icons.arrow_upward,
-                            size: 16,
-                            color: primaryColor.withAlpha(120),
+                            size: 14,
+                            color: primaryColor.withValues(alpha: 0.5),
                           ),
                         ),
+
                       if (widget.onPinnedPositionChanged != null && isPinned)
                         Padding(
                           padding: const EdgeInsets.only(left: 6),
