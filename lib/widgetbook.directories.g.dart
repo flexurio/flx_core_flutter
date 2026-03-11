@@ -14,6 +14,8 @@ import 'package:flx_core_flutter/features/menu/presentation/menu_page.widgetbook
     as _flx_core_flutter_features_menu_presentation_menu_page_widgetbook;
 import 'package:flx_core_flutter/features/sidebar/presentation/menu_side_nav.widgetbook.dart'
     as _flx_core_flutter_features_sidebar_presentation_menu_side_nav_widgetbook;
+import 'package:flx_core_flutter/features/top_bar/presentation/top_bar.widgetbook.dart'
+    as _flx_core_flutter_features_top_bar_presentation_top_bar_widgetbook;
 import 'package:flx_core_flutter/src/app/util/toast.widgetbook.dart'
     as _flx_core_flutter_src_app_util_toast_widgetbook;
 import 'package:flx_core_flutter/src/app/view/widget/f_drop_down/f_drop_down_search_small.widgetbook.dart'
@@ -154,6 +156,27 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder:
                         _flx_core_flutter_features_sidebar_presentation_menu_side_nav_widgetbook
                             .menuSideNavUseCase,
+                  )
+                ],
+              )
+            ],
+          )
+        ],
+      ),
+      _widgetbook.WidgetbookFolder(
+        name: 'top_bar',
+        children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'presentation',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'TopBar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Default Top Bar',
+                    builder:
+                        _flx_core_flutter_features_top_bar_presentation_top_bar_widgetbook
+                            .topBarUseCase,
                   )
                 ],
               )

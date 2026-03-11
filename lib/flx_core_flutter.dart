@@ -106,7 +106,7 @@ export 'src/app/view/widget/table.dart';
 export 'src/app/view/widget/tile_data.dart';
 export 'src/app/view/widget/time_line.dart';
 export 'src/app/view/widget/title_page.dart';
-export 'src/app/view/widget/top_bar.dart';
+export 'features/top_bar/presentation/top_bar.dart';
 export 'src/app/view/widget/visibility_permission.dart';
 export 'src/app/view/widget/yuhu_table/table_column.dart';
 export 'src/app/view/widget/yuhu_table/yuhu_table.dart';
