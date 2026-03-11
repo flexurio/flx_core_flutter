@@ -10,6 +10,8 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:flx_core_flutter/features/menu/presentation/menu_page.widgetbook.dart'
+    as _flx_core_flutter_features_menu_presentation_menu_page_widgetbook;
 import 'package:flx_core_flutter/features/sidebar/presentation/menu_side_nav.widgetbook.dart'
     as _flx_core_flutter_features_sidebar_presentation_menu_side_nav_widgetbook;
 import 'package:flx_core_flutter/src/app/util/toast.widgetbook.dart'
@@ -118,6 +120,27 @@ final directories = <_widgetbook.WidgetbookNode>[
     name: 'features',
     children: [
       _widgetbook.WidgetbookFolder(
+        name: 'menu',
+        children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'presentation',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'MenuPage',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Default Menu Page',
+                    builder:
+                        _flx_core_flutter_features_menu_presentation_menu_page_widgetbook
+                            .menuPageUseCase,
+                  )
+                ],
+              )
+            ],
+          )
+        ],
+      ),
+      _widgetbook.WidgetbookFolder(
         name: 'sidebar',
         children: [
           _widgetbook.WidgetbookFolder(
@@ -137,7 +160,7 @@ final directories = <_widgetbook.WidgetbookNode>[
             ],
           )
         ],
-      )
+      ),
     ],
   ),
 ];

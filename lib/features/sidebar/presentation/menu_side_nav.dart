@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
-import 'package:flx_core_flutter/features/sidebar/presentation/widgets/menu_level_1.dart';
+import 'package:flx_core_flutter/features/menu/presentation/widgets/menu_level_1.dart';
 import 'package:gap/gap.dart';
 import 'package:screen_identifier/screen_identifier.dart';
 

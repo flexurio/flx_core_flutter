@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/src/app/util/color.dart';
 import 'package:flx_core_flutter/src/app/util/theme.dart';
-import 'package:flx_core_flutter/features/sidebar/presentation/menu_page.dart';
+import 'package:flx_core_flutter/features/menu/presentation/menu_page.dart';
 import 'package:flx_core_flutter/src/app/view/widget/f_drop_down.dart';
 import 'package:flx_core_flutter/src/app/view/widget/table_with_body_scroll.dart';
 import 'package:flx_core_flutter/src/app/view/widget/yuhu_table/table_column.dart';

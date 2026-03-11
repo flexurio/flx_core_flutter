@@ -2,7 +2,7 @@ export 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 export 'constant/size.dart';
 export 'src/app/bloc/theme/theme_bloc.dart';
-export 'features/sidebar/application/menu/menu_bloc.dart';
+export 'features/menu/application/menu/menu_bloc.dart';
 export 'features/sidebar/application/menu_collapse/menu_collapse.dart';
 
 // Model
@@ -13,7 +13,7 @@ export 'src/app/model/entity.dart';
 export 'src/app/model/flavor_config.dart';
 export 'src/app/model/page_options.dart';
 export 'src/app/model/permission.dart';
-export 'features/sidebar/domain/menu.dart';
+export 'features/menu/domain/menu.dart';
 
 
 export 'src/app/model/sound.dart';
@@ -52,7 +52,7 @@ export 'src/app/util/toast.dart';
 export 'src/app/util/validator.dart';
 export 'src/app/util/widget_extension.dart';
 // Page
-export 'features/sidebar/presentation/menu_page.dart';
+export 'features/menu/presentation/menu_page.dart';
 
 export 'src/app/view/page/splash/splash_page.dart';
 // Widget
