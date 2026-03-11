@@ -10,6 +10,7 @@ class TableColumn<T> {
     this.sortNum,
     this.alignment = Alignment.centerLeft,
     this.width,
+    this.backgroundColor,
   });
 
   final String title;
@@ -18,5 +19,7 @@ class TableColumn<T> {
   final String Function(T)? sortString;
   final num Function(T)? sortNum;
   final Widget Function(T, int) builder;
+  final Color? backgroundColor;
 }
+
 

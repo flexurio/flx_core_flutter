@@ -59,7 +59,9 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
   final Set<int> _pinnedLeft = {};
   final Set<int> _pinnedRight = {};
   final Map<int, double> _columnWidths = {};
+  final Map<int, Color?> _columnColors = {};
   List<int> _columnOrder = [];
+
 
   bool get enableHoverEffect => true;
 
@@ -468,6 +470,10 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
             _pinnedRight.add(index);
           }
         }),
+        onColorChanged: (color) => setState(() {
+          _columnColors[index] = color;
+        }),
+
       );
     });
 
@@ -527,8 +533,10 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
               height: widget.rowHeight,
               alignment: entries[i].$2.alignment,
               borderSide: _borderSide,
+              backgroundColor: _columnColors[entries[i].$1] ?? entries[i].$2.backgroundColor,
               child: entries[i].$2.builder(item, rowIndex),
             ),
+
         ];
 
         if (!isPinned && widget.onSelectChanged != null) {
@@ -543,8 +551,10 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
               height: widget.rowHeight,
               alignment: entries[i].$2.alignment,
               borderSide: _borderSide,
+              backgroundColor: _columnColors[entries[i].$1] ?? entries[i].$2.backgroundColor,
               child: Container(),
             ),
+
         ];
 
         if (!isPinned && widget.onSelectChanged != null) {
@@ -567,8 +577,10 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     TableColumn<T> column, {
     TablePinPosition pinnedPosition = TablePinPosition.none,
     void Function(TablePinPosition)? onPinnedPositionChanged,
+    void Function(Color?)? onColorChanged,
   }) {
     return YuhuTableDraggableHeader<T>(
+
       index: index,
       column: column,
       isSort: _sortIndex == index,
@@ -577,7 +589,9 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       currentWidth: _columnWidths[index] ?? column.width ?? 100.0,
       headerDecoration: _headerDecoration,
       onPinnedPositionChanged: onPinnedPositionChanged,
+      onColorChanged: onColorChanged,
       onResizing: (delta) {
+
         setState(() {
           final currentWidth = _columnWidths[index] ?? column.width ?? 100.0;
           _columnWidths[index] = (currentWidth + delta).clamp(50.0, 1000.0);

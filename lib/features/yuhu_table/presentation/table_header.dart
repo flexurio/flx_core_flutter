@@ -10,6 +10,7 @@ class TableHeader<T> extends StatefulWidget {
     this.onTap,
     this.pinnedPosition = TablePinPosition.none,
     this.onPinnedPositionChanged,
+    this.onColorChanged,
     this.onResizing,
     this.onResizeEnd,
   });
@@ -17,6 +18,8 @@ class TableHeader<T> extends StatefulWidget {
   final TableColumn<T> column;
   final void Function()? onTap;
   final void Function(TablePinPosition)? onPinnedPositionChanged;
+  final void Function(Color?)? onColorChanged;
+
   final void Function(double delta)? onResizing;
   final void Function()? onResizeEnd;
   final bool isSort;
@@ -56,7 +59,8 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
       letterSpacing: 0.2,
     );
 
-    showMenu<TablePinPosition>(
+    showMenu<dynamic>(
+
       context: context,
       position: menuPosition,
       shape: RoundedRectangleBorder(
@@ -68,8 +72,12 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
       ),
       elevation: 20,
       shadowColor: Colors.black.withValues(alpha: .3),
-      color: theme.colorScheme.surface.withValues(alpha: 0.98),
+      color: theme.modeCondition(
+        theme.colorScheme.surface.withValues(alpha: 0.98),
+        const Color(0xFF1E293B), // Same slate navy as header for consistency
+      ),
       items: [
+
         _buildPopupHeader(widget.column.title),
         const PopupMenuDivider(height: 1),
         if (widget.pinnedPosition == TablePinPosition.none) ...[
@@ -112,37 +120,94 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
             style: textStyle,
           ),
         ],
+        const PopupMenuDivider(height: 1),
+        _buildPopupHeader('Column Color'),
+        PopupMenuItem(
+          enabled: false,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildColorOption(context, Colors.transparent, Icons.format_color_reset_rounded),
+              _buildColorOption(context, Colors.red.withValues(alpha: theme.isDark ? 0.3 : 0.12), null),
+              _buildColorOption(context, Colors.blue.withValues(alpha: theme.isDark ? 0.3 : 0.12), null),
+              _buildColorOption(context, Colors.green.withValues(alpha: theme.isDark ? 0.3 : 0.12), null),
+              _buildColorOption(context, Colors.orange.withValues(alpha: theme.isDark ? 0.3 : 0.12), null),
+              _buildColorOption(context, Colors.purple.withValues(alpha: theme.isDark ? 0.3 : 0.12), null),
+              _buildColorOption(context, Colors.teal.withValues(alpha: theme.isDark ? 0.3 : 0.12), null),
+            ],
+          ),
+        ),
+
+
       ],
     ).then((value) {
-      if (value != null) {
-        widget.onPinnedPositionChanged!(value);
+      if (value is TablePinPosition) {
+        widget.onPinnedPositionChanged?.call(value);
+      } else if (value is Color) {
+        widget.onColorChanged?.call(value == Colors.transparent ? null : value);
       }
     });
   }
 
-  PopupMenuEntry<TablePinPosition> _buildPopupHeader(String title) {
-    return PopupMenuItem<TablePinPosition>(
+
+  Widget _buildColorOption(BuildContext context, Color? color, IconData? icon) {
+    return InkWell(
+      onTap: () => Navigator.of(context).pop(color),
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        width: 28,
+        height: 28,
+        decoration: BoxDecoration(
+          color: color ?? Colors.grey.withValues(alpha: 0.1),
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Colors.grey.withValues(alpha: 0.2),
+            width: 1,
+          ),
+        ),
+        child: icon != null
+            ? Icon(
+                icon,
+                size: 16,
+                color: Theme.of(context).modeCondition(
+                  Colors.grey.shade600,
+                  Colors.grey.shade300,
+                ),
+              )
+            : null,
+      ),
+    );
+  }
+
+
+
+  PopupMenuEntry<dynamic> _buildPopupHeader(String title) {
+    return PopupMenuItem<dynamic>(
       enabled: false,
       height: 32,
       child: Text(
         title.toUpperCase(),
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 10,
           fontWeight: FontWeight.w800,
-          color: Colors.blueGrey,
+          color: Theme.of(context).modeCondition(
+            Colors.blueGrey,
+            Colors.blueGrey.shade200,
+          ),
           letterSpacing: 1.2,
         ),
       ),
     );
   }
 
-  PopupMenuItem<TablePinPosition> _buildPopupItem({
-    required TablePinPosition value,
+  PopupMenuItem<dynamic> _buildPopupItem({
+    required dynamic value,
     required IconData icon,
     required String label,
     required TextStyle style,
   }) {
-    return PopupMenuItem<TablePinPosition>(
+    final theme = Theme.of(context);
+    return PopupMenuItem<dynamic>(
       value: value,
       height: 48,
       child: Row(
@@ -150,11 +215,22 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.blueGrey.withValues(alpha: 0.05),
+              color: theme.modeCondition(
+                Colors.blueGrey.withValues(alpha: 0.05),
+                Colors.white.withValues(alpha: 0.05),
+              ),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(icon, size: 18, color: Colors.blueGrey.shade600),
+            child: Icon(
+              icon,
+              size: 18,
+              color: theme.modeCondition(
+                Colors.blueGrey.shade600,
+                Colors.blueGrey.shade200,
+              ),
+            ),
           ),
+
           const SizedBox(width: 14),
           Text(label, style: style),
         ],

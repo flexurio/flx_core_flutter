@@ -12,7 +12,9 @@ class YuhuTableDraggableHeader<T> extends StatelessWidget {
     required this.currentWidth,
     required this.headerDecoration,
     required this.onPinnedPositionChanged,
+    required this.onColorChanged,
     required this.onResizing,
+
     required this.onTap,
     required this.onDrop,
     super.key,
@@ -26,7 +28,9 @@ class YuhuTableDraggableHeader<T> extends StatelessWidget {
   final double currentWidth;
   final BoxDecoration headerDecoration;
   final void Function(TablePinPosition)? onPinnedPositionChanged;
+  final void Function(Color?)? onColorChanged;
   final void Function(double delta)? onResizing;
+
   final void Function()? onTap;
   final void Function(int fromIndex) onDrop;
 
@@ -40,7 +44,9 @@ class YuhuTableDraggableHeader<T> extends StatelessWidget {
       isSort: isSort,
       pinnedPosition: pinnedPosition,
       onPinnedPositionChanged: onPinnedPositionChanged,
+      onColorChanged: onColorChanged,
       onResizing: onResizing,
+
       onTap: onTap,
     );
 

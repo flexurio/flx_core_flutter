@@ -6,6 +6,7 @@ class TableData extends StatelessWidget {
     required this.height,
     required this.alignment,
     required this.borderSide,
+    this.backgroundColor,
     super.key,
   });
 
@@ -13,12 +14,14 @@ class TableData extends StatelessWidget {
   final double height;
   final Alignment alignment;
   final BorderSide borderSide;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: height,
       decoration: BoxDecoration(
+        color: backgroundColor,
         border: Border(
           bottom: borderSide,
         ),
