@@ -46,14 +46,13 @@ class YuhuTableSection extends StatelessWidget {
     );
 
     if (decoration != null) {
-      return Align(
+      return Container(
+        decoration: decoration,
         alignment: alignment,
-        child: Container(
-          decoration: decoration,
-          child: table,
-        ),
+        child: table,
       );
     }
+
 
     return table;
   }

@@ -464,15 +464,15 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       vController: vController,
       showScrollbar: showScrollbar,
       alignment: isRightSection ? Alignment.centerRight : Alignment.centerLeft,
-      decoration: isPinned
-          ? BoxDecoration(
-              color: _theme.cardColor,
-              border: Border(
+      decoration: BoxDecoration(
+        color: _theme.cardColor,
+        border: isPinned
+            ? Border(
                 left: isRightSection ? _borderSide : BorderSide.none,
                 right: isRightSection ? BorderSide.none : _borderSide,
-              ),
-            )
-          : null,
+              )
+            : null,
+      ),
     );
   }
 
