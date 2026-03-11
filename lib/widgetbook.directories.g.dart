@@ -10,6 +10,8 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:flx_core_flutter/features/data_table_set_backend/presentation/data_table_set_backend.widgetbook.dart'
+    as _flx_core_flutter_features_data_table_set_backend_presentation_data_table_set_backend_widgetbook;
 import 'package:flx_core_flutter/features/menu/presentation/menu_page.widgetbook.dart'
     as _flx_core_flutter_features_menu_presentation_menu_page_widgetbook;
 import 'package:flx_core_flutter/features/sidebar/presentation/menu_side_nav.widgetbook.dart'
@@ -123,6 +125,39 @@ final directories = <_widgetbook.WidgetbookNode>[
   _widgetbook.WidgetbookFolder(
     name: 'features',
     children: [
+      _widgetbook.WidgetbookFolder(
+        name: 'data_table_set_backend',
+        children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'presentation',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'DataTableBackend',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Default',
+                    builder:
+                        _flx_core_flutter_features_data_table_set_backend_presentation_data_table_set_backend_widgetbook
+                            .dataTableBackendDefault,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'With Action Multiple',
+                    builder:
+                        _flx_core_flutter_features_data_table_set_backend_presentation_data_table_set_backend_widgetbook
+                            .dataTableBackendWithActionMultiple,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'With Pinned Columns',
+                    builder:
+                        _flx_core_flutter_features_data_table_set_backend_presentation_data_table_set_backend_widgetbook
+                            .dataTableBackendWithPinnedColumns,
+                  ),
+                ],
+              )
+            ],
+          )
+        ],
+      ),
       _widgetbook.WidgetbookFolder(
         name: 'menu',
         children: [
