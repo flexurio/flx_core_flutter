@@ -1,4 +1,4 @@
-// import 'package:download/download.dart';
+import 'package:download/download.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flx_core_flutter/flx_core_flutter.dart';
@@ -161,7 +161,6 @@ class GeneralExporter<T> {
   }
 
   Future<void> exportExcel({bool isWithoutGrouping = false}) async {
-    /*
     var group1 = this.group1;
     var group2 = this.group2;
     final headers = this.headers;
@@ -226,8 +225,6 @@ class GeneralExporter<T> {
       footerGroup2Builder: footerGroup2Builder,
     );
     await download(Stream.fromIterable(excel.export()), '$fileName.xlsx');
-    */
-    print('[export] excel stubbed');
   }
 }
 
