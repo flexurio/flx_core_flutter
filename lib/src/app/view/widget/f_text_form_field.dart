@@ -82,7 +82,7 @@ class FTextFormField extends FormField<String> {
                       readOnly: readOnly,
                       enabled: enabled,
                       onChanged: (value) {
-                        field.setValue(value);
+                        field.didChange(value);
                         onChanged?.call(value);
                       },
                       inputFormatters: inputFormatters,
@@ -110,7 +110,7 @@ class FTextFormField extends FormField<String> {
                                 MyTheme.black00dp,
                               )
                             : theme.modeCondition(
-                                Colors.blueGrey.shade100.withOpacity(.8),
+                                Colors.blueGrey.shade100.withValues(alpha: 0.8),
                                 MyTheme.black00dp,
                               ),
                         suffixText: suffixText,
@@ -167,10 +167,10 @@ class FTextFormField extends FormField<String> {
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final String? hintText;
-  void Function(String)? onChanged;
-  List<TextInputFormatter>? inputFormatters;
-  void Function(PointerDownEvent)? onTapOutside;
-  void Function(String)? onSubmitted;
+  final void Function(String)? onChanged;
+  final List<TextInputFormatter>? inputFormatters;
+  final void Function(PointerDownEvent)? onTapOutside;
+  final void Function(String)? onSubmitted;
   final bool isNumeric;
 }
 

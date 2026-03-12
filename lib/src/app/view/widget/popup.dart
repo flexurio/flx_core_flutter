@@ -176,7 +176,7 @@ class CardConfirmation extends StatelessWidget {
       popup: true,
       danger: danger,
       title: 'are_you_sure'.tr(),
-      icon: FontAwesomeIcons.exclamationTriangle,
+      icon: FontAwesomeIcons.triangleExclamation,
       actions: [
         Button.action(
           permission: null,
@@ -234,7 +234,7 @@ class CardConfirmationAnyAction extends StatelessWidget {
     return CardForm(
       popup: true,
       title: 'are_you_sure'.tr(),
-      icon: FontAwesomeIcons.exclamationTriangle,
+      icon: FontAwesomeIcons.triangleExclamation,
       actions: [
         Button.action(
           permission: null,
@@ -363,7 +363,7 @@ class _CardConfirmationWithExplanationState
       child: CardForm(
         popup: true,
         title: 'are_you_sure'.tr(),
-        icon: FontAwesomeIcons.exclamationTriangle,
+        icon: FontAwesomeIcons.triangleExclamation,
         actions: [
           Button.action(
             permission: null,
@@ -439,7 +439,7 @@ class CardSuccessWithData extends StatelessWidget {
     return CardForm(
       popup: true,
       title: title,
-      icon: FontAwesomeIcons.checkCircle,
+      icon: FontAwesomeIcons.circleCheck,
       actions: [
         Button.action(
           permission: null,
@@ -463,7 +463,11 @@ class CardSuccessWithData extends StatelessWidget {
                 iconOverride: Icons.copy,
                 onPressed: () {
                   FlutterClipboard.copy(copyValue).then(
-                    (value) => Toast(context).notify('Copied to clipboard'),
+                    (value) {
+                      if (context.mounted) {
+                        Toast(context).notify('Copied to clipboard');
+                      }
+                    },
                   );
                 },
               ),

@@ -74,7 +74,7 @@ class Toast {
       title: Text(message),
       type: ToastificationType.info,
       style: ToastificationStyle.simple,
-      backgroundColor: Colors.black.withOpacity(.7),
+      backgroundColor: Colors.black.withValues(alpha: .7),
       foregroundColor: Colors.white,
       autoCloseDuration: const Duration(seconds: 3),
     );
@@ -147,7 +147,11 @@ Future<void> showSuccessWithId({
               permission: null,
               onPressed: () {
                 FlutterClipboard.copy(id).then(
-                  (value) => Toast(context).notify('Copied to clipboard'),
+                  (value) {
+                    if (context.mounted) {
+                      Toast(context).notify('Copied to clipboard');
+                    }
+                  },
                 );
               },
             ).pullRight(),

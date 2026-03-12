@@ -10,6 +10,16 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:flx_core_flutter/features/data_table_set_backend/presentation/data_table_set_backend.widgetbook.dart'
+    as _flx_core_flutter_features_data_table_set_backend_presentation_data_table_set_backend_widgetbook;
+import 'package:flx_core_flutter/features/menu/presentation/menu_page.widgetbook.dart'
+    as _flx_core_flutter_features_menu_presentation_menu_page_widgetbook;
+import 'package:flx_core_flutter/features/sidebar/presentation/menu_side_nav.widgetbook.dart'
+    as _flx_core_flutter_features_sidebar_presentation_menu_side_nav_widgetbook;
+import 'package:flx_core_flutter/features/top_bar/presentation/top_bar.widgetbook.dart'
+    as _flx_core_flutter_features_top_bar_presentation_top_bar_widgetbook;
+import 'package:flx_core_flutter/features/yuhu_table/presentation/yuhu_table.widgetbook.dart'
+    as _flx_core_flutter_features_yuhu_table_presentation_yuhu_table_widgetbook;
 import 'package:flx_core_flutter/src/app/util/toast.widgetbook.dart'
     as _flx_core_flutter_src_app_util_toast_widgetbook;
 import 'package:flx_core_flutter/src/app/view/widget/f_drop_down/f_drop_down_search_small.widgetbook.dart'
@@ -111,5 +121,133 @@ final directories = <_widgetbook.WidgetbookNode>[
         ],
       ),
     ],
-  )
+  ),
+  _widgetbook.WidgetbookFolder(
+    name: 'features',
+    children: [
+      _widgetbook.WidgetbookFolder(
+        name: 'data_table_set_backend',
+        children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'presentation',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'DataTableBackend',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Default',
+                    builder:
+                        _flx_core_flutter_features_data_table_set_backend_presentation_data_table_set_backend_widgetbook
+                            .dataTableBackendDefault,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'With Action Multiple',
+                    builder:
+                        _flx_core_flutter_features_data_table_set_backend_presentation_data_table_set_backend_widgetbook
+                            .dataTableBackendWithActionMultiple,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'With Pinned Columns',
+                    builder:
+                        _flx_core_flutter_features_data_table_set_backend_presentation_data_table_set_backend_widgetbook
+                            .dataTableBackendWithPinnedColumns,
+                  ),
+                ],
+              )
+            ],
+          )
+        ],
+      ),
+      _widgetbook.WidgetbookFolder(
+        name: 'menu',
+        children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'presentation',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'MenuPage',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Default Menu Page',
+                    builder:
+                        _flx_core_flutter_features_menu_presentation_menu_page_widgetbook
+                            .menuPageUseCase,
+                  )
+                ],
+              )
+            ],
+          )
+        ],
+      ),
+      _widgetbook.WidgetbookFolder(
+        name: 'sidebar',
+        children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'presentation',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'MenuSideNav',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Default Side Nav',
+                    builder:
+                        _flx_core_flutter_features_sidebar_presentation_menu_side_nav_widgetbook
+                            .menuSideNavUseCase,
+                  )
+                ],
+              )
+            ],
+          )
+        ],
+      ),
+      _widgetbook.WidgetbookFolder(
+        name: 'top_bar',
+        children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'presentation',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'TopBar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Default Top Bar',
+                    builder:
+                        _flx_core_flutter_features_top_bar_presentation_top_bar_widgetbook
+                            .topBarUseCase,
+                  )
+                ],
+              )
+            ],
+          )
+        ],
+      ),
+      _widgetbook.WidgetbookFolder(
+        name: 'yuhu_table',
+        children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'presentation',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'YuhuTable',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Default',
+                    builder:
+                        _flx_core_flutter_features_yuhu_table_presentation_yuhu_table_widgetbook
+                            .yuhuTableUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Many Columns',
+                    builder:
+                        _flx_core_flutter_features_yuhu_table_presentation_yuhu_table_widgetbook
+                            .yuhuTableManyColumnsUseCase,
+                  ),
+                ],
+              )
+            ],
+          )
+        ],
+      ),
+    ],
+  ),
 ];

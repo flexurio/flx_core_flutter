@@ -136,9 +136,11 @@ class GeneralExporter<T> {
 
     final filename = '$fileName.pdf';
     final pdf = await pdfExporter.build(filename);
+    final pdfData = await pdf.save();
+    if (!context.mounted) return;
     await showDialogViewPDF(
       context: context,
-      pdfData: await pdf.save(),
+      pdfData: pdfData,
       actions: [],
       fileName: filename,
     );
@@ -224,8 +226,10 @@ class GeneralExporter<T> {
       footerGroup1Builder: footerGroup1Builder,
       footerGroup2Builder: footerGroup2Builder,
     );
-    await download(Stream.fromIterable(excel.export()), '$fileName.xlsx');
-    print('[export] excel done');
+    await download(
+      Stream.fromIterable(excel.export()),
+      '$fileName.xlsx',
+    );
   }
 }
 

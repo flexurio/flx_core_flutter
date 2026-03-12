@@ -2,7 +2,6 @@ import 'package:intl/intl.dart';
 
 /// A utility class to handle date formatting with smart UTC conversion.
 class FlxDateFormat {
-
   FlxDateFormat(this.pattern);
   final String pattern;
 

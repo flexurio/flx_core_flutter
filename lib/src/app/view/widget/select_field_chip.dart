@@ -109,7 +109,7 @@ class SelectChipField<T> extends FormField<String> {
                   selected: label == field.value,
                   onPressed: enabled
                       ? () {
-                          field.setValue(label);
+                          field.didChange(label);
                           controller.text = label;
                           onChanged(option);
                           field.setState(() {});
@@ -175,7 +175,9 @@ class _Chip extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: selected ? theme.colorScheme.primary.withOpacity(.1) : null,
+          color: selected
+              ? theme.colorScheme.primary.withValues(alpha: 0.1)
+              : null,
           border: Border.all(
             color: selected
                 ? theme.colorScheme.primary
@@ -222,7 +224,7 @@ class _ChipSolid extends StatelessWidget {
               ? [
                   BoxShadow(
                     blurRadius: 5,
-                    color: theme.colorScheme.primary.withOpacity(.6),
+                    color: theme.colorScheme.primary.withValues(alpha: 0.6),
                   ),
                 ]
               : null,

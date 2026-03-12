@@ -14,7 +14,7 @@ class OfflineIndicator extends StatefulWidget {
 class _OfflineIndicatorState extends State<OfflineIndicator>
     with SingleTickerProviderStateMixin {
   bool _isDeviceConnected = true;
-  StreamSubscription<List<ConnectivityResult>>? _subscription;
+  late StreamSubscription<List<ConnectivityResult>> _subscription;
 
   @override
   void initState() {
@@ -25,14 +25,16 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
       } else {
         _isDeviceConnected = await InternetConnectionChecker().hasConnection;
       }
-      setState(() {});
-      if (_isDeviceConnected) {
-        _timer?.cancel();
-        _timer = Timer(const Duration(seconds: 1), () {
-          _controller.reverse();
-        });
-      } else {
-        await _controller.forward();
+      if (mounted) {
+        setState(() {});
+        if (_isDeviceConnected) {
+          _timer?.cancel();
+          _timer = Timer(const Duration(seconds: 1), () {
+            _controller.reverse();
+          });
+        } else {
+          await _controller.forward();
+        }
       }
     });
   }
@@ -54,6 +56,8 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
 
   @override
   void dispose() {
+    _subscription.cancel();
+    _timer?.cancel();
     _controller.dispose();
     super.dispose();
   }
