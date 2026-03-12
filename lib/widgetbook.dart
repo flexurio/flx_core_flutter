@@ -26,7 +26,6 @@ void main() async {
   runApp(const WidgetbookApp());
 }
 
-
 @widgetbook.App()
 class WidgetbookApp extends StatelessWidget {
   const WidgetbookApp({super.key});

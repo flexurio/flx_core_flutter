@@ -21,5 +21,3 @@ class TableColumn<T> {
   final Widget Function(T, int) builder;
   final Color? backgroundColor;
 }
-
-

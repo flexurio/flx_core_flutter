@@ -92,17 +92,20 @@ void main() {
       int? sortedCol;
       bool? isAscending;
 
-      await tester.pumpWidget(createTestWidget(
-        onSort: (col, asc) {
-          sortedCol = col;
-          isAscending = asc;
-        },
-      ),);
+      await tester.pumpWidget(
+        createTestWidget(
+          onSort: (col, asc) {
+            sortedCol = col;
+            isAscending = asc;
+          },
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Tap the 'Name' column header (index 1) which is represented by TableHeader
       final headers = find.byWidgetPredicate(
-          (w) => w.runtimeType.toString().contains('TableHeader'),);
+        (w) => w.runtimeType.toString().contains('TableHeader'),
+      );
 
       // Tap the InkWell inside the second header (index 1 corresponds to 'Name')
       final headerInkWell = find
@@ -123,11 +126,13 @@ void main() {
         (tester) async {
       List<Map<String, dynamic>>? selectedItems;
 
-      await tester.pumpWidget(createTestWidget(
-        onSelectChanged: (items) {
-          selectedItems = items;
-        },
-      ),);
+      await tester.pumpWidget(
+        createTestWidget(
+          onSelectChanged: (items) {
+            selectedItems = items;
+          },
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Checkboxes exist because onSelectChanged was provided
@@ -144,10 +149,12 @@ void main() {
     });
 
     testWidgets('renders pinned columns correctly', (tester) async {
-      await tester.pumpWidget(createTestWidget(
-        freezeFirstColumn: true,
-        freezeLastColumn: true,
-      ),);
+      await tester.pumpWidget(
+        createTestWidget(
+          freezeFirstColumn: true,
+          freezeLastColumn: true,
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('ID'), findsOneWidget);

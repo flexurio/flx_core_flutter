@@ -38,14 +38,13 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
 
     final theme = Theme.of(context);
     final overlay = Overlay.of(context);
-    final RenderBox? overlayRenderBox =
-        overlay.context.findRenderObject() as RenderBox?;
+    final overlayRenderBox = overlay.context.findRenderObject() as RenderBox?;
 
     if (overlayRenderBox == null) return;
 
     // Convert screen coordinates to overlay-local coordinates for perfect accuracy
-    final Offset localOffset = overlayRenderBox.globalToLocal(position);
-    final RelativeRect menuPosition = RelativeRect.fromLTRB(
+    final localOffset = overlayRenderBox.globalToLocal(position);
+    final menuPosition = RelativeRect.fromLTRB(
       localOffset.dx,
       localOffset.dy,
       overlayRenderBox.size.width - localOffset.dx,
@@ -60,7 +59,6 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
     );
 
     showMenu<dynamic>(
-
       context: context,
       position: menuPosition,
       shape: RoundedRectangleBorder(
@@ -77,7 +75,6 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
         const Color(0xFF1E293B), // Same slate navy as header for consistency
       ),
       items: [
-
         _buildPopupHeader(widget.column.title),
         const PopupMenuDivider(height: 1),
         if (widget.pinnedPosition == TablePinPosition.none) ...[
@@ -127,18 +124,44 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildColorOption(context, Colors.transparent, Icons.format_color_reset_rounded),
-              _buildColorOption(context, Colors.red.withValues(alpha: theme.isDark ? 0.3 : 0.12), null),
-              _buildColorOption(context, Colors.blue.withValues(alpha: theme.isDark ? 0.3 : 0.12), null),
-              _buildColorOption(context, Colors.green.withValues(alpha: theme.isDark ? 0.3 : 0.12), null),
-              _buildColorOption(context, Colors.orange.withValues(alpha: theme.isDark ? 0.3 : 0.12), null),
-              _buildColorOption(context, Colors.purple.withValues(alpha: theme.isDark ? 0.3 : 0.12), null),
-              _buildColorOption(context, Colors.teal.withValues(alpha: theme.isDark ? 0.3 : 0.12), null),
+              _buildColorOption(
+                context,
+                Colors.transparent,
+                Icons.format_color_reset_rounded,
+              ),
+              _buildColorOption(
+                context,
+                Colors.red.withValues(alpha: theme.isDark ? 0.3 : 0.12),
+                null,
+              ),
+              _buildColorOption(
+                context,
+                Colors.blue.withValues(alpha: theme.isDark ? 0.3 : 0.12),
+                null,
+              ),
+              _buildColorOption(
+                context,
+                Colors.green.withValues(alpha: theme.isDark ? 0.3 : 0.12),
+                null,
+              ),
+              _buildColorOption(
+                context,
+                Colors.orange.withValues(alpha: theme.isDark ? 0.3 : 0.12),
+                null,
+              ),
+              _buildColorOption(
+                context,
+                Colors.purple.withValues(alpha: theme.isDark ? 0.3 : 0.12),
+                null,
+              ),
+              _buildColorOption(
+                context,
+                Colors.teal.withValues(alpha: theme.isDark ? 0.3 : 0.12),
+                null,
+              ),
             ],
           ),
         ),
-
-
       ],
     ).then((value) {
       if (value is TablePinPosition) {
@@ -148,7 +171,6 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
       }
     });
   }
-
 
   Widget _buildColorOption(BuildContext context, Color? color, IconData? icon) {
     return InkWell(
@@ -162,7 +184,6 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
           shape: BoxShape.circle,
           border: Border.all(
             color: Colors.grey.withValues(alpha: 0.2),
-            width: 1,
           ),
         ),
         child: icon != null
@@ -178,8 +199,6 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
       ),
     );
   }
-
-
 
   PopupMenuEntry<dynamic> _buildPopupHeader(String title) {
     return PopupMenuItem<dynamic>(
@@ -209,7 +228,6 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
     final theme = Theme.of(context);
     return PopupMenuItem<dynamic>(
       value: value,
-      height: 48,
       child: Row(
         children: [
           Container(
@@ -230,7 +248,6 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
               ),
             ),
           ),
-
           const SizedBox(width: 14),
           Text(label, style: style),
         ],
@@ -271,11 +288,12 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
                             color: theme.modeCondition(
-                              const Color(0xFF505F79), // Greyish-blue for headers
-                              Colors.white.withValues(alpha: 0.9), // Lighter for dark
+                              const Color(
+                                  0xFF505F79), // Greyish-blue for headers
+                              Colors.white
+                                  .withValues(alpha: 0.9), // Lighter for dark
                             ),
                           ),
-
                         ),
                       ),
                       if (widget.isSort)
@@ -289,7 +307,6 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
                             color: primaryColor.withValues(alpha: 0.5),
                           ),
                         ),
-
                       if (widget.onPinnedPositionChanged != null && isPinned)
                         Padding(
                           padding: const EdgeInsets.only(left: 6),
@@ -314,7 +331,6 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
                       if (widget.onPinnedPositionChanged != null &&
                           !isPinned &&
                           _isHovered)
-
                         Padding(
                           padding: const EdgeInsets.only(left: 6),
                           child: Material(
@@ -376,5 +392,3 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
     );
   }
 }
-
-

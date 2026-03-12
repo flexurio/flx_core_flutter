@@ -22,13 +22,13 @@ class PdfHeaderWidget extends StatelessWidget {
 
   static const _textColor = PdfColors.blueGrey800;
 
-  PdfColor get _primaryColor => PdfColor.fromInt(flavorConfig.color.value);
+  PdfColor get _primaryColor => PdfColor.fromInt(flavorConfig.color.toARGB32());
   PdfColor get _lightColor53 =>
-      PdfColor.fromInt(flavorConfig.color.lighten(.53).value);
+      PdfColor.fromInt(flavorConfig.color.lighten(.53).toARGB32());
   PdfColor get _lightColor50 =>
-      PdfColor.fromInt(flavorConfig.color.lighten(.5).value);
+      PdfColor.fromInt(flavorConfig.color.lighten(.5).toARGB32());
   PdfColor get _lightColor30 =>
-      PdfColor.fromInt(flavorConfig.color.lighten(.3).value);
+      PdfColor.fromInt(flavorConfig.color.lighten(.3).toARGB32());
 
   @override
   Widget build(Context context) {

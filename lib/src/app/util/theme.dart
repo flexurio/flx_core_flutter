@@ -40,7 +40,7 @@ class MyTheme {
       tooltipTheme: isDark
           ? theme.tooltipTheme.copyWith(
               decoration: BoxDecoration(
-                color: black00dp.withOpacity(.8),
+                color: black00dp.withValues(alpha: 0.8),
                 borderRadius: const BorderRadius.all(Radius.circular(6)),
               ),
               textStyle: const TextStyle(color: Colors.white70),

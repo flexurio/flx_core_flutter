@@ -192,7 +192,6 @@ class _YuhuTablePageState extends State<YuhuTablePage> {
 }
 
 class ProductDemo {
-
   ProductDemo({
     required this.name,
     required this.category,

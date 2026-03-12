@@ -14,8 +14,12 @@ Widget menuPageUseCase(BuildContext context) {
             label: 'Analytics',
             icon: Icons.analytics,
             menu: [
-              Menu3(label: 'Realtime', home: const Center(child: Text('Realtime Analytics'))),
-              Menu3(label: 'History', home: const Center(child: Text('History Analytics'))),
+              Menu3(
+                  label: 'Realtime',
+                  home: const Center(child: Text('Realtime Analytics'))),
+              Menu3(
+                  label: 'History',
+                  home: const Center(child: Text('History Analytics'))),
             ],
           ),
         ],
@@ -27,8 +31,12 @@ Widget menuPageUseCase(BuildContext context) {
             label: 'System',
             icon: Icons.settings,
             menu: [
-              Menu3(label: 'General', home: const Center(child: Text('General Settings'))),
-              Menu3(label: 'Security', home: const Center(child: Text('Security Settings'))),
+              Menu3(
+                  label: 'General',
+                  home: const Center(child: Text('General Settings'))),
+              Menu3(
+                  label: 'Security',
+                  home: const Center(child: Text('Security Settings'))),
             ],
           ),
         ],

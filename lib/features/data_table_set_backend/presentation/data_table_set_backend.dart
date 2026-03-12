@@ -142,30 +142,29 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
           'freezeFirst:$freezeFirst|freezeLast:$freezeLast|hasMulti:$hasMulti|freezeTwo:$freezeTwo',
         );
 
-        final double screenWidth = constraints.maxWidth == double.infinity
+        final screenWidth = constraints.maxWidth == double.infinity
             ? MediaQuery.of(context).size.width
             : constraints.maxWidth;
 
-        final double totalFlex = widget.columns.fold<double>(
-          0.0,
+        final totalFlex = widget.columns.fold<double>(
+          0,
           (sum, col) => sum + col.widthFlex,
         );
 
-        final double checkboxWidth = 45.0;
-        final double paddingWidth = 0.0;
-        final double usableWidth =
+        const checkboxWidth = 45.0;
+        const paddingWidth = 0;
+        final usableWidth =
             (screenWidth - (hasMulti ? checkboxWidth : 0.0) - paddingWidth)
                 .clamp(200.0, double.infinity);
-        final double rawFlexUnit =
-            totalFlex > 0 ? (usableWidth / totalFlex) : 100.0;
-        final double flexUnit = rawFlexUnit.clamp(60.0, 100.0);
+        final rawFlexUnit = totalFlex > 0 ? (usableWidth / totalFlex) : 100.0;
+        final flexUnit = rawFlexUnit.clamp(60.0, 100.0);
 
         // Hitung total lebar
-        final double baseWidth = widget.columns.fold<double>(
-          0.0,
+        final baseWidth = widget.columns.fold<double>(
+          0,
           (sum, col) => sum + (col.widthFlex * flexUnit),
         );
-        final double totalWidth = freezeTwo
+        final totalWidth = freezeTwo
             ? baseWidth // tidak menambah kolom baru; kolom 1 digabung dengan checkbox
             : (hasMulti
                 ? baseWidth + checkboxWidth
@@ -187,8 +186,7 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
               width: checkboxWidth +
                   firstColWidth, // gabungan lebar checkbox + kolom pertama
               title: firstCol.head.label,
-              builder: (data, rowIndex) {
-                final idx = rowIndex ?? 0;
+              builder: (data, idx) {
                 final checked = _selectedRowIndexes.contains(idx);
                 return Row(
                   children: [
@@ -251,8 +249,7 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
               alignment: Alignment.center,
               width: checkboxWidth,
               title: '',
-              builder: (data, rowIndex) {
-                final idx = rowIndex ?? 0;
+              builder: (data, idx) {
                 final checked = _selectedRowIndexes.contains(idx);
                 return Center(
                   child: Checkbox(
@@ -351,7 +348,7 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
                   borderRadius: const BorderRadius.all(Radius.circular(12)),
                   border: Border.all(
                     color: theme.modeCondition(
-                      Colors.blueGrey.shade100.withOpacity(.5),
+                      Colors.blueGrey.shade100.withValues(alpha: 0.5),
                       Colors.black12,
                     ),
                   ),
@@ -399,7 +396,11 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
                           initialSortColumnIndex: initialSortColumnIndex,
                           initialSortAscending: widget.pageOptions.ascending,
                           onSort: (index, ascending) => _onSortChanged(
-                              index, ascending, hasMulti, freezeTwo),
+                            index,
+                            ascending,
+                            hasMulti,
+                            freezeTwo,
+                          ),
                           columns: yuhuColumns,
                         ),
                         if (multipleActionWidget != null)
@@ -413,7 +414,8 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
                               color: Colors.grey.shade50,
                               border: Border(
                                 top: BorderSide(
-                                  color: theme.dividerColor.withOpacity(.4),
+                                  color:
+                                      theme.dividerColor.withValues(alpha: 0.4),
                                 ),
                               ),
                             ),

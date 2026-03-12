@@ -4,7 +4,6 @@ import 'package:flx_core_flutter/flx_core_flutter.dart';
 
 /// A definition for a single column in the [HierarchyDynamicTable].
 class DynamicTableColumn<T> {
-
   const DynamicTableColumn({
     required this.label,
     required this.width,
@@ -45,7 +44,10 @@ class DynamicTableColumn<T> {
               left: isLeftBorder
                   ? BorderSide(
                       color: theme.modeCondition(
-                          Colors.grey.shade200, Colors.white12,),)
+                        Colors.grey.shade200,
+                        Colors.white12,
+                      ),
+                    )
                   : BorderSide.none,
             ),
           ),
@@ -72,7 +74,6 @@ class DynamicTableColumn<T> {
 
 /// A definition for a group of columns (e.g., a Month with multiple sub-values).
 class DynamicTableColumnGroup<T> {
-
   const DynamicTableColumnGroup({
     required this.label,
     required this.columns,
@@ -102,11 +103,13 @@ class DynamicTableColumnGroup<T> {
       'december',
     ];
     return months
-        .map((m) => DynamicTableColumnGroup<T>(
-              label: m.tr(),
-              width: groupWidth,
-              columns: builder(m),
-            ),)
+        .map(
+          (m) => DynamicTableColumnGroup<T>(
+            label: m.tr(),
+            width: groupWidth,
+            columns: builder(m),
+          ),
+        )
         .toList();
   }
 }
@@ -114,9 +117,17 @@ class DynamicTableColumnGroup<T> {
 /// A premium, highly customizable table widget that supports hierarchical data,
 /// frozen columns, and flexible layouts.
 class HierarchyDynamicTable<T, ID> extends StatefulWidget {
-
   const HierarchyDynamicTable({
-    required this.tree, required this.parentVisibility, required this.onToggleExpansion, required this.idMapper, required this.levelMapper, required this.frozenHeaderLabel, required this.frozenWidth, required this.frozenCellBuilder, required this.columnGroups, super.key,
+    required this.tree,
+    required this.parentVisibility,
+    required this.onToggleExpansion,
+    required this.idMapper,
+    required this.levelMapper,
+    required this.frozenHeaderLabel,
+    required this.frozenWidth,
+    required this.frozenCellBuilder,
+    required this.columnGroups,
+    super.key,
     this.isSearching = false,
     this.onRowTap,
     this.scrollController,
@@ -140,8 +151,14 @@ class HierarchyDynamicTable<T, ID> extends StatefulWidget {
   // Frozen Column (Left)
   final String frozenHeaderLabel;
   final double frozenWidth;
-  final Widget Function(T item, int depth, bool hasChildren, bool isExpanded,
-      bool isLink, ThemeData theme,) frozenCellBuilder;
+  final Widget Function(
+    T item,
+    int depth,
+    bool hasChildren,
+    bool isExpanded,
+    bool isLink,
+    ThemeData theme,
+  ) frozenCellBuilder;
   final void Function(T)? onRowTap;
 
   // Scrollable Columns
@@ -294,13 +311,17 @@ class _HierarchyDynamicTableState<T, ID>
                   child: Text(
                     widget.frozenHeaderLabel,
                     style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 13,),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
                   ),
                 )
               : Text(
                   widget.frozenHeaderLabel,
                   style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 13,),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
                 ),
         ),
         // Rows
@@ -327,7 +348,12 @@ class _HierarchyDynamicTableState<T, ID>
   }
 
   Widget _buildFrozenRow(
-      T item, int depth, bool hasChildren, bool isExpanded, ThemeData theme,) {
+    T item,
+    int depth,
+    bool hasChildren,
+    bool isExpanded,
+    ThemeData theme,
+  ) {
     final isParent = widget.levelMapper(item) == 1;
 
     return InkWell(
@@ -345,16 +371,24 @@ class _HierarchyDynamicTableState<T, ID>
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-                color:
-                    theme.modeCondition(Colors.grey.shade200, Colors.white10),),
+              color: theme.modeCondition(Colors.grey.shade200, Colors.white10),
+            ),
           ),
           color: isParent
               ? theme.modeCondition(
-                  Colors.grey.shade50, Colors.white.withOpacity(0.02),)
+                  Colors.grey.shade50,
+                  Colors.white.withOpacity(0.02),
+                )
               : null,
         ),
-        child: widget.frozenCellBuilder(item, depth, hasChildren, isExpanded,
-            !hasChildren && widget.onRowTap != null, theme,),
+        child: widget.frozenCellBuilder(
+          item,
+          depth,
+          hasChildren,
+          isExpanded,
+          !hasChildren && widget.onRowTap != null,
+          theme,
+        ),
       ),
     );
   }
@@ -404,7 +438,8 @@ class _HierarchyDynamicTableState<T, ID>
       decoration: BoxDecoration(
         border: Border(
           left: BorderSide(
-              color: theme.modeCondition(Colors.grey.shade300, Colors.white12),),
+            color: theme.modeCondition(Colors.grey.shade300, Colors.white12),
+          ),
         ),
       ),
       child: Column(
@@ -414,9 +449,13 @@ class _HierarchyDynamicTableState<T, ID>
             alignment: Alignment.center,
             decoration: BoxDecoration(
               border: Border(
-                  bottom: BorderSide(
-                      color: theme.modeCondition(
-                          Colors.grey.shade300, Colors.white12,),),),
+                bottom: BorderSide(
+                  color: theme.modeCondition(
+                    Colors.grey.shade300,
+                    Colors.white12,
+                  ),
+                ),
+              ),
             ),
             child: Text(
               group.label,
@@ -444,7 +483,8 @@ class _HierarchyDynamicTableState<T, ID>
           left: col.isLeftBorder
               ? BorderSide(
                   color:
-                      theme.modeCondition(Colors.grey.shade200, Colors.white12),)
+                      theme.modeCondition(Colors.grey.shade200, Colors.white12),
+                )
               : BorderSide.none,
         ),
       ),
@@ -464,7 +504,8 @@ class _HierarchyDynamicTableState<T, ID>
         color: theme.modeCondition(Colors.grey.shade100, Colors.black12),
         border: Border(
           left: BorderSide(
-              color: theme.modeCondition(Colors.grey.shade300, Colors.white12),),
+            color: theme.modeCondition(Colors.grey.shade300, Colors.white12),
+          ),
         ),
       ),
       child: Text(
@@ -498,11 +539,14 @@ class _HierarchyDynamicTableState<T, ID>
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-              color: theme.modeCondition(Colors.grey.shade200, Colors.white10),),
+            color: theme.modeCondition(Colors.grey.shade200, Colors.white10),
+          ),
         ),
         color: isParent
             ? theme.modeCondition(
-                Colors.grey.shade50, Colors.white.withOpacity(0.02),)
+                Colors.grey.shade50,
+                Colors.white.withOpacity(0.02),
+              )
             : null,
       ),
       child: Row(
@@ -517,13 +561,17 @@ class _HierarchyDynamicTableState<T, ID>
   }
 
   Widget _buildRowGroup(
-      T item, DynamicTableColumnGroup<T> group, ThemeData theme,) {
+    T item,
+    DynamicTableColumnGroup<T> group,
+    ThemeData theme,
+  ) {
     return Container(
       width: group.width,
       decoration: BoxDecoration(
         border: Border(
           left: BorderSide(
-              color: theme.modeCondition(Colors.grey.shade300, Colors.white12),),
+            color: theme.modeCondition(Colors.grey.shade300, Colors.white12),
+          ),
         ),
       ),
       child: Row(
@@ -540,7 +588,8 @@ class _HierarchyDynamicTableState<T, ID>
       decoration: BoxDecoration(
         border: Border(
           left: BorderSide(
-              color: theme.modeCondition(Colors.grey.shade200, Colors.white12),),
+            color: theme.modeCondition(Colors.grey.shade200, Colors.white12),
+          ),
         ),
       ),
       child: widget.rowActionBuilder!(item, theme),
@@ -558,7 +607,10 @@ class _HierarchyDynamicTableState<T, ID>
   }
 
   Widget _buildFrozenActionRowNode(
-      TreeItem<T> node, int depth, ThemeData theme,) {
+    TreeItem<T> node,
+    int depth,
+    ThemeData theme,
+  ) {
     final item = node.item;
     final id = widget.idMapper(item);
     final isExpanded =
@@ -569,7 +621,8 @@ class _HierarchyDynamicTableState<T, ID>
         _buildFrozenActionRow(item, theme),
         if (isExpanded)
           ...node.children.map(
-              (child) => _buildFrozenActionRowNode(child, depth + 1, theme),),
+            (child) => _buildFrozenActionRowNode(child, depth + 1, theme),
+          ),
       ],
     );
   }
@@ -583,13 +636,17 @@ class _HierarchyDynamicTableState<T, ID>
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-              color: theme.modeCondition(Colors.grey.shade200, Colors.white10),),
+            color: theme.modeCondition(Colors.grey.shade200, Colors.white10),
+          ),
           left: BorderSide(
-              color: theme.modeCondition(Colors.grey.shade300, Colors.white12),),
+            color: theme.modeCondition(Colors.grey.shade300, Colors.white12),
+          ),
         ),
         color: isParent
             ? theme.modeCondition(
-                Colors.grey.shade50, Colors.white.withOpacity(0.02),)
+                Colors.grey.shade50,
+                Colors.white.withOpacity(0.02),
+              )
             : null,
       ),
       alignment: Alignment.center,

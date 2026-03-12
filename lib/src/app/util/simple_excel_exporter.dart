@@ -173,18 +173,17 @@ class SimpleExcelExporter<T> {
         );
       }
 
-      _sheet
-          .cell(
-            CellIndex.indexByColumnRow(
-              columnIndex: colIndex,
-              rowIndex: rowIndex,
-            ),
-          )
-          ..value = TextCellValue(value)
-          ..cellStyle = _infoStyle().copyWith(
-            horizontalAlignVal:
-                column.numeric ? HorizontalAlign.Right : HorizontalAlign.Left,
-          );
+      _sheet.cell(
+        CellIndex.indexByColumnRow(
+          columnIndex: colIndex,
+          rowIndex: rowIndex,
+        ),
+      )
+        ..value = TextCellValue(value)
+        ..cellStyle = _infoStyle().copyWith(
+          horizontalAlignVal:
+              column.numeric ? HorizontalAlign.Right : HorizontalAlign.Left,
+        );
 
       colIndex += flex;
     }
@@ -210,15 +209,14 @@ class SimpleExcelExporter<T> {
         );
       }
 
-      _sheet
-          .cell(
-            CellIndex.indexByColumnRow(
-              columnIndex: colIndex,
-              rowIndex: rowIndex,
-            ),
-          )
-          ..value = TextCellValue(footer.footer ?? '')
-          ..cellStyle = _footerStyle();
+      _sheet.cell(
+        CellIndex.indexByColumnRow(
+          columnIndex: colIndex,
+          rowIndex: rowIndex,
+        ),
+      )
+        ..value = TextCellValue(footer.footer ?? '')
+        ..cellStyle = _footerStyle();
       colIndex += span;
     }
   }
@@ -472,14 +470,13 @@ class SimpleExcelExporter<T> {
     if (legends == null || legends!.isEmpty) return;
 
     for (var i = 0; i < legends!.length; i++) {
-      _sheet
-          .cell(
-            CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: startRow + i),
-          )
-          ..value = TextCellValue(legends![i])
-          ..cellStyle = _infoStyle().copyWith(
-            horizontalAlignVal: HorizontalAlign.Left,
-          );
+      _sheet.cell(
+        CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: startRow + i),
+      )
+        ..value = TextCellValue(legends![i])
+        ..cellStyle = _infoStyle().copyWith(
+          horizontalAlignVal: HorizontalAlign.Left,
+        );
     }
   }
 }

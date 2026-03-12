@@ -19,7 +19,7 @@ Widget footerPdf({
   double paddingHorizontal = 36,
 }) {
   final now = DateTime.now();
-  final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
+  final primaryColor = PdfColor.fromInt(flavorConfig.color.toARGB32());
   return Stack(
     children: [
       Column(
@@ -45,7 +45,10 @@ Widget footerPdf({
                       ),
                       SizedBox(height: 2),
                       Text(
-                        'Only authorized personnel who have been specifically granted permission and have completed the necessary confidentiality training are allowed to print, handle, or view confidential documents.',
+                        'Only authorized personnel who have been specifically '
+                        'granted permission and have completed the necessary '
+                        'confidentiality training are allowed to print, '
+                        'handle, or view confidential documents.',
                         style: const TextStyle(
                           fontSize: 7,
                           color: PdfColors.blueGrey700,
@@ -116,7 +119,7 @@ Widget footerPdf({
         child: Container(
           height: 150,
           width: 4,
-          color: PdfColor.fromInt(flavorConfig.color.lighten(.45).value),
+          color: PdfColor.fromInt(flavorConfig.color.lighten(.45).toARGB32()),
         ),
       ),
       Positioned(
@@ -125,7 +128,7 @@ Widget footerPdf({
         child: Container(
           height: 38,
           width: 4,
-          color: PdfColor.fromInt(flavorConfig.color.lighten(.3).value),
+          color: PdfColor.fromInt(flavorConfig.color.lighten(.3).toARGB32()),
         ),
       ),
       Positioned(
@@ -321,7 +324,7 @@ Widget textGroup(String text) {
     text,
     style: TextStyle(
       fontWeight: FontWeight.bold,
-      color: PdfColor.fromInt(flavorConfig.color.value),
+      color: PdfColor.fromInt(flavorConfig.color.toARGB32()),
     ),
   );
 }
@@ -464,7 +467,7 @@ Widget tableFooter({
   required List<PColumnFooter> columns,
   EdgeInsetsGeometry? padding,
 }) {
-  final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
+  final primaryColor = PdfColor.fromInt(flavorConfig.color.toARGB32());
   const paddingRow = EdgeInsets.symmetric(horizontal: 6, vertical: 2);
   final footer = <Widget>[
     for (final column in columns)
@@ -514,7 +517,7 @@ Widget tableHeader({
   required List<PColumnHeader> columns,
   EdgeInsetsGeometry? padding,
 }) {
-  final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
+  final primaryColor = PdfColor.fromInt(flavorConfig.color.toARGB32());
   const paddingRow = EdgeInsets.symmetric(horizontal: 6, vertical: 2);
   final hasChildren = columns.any((e) => e.children?.isNotEmpty ?? false);
 
@@ -584,7 +587,7 @@ Table simpleTablePdfX<T>({
   required List<PGroup<T>> columns,
   List<String>? total,
 }) {
-  final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
+  final primaryColor = PdfColor.fromInt(flavorConfig.color.toARGB32());
   const paddingRow = EdgeInsets.symmetric(horizontal: 6, vertical: 2);
   final footer = <Widget>[
     for (final column in columns)

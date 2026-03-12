@@ -66,8 +66,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
 
   ThemeData get _theme => Theme.of(context);
   BorderSide get _borderSide => BorderSide(
-        color: _theme.dividerColor.withValues(alpha: 1.0),
-        width: 1.0,
+        color: _theme.dividerColor.withValues(alpha: 1),
       );
 
   BoxDecoration get _headerDecoration => BoxDecoration(
@@ -477,7 +476,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       );
     });
 
-    int nextColIndex = entries.length;
+    var nextColIndex = entries.length;
     if (!isPinned && widget.onSelectChanged != null) {
       columnWidths[nextColIndex] = const FixedColumnWidth(80);
       headers.add(

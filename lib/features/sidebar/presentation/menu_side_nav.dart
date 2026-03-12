@@ -76,57 +76,59 @@ class _MenuSideNavState extends State<MenuSideNav> {
             );
 
             return Material(
-                  color: theme.cardColor,
-                  shadowColor: Colors.black,
-                  elevation: collapsed && _hovered ? 8 : 0,
-                  child: AnimatedContainer(
-                    width: widget.noCollapse
-                        ? sideNavWidth
-                        : _conditionCollapsed<double>(
-                            collapsed,
-                            collapsed: sideNavWidthCollapsed,
-                            unCollapsed: sideNavWidth,
-                          ),
-                    duration: const Duration(milliseconds: 200),
-                    child: SafeArea(
-                      child: Column(
-                        children: [
-                          const Gap(12),
-                          ToggleSideNav(
-                            logoNamedUrl: widget.logoNamedUrl,
-                            logoUrl: widget.logoUrl,
-                            noCollapse: widget.noCollapse,
-                            isCollapsed: !widget.noCollapse && _conditionCollapsed<bool>(
+              color: theme.cardColor,
+              shadowColor: Colors.black,
+              elevation: collapsed && _hovered ? 8 : 0,
+              child: AnimatedContainer(
+                width: widget.noCollapse
+                    ? sideNavWidth
+                    : _conditionCollapsed<double>(
+                        collapsed,
+                        collapsed: sideNavWidthCollapsed,
+                        unCollapsed: sideNavWidth,
+                      ),
+                duration: const Duration(milliseconds: 200),
+                child: SafeArea(
+                  child: Column(
+                    children: [
+                      const Gap(12),
+                      ToggleSideNav(
+                        logoNamedUrl: widget.logoNamedUrl,
+                        logoUrl: widget.logoUrl,
+                        noCollapse: widget.noCollapse,
+                        isCollapsed: !widget.noCollapse &&
+                            _conditionCollapsed<bool>(
+                              collapsed,
+                              collapsed: true,
+                              unCollapsed: false,
+                            ),
+                      ),
+                      const Gap(12),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: menuFiltered.length,
+                          itemBuilder: (context, index) {
+                            final menu1 = menuFiltered[index];
+                            return MenuLevel1(
+                              bypassPermission: widget.bypassPermission,
+                              accountPermissions: widget.accountPermission,
+                              menu1: menu1,
+                              index: index,
+                              isCollapsed: !widget.noCollapse &&
+                                  _conditionCollapsed<bool>(
                                     collapsed,
                                     collapsed: true,
                                     unCollapsed: false,
                                   ),
-                          ),
-                          const Gap(12),
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: menuFiltered.length,
-                              itemBuilder: (context, index) {
-                                final menu1 = menuFiltered[index];
-                                return MenuLevel1(
-                                  bypassPermission: widget.bypassPermission,
-                                  accountPermissions: widget.accountPermission,
-                                  menu1: menu1,
-                                  index: index,
-                                  isCollapsed: !widget.noCollapse && _conditionCollapsed<bool>(
-                                          collapsed,
-                                          collapsed: true,
-                                          unCollapsed: false,
-                                        ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
+                            );
+                          },
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                );
+                ),
+              ),
+            );
           },
         );
       },
