@@ -174,3 +174,242 @@ Widget dataTableBackendWithPinnedColumns(BuildContext context) {
     ),
   );
 }
+
+@widgetbook.UseCase(
+  name: 'Voucher Payment List',
+  type: DataTableBackend,
+)
+Widget dataTableBackendVoucherPayment(BuildContext context) {
+  return Scaffold(
+    body: Padding(
+      padding: const EdgeInsets.all(16),
+      child: DataTableBackend<_FakePayment>(
+        status: Status.loaded,
+        pageOptions: PageOptions<_FakePayment>.empty(
+          data: [
+            _FakePayment(
+              transactionNo: 'TRX001',
+              transactionDate: DateTime.now(),
+              supplierName: 'Supplier A',
+              orderId: 'ORD-123',
+              registerId: 'REG-01',
+              realizationNo: 'REAL-01',
+              total: 1500000,
+              invoiceNo: 'INV-001',
+              receiptNo: 'RCP-001',
+              paymentId: 'PAY-001',
+              paymentDate: DateTime.now(),
+              paymentTotal: 1500000,
+              paymentRemaining: 0,
+              period: '2024-03',
+            ),
+            _FakePayment(
+              transactionNo: 'TRX002',
+              transactionDate: DateTime.now(),
+              supplierName: 'Supplier B',
+              orderId: 'ORD-124',
+              registerId: 'REG-02',
+              realizationNo: null,
+              total: 2000000,
+              invoiceNo: null,
+              receiptNo: null,
+              paymentId: null,
+              paymentDate: null,
+              paymentTotal: 0,
+              paymentRemaining: 2000000,
+              period: '2024-03',
+            ),
+          ],
+        ),
+        columns: [
+          DTColumn<_FakePayment>(
+            widthFlex: 8,
+            head: const DTHead(
+              backendKeySort: 'transaction_no',
+              label: 'Transaction No',
+            ),
+            body: (payment) => DataCell(Text(payment.transactionNo).canCopy()),
+          ),
+          DTColumn<_FakePayment>(
+            widthFlex: 6,
+            head: const DTHead(
+              label: 'Transaction Date',
+              backendKeySort: 'transaction_date',
+            ),
+            body: (payment) => DataCell(Text(payment.transactionDate.yMMMd)),
+          ),
+          DTColumn<_FakePayment>(
+            widthFlex: 4,
+            head: const DTHead(
+              label: 'Supplier',
+              backendKeySort: 'supplier',
+            ),
+            body: (payment) => DataCell(Text(payment.supplierName)),
+          ),
+          DTColumn<_FakePayment>(
+            widthFlex: 6,
+            head: const DTHead(
+              label: 'Order ID',
+              backendKeySort: 'order_id',
+            ),
+            body: (payment) => DataCell(Text(payment.orderId).canCopy()),
+          ),
+          DTColumn<_FakePayment>(
+            widthFlex: 6,
+            head: const DTHead(
+              label: 'Register ID',
+              backendKeySort: 'register_id',
+            ),
+            body: (payment) =>
+                DataCell(Text(payment.registerId ?? '').canCopy()),
+          ),
+          DTColumn<_FakePayment>(
+            widthFlex: 6,
+            head: const DTHead(
+              label: 'Realization No',
+              backendKeySort: 'realization_no',
+            ),
+            body: (payment) => DataCell(Text(payment.realizationNo ?? '')),
+          ),
+          DTColumn<_FakePayment>(
+            widthFlex: 4,
+            head: const DTHead(
+              label: 'Total',
+              backendKeySort: 'total',
+            ),
+            body: (payment) => DataCell(Text(payment.total.format())),
+          ),
+          DTColumn<_FakePayment>(
+            widthFlex: 6,
+            head: const DTHead(
+              label: 'Invoice No',
+              backendKeySort: 'invoice_no',
+            ),
+            body: (payment) =>
+                DataCell(Text(payment.invoiceNo ?? '-').canCopy()),
+          ),
+          DTColumn<_FakePayment>(
+            widthFlex: 4,
+            head: const DTHead(
+              label: 'Receipt No',
+              backendKeySort: 'receipt_no',
+            ),
+            body: (payment) => DataCell(Text(payment.receiptNo ?? '')),
+          ),
+          DTColumn<_FakePayment>(
+            widthFlex: 6,
+            head: const DTHead(
+              label: 'Payment No',
+              backendKeySort: 'payment_id',
+            ),
+            body: (payment) =>
+                DataCell(Text(payment.paymentId ?? '-').canCopy()),
+          ),
+          DTColumn<_FakePayment>(
+            widthFlex: 4,
+            head: const DTHead(
+              label: 'Payment Date',
+              backendKeySort: 'payment_date',
+            ),
+            body: (payment) =>
+                DataCell(Text(payment.paymentDate?.yMMMd ?? '-')),
+          ),
+          DTColumn<_FakePayment>(
+            widthFlex: 4,
+            head: const DTHead(
+              label: 'Payment Total',
+              backendKeySort: 'payment_total',
+            ),
+            body: (payment) => DataCell(Text(payment.paymentTotal.format())),
+          ),
+          DTColumn<_FakePayment>(
+            widthFlex: 5,
+            head: const DTHead(
+              label: 'Payment Remaining',
+              backendKeySort: 'payment_remaining',
+            ),
+            body: (payment) =>
+                DataCell(Text(payment.paymentRemaining.format())),
+          ),
+          DTColumn<_FakePayment>(
+            widthFlex: 4,
+            head: const DTHead(
+              label: 'Period',
+              backendKeySort: 'period',
+            ),
+            body: (payment) => DataCell(Text(payment.period)),
+          ),
+          DTColumn<_FakePayment>(
+            widthFlex: 10,
+            head: const DTHead(
+              label: 'Actions',
+              backendKeySort: null,
+            ),
+            body: (payment) => DataCell(
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.remove_red_eye_outlined),
+                      tooltip: 'View Voucher'),
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.book_outlined),
+                      tooltip: 'View Journal'),
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.payment_outlined),
+                      tooltip: 'View Payment'),
+                  if (payment.paymentId == null)
+                    IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.add_card_outlined),
+                        tooltip: 'Create Payment'),
+                ],
+              ),
+            ),
+          ),
+        ],
+        actionRight: (refreshButton) => [
+          refreshButton,
+        ],
+        onRefresh: () {},
+        onChanged: (pageOptions) {},
+      ),
+    ),
+  );
+}
+
+class _FakePayment {
+  _FakePayment({
+    required this.transactionNo,
+    required this.transactionDate,
+    required this.supplierName,
+    required this.orderId,
+    required this.registerId,
+    required this.realizationNo,
+    required this.total,
+    required this.invoiceNo,
+    required this.receiptNo,
+    required this.paymentId,
+    required this.paymentDate,
+    required this.paymentTotal,
+    required this.paymentRemaining,
+    required this.period,
+  });
+
+  final String transactionNo;
+  final DateTime transactionDate;
+  final String supplierName;
+  final String orderId;
+  final String? registerId;
+  final String? realizationNo;
+  final double total;
+  final String? invoiceNo;
+  final String? receiptNo;
+  final String? paymentId;
+  final DateTime? paymentDate;
+  final double paymentTotal;
+  final double paymentRemaining;
+  final String period;
+}

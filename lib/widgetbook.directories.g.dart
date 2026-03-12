@@ -141,6 +141,12 @@ final directories = <_widgetbook.WidgetbookNode>[
                             .dataTableBackendDefault,
                   ),
                   _widgetbook.WidgetbookUseCase(
+                    name: 'Voucher Payment List',
+                    builder:
+                        _flx_core_flutter_features_data_table_set_backend_presentation_data_table_set_backend_widgetbook
+                            .dataTableBackendVoucherPayment,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
                     name: 'With Action Multiple',
                     builder:
                         _flx_core_flutter_features_data_table_set_backend_presentation_data_table_set_backend_widgetbook
