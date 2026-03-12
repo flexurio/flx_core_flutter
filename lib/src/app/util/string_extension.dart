@@ -75,7 +75,11 @@ extension TextExtension on Text {
               onTap: () {
                 if (data != null) {
                   FlutterClipboard.copy(data!).then(
-                    (value) => Toast(context).notify('Copied to clipboard'),
+                    (value) {
+                      if (context.mounted) {
+                        Toast(context).notify('Copied to clipboard');
+                      }
+                    },
                   );
                 }
               },

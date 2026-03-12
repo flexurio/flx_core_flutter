@@ -173,14 +173,18 @@ class SimpleExcelExporter<T> {
         );
       }
 
-      final cell = _sheet.cell(
-        CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex),
-      );
-      cell.value = TextCellValue(value);
-      cell.cellStyle = _infoStyle().copyWith(
-        horizontalAlignVal:
-            column.numeric ? HorizontalAlign.Right : HorizontalAlign.Left,
-      );
+      _sheet
+          .cell(
+            CellIndex.indexByColumnRow(
+              columnIndex: colIndex,
+              rowIndex: rowIndex,
+            ),
+          )
+          ..value = TextCellValue(value)
+          ..cellStyle = _infoStyle().copyWith(
+            horizontalAlignVal:
+                column.numeric ? HorizontalAlign.Right : HorizontalAlign.Left,
+          );
 
       colIndex += flex;
     }
@@ -206,11 +210,15 @@ class SimpleExcelExporter<T> {
         );
       }
 
-      final cell = _sheet.cell(
-        CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex),
-      );
-      cell.value = TextCellValue(footer.footer ?? '');
-      cell.cellStyle = _footerStyle();
+      _sheet
+          .cell(
+            CellIndex.indexByColumnRow(
+              columnIndex: colIndex,
+              rowIndex: rowIndex,
+            ),
+          )
+          ..value = TextCellValue(footer.footer ?? '')
+          ..cellStyle = _footerStyle();
       colIndex += span;
     }
   }
@@ -348,9 +356,8 @@ class SimpleExcelExporter<T> {
         );
       }
 
-      final cell = _sheet.cell(
-        CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex),
-      );
+      final indexValue =
+          CellIndex.indexByColumnRow(columnIndex: colIndex, rowIndex: rowIndex);
 
       // Assign numeric value properly
       if (column.numeric) {
@@ -363,23 +370,26 @@ class SimpleExcelExporter<T> {
           final formatCode =
               (decimalPlaces == 0) ? '#,##0' : "#,##0.${'0' * decimalPlaces}";
 
-          cell.value = DoubleCellValue(numValue.toDouble());
-          cell.cellStyle = style.copyWith(
-            horizontalAlignVal: HorizontalAlign.Right,
-            numberFormat: NumFormat.custom(formatCode: formatCode),
-          );
+          _sheet.cell(indexValue)
+            ..value = DoubleCellValue(numValue.toDouble())
+            ..cellStyle = style.copyWith(
+              horizontalAlignVal: HorizontalAlign.Right,
+              numberFormat: NumFormat.custom(formatCode: formatCode),
+            );
         } else {
           // Fallback untuk nilai numerik yang tak bisa diparse
-          cell.value = TextCellValue(rawValue);
-          cell.cellStyle = style.copyWith(
-            horizontalAlignVal: HorizontalAlign.Right,
-          );
+          _sheet.cell(indexValue)
+            ..value = TextCellValue(rawValue)
+            ..cellStyle = style.copyWith(
+              horizontalAlignVal: HorizontalAlign.Right,
+            );
         }
       } else {
-        cell.value = TextCellValue(rawValue);
-        cell.cellStyle = style.copyWith(
-          horizontalAlignVal: HorizontalAlign.Left,
-        );
+        _sheet.cell(indexValue)
+          ..value = TextCellValue(rawValue)
+          ..cellStyle = style.copyWith(
+            horizontalAlignVal: HorizontalAlign.Left,
+          );
       }
 
       colIndex += flex;
@@ -462,13 +472,14 @@ class SimpleExcelExporter<T> {
     if (legends == null || legends!.isEmpty) return;
 
     for (var i = 0; i < legends!.length; i++) {
-      final cell = _sheet.cell(
-        CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: startRow + i),
-      );
-      cell.value = TextCellValue(legends![i]);
-      cell.cellStyle = _infoStyle().copyWith(
-        horizontalAlignVal: HorizontalAlign.Left,
-      );
+      _sheet
+          .cell(
+            CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: startRow + i),
+          )
+          ..value = TextCellValue(legends![i])
+          ..cellStyle = _infoStyle().copyWith(
+            horizontalAlignVal: HorizontalAlign.Left,
+          );
     }
   }
 }
