@@ -156,8 +156,8 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
         final usableWidth =
             (screenWidth - (hasMulti ? checkboxWidth : 0.0) - paddingWidth)
                 .clamp(200.0, double.infinity);
-        final rawFlexUnit = totalFlex > 0 ? (usableWidth / totalFlex) : 100.0;
-        final flexUnit = rawFlexUnit.clamp(60.0, 100.0);
+        final rawFlexUnit = totalFlex > 0 ? (usableWidth / totalFlex) : 48.0;
+        final flexUnit = rawFlexUnit.clamp(28.0, 48.0);
 
         // Hitung total lebar
         final baseWidth = widget.columns.fold<double>(
