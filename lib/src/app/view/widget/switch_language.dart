@@ -13,7 +13,10 @@ class SwitchLanguage extends StatefulWidget {
     String languageCode,
   ) async {
     final locale = Locale(languageCode);
-    await context.setLocale(locale);
+    final easy = EasyLocalization.of(context);
+    if (easy != null) {
+      await easy.setLocale(locale);
+    }
 
     final settings = await Hive.openBox<String>('settings');
     await settings.put('language', languageCode);
@@ -21,13 +24,15 @@ class SwitchLanguage extends StatefulWidget {
   }
 
   static Future<void> toggleLanguage(BuildContext context) async {
-    final currentLocale = context.locale;
+    final easy = EasyLocalization.of(context);
+    final currentLocale = easy?.locale ?? const Locale('en');
     final newLanguageCode = currentLocale.languageCode == 'en' ? 'id' : 'en';
     await switchLanguage(context, newLanguageCode);
   }
 
   static String getCurrentLanguage(BuildContext context) {
-    return context.locale.languageCode;
+    final easy = EasyLocalization.of(context);
+    return easy?.locale.languageCode ?? 'en';
   }
 
   @override
@@ -53,10 +58,15 @@ class _SwitchLanguageState extends State<SwitchLanguage> {
     }();
   }
 
-  void onChanged(Locale value) {
+  Future<void> onChanged(Locale value) async {
     locale = value;
-    context.setLocale(locale);
-    settings.put('language', locale.languageCode);
+    final easy = EasyLocalization.of(context);
+    if (easy != null) {
+      await easy.setLocale(locale);
+    }
+    // Ensure settings is initialized if initState hasn't finished (highly unlikely but safe)
+    final box = await Hive.openBox<String>('settings');
+    await box.put('language', locale.languageCode);
     setState(() {});
   }
 
@@ -70,10 +80,12 @@ class _SwitchLanguageState extends State<SwitchLanguage> {
 
   @override
   Widget build(BuildContext context) {
+    final easy = EasyLocalization.of(context);
+    final currentLocale = easy?.locale ?? locale;
     return Row(
       children: [
         _Language(
-          state: context.locale,
+          state: currentLocale,
           locale: const Locale('en'),
           onTap: onChanged,
         ),
@@ -84,7 +96,7 @@ class _SwitchLanguageState extends State<SwitchLanguage> {
           color: Colors.blueGrey.shade400,
         ),
         _Language(
-          state: context.locale,
+          state: currentLocale,
           locale: const Locale('id'),
           onTap: onChanged,
         ),
