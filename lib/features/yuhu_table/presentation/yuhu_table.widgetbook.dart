@@ -12,6 +12,11 @@ Widget yuhuTableManyColumnsUseCase(BuildContext context) {
   return const YuhuTableManyColumnsExample();
 }
 
+@UseCase(name: 'Purchase Request', type: YuhuTable)
+Widget yuhuTablePurchaseRequestUseCase(BuildContext context) {
+  return const YuhuTablePurchaseRequestExample();
+}
+
 class Product {
   Product({
     required this.name,
@@ -269,6 +274,158 @@ class YuhuTableManyColumnsExample extends StatelessWidget {
                     ? Colors.green.withAlpha(26)
                     : Colors.red.withAlpha(26),
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PurchaseRequestDetail {
+  PurchaseRequestDetail({
+    required this.itemName,
+    required this.quantity,
+    required this.unitId,
+    required this.unitPrice,
+    required this.subtotal,
+    this.productName,
+    this.batchNo,
+    this.designCode,
+  });
+
+  final String itemName;
+  final double quantity;
+  final String unitId;
+  final double unitPrice;
+  final double subtotal;
+  final String? productName;
+  final String? batchNo;
+  final String? designCode;
+}
+
+class YuhuTablePurchaseRequestExample extends StatefulWidget {
+  const YuhuTablePurchaseRequestExample({super.key});
+
+  @override
+  State<YuhuTablePurchaseRequestExample> createState() =>
+      _YuhuTablePurchaseRequestExampleState();
+}
+
+class _YuhuTablePurchaseRequestExampleState
+    extends State<YuhuTablePurchaseRequestExample> {
+  bool isProduct = true;
+  List<PurchaseRequestDetail> data = [
+    PurchaseRequestDetail(
+      itemName: 'Cotton Fabric',
+      quantity: 100,
+      unitId: 'Meters',
+      unitPrice: 15000,
+      subtotal: 1500000,
+      productName: 'T-Shirt White',
+      batchNo: 'BATCH-001',
+      designCode: 'DESC-101',
+    ),
+    PurchaseRequestDetail(
+      itemName: 'Polyester Thread',
+      quantity: 50,
+      unitId: 'Rolls',
+      unitPrice: 2000,
+      subtotal: 100000,
+      productName: 'T-Shirt Black',
+      batchNo: 'BATCH-002',
+      designCode: 'DESC-102',
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Purchase Request Demo'),
+        actions: [
+          Row(
+            children: [
+              const Text('Is Product'),
+              Switch(
+                value: isProduct,
+                onChanged: (value) => setState(() => isProduct = value),
+              ),
+            ],
+          ),
+          const SizedBox(width: 16),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: YuhuTable<PurchaseRequestDetail>(
+          rowHeight: 80,
+          data: data,
+          columns: [
+            TableColumn(
+              width: 90,
+              title: 'Type',
+              builder: (detail, _) {
+                return Text(
+                  isProduct ? 'Product' : 'Material',
+                );
+              },
+            ),
+            TableColumn(
+              title: 'Name',
+              builder: (detail, _) {
+                return Text(
+                  isProduct ? detail.productName ?? '-' : detail.itemName,
+                );
+              },
+            ),
+            isProduct
+                ? TableColumn(
+                    title: 'Batch No',
+                    builder: (detail, _) => Text(detail.batchNo ?? '-'),
+                  )
+                : TableColumn(
+                    title: 'Design Code',
+                    builder: (detail, _) => Text(detail.designCode ?? '-'),
+                  ),
+            TableColumn(
+              title: 'Quantity',
+              alignment: Alignment.centerRight,
+              builder: (detail, index) {
+                return Text('${detail.quantity}');
+              },
+            ),
+            TableColumn(
+              title: 'Unit',
+              width: 80,
+              builder: (detail, _) {
+                return Text(detail.unitId);
+              },
+            ),
+            TableColumn(
+              width: 150,
+              title: 'Unit Price',
+              builder: (detail, index) {
+                return Text(detail.unitPrice.toString());
+              },
+            ),
+            TableColumn(
+              width: 150,
+              title: 'Sub Total',
+              alignment: Alignment.centerRight,
+              builder: (detail, index) {
+                return Text(detail.subtotal.toString());
+              },
+            ),
+            TableColumn(
+              title: 'Action',
+              alignment: Alignment.centerRight,
+              builder: (detail, index) {
+                return IconButton(
+                  icon: const Icon(Icons.delete_outline, color: Colors.red),
+                  onPressed: () {},
+                );
+              },
             ),
           ],
         ),

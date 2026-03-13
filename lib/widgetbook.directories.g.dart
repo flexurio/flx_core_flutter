@@ -248,6 +248,12 @@ final directories = <_widgetbook.WidgetbookNode>[
                         _flx_core_flutter_features_yuhu_table_presentation_yuhu_table_widgetbook
                             .yuhuTableManyColumnsUseCase,
                   ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Purchase Request',
+                    builder:
+                        _flx_core_flutter_features_yuhu_table_presentation_yuhu_table_widgetbook
+                            .yuhuTablePurchaseRequestUseCase,
+                  ),
                 ],
               )
             ],
