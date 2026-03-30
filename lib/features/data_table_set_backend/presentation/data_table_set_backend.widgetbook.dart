@@ -380,6 +380,174 @@ Widget dataTableBackendVoucherPayment(BuildContext context) {
   );
 }
 
+@widgetbook.UseCase(
+  name: 'Product Return Check',
+  type: DataTableBackend,
+)
+Widget dataTableBackendProductReturnCheck(BuildContext context) {
+  return Scaffold(
+    body: Padding(
+      padding: const EdgeInsets.all(16),
+      child: DataTableBackend<_FakeProductReturnCheck>(
+        freezeFirstColumn: true,
+        freezeLastColumn: true,
+        status: Status.loaded,
+        onChanged: (pageOptions) {},
+        onRefresh: () {},
+        actionRight: (refreshButton) => [
+          refreshButton,
+          const SizedBox(width: 8),
+          ElevatedButton.icon(
+            onPressed: () {},
+            icon: const Icon(Icons.add),
+            label: const Text('Create Check'),
+          ),
+        ],
+        pageOptions: PageOptions<_FakeProductReturnCheck>.empty(
+          data: [
+            _FakeProductReturnCheck(
+              id: 'PRC-001',
+              referenceNo: 'REF-2024-001',
+              status: const _FakeColorType('Pending', Colors.orange),
+              qaStatus: const _FakeColorType('Checking', Colors.blue),
+              productId: 'PROD-01',
+              productName: 'Amoxicillin 500mg',
+              batchNo: 'BATCH-X1',
+              quantity: 100,
+              unit: 'Box',
+              qaCheckedAt: DateTime.now(),
+              deliveryOrderId: 'DO-001',
+            ),
+            _FakeProductReturnCheck(
+              id: 'PRC-002',
+              referenceNo: 'REF-2024-002',
+              status: const _FakeColorType('Completed', Colors.green),
+              qaStatus: const _FakeColorType('Released', Colors.teal),
+              productId: 'PROD-02',
+              productName: 'Paracetamol 500mg',
+              batchNo: 'BATCH-Y2',
+              quantity: 50,
+              unit: 'Strip',
+              qaCheckedAt: DateTime.now(),
+              deliveryOrderId: 'DO-002',
+            ),
+          ],
+        ),
+        columns: [
+          DTColumn<_FakeProductReturnCheck>(
+            widthFlex: 8,
+            head: const DTHead(
+              label: 'Product Return ID',
+              backendKeySort: 'product_return_id.id',
+            ),
+            body: (item) => DataCell(Text(item.id).canCopy()),
+          ),
+          DTColumn<_FakeProductReturnCheck>(
+            widthFlex: 8,
+            head: const DTHead(
+              label: 'Reference No',
+              backendKeySort: 'product_return_id.reference_no',
+            ),
+            body: (item) => DataCell(Text(item.referenceNo)),
+          ),
+          DTColumn<_FakeProductReturnCheck>(
+            widthFlex: 8,
+            head: const DTHead(
+              label: 'Status',
+              backendKeySort: null,
+            ),
+            body: (item) => DataCell(ChipType(item.status)),
+          ),
+          DTColumn<_FakeProductReturnCheck>(
+            widthFlex: 8,
+            head: const DTHead(
+              label: 'QA Check Status',
+              backendKeySort: null,
+            ),
+            body: (item) => DataCell(ChipType(item.qaStatus)),
+          ),
+          DTColumn<_FakeProductReturnCheck>(
+            widthFlex: 8,
+            head: const DTHead(
+              label: 'Product ID',
+              backendKeySort: 'product_id.id',
+            ),
+            body: (item) => DataCell(Text(item.productId)),
+          ),
+          DTColumn<_FakeProductReturnCheck>(
+            widthFlex: 8,
+            head: const DTHead(
+              label: 'Product Name',
+              backendKeySort: 'product_id.name',
+            ),
+            body: (item) => DataCell(Text(item.productName)),
+          ),
+          DTColumn<_FakeProductReturnCheck>(
+            widthFlex: 8,
+            head: const DTHead(
+              label: 'Batch No',
+              backendKeySort: 'batch.id',
+            ),
+            body: (item) => DataCell(Text(item.batchNo)),
+          ),
+          DTColumn<_FakeProductReturnCheck>(
+            widthFlex: 3,
+            head: const DTHead(
+              numeric: true,
+              label: 'Quantity',
+              backendKeySort: 'quantity',
+            ),
+            body: (item) => DataCell(Text(item.quantity.toString())),
+          ),
+          DTColumn<_FakeProductReturnCheck>(
+            widthFlex: 3,
+            head: const DTHead(
+              label: 'Unit',
+              backendKeySort: 'unit_id.id',
+            ),
+            body: (item) => DataCell(Text(item.unit)),
+          ),
+          DTColumn<_FakeProductReturnCheck>(
+            widthFlex: 10,
+            head: const DTHead(
+              numeric: true,
+              label: 'QA Checked At',
+              backendKeySort: 'quality_assurance_check_date',
+            ),
+            body: (item) => DataCell(Text(item.qaCheckedAt.yMMMdHm)),
+          ),
+          DTColumn<_FakeProductReturnCheck>(
+            widthFlex: 8,
+            head: const DTHead(
+              label: 'Delivery Order ID',
+              backendKeySort: 'delivery_order.id',
+            ),
+            body: (item) => DataCell(Text(item.deliveryOrderId)),
+          ),
+          DTColumn<_FakeProductReturnCheck>(
+            widthFlex: 8,
+            head: const DTHead(
+              label: 'Action',
+              backendKeySort: null,
+            ),
+            body: (item) => DataCell(
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.download),
+                    tooltip: 'Export',
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 class _FakePayment {
   _FakePayment({
     required this.transactionNo,
@@ -412,4 +580,40 @@ class _FakePayment {
   final double paymentTotal;
   final double paymentRemaining;
   final String period;
+}
+
+class _FakeProductReturnCheck {
+  _FakeProductReturnCheck({
+    required this.id,
+    required this.referenceNo,
+    required this.status,
+    required this.qaStatus,
+    required this.productId,
+    required this.productName,
+    required this.batchNo,
+    required this.quantity,
+    required this.unit,
+    required this.qaCheckedAt,
+    required this.deliveryOrderId,
+  });
+
+  final String id;
+  final String referenceNo;
+  final ColorType status;
+  final ColorType qaStatus;
+  final String productId;
+  final String productName;
+  final String batchNo;
+  final double quantity;
+  final String unit;
+  final DateTime qaCheckedAt;
+  final String deliveryOrderId;
+}
+
+class _FakeColorType implements ColorType {
+  const _FakeColorType(this.label, this.color);
+  @override
+  final String label;
+  @override
+  final Color color;
 }
