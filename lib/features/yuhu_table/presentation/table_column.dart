@@ -10,12 +10,14 @@ class TableColumn<T> {
     this.sortNum,
     this.alignment = Alignment.centerLeft,
     this.width,
+    this.flex,
     this.backgroundColor,
   });
 
   final String title;
   final Alignment alignment;
   final double? width;
+  final int? flex;
   final String Function(T)? sortString;
   final num Function(T)? sortNum;
   final Widget Function(T, int) builder;
