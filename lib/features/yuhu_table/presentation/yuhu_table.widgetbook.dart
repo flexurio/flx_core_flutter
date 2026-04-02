@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
+import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 
 @UseCase(name: 'Default', type: YuhuTable)
@@ -15,6 +16,60 @@ Widget yuhuTableManyColumnsUseCase(BuildContext context) {
 @UseCase(name: 'Purchase Request', type: YuhuTable)
 Widget yuhuTablePurchaseRequestUseCase(BuildContext context) {
   return const YuhuTablePurchaseRequestExample();
+}
+
+@UseCase(name: 'Interactivity Options', type: YuhuTable)
+Widget yuhuTableInteractivityOptionsUseCase(BuildContext context) {
+  return Scaffold(
+    body: Padding(
+      padding: const EdgeInsets.all(16),
+      child: YuhuTable<Product>(
+        data: [
+          Product(
+            name: 'Apple iPhone 14',
+            category: 'Smartphone',
+            brand: 'Apple',
+            quantity: 15,
+            price: 999.99,
+            inStock: true,
+            location: 'Warehouse A',
+          ),
+          Product(
+            name: 'Galaxy S23',
+            category: 'Smartphone',
+            brand: 'Samsung',
+            quantity: 25,
+            price: 899.50,
+            inStock: true,
+            location: 'Warehouse B',
+          ),
+        ],
+        columns: [
+          TableColumn<Product>(
+            title: 'Name',
+            width: 180,
+            builder: (item, _) => Text(item.name),
+            sortString: (item) => item.name,
+          ),
+          TableColumn<Product>(
+            title: 'Category',
+            width: 120,
+            builder: (item, _) => Text(item.category),
+            sortString: (item) => item.category,
+          ),
+          TableColumn<Product>(
+            title: 'Price',
+            width: 100,
+            alignment: Alignment.centerRight,
+            builder: (item, _) => Text('\$${item.price.toStringAsFixed(2)}'),
+            sortNum: (item) => item.price,
+          ),
+        ],
+        disableModify:
+            context.knobs.boolean(label: 'Disable Modify', initialValue: false),
+      ),
+    ),
+  );
 }
 
 class Product {

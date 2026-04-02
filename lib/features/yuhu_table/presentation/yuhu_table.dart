@@ -29,6 +29,7 @@ class YuhuTable<T> extends StatefulWidget {
     this.freezeFirstColumn = false,
     this.freezeLastColumn = false,
     this.expand = true,
+    this.disableModify = false,
   });
 
   final List<T> data;
@@ -45,6 +46,7 @@ class YuhuTable<T> extends StatefulWidget {
   final bool freezeFirstColumn;
   final bool freezeLastColumn;
   final bool expand;
+  final bool disableModify;
 
   @override
   State<YuhuTable<T>> createState() => _YuhuTableState<T>();
@@ -252,11 +254,12 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
           pinnedPosition: _controller.pinnedLeft.contains(index)
               ? TablePinPosition.left
               : (_controller.pinnedRight.contains(index)
-                  ? TablePinPosition.right
+                   ? TablePinPosition.right
                   : TablePinPosition.none),
           currentWidth:
               _controller.columnWidths[index] ?? column.width ?? 100.0,
           headerDecoration: _style.headerDecoration,
+          disableModify: widget.disableModify,
           onPinnedPositionChanged: (p) => setState(() {
             _controller.pinnedLeft.remove(index);
             _controller.pinnedRight.remove(index);
@@ -272,25 +275,27 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
           onResizing: (delta) {
             setState(() {
               final currentWidth =
-                  _controller.columnWidths[index] ?? column.width ?? 100.0;
+                   _controller.columnWidths[index] ?? column.width ?? 100.0;
               _controller.columnWidths[index] =
                   (currentWidth + delta).clamp(50.0, 1000.0);
             });
           },
-          onTap: () {
-            if (column.sortNum == null && column.sortString == null) {
-              widget.onSort?.call(index, !_controller.ascending);
-            } else {
-              setState(() {
-                if (_controller.sortIndex != index) {
-                  _controller.sortIndex = index;
-                  _controller.ascending = true;
-                } else {
-                  _controller.ascending = !_controller.ascending;
-                }
-              });
-            }
-          },
+          onTap: widget.disableModify
+              ? null
+              : () {
+                  if (column.sortNum == null && column.sortString == null) {
+                    widget.onSort?.call(index, !_controller.ascending);
+                  } else {
+                    setState(() {
+                      if (_controller.sortIndex != index) {
+                        _controller.sortIndex = index;
+                        _controller.ascending = true;
+                      } else {
+                        _controller.ascending = !_controller.ascending;
+                      }
+                    });
+                  }
+                },
           onDrop: (fromIndex) {
             setState(() {
               if (_controller.pinnedLeft.contains(index)) {

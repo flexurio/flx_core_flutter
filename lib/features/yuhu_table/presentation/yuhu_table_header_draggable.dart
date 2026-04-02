@@ -16,6 +16,7 @@ class YuhuTableDraggableHeader<T> extends StatelessWidget {
     required this.onResizing,
     required this.onTap,
     required this.onDrop,
+    this.disableModify = false,
     super.key,
   });
 
@@ -33,6 +34,8 @@ class YuhuTableDraggableHeader<T> extends StatelessWidget {
   final void Function()? onTap;
   final void Function(int fromIndex) onDrop;
 
+  final bool disableModify;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -42,11 +45,15 @@ class YuhuTableDraggableHeader<T> extends StatelessWidget {
       ascending: ascending,
       isSort: isSort,
       pinnedPosition: pinnedPosition,
-      onPinnedPositionChanged: onPinnedPositionChanged,
-      onColorChanged: onColorChanged,
-      onResizing: onResizing,
+      onPinnedPositionChanged: disableModify ? null : onPinnedPositionChanged,
+      onColorChanged: disableModify ? null : onColorChanged,
+      onResizing: disableModify ? null : onResizing,
       onTap: onTap,
     );
+
+    if (disableModify) {
+      return header;
+    }
 
     return DragTarget<int>(
       onWillAcceptWithDetails: (details) => details.data != index,

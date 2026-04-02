@@ -34,7 +34,8 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
   bool _isHovered = false;
 
   void _showContextMenu(BuildContext context, Offset position) {
-    if (widget.onPinnedPositionChanged == null) return;
+    if (widget.onPinnedPositionChanged == null && widget.onColorChanged == null)
+      return;
 
     final theme = Theme.of(context);
     final overlay = Overlay.of(context);
@@ -77,91 +78,97 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
       items: [
         _buildPopupHeader(widget.column.title),
         const PopupMenuDivider(height: 1),
-        if (widget.pinnedPosition == TablePinPosition.none) ...[
-          _buildPopupItem(
-            value: TablePinPosition.left,
-            icon: Icons.align_horizontal_left_rounded,
-            label: 'Freeze to Left',
-            style: textStyle,
-          ),
-          _buildPopupItem(
-            value: TablePinPosition.right,
-            icon: Icons.align_horizontal_right_rounded,
-            label: 'Freeze to Right',
-            style: textStyle,
-          ),
-        ] else if (widget.pinnedPosition == TablePinPosition.left) ...[
-          _buildPopupItem(
-            value: TablePinPosition.none,
-            icon: Icons.pin_end_rounded,
-            label: 'Unfreeze Column',
-            style: textStyle,
-          ),
-          _buildPopupItem(
-            value: TablePinPosition.right,
-            icon: Icons.keyboard_double_arrow_right_rounded,
-            label: 'Move to Right Pin',
-            style: textStyle,
-          ),
-        ] else if (widget.pinnedPosition == TablePinPosition.right) ...[
-          _buildPopupItem(
-            value: TablePinPosition.none,
-            icon: Icons.pin_end_rounded,
-            label: 'Unfreeze Column',
-            style: textStyle,
-          ),
-          _buildPopupItem(
-            value: TablePinPosition.left,
-            icon: Icons.keyboard_double_arrow_left_rounded,
-            label: 'Move to Left Pin',
-            style: textStyle,
+        if (widget.onPinnedPositionChanged != null) ...[
+          if (widget.pinnedPosition == TablePinPosition.none) ...[
+            _buildPopupItem(
+              value: TablePinPosition.left,
+              icon: Icons.align_horizontal_left_rounded,
+              label: 'Freeze to Left',
+              style: textStyle,
+            ),
+            _buildPopupItem(
+              value: TablePinPosition.right,
+              icon: Icons.align_horizontal_right_rounded,
+              label: 'Freeze to Right',
+              style: textStyle,
+            ),
+          ] else if (widget.pinnedPosition == TablePinPosition.left) ...[
+            _buildPopupItem(
+              value: TablePinPosition.none,
+              icon: Icons.pin_end_rounded,
+              label: 'Unfreeze Column',
+              style: textStyle,
+            ),
+            _buildPopupItem(
+              value: TablePinPosition.right,
+              icon: Icons.keyboard_double_arrow_right_rounded,
+              label: 'Move to Right Pin',
+              style: textStyle,
+            ),
+          ] else if (widget.pinnedPosition == TablePinPosition.right) ...[
+            _buildPopupItem(
+              value: TablePinPosition.none,
+              icon: Icons.pin_end_rounded,
+              label: 'Unfreeze Column',
+              style: textStyle,
+            ),
+            _buildPopupItem(
+              value: TablePinPosition.left,
+              icon: Icons.keyboard_double_arrow_left_rounded,
+              label: 'Move to Left Pin',
+              style: textStyle,
+            ),
+          ],
+        ],
+        if (widget.onPinnedPositionChanged != null &&
+            widget.onColorChanged != null)
+          const PopupMenuDivider(height: 1),
+        if (widget.onColorChanged != null) ...[
+          _buildPopupHeader('Column Color'),
+          PopupMenuItem(
+            enabled: false,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildColorOption(
+                  context,
+                  Colors.transparent,
+                  Icons.format_color_reset_rounded,
+                ),
+                _buildColorOption(
+                  context,
+                  Colors.red.withValues(alpha: theme.isDark ? 0.3 : 0.12),
+                  null,
+                ),
+                _buildColorOption(
+                  context,
+                  Colors.blue.withValues(alpha: theme.isDark ? 0.3 : 0.12),
+                  null,
+                ),
+                _buildColorOption(
+                  context,
+                  Colors.green.withValues(alpha: theme.isDark ? 0.3 : 0.12),
+                  null,
+                ),
+                _buildColorOption(
+                  context,
+                  Colors.orange.withValues(alpha: theme.isDark ? 0.3 : 0.12),
+                  null,
+                ),
+                _buildColorOption(
+                  context,
+                  Colors.purple.withValues(alpha: theme.isDark ? 0.3 : 0.12),
+                  null,
+                ),
+                _buildColorOption(
+                  context,
+                  Colors.teal.withValues(alpha: theme.isDark ? 0.3 : 0.12),
+                  null,
+                ),
+              ],
+            ),
           ),
         ],
-        const PopupMenuDivider(height: 1),
-        _buildPopupHeader('Column Color'),
-        PopupMenuItem(
-          enabled: false,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildColorOption(
-                context,
-                Colors.transparent,
-                Icons.format_color_reset_rounded,
-              ),
-              _buildColorOption(
-                context,
-                Colors.red.withValues(alpha: theme.isDark ? 0.3 : 0.12),
-                null,
-              ),
-              _buildColorOption(
-                context,
-                Colors.blue.withValues(alpha: theme.isDark ? 0.3 : 0.12),
-                null,
-              ),
-              _buildColorOption(
-                context,
-                Colors.green.withValues(alpha: theme.isDark ? 0.3 : 0.12),
-                null,
-              ),
-              _buildColorOption(
-                context,
-                Colors.orange.withValues(alpha: theme.isDark ? 0.3 : 0.12),
-                null,
-              ),
-              _buildColorOption(
-                context,
-                Colors.purple.withValues(alpha: theme.isDark ? 0.3 : 0.12),
-                null,
-              ),
-              _buildColorOption(
-                context,
-                Colors.teal.withValues(alpha: theme.isDark ? 0.3 : 0.12),
-                null,
-              ),
-            ],
-          ),
-        ),
       ],
     ).then((value) {
       if (value is TablePinPosition) {
