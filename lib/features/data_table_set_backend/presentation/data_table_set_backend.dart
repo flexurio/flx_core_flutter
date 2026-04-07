@@ -156,8 +156,8 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
         final usableWidth =
             (screenWidth - (hasMulti ? checkboxWidth : 0.0) - paddingWidth)
                 .clamp(200.0, double.infinity);
-        final rawFlexUnit = totalFlex > 0 ? (usableWidth / totalFlex) : 100.0;
-        final flexUnit = rawFlexUnit.clamp(60.0, 100.0);
+        final rawFlexUnit = totalFlex > 0 ? (usableWidth / totalFlex) : 48.0;
+        final flexUnit = rawFlexUnit.clamp(28.0, 48.0);
 
         // Hitung total lebar
         final baseWidth = widget.columns.fold<double>(
@@ -183,8 +183,8 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
               alignment: firstCol.head.numeric
                   ? Alignment.centerRight
                   : Alignment.centerLeft,
-              width: checkboxWidth +
-                  firstColWidth, // gabungan lebar checkbox + kolom pertama
+              width: checkboxWidth + firstColWidth,
+              flex: firstCol.widthFlex.toInt(),
               title: firstCol.head.label,
               builder: (data, idx) {
                 final checked = _selectedRowIndexes.contains(idx);
@@ -232,6 +232,7 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
                     ? Alignment.centerRight
                     : Alignment.centerLeft,
                 width: col.widthFlex * flexUnit,
+                flex: col.widthFlex.toInt(),
                 title: col.head.label,
                 builder: (data, _) => DefaultTextStyle(
                   style: theme.textTheme.bodyMedium!,
@@ -277,6 +278,7 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
                     ? Alignment.centerRight
                     : Alignment.centerLeft,
                 width: col.widthFlex * flexUnit,
+                flex: col.widthFlex.toInt(),
                 title: col.head.label,
                 builder: (data, _) => DefaultTextStyle(
                   style: theme.textTheme.bodyMedium!,
@@ -296,6 +298,7 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
                     ? Alignment.centerRight
                     : Alignment.centerLeft,
                 width: col.widthFlex * flexUnit,
+                flex: col.widthFlex.toInt(),
                 title: col.head.label,
                 builder: (data, _) => DefaultTextStyle(
                   style: theme.textTheme.bodyMedium!,

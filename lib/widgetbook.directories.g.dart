@@ -20,6 +20,8 @@ import 'package:flx_core_flutter/features/top_bar/presentation/top_bar.widgetboo
     as _flx_core_flutter_features_top_bar_presentation_top_bar_widgetbook;
 import 'package:flx_core_flutter/features/yuhu_table/presentation/yuhu_table.widgetbook.dart'
     as _flx_core_flutter_features_yuhu_table_presentation_yuhu_table_widgetbook;
+import 'package:flx_core_flutter/features/yuhu_table/presentation/yuhu_table_sales_order_detail.widgetbook.dart'
+    as _flx_core_flutter_features_yuhu_table_presentation_yuhu_table_sales_order_detail_widgetbook;
 import 'package:flx_core_flutter/src/app/util/toast.widgetbook.dart'
     as _flx_core_flutter_src_app_util_toast_widgetbook;
 import 'package:flx_core_flutter/src/app/view/widget/f_drop_down/f_drop_down_search_small.widgetbook.dart'
@@ -141,6 +143,18 @@ final directories = <_widgetbook.WidgetbookNode>[
                             .dataTableBackendDefault,
                   ),
                   _widgetbook.WidgetbookUseCase(
+                    name: 'Product Return Check',
+                    builder:
+                        _flx_core_flutter_features_data_table_set_backend_presentation_data_table_set_backend_widgetbook
+                            .dataTableBackendProductReturnCheck,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Voucher Payment List',
+                    builder:
+                        _flx_core_flutter_features_data_table_set_backend_presentation_data_table_set_backend_widgetbook
+                            .dataTableBackendVoucherPayment,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
                     name: 'With Action Multiple',
                     builder:
                         _flx_core_flutter_features_data_table_set_backend_presentation_data_table_set_backend_widgetbook
@@ -237,10 +251,28 @@ final directories = <_widgetbook.WidgetbookNode>[
                             .yuhuTableUseCase,
                   ),
                   _widgetbook.WidgetbookUseCase(
+                    name: 'Interactivity Options',
+                    builder:
+                        _flx_core_flutter_features_yuhu_table_presentation_yuhu_table_widgetbook
+                            .yuhuTableInteractivityOptionsUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
                     name: 'Many Columns',
                     builder:
                         _flx_core_flutter_features_yuhu_table_presentation_yuhu_table_widgetbook
                             .yuhuTableManyColumnsUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Purchase Request',
+                    builder:
+                        _flx_core_flutter_features_yuhu_table_presentation_yuhu_table_widgetbook
+                            .yuhuTablePurchaseRequestUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Sales Order Detail',
+                    builder:
+                        _flx_core_flutter_features_yuhu_table_presentation_yuhu_table_sales_order_detail_widgetbook
+                            .yuhuTableSalesOrderDetailUseCase,
                   ),
                 ],
               )
