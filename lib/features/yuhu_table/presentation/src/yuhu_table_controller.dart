@@ -1,9 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/features/yuhu_table/presentation/table_column.dart';
 
-class YuhuTableController<T> {
-  int? sortIndex;
-  bool ascending = true;
+class YuhuTableController<T> extends ChangeNotifier {
+  int? _sortIndex;
+  int? get sortIndex => _sortIndex;
+  set sortIndex(int? value) {
+    if (_sortIndex != value) {
+      _sortIndex = value;
+      notifyListeners();
+    }
+  }
+
+  bool _ascending = true;
+  bool get ascending => _ascending;
+  set ascending(bool value) {
+    if (_ascending != value) {
+      _ascending = value;
+      notifyListeners();
+    }
+  }
+
   final List<T> selected = [];
 
   final ScrollController horizontalScrollController = ScrollController();
@@ -11,7 +27,15 @@ class YuhuTableController<T> {
   final ScrollController vStartController = ScrollController();
   final ScrollController vEndController = ScrollController();
 
-  int? hoveredRowIndex;
+  int? _hoveredRowIndex;
+  int? get hoveredRowIndex => _hoveredRowIndex;
+  set hoveredRowIndex(int? value) {
+    if (_hoveredRowIndex != value) {
+      _hoveredRowIndex = value;
+      notifyListeners();
+    }
+  }
+
   bool isSyncing = false;
 
   final Set<int> pinnedLeft = {};
@@ -28,8 +52,8 @@ class YuhuTableController<T> {
     bool freezeLastColumn = false,
     required VoidCallback onSyncScroll,
   }) {
-    sortIndex = initialSortColumnIndex;
-    ascending = initialSortAscending ?? true;
+    _sortIndex = initialSortColumnIndex;
+    _ascending = initialSortAscending ?? true;
     columnOrder = List.generate(columns.length, (index) => index);
 
     if (freezeFirstColumn) pinnedLeft.add(0);
@@ -70,11 +94,13 @@ class YuhuTableController<T> {
     isSyncing = false;
   }
 
+  @override
   void dispose() {
     horizontalScrollController.dispose();
     vMiddleController.dispose();
     vStartController.dispose();
     vEndController.dispose();
+    super.dispose();
   }
 
   void update({
@@ -89,11 +115,15 @@ class YuhuTableController<T> {
     bool freezeLastColumn = false,
     bool oldFreezeLastColumn = false,
   }) {
+    bool changed = false;
+
     if (initialSortColumnIndex != oldInitialSortColumnIndex) {
-      sortIndex = initialSortColumnIndex;
+      _sortIndex = initialSortColumnIndex;
+      changed = true;
     }
     if (initialSortAscending != oldInitialSortAscending) {
-      ascending = initialSortAscending ?? true;
+      _ascending = initialSortAscending ?? true;
+      changed = true;
     }
     if (freezeFirstColumn != oldFreezeFirstColumn) {
       if (freezeFirstColumn) {
@@ -101,6 +131,7 @@ class YuhuTableController<T> {
       } else {
         pinnedLeft.remove(0);
       }
+      changed = true;
     }
     if (freezeLastColumn != oldFreezeLastColumn) {
       if (freezeLastColumn && columns.isNotEmpty) {
@@ -108,6 +139,7 @@ class YuhuTableController<T> {
       } else {
         pinnedRight.remove(columns.length - 1);
       }
+      changed = true;
     }
 
     if (columns.length != oldColumns.length) {
@@ -116,7 +148,10 @@ class YuhuTableController<T> {
       final addedIndices =
           newIndices.where((i) => !columnOrder.contains(i)).toList();
       columnOrder = [...keptOrder, ...addedIndices];
+      changed = true;
     }
+
+    if (changed) notifyListeners();
   }
 
   void handleSelection(T item, void Function(List<T>)? onSelectChanged) {
@@ -125,6 +160,95 @@ class YuhuTableController<T> {
     } else {
       selected.add(item);
     }
-    onSelectChanged?.call(selected);
+    onSelectChanged?.call(List.from(selected));
+    notifyListeners();
+  }
+
+  void togglePin(int index, TablePinPosition position) {
+    pinnedLeft.remove(index);
+    pinnedRight.remove(index);
+    if (position == TablePinPosition.left) {
+      pinnedLeft.add(index);
+    } else if (position == TablePinPosition.right) {
+      pinnedRight.add(index);
+    }
+    notifyListeners();
+  }
+
+  void updateColumnColor(int index, Color? color) {
+    columnColors[index] = color;
+    notifyListeners();
+  }
+
+  void updateColumnWidth(int index, double delta) {
+    final currentWidth = columnWidths[index] ?? 100.0;
+    columnWidths[index] = (currentWidth + delta).clamp(50.0, 1000.0);
+    notifyListeners();
+  }
+
+  void reorderColumns(int fromIndex, int toIndex) {
+    if (pinnedLeft.contains(toIndex)) {
+      pinnedLeft.add(fromIndex);
+      pinnedRight.remove(fromIndex);
+    } else if (pinnedRight.contains(toIndex)) {
+      pinnedRight.add(fromIndex);
+      pinnedLeft.remove(fromIndex);
+    } else {
+      pinnedLeft.remove(fromIndex);
+      pinnedRight.remove(fromIndex);
+    }
+
+    final oldPos = columnOrder.indexOf(fromIndex);
+    final newPos = columnOrder.indexOf(toIndex);
+    if (oldPos != -1 && newPos != -1) {
+      columnOrder
+        ..removeAt(oldPos)
+        ..insert(newPos, fromIndex);
+    }
+    notifyListeners();
+  }
+
+  List<(int, TableColumn<T>)> getFilteredEntries(
+    List<TableColumn<T>> columns,
+    bool isSmall, {
+    bool? isPinnedLeft,
+    bool? isPinnedRight,
+  }) {
+    final entries = <(int, TableColumn<T>)>[];
+    for (final i in columnOrder) {
+      if (i >= columns.length) continue;
+      final entry = (i, columns[i]);
+      final isLeft = pinnedLeft.contains(i);
+      final isRight = pinnedRight.contains(i);
+
+      if (isSmall) {
+        if (isPinnedLeft == null && isPinnedRight == null) {
+          entries.add(entry);
+        }
+      } else {
+        if (isPinnedLeft == true && isLeft) {
+          entries.add(entry);
+        } else if (isPinnedRight == true && isRight) {
+          entries.add(entry);
+        } else if (isPinnedLeft == null &&
+            isPinnedRight == null &&
+            !isLeft &&
+            !isRight) {
+          entries.add(entry);
+        }
+      }
+    }
+    return entries;
+  }
+
+  double calculateWidth(
+    List<(int, TableColumn<T>)> entries,
+    bool includeSelection,
+  ) {
+    return entries.fold<double>(
+          0.0,
+          (p, c) => p + (columnWidths[c.$1] ?? c.$2.width ?? 100.0),
+        ) +
+        (includeSelection ? 80.0 : 0.0);
   }
 }

@@ -54,7 +54,6 @@ class YuhuTable<T> extends StatefulWidget {
 
 class _YuhuTableState<T> extends State<YuhuTable<T>> {
   late final YuhuTableController<T> _controller;
-  late YuhuTableStyle _style;
 
   @override
   void initState() {
@@ -68,6 +67,11 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       freezeLastColumn: widget.freezeLastColumn,
       onSyncScroll: () => _controller.syncScroll(_controller.vMiddleController),
     );
+    _controller.addListener(_onControllerChanged);
+  }
+
+  void _onControllerChanged() {
+    if (mounted) setState(() {});
   }
 
   @override
@@ -89,53 +93,42 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
 
   @override
   void dispose() {
+    _controller.removeListener(_onControllerChanged);
     _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _style = YuhuTableStyle(context);
+    final style = YuhuTableStyle(context);
 
     return ScreenIdentifierBuilder(
       builder: (context, screenIdentifier) {
         final isSmall =
             screenIdentifier.conditions(md: false, sm: true) == true ||
-                MediaQuery.of(context).size.width < 1000;
+                MediaQuery.sizeOf(context).width < 1000;
 
-        final leftPinnedEntries = <(int, TableColumn<T>)>[];
-        final centerPinnedEntries = <(int, TableColumn<T>)>[];
-        final rightPinnedEntries = <(int, TableColumn<T>)>[];
-
-        for (final i in _controller.columnOrder) {
-          final entry = (i, widget.columns[i]);
-          if (!isSmall && _controller.pinnedLeft.contains(i)) {
-            leftPinnedEntries.add(entry);
-          } else if (!isSmall && _controller.pinnedRight.contains(i)) {
-            rightPinnedEntries.add(entry);
-          } else {
-            centerPinnedEntries.add(entry);
-          }
-        }
-
-        final startWidth = leftPinnedEntries.fold<double>(
-          0,
-          (p, c) =>
-              p + (_controller.columnWidths[c.$1] ?? c.$2.width ?? 100.0),
+        final leftPinnedEntries = _controller.getFilteredEntries(
+          widget.columns,
+          isSmall,
+          isPinnedLeft: true,
         );
-        final endWidth = rightPinnedEntries.fold<double>(
-          0,
-          (p, c) =>
-              p + (_controller.columnWidths[c.$1] ?? c.$2.width ?? 100.0),
+        final centerPinnedEntries = _controller.getFilteredEntries(
+          widget.columns,
+          isSmall,
+        );
+        final rightPinnedEntries = _controller.getFilteredEntries(
+          widget.columns,
+          isSmall,
+          isPinnedRight: true,
         );
 
-        final totalCenterWidth = centerPinnedEntries.fold<double>(
-              0,
-              (prev, col) =>
-                  prev +
-                  (_controller.columnWidths[col.$1] ?? col.$2.width ?? 100.0),
-            ) +
-            (widget.onSelectChanged != null ? 80 : 0);
+        final startWidth = _controller.calculateWidth(leftPinnedEntries, false);
+        final endWidth = _controller.calculateWidth(rightPinnedEntries, false);
+        final totalCenterWidth = _controller.calculateWidth(
+          centerPinnedEntries,
+          widget.onSelectChanged != null,
+        );
 
         return Column(
           children: [
@@ -164,7 +157,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                   totalTableWidth: widget.expand
                       ? (startWidth + maxScrollWidth + endWidth)
                       : totalTableWidth,
-                  decoration: _style.containerDecoration,
+                  decoration: style.containerDecoration,
                   horizontalScrollController:
                       _controller.horizontalScrollController,
                   centerTable: _buildSection(
@@ -172,6 +165,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                     vController: _controller.vMiddleController,
                     showScrollbar: rightPinnedEntries.isEmpty,
                     availableWidth: expandWidth,
+                    style: style,
                   ),
                   leftPinnedTable: leftPinnedEntries.isNotEmpty
                       ? _buildSection(
@@ -179,6 +173,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                           isPinned: true,
                           vController: _controller.vStartController,
                           showScrollbar: false,
+                          style: style,
                         )
                       : null,
                   rightPinnedTable: rightPinnedEntries.isNotEmpty
@@ -188,6 +183,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                           isRightSection: true,
                           vController: _controller.vEndController,
                           showScrollbar: true,
+                          style: style,
                         )
                       : null,
                 );
@@ -212,6 +208,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
   Widget _buildSection({
     required List<(int, TableColumn<T>)> entries,
     required ScrollController? vController,
+    required YuhuTableStyle style,
     bool isPinned = false,
     bool isRightSection = false,
     bool showScrollbar = true,
@@ -224,15 +221,16 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     for (var i = 0; i < entries.length; i++) {
       final index = entries[i].$1;
       final column = entries[i].$2;
-      final width = _controller.columnWidths[index] ??
-          column.width ??
-          100.0;
+      final width = _controller.columnWidths[index] ?? column.width ?? 100.0;
+      final hasManualWidth = _controller.columnWidths.containsKey(index);
 
       if (shouldExpand) {
         if (column.flex != null) {
           columnWidths[i] = FlexColumnWidth(column.flex!.toDouble());
-        } else if (!hasFlex) {
-          // If no columns have flex, but table should expand, make all columns flexible
+        } else if (!hasFlex && !hasManualWidth && column.width == null) {
+          // Only make it flexible if no columns have flex, 
+          // AND it doesn't have a manual resize,
+          // AND it doesn't have a defined width.
           columnWidths[i] = const FlexColumnWidth();
         } else {
           columnWidths[i] = FixedColumnWidth(width);
@@ -242,85 +240,42 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       }
     }
 
-    final headers = <Widget>[
-      ...List.generate(entries.length, (i) {
-        final index = entries[i].$1;
-        final column = entries[i].$2;
-        return YuhuTableDraggableHeader<T>(
-          index: index,
-          column: column,
-          isSort: _controller.sortIndex == index,
-          ascending: _controller.ascending,
-          pinnedPosition: _controller.pinnedLeft.contains(index)
-              ? TablePinPosition.left
-              : (_controller.pinnedRight.contains(index)
-                   ? TablePinPosition.right
-                  : TablePinPosition.none),
-          currentWidth:
-              _controller.columnWidths[index] ?? column.width ?? 100.0,
-          headerDecoration: _style.headerDecoration,
-          disableModify: widget.disableModify,
-          onPinnedPositionChanged: (p) => setState(() {
-            _controller.pinnedLeft.remove(index);
-            _controller.pinnedRight.remove(index);
-            if (p == TablePinPosition.left) {
-              _controller.pinnedLeft.add(index);
-            } else if (p == TablePinPosition.right) {
-              _controller.pinnedRight.add(index);
-            }
-          }),
-          onColorChanged: (color) => setState(() {
-            _controller.columnColors[index] = color;
-          }),
-          onResizing: (delta) {
-            setState(() {
-              final currentWidth =
-                   _controller.columnWidths[index] ?? column.width ?? 100.0;
-              _controller.columnWidths[index] =
-                  (currentWidth + delta).clamp(50.0, 1000.0);
-            });
-          },
-          onTap: widget.disableModify
-              ? null
-              : () {
-                  if (column.sortNum == null && column.sortString == null) {
-                    widget.onSort?.call(index, !_controller.ascending);
+    final List<Widget> headers = entries.map((entry) {
+      final index = entry.$1;
+      final column = entry.$2;
+      return YuhuTableDraggableHeader<T>(
+        index: index,
+        column: column,
+        isSort: _controller.sortIndex == index,
+        ascending: _controller.ascending,
+        pinnedPosition: _controller.pinnedLeft.contains(index)
+            ? TablePinPosition.left
+            : (_controller.pinnedRight.contains(index)
+                ? TablePinPosition.right
+                : TablePinPosition.none),
+        currentWidth: _controller.columnWidths[index] ?? column.width ?? 100.0,
+        headerDecoration: style.headerDecoration,
+        disableModify: widget.disableModify,
+        onPinnedPositionChanged: (p) => _controller.togglePin(index, p),
+        onColorChanged: (color) => _controller.updateColumnColor(index, color),
+        onResizing: (delta) => _controller.updateColumnWidth(index, delta),
+        onTap: widget.disableModify
+            ? null
+            : () {
+                if (column.sortNum == null && column.sortString == null) {
+                  widget.onSort?.call(index, !_controller.ascending);
+                } else {
+                  if (_controller.sortIndex != index) {
+                    _controller.sortIndex = index;
+                    _controller.ascending = true;
                   } else {
-                    setState(() {
-                      if (_controller.sortIndex != index) {
-                        _controller.sortIndex = index;
-                        _controller.ascending = true;
-                      } else {
-                        _controller.ascending = !_controller.ascending;
-                      }
-                    });
+                    _controller.ascending = !_controller.ascending;
                   }
-                },
-          onDrop: (fromIndex) {
-            setState(() {
-              if (_controller.pinnedLeft.contains(index)) {
-                _controller.pinnedLeft.add(fromIndex);
-                _controller.pinnedRight.remove(fromIndex);
-              } else if (_controller.pinnedRight.contains(index)) {
-                _controller.pinnedRight.add(fromIndex);
-                _controller.pinnedLeft.remove(fromIndex);
-              } else {
-                _controller.pinnedLeft.remove(fromIndex);
-                _controller.pinnedRight.remove(fromIndex);
-              }
-
-              final oldPos = _controller.columnOrder.indexOf(fromIndex);
-              final newPos = _controller.columnOrder.indexOf(index);
-              if (oldPos != -1 && newPos != -1) {
-                _controller.columnOrder
-                  ..removeAt(oldPos)
-                  ..insert(newPos, fromIndex);
-              }
-            });
-          },
-        );
-      }),
-    ];
+                }
+              },
+        onDrop: (fromIndex) => _controller.reorderColumns(fromIndex, index),
+      );
+    }).toList();
 
     if (!isPinned && widget.onSelectChanged != null) {
       columnWidths[entries.length] = const FixedColumnWidth(80);
@@ -338,35 +293,26 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       entries: entries,
       rowHeight: widget.rowHeight,
       rowsPerPage: widget.rowsPerPage,
-      baseColor: _style.theme.cardColor,
-      stripedColor: _style.stripedColor,
-      hoverColor: _style.hoverColor,
-      borderSide: _style.borderSide,
+      baseColor: style.theme.cardColor,
+      stripedColor: style.stripedColor,
+      hoverColor: style.hoverColor,
+      borderSide: style.borderSide,
       hoveredRowIndex: _controller.hoveredRowIndex,
       columnColors: _controller.columnColors,
       enableHoverEffect: true,
-      onHoverEnter: (int rowIndex) {
-        if (_controller.hoveredRowIndex != rowIndex) {
-          setState(() => _controller.hoveredRowIndex = rowIndex);
-        }
-      },
-      onHoverExit: () {
-        if (_controller.hoveredRowIndex != null) {
-          setState(() => _controller.hoveredRowIndex = null);
-        }
-      },
+      onHoverEnter: (int rowIndex) => _controller.hoveredRowIndex = rowIndex,
+      onHoverExit: () => _controller.hoveredRowIndex = null,
       selectionCheckboxBuilder: widget.onSelectChanged == null
           ? null
           : (rowIndex, item) => TableData(
                 height: widget.rowHeight,
                 alignment: Alignment.center,
-                borderSide: _style.borderSide,
+                borderSide: style.borderSide,
                 showRightBorder: true,
                 child: Checkbox(
                   value: _controller.selected.contains(item),
-                  onChanged: (value) => setState(() {
-                    _controller.handleSelection(item, widget.onSelectChanged);
-                  }),
+                  onChanged: (value) =>
+                      _controller.handleSelection(item, widget.onSelectChanged),
                 ),
               ),
       selectionEmptyBuilder: widget.onSelectChanged == null
@@ -374,7 +320,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
           : (rowIndex) => TableData(
                 height: widget.rowHeight,
                 alignment: Alignment.center,
-                borderSide: _style.borderSide,
+                borderSide: style.borderSide,
                 showRightBorder: true,
                 child: Container(),
               ),
@@ -387,8 +333,8 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
         columnWidths: columnWidths,
         headers: headers,
         rows: rows,
-        borderSide: _style.borderSide,
-        headerDecoration: _style.headerDecoration,
+        borderSide: style.borderSide,
+        headerDecoration: style.headerDecoration,
         bodyHeight: widget.bodyHeight,
         vController: vController,
         showScrollbar: showScrollbar,
@@ -396,10 +342,10 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
             isRightSection ? Alignment.centerRight : Alignment.centerLeft,
         decoration: isPinned
             ? BoxDecoration(
-                color: _style.theme.cardColor,
+                color: style.theme.cardColor,
                 border: Border(
-                  left: isRightSection ? _style.borderSide : BorderSide.none,
-                  right: !isRightSection ? _style.borderSide : BorderSide.none,
+                  left: isRightSection ? style.borderSide : BorderSide.none,
+                  right: !isRightSection ? style.borderSide : BorderSide.none,
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -414,3 +360,4 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     );
   }
 }
+
