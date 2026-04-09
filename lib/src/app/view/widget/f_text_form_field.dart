@@ -43,7 +43,8 @@ class FTextFormField extends FormField<String> {
     this.isNumeric = false,
   }) : super(
           initialValue: controller?.text ?? '',
-          builder: (field) {
+          builder: (FormFieldState<String> field) {
+            final _FTextFormFieldState state = field as _FTextFormFieldState;
             final error = errorText ?? field.errorText;
 
             return Builder(
@@ -88,7 +89,7 @@ class FTextFormField extends FormField<String> {
                       inputFormatters: inputFormatters,
                       maxLength: maxLength,
                       maxLines: maxLines,
-                      controller: controller,
+                      controller: state._effectiveController,
                       obscureText: obscureText,
                       onEditingComplete: onEditingComplete,
                       onTapOutside: onTapOutside,
@@ -134,6 +135,10 @@ class FTextFormField extends FormField<String> {
             );
           },
         );
+
+  @override
+  FormFieldState<String> createState() => _FTextFormFieldState();
+
   static Widget decimal({
     required String labelText,
     required TextEditingController controller,
@@ -172,6 +177,75 @@ class FTextFormField extends FormField<String> {
   final void Function(PointerDownEvent)? onTapOutside;
   final void Function(String)? onSubmitted;
   final bool isNumeric;
+}
+
+class _FTextFormFieldState extends FormFieldState<String> {
+  TextEditingController? _controller;
+
+  TextEditingController? get _effectiveController =>
+      widget.controller ?? _controller;
+
+  @override
+  FTextFormField get widget => super.widget as FTextFormField;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.controller == null) {
+      _controller = TextEditingController(text: widget.initialValue);
+    } else {
+      widget.controller!.addListener(_handleControllerChanged);
+    }
+  }
+
+  @override
+  void didUpdateWidget(FTextFormField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.controller != oldWidget.controller) {
+      oldWidget.controller?.removeListener(_handleControllerChanged);
+      widget.controller?.addListener(_handleControllerChanged);
+
+      if (oldWidget.controller != null && widget.controller == null) {
+        _controller =
+            TextEditingController.fromValue(oldWidget.controller!.value);
+      }
+      if (widget.controller != null) {
+        setValue(widget.controller!.text);
+        if (oldWidget.controller == null) {
+          _controller = null;
+        }
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.controller?.removeListener(_handleControllerChanged);
+    super.dispose();
+  }
+
+  @override
+  void didChange(String? value) {
+    super.didChange(value);
+
+    if (_effectiveController!.text != value) {
+      _effectiveController!.text = value ?? '';
+    }
+  }
+
+  @override
+  void reset() {
+    super.reset();
+    setState(() {
+      _effectiveController!.text = widget.initialValue ?? '';
+    });
+  }
+
+  void _handleControllerChanged() {
+    if (_effectiveController!.text != value) {
+      didChange(_effectiveController!.text);
+    }
+  }
 }
 
 class ErrorTextField extends StatelessWidget {
