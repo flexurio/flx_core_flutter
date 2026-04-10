@@ -317,14 +317,17 @@ class LightButton extends StatelessWidget {
               data: const IconThemeData(size: 18),
               child: isInProgress
                   ? const CupertinoActivityIndicator()
-                  : Icon(
-                      iconOverride ?? actionIcon,
-                      color: noAction
-                          ? theme.modeCondition(Colors.grey, Colors.white10)
-                          : (iconColor ??
-                              (effectiveAction == DataAction.none
-                                  ? foregroundColor
-                                  : actionColor)),
+                  : Padding(
+                      padding: const EdgeInsets.only(right: 2),
+                      child: Icon(
+                        iconOverride ?? actionIcon,
+                        color: noAction
+                            ? theme.modeCondition(Colors.grey, Colors.white10)
+                            : (iconColor ??
+                                (effectiveAction == DataAction.none
+                                    ? foregroundColor
+                                    : actionColor)),
+                      ),
                     ),
             ),
             const Gap(6),
