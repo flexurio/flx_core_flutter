@@ -72,6 +72,7 @@ class _LightButtonSmallGroupState extends State<LightButtonSmallGroup> {
         );
       },
       style: MenuStyle(
+        padding: const WidgetStatePropertyAll(EdgeInsets.zero),
         backgroundColor: WidgetStatePropertyAll(theme.cardColor),
         shape: WidgetStatePropertyAll(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
@@ -111,6 +112,7 @@ class LightButtonSmallGroupNew extends StatelessWidget {
         );
       },
       style: MenuStyle(
+        padding: const WidgetStatePropertyAll(EdgeInsets.zero),
         backgroundColor: WidgetStatePropertyAll(theme.cardColor),
         shape: WidgetStatePropertyAll(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
@@ -166,6 +168,7 @@ class _ActionsButton extends State<ActionsButton> {
         );
       },
       style: MenuStyle(
+        padding: const WidgetStatePropertyAll(EdgeInsets.zero),
         backgroundColor: WidgetStatePropertyAll(theme.cardColor),
         shape: WidgetStatePropertyAll(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),

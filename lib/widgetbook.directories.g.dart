@@ -28,6 +28,8 @@ import 'package:flx_core_flutter/src/app/view/widget/f_drop_down/f_drop_down_sea
     as _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_search_small_widgetbook;
 import 'package:flx_core_flutter/src/app/view/widget/f_drop_down/f_drop_down_small.widgetbook.dart'
     as _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_small_widgetbook;
+import 'package:flx_core_flutter/src/app/view/widget/action_button_group.widgetbook.dart'
+    as _flx_core_flutter_src_app_view_widget_action_button_group_widgetbook;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
@@ -51,13 +53,24 @@ final directories = <_widgetbook.WidgetbookNode>[
       ),
       _widgetbook.WidgetbookFolder(
         name: 'view',
-        children: [
-          _widgetbook.WidgetbookFolder(
-            name: 'widget',
-            children: [
-              _widgetbook.WidgetbookFolder(
-                name: 'f_drop_down',
-                children: [
+          children: [
+            _widgetbook.WidgetbookFolder(
+              name: 'widget',
+              children: [
+                _widgetbook.WidgetbookComponent(
+                  name: 'ActionsButton',
+                  useCases: [
+                    _widgetbook.WidgetbookUseCase(
+                      name: 'Table Comparison',
+                      builder:
+                          _flx_core_flutter_src_app_view_widget_action_button_group_widgetbook
+                              .actionsButtonTable,
+                    ),
+                  ],
+                ),
+                _widgetbook.WidgetbookFolder(
+                  name: 'f_drop_down',
+                  children: [
                   _widgetbook.WidgetbookComponent(
                     name: 'DropDownSmall',
                     useCases: [
