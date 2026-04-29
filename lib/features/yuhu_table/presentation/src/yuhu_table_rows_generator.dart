@@ -27,8 +27,14 @@ class YuhuTableRowsGenerator<T> {
           ? hoverColor
           : (rowIndex % 2 != 0 ? stripedColor : baseColor);
 
-      final cells = <Widget>[
-        for (var i = 0; i < entries.length; i++)
+      final cells = <Widget>[];
+
+      if (!isPinned && selectionCheckboxBuilder != null) {
+        cells.add(selectionCheckboxBuilder(rowIndex, data[rowIndex]));
+      }
+
+      for (var i = 0; i < entries.length; i++) {
+        cells.add(
           TableData(
             height: rowHeight,
             alignment: entries[i].$2.alignment,
@@ -38,10 +44,7 @@ class YuhuTableRowsGenerator<T> {
                 columnColors[entries[i].$1] ?? entries[i].$2.backgroundColor,
             child: entries[i].$2.builder(data[rowIndex], rowIndex),
           ),
-      ];
-
-      if (!isPinned && selectionCheckboxBuilder != null) {
-        cells.add(selectionCheckboxBuilder(rowIndex, data[rowIndex]));
+        );
       }
 
       return TableRow(
@@ -68,8 +71,14 @@ class YuhuTableRowsGenerator<T> {
               ? hoverColor
               : (rowIndex % 2 != 0 ? stripedColor : baseColor);
 
-          final cells = <Widget>[
-            for (var i = 0; i < entries.length; i++)
+          final cells = <Widget>[];
+
+          if (!isPinned && selectionEmptyBuilder != null) {
+            cells.add(selectionEmptyBuilder(rowIndex));
+          }
+
+          for (var i = 0; i < entries.length; i++) {
+            cells.add(
               TableData(
                 height: rowHeight,
                 alignment: entries[i].$2.alignment,
@@ -79,10 +88,7 @@ class YuhuTableRowsGenerator<T> {
                     entries[i].$2.backgroundColor,
                 child: Container(),
               ),
-          ];
-
-          if (!isPinned && selectionEmptyBuilder != null) {
-            cells.add(selectionEmptyBuilder(rowIndex));
+            );
           }
 
           return TableRow(

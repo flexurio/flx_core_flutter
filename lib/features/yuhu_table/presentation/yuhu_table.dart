@@ -130,76 +130,69 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
           widget.onSelectChanged != null,
         );
 
-        return Column(
-          children: [
-            LayoutBuilder(
-              builder: (context, constraints) {
-                final maxWidth = constraints.maxWidth;
-                final maxScrollWidth = (maxWidth - startWidth - endWidth)
-                    .clamp(0.0, double.infinity);
-                final actualScrollWidth =
-                    totalCenterWidth.clamp(0.0, maxScrollWidth);
-                final totalTableWidth =
-                    startWidth + actualScrollWidth + endWidth;
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final maxWidth = constraints.maxWidth;
+            final maxScrollWidth =
+                (maxWidth - startWidth - endWidth).clamp(0.0, double.infinity);
+            final actualScrollWidth =
+                totalCenterWidth.clamp(0.0, maxScrollWidth);
+            final totalTableWidth = startWidth + actualScrollWidth + endWidth;
 
-                final expandWidth = widget.expand
-                    ? (totalCenterWidth < maxScrollWidth
-                        ? maxScrollWidth
-                        : totalCenterWidth)
-                    : totalCenterWidth;
+            final expandWidth = widget.expand
+                ? (totalCenterWidth < maxScrollWidth
+                    ? maxScrollWidth
+                    : totalCenterWidth)
+                : totalCenterWidth;
 
-                return YuhuTableLayout(
-                  startWidth: startWidth,
-                  endWidth: endWidth,
-                  actualScrollWidth:
-                      widget.expand ? maxScrollWidth : actualScrollWidth,
-                  totalCenterWidth: expandWidth,
-                  totalTableWidth: widget.expand
-                      ? (startWidth + maxScrollWidth + endWidth)
-                      : totalTableWidth,
-                  decoration: style.containerDecoration,
-                  horizontalScrollController:
-                      _controller.horizontalScrollController,
-                  centerTable: _buildSection(
-                    entries: centerPinnedEntries,
-                    vController: _controller.vMiddleController,
-                    showScrollbar: rightPinnedEntries.isEmpty,
-                    availableWidth: expandWidth,
-                    style: style,
-                  ),
-                  leftPinnedTable: leftPinnedEntries.isNotEmpty
-                      ? _buildSection(
-                          entries: leftPinnedEntries,
-                          isPinned: true,
-                          vController: _controller.vStartController,
-                          showScrollbar: false,
-                          style: style,
-                        )
-                      : null,
-                  rightPinnedTable: rightPinnedEntries.isNotEmpty
-                      ? _buildSection(
-                          entries: rightPinnedEntries,
-                          isPinned: true,
-                          isRightSection: true,
-                          vController: _controller.vEndController,
-                          showScrollbar: true,
-                          style: style,
-                        )
-                      : null,
-                );
-              },
-            ),
-            if (widget.status == Status.progress)
-              const Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: CupertinoActivityIndicator(),
+            Widget? statusIndicator;
+            if (widget.status == Status.progress) {
+              statusIndicator = const CupertinoActivityIndicator();
+            } else if (widget.status == Status.error) {
+              statusIndicator = const Icon(Icons.error, color: Colors.red);
+            }
+
+            return YuhuTableLayout(
+              startWidth: startWidth,
+              endWidth: endWidth,
+              actualScrollWidth:
+                  widget.expand ? maxScrollWidth : actualScrollWidth,
+              totalCenterWidth: expandWidth,
+              totalTableWidth: widget.expand
+                  ? (startWidth + maxScrollWidth + endWidth)
+                  : totalTableWidth,
+              decoration: style.containerDecoration,
+              horizontalScrollController:
+                  _controller.horizontalScrollController,
+              statusIndicator: statusIndicator,
+              centerTable: _buildSection(
+                entries: centerPinnedEntries,
+                vController: _controller.vMiddleController,
+                showScrollbar: rightPinnedEntries.isEmpty,
+                availableWidth: expandWidth,
+                style: style,
               ),
-            if (widget.status == Status.error)
-              const Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: Icon(Icons.error, color: Colors.red),
-              ),
-          ],
+              leftPinnedTable: leftPinnedEntries.isNotEmpty
+                  ? _buildSection(
+                      entries: leftPinnedEntries,
+                      isPinned: true,
+                      vController: _controller.vStartController,
+                      showScrollbar: false,
+                      style: style,
+                    )
+                  : null,
+              rightPinnedTable: rightPinnedEntries.isNotEmpty
+                  ? _buildSection(
+                      entries: rightPinnedEntries,
+                      isPinned: true,
+                      isRightSection: true,
+                      vController: _controller.vEndController,
+                      showScrollbar: true,
+                      style: style,
+                    )
+                  : null,
+            );
+          },
         );
       },
     );
@@ -218,7 +211,14 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     final hasFlex = entries.any((e) => e.$2.flex != null);
     final shouldExpand = widget.expand && !isPinned && availableWidth != null;
 
+    final isSmall = MediaQuery.sizeOf(context).width < 1000;
+    
+    if (!isPinned && widget.onSelectChanged != null) {
+      columnWidths[0] = const FixedColumnWidth(80);
+    }
+
     for (var i = 0; i < entries.length; i++) {
+      final columnIndex = widget.onSelectChanged != null && !isPinned ? i + 1 : i;
       final index = entries[i].$1;
       final column = entries[i].$2;
       final width = _controller.columnWidths[index] ?? column.width ?? 100.0;
@@ -226,21 +226,30 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
 
       if (shouldExpand) {
         if (column.flex != null) {
-          columnWidths[i] = FlexColumnWidth(column.flex!.toDouble());
+          columnWidths[columnIndex] = FlexColumnWidth(column.flex!.toDouble());
         } else if (!hasFlex && !hasManualWidth && column.width == null) {
-          // Only make it flexible if no columns have flex, 
-          // AND it doesn't have a manual resize,
-          // AND it doesn't have a defined width.
-          columnWidths[i] = const FlexColumnWidth();
+          columnWidths[columnIndex] = const FlexColumnWidth();
         } else {
-          columnWidths[i] = FixedColumnWidth(width);
+          columnWidths[columnIndex] = FixedColumnWidth(width);
         }
       } else {
-        columnWidths[i] = FixedColumnWidth(width);
+        columnWidths[columnIndex] = FixedColumnWidth(width);
       }
     }
 
-    final List<Widget> headers = entries.map((entry) {
+    final List<Widget> headers = [];
+
+    if (!isPinned && widget.onSelectChanged != null) {
+      headers.add(
+        TableHeader<T>(
+          column: TableColumn<T>(title: '', builder: (_, __) => Container()),
+          isSort: false,
+          ascending: _controller.ascending,
+        ),
+      );
+    }
+
+    headers.addAll(entries.map((entry) {
       final index = entry.$1;
       final column = entry.$2;
       return YuhuTableDraggableHeader<T>(
@@ -275,18 +284,9 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
               },
         onDrop: (fromIndex) => _controller.reorderColumns(fromIndex, index),
       );
-    }).toList();
+    }).toList());
 
-    if (!isPinned && widget.onSelectChanged != null) {
-      columnWidths[entries.length] = const FixedColumnWidth(80);
-      headers.add(
-        TableHeader<T>(
-          column: TableColumn<T>(title: '', builder: (_, __) => Container()),
-          isSort: false,
-          ascending: _controller.ascending,
-        ),
-      );
-    }
+
 
     final rows = YuhuTableRowsGenerator.generate<T>(
       data: widget.data,
@@ -310,6 +310,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
                 borderSide: style.borderSide,
                 showRightBorder: true,
                 child: Checkbox(
+                  key: ValueKey('checkbox_$rowIndex'),
                   value: _controller.selected.contains(item),
                   onChanged: (value) =>
                       _controller.handleSelection(item, widget.onSelectChanged),

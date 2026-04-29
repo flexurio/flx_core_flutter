@@ -11,6 +11,7 @@ class YuhuTableLayout extends StatelessWidget {
   final Widget? rightPinnedTable;
   final ScrollController horizontalScrollController;
   final BoxDecoration decoration;
+  final Widget? statusIndicator;
 
   const YuhuTableLayout({
     super.key,
@@ -24,6 +25,7 @@ class YuhuTableLayout extends StatelessWidget {
     required this.decoration,
     this.leftPinnedTable,
     this.rightPinnedTable,
+    this.statusIndicator,
   });
 
   @override
@@ -75,6 +77,13 @@ class YuhuTableLayout extends StatelessWidget {
                   bottom: 0,
                   width: endWidth,
                   child: rightPinnedTable!,
+                ),
+              if (statusIndicator != null)
+                Positioned(
+                  bottom: 20,
+                  left: 0,
+                  right: 0,
+                  child: Center(child: statusIndicator!),
                 ),
             ],
           ),

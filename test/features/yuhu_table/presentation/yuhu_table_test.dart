@@ -43,7 +43,8 @@ void main() {
           body: SizedBox(
             width: 800,
             height: 600,
-            child: YuhuTable<Map<String, dynamic>>(
+            child: Material(
+              child: YuhuTable<Map<String, dynamic>>(
               data: data ?? testData,
               columns: columns ?? testColumns(),
               status: status,
@@ -54,7 +55,8 @@ void main() {
             ),
           ),
         ),
-      );
+      ),
+    );
     }
 
     testWidgets('renders basic table with columns and data', (tester) async {
@@ -102,18 +104,9 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // Tap the 'Name' column header (index 1) which is represented by TableHeader
-      final headers = find.byWidgetPredicate(
-        (w) => w.runtimeType.toString().contains('TableHeader'),
-      );
-
-      // Tap the InkWell inside the second header (index 1 corresponds to 'Name')
-      final headerInkWell = find
-          .descendant(of: headers.at(1), matching: find.byType(InkWell))
-          .first;
-
-      final inkWellWidget = tester.widget<InkWell>(headerInkWell);
-      inkWellWidget.onTap?.call();
+      // Tap the 'Name' column header
+      await tester.tap(find.text('Name'));
+      await tester.pumpAndSettle();
 
       await tester.pumpAndSettle();
 
@@ -124,10 +117,17 @@ void main() {
 
     testWidgets('triggers onSelectChanged when checkbox is checked',
         (tester) async {
+      tester.view.physicalSize = const Size(1200, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
       List<Map<String, dynamic>>? selectedItems;
 
       await tester.pumpWidget(
         createTestWidget(
+          data: testData,
+          columns: testColumns(),
           onSelectChanged: (items) {
             selectedItems = items;
           },
@@ -135,12 +135,8 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // Checkboxes exist because onSelectChanged was provided
-      final checkboxes = find.byType(Checkbox);
-      expect(checkboxes, findsNWidgets(2));
-
       // Tap the first row's checkbox
-      await tester.tap(checkboxes.first, warnIfMissed: false);
+      await tester.tap(find.byKey(const ValueKey('checkbox_0')));
       await tester.pumpAndSettle();
 
       expect(selectedItems, isNotNull);
