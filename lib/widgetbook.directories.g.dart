@@ -24,12 +24,14 @@ import 'package:flx_core_flutter/features/yuhu_table/presentation/yuhu_table_sal
     as _flx_core_flutter_features_yuhu_table_presentation_yuhu_table_sales_order_detail_widgetbook;
 import 'package:flx_core_flutter/src/app/util/toast.widgetbook.dart'
     as _flx_core_flutter_src_app_util_toast_widgetbook;
+import 'package:flx_core_flutter/src/app/view/widget/action_button_group.widgetbook.dart'
+    as _flx_core_flutter_src_app_view_widget_action_button_group_widgetbook;
+import 'package:flx_core_flutter/src/app/view/widget/f_drop_down/f_drop_down_search_multiple.widgetbook.dart'
+    as _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_search_multiple_widgetbook;
 import 'package:flx_core_flutter/src/app/view/widget/f_drop_down/f_drop_down_search_small.widgetbook.dart'
     as _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_search_small_widgetbook;
 import 'package:flx_core_flutter/src/app/view/widget/f_drop_down/f_drop_down_small.widgetbook.dart'
     as _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_small_widgetbook;
-import 'package:flx_core_flutter/src/app/view/widget/action_button_group.widgetbook.dart'
-    as _flx_core_flutter_src_app_view_widget_action_button_group_widgetbook;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
@@ -53,24 +55,24 @@ final directories = <_widgetbook.WidgetbookNode>[
       ),
       _widgetbook.WidgetbookFolder(
         name: 'view',
-          children: [
-            _widgetbook.WidgetbookFolder(
-              name: 'widget',
-              children: [
-                _widgetbook.WidgetbookComponent(
-                  name: 'ActionsButton',
-                  useCases: [
-                    _widgetbook.WidgetbookUseCase(
-                      name: 'Table Comparison',
-                      builder:
-                          _flx_core_flutter_src_app_view_widget_action_button_group_widgetbook
-                              .actionsButtonTable,
-                    ),
-                  ],
-                ),
-                _widgetbook.WidgetbookFolder(
-                  name: 'f_drop_down',
-                  children: [
+        children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'widget',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'ActionsButton',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Table Comparison',
+                    builder:
+                        _flx_core_flutter_src_app_view_widget_action_button_group_widgetbook
+                            .actionsButtonTable,
+                  )
+                ],
+              ),
+              _widgetbook.WidgetbookFolder(
+                name: 'f_drop_down',
+                children: [
                   _widgetbook.WidgetbookComponent(
                     name: 'DropDownSmall',
                     useCases: [
@@ -97,6 +99,35 @@ final directories = <_widgetbook.WidgetbookNode>[
                         builder:
                             _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_small_widgetbook
                                 .dropDownSmallWithInitialValue,
+                      ),
+                    ],
+                  ),
+                  _widgetbook.WidgetbookComponent(
+                    name: 'FDropDownSearchMultiple',
+                    useCases: [
+                      _widgetbook.WidgetbookUseCase(
+                        name: 'Default',
+                        builder:
+                            _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_search_multiple_widgetbook
+                                .fDropDownSearchMultipleDefault,
+                      ),
+                      _widgetbook.WidgetbookUseCase(
+                        name: 'Error Status',
+                        builder:
+                            _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_search_multiple_widgetbook
+                                .fDropDownSearchMultipleError,
+                      ),
+                      _widgetbook.WidgetbookUseCase(
+                        name: 'Loading Status',
+                        builder:
+                            _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_search_multiple_widgetbook
+                                .fDropDownSearchMultipleLoading,
+                      ),
+                      _widgetbook.WidgetbookUseCase(
+                        name: 'With Selected Items',
+                        builder:
+                            _flx_core_flutter_src_app_view_widget_f_drop_down_f_drop_down_search_multiple_widgetbook
+                                .fDropDownSearchMultipleWithSelected,
                       ),
                     ],
                   ),
@@ -130,7 +161,7 @@ final directories = <_widgetbook.WidgetbookNode>[
                     ],
                   ),
                 ],
-              )
+              ),
             ],
           )
         ],
