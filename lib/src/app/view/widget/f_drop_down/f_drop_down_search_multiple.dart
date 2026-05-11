@@ -55,6 +55,16 @@ class FDropDownSearchMultiple<T> extends StatelessWidget {
       MyTheme.black00dp,
     );
 
+    final border = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide(color: borderColor),
+    );
+
+    final borderError = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: Colors.red),
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -63,71 +73,74 @@ class FDropDownSearchMultiple<T> extends StatelessWidget {
           style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
         const Gap(4),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: backgroundColor,
-            border: Border.all(color: borderColor),
+        DropdownSearch<T>.multiSelection(
+          compareFn: compareFn ?? (a, b) => a == b,
+          validator: validator,
+          suffixProps: DropdownSuffixProps(
+            dropdownButtonProps: DropdownButtonProps(
+              iconClosed: icon,
+              iconOpened: icon,
+            ),
           ),
-          child: DropdownSearch<T>.multiSelection(
-            compareFn: compareFn ?? (a, b) => a == b,
-            validator: validator,
-            suffixProps: DropdownSuffixProps(
-              dropdownButtonProps: DropdownButtonProps(
-                iconClosed: icon,
-                iconOpened: icon,
-              ),
-            ),
-            popupProps: MultiSelectionPopupProps.menu(
-              checkBoxBuilder: (
-                BuildContext context,
-                T item,
-                bool isDisabled,
-                bool isSelected,
-              ) {
-                final theme = Theme.of(context);
-                return Padding(
-                  padding: const EdgeInsets.only(right: 13),
-                  child: Icon(
-                    isSelected
-                        ? Icons.check_box_outlined
-                        : Icons.square_outlined,
-                    color: theme.colorScheme.primary,
-                  ),
-                );
-              },
-              searchDelay: Duration.zero,
-              showSearchBox: true,
-              searchFieldProps: TextFieldProps(
-                style: TextStyle(
-                  color: theme.modeCondition(null, Colors.white70),
+          popupProps: MultiSelectionPopupProps.menu(
+            checkBoxBuilder: (
+              BuildContext context,
+              T item,
+              bool isDisabled,
+              bool isSelected,
+            ) {
+              final theme = Theme.of(context);
+              return Padding(
+                padding: const EdgeInsets.only(right: 13),
+                child: Icon(
+                  isSelected ? Icons.check_box_outlined : Icons.square_outlined,
+                  color: theme.colorScheme.primary,
                 ),
-                decoration: InputDecoration(
-                  hintText: '${'search'.tr()}...',
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.shade300),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: theme.colorScheme.primary,
-                      width: 2,
-                    ),
-                  ),
-                ),
+              );
+            },
+            searchDelay: Duration.zero,
+            showSearchBox: true,
+            searchFieldProps: TextFieldProps(
+              style: TextStyle(
+                color: theme.modeCondition(null, Colors.white70),
               ),
-            ),
-            items: (f, p) => items,
-            itemAsString: itemAsString,
-            decoratorProps: const DropDownDecoratorProps(
               decoration: InputDecoration(
-                enabledBorder: InputBorder.none,
+                hintText: '${'search'.tr()}...',
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey.shade300),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: theme.colorScheme.primary,
+                    width: 2,
+                  ),
+                ),
               ),
             ),
-            onSelected: onChanged,
-            dropdownBuilder: dropdownBuilder,
-            selectedItems: selectedItems,
           ),
+          items: (f, p) => items,
+          itemAsString: itemAsString,
+          decoratorProps: DropDownDecoratorProps(
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              filled: true,
+              fillColor: backgroundColor,
+              enabledBorder: border,
+              focusedBorder: border.copyWith(
+                borderSide: BorderSide(
+                  color: theme.colorScheme.primary,
+                  width: 2,
+                ),
+              ),
+              errorBorder: borderError,
+              border: border,
+            ),
+          ),
+          onSelected: onChanged,
+          dropdownBuilder: dropdownBuilder,
+          selectedItems: selectedItems,
         ),
       ],
     );
