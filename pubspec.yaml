@@ -24,7 +24,6 @@ dependencies:
   flutter_bloc: ^9.1.0
   flutter_speed_dial: ^7.0.0
   flutter_svg: ^2.0.5
-  font_awesome_flutter: ^10.7.0
   form_field_validator: ^1.1.0
   gap: ^3.0.1
   glass: ^1.0.2+1

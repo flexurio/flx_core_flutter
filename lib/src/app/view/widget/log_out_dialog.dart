@@ -11,7 +11,7 @@ Future<bool?> showDialogLogout({
       return CardForm(
         popup: true,
         title: 'logout'.tr(),
-        icon: FontAwesomeIcons.triangleExclamation,
+        icon: Icons.warning_amber_rounded,
         actions: [
           Button.action(
             isSecondary: true,

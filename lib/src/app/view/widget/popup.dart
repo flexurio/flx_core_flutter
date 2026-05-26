@@ -176,7 +176,7 @@ class CardConfirmation extends StatelessWidget {
       popup: true,
       danger: danger,
       title: 'are_you_sure'.tr(),
-      icon: FontAwesomeIcons.triangleExclamation,
+      icon: Icons.warning_amber_rounded,
       actions: [
         Button.action(
           permission: null,
@@ -234,7 +234,7 @@ class CardConfirmationAnyAction extends StatelessWidget {
     return CardForm(
       popup: true,
       title: 'are_you_sure'.tr(),
-      icon: FontAwesomeIcons.triangleExclamation,
+      icon: Icons.warning_amber_rounded,
       actions: [
         Button.action(
           permission: null,
@@ -287,7 +287,7 @@ class CardSuccessInfo extends StatelessWidget {
     return CardForm(
       popup: true,
       title: 'information'.tr(),
-      icon: FontAwesomeIcons.info,
+      icon: Icons.info_outline,
       actions: [
         Button.action(
           permission: null,
@@ -363,7 +363,7 @@ class _CardConfirmationWithExplanationState
       child: CardForm(
         popup: true,
         title: 'are_you_sure'.tr(),
-        icon: FontAwesomeIcons.triangleExclamation,
+        icon: Icons.warning_amber_rounded,
         actions: [
           Button.action(
             permission: null,
@@ -434,12 +434,11 @@ class CardSuccessWithData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Sound.alert();
-    final theme = Theme.of(context);
 
     return CardForm(
       popup: true,
       title: title,
-      icon: FontAwesomeIcons.circleCheck,
+      icon: Icons.check_circle_outline,
       actions: [
         Button.action(
           permission: null,

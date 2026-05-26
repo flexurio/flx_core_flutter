@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum DataAction {
   apply('apply', Icons.check, Colors.green),
@@ -59,26 +58,26 @@ enum DataAction {
   delivery('Delivery', Icons.archive, Colors.green),
   deliveryActual('Delivery Actual', Icons.local_shipping, Colors.green),
   disable('disable_button', Icons.clear_rounded, Colors.red),
-  documentReceive('Document Receive', FontAwesomeIcons.check, Colors.redAccent),
-  download('download', FontAwesomeIcons.fileDownload, Colors.orange),
+  documentReceive('Document Receive', Icons.check, Colors.redAccent),
+  download('download', Icons.file_download, Colors.orange),
   duplicate('duplicate', Icons.content_copy_outlined, Colors.green),
   edit('edit', Icons.edit_outlined, Colors.orange),
   editAdditional('edit_additional', Icons.edit, Colors.orange),
   editAnalysis('Edit Analysis', Icons.edit_outlined, Colors.blue),
   editHalalCertificate('edit_halal_certificate', Icons.edit, Colors.green),
   enable('enable_button', Icons.check_rounded, Colors.green),
-  export('Export', FontAwesomeIcons.fileDownload, Colors.orange),
-  exportBatch('export_batch', FontAwesomeIcons.filePdf, Colors.redAccent),
-  exportDocument('Export Document', FontAwesomeIcons.filePdf, Colors.redAccent),
-  exportExcel('export_excel', FontAwesomeIcons.fileExcel, Colors.indigo),
+  export('Export', Icons.file_download, Colors.orange),
+  exportBatch('export_batch', Icons.picture_as_pdf, Colors.redAccent),
+  exportDocument('Export Document', Icons.picture_as_pdf, Colors.redAccent),
+  exportExcel('export_excel', Icons.table_chart, Colors.indigo),
   exportExcelWithoutGrouping(
     'export_excel_without_grouping',
-    FontAwesomeIcons.fileExcel,
+    Icons.table_chart,
     Colors.indigo,
   ),
-  exportJobsheet('export_jobsheet', FontAwesomeIcons.filePdf, Colors.redAccent),
-  exportPdf('export_pdf', FontAwesomeIcons.filePdf, Colors.indigo),
-  exportPdfWithoutTitle('', FontAwesomeIcons.filePdf, Colors.indigo),
+  exportJobsheet('export_jobsheet', Icons.picture_as_pdf, Colors.redAccent),
+  exportPdf('export_pdf', Icons.picture_as_pdf, Colors.indigo),
+  exportPdfWithoutTitle('', Icons.picture_as_pdf, Colors.indigo),
   finish('finish', Icons.done, Colors.green),
   unfinish('unfinish', Icons.cancel, Colors.red),
   hide('hide', Icons.restart_alt, Colors.purple),
@@ -97,14 +96,14 @@ enum DataAction {
   notActive('Not active', Icons.cancel, Colors.red),
   open('open', Icons.replay_outlined, Colors.orange),
   placeOrder('place_order', Icons.add, Colors.green),
-  print('print', FontAwesomeIcons.filePdf, Colors.redAccent),
+  print('print', Icons.picture_as_pdf, Colors.redAccent),
   printDeliveryOrder('print_delivery_order', Icons.print, Colors.orange),
   printInvoice('Print Invoice', Icons.print, Colors.orange),
   printPDF('print_pdf', Icons.print, Colors.orange),
   printBankReceiptPDF('print_bank_receipt', Icons.print, Colors.orange),
   printTollOutDeliveryOrder(
     'Print Toll Out Delivery Order',
-    FontAwesomeIcons.car,
+    Icons.directions_car,
     Colors.green,
   ),
   realization('Realization', Icons.switch_access_shortcut_add, Colors.green),
@@ -124,9 +123,9 @@ enum DataAction {
   retry('Retry', Icons.refresh, Colors.green),
   retest('Retest Date', Icons.check, Colors.green),
   rework('Rework', Icons.restart_alt, Colors.purple),
-  scanQrCode('scan_qr_code', FontAwesomeIcons.qrcode, Colors.indigo),
+  scanQrCode('scan_qr_code', Icons.qr_code, Colors.indigo),
   search('search', Icons.search, Colors.blue),
-  setStandardHour('set_standard_hour', FontAwesomeIcons.clock, Colors.blue),
+  setStandardHour('set_standard_hour', Icons.access_time, Colors.blue),
   submit('submit', Icons.check, Colors.lightBlue),
   ok('ok', Icons.check, Colors.lightBlue),
   undo('undo', Icons.undo, Colors.blueGrey),
@@ -147,13 +146,13 @@ enum DataAction {
   view('view', Icons.remove_red_eye, Colors.blue),
   viewCalendar('View', Icons.calendar_month, Colors.blue),
   viewDetail('view_detail', Icons.list, Colors.blue),
-  viewGroup('View Group', FontAwesomeIcons.layerGroup, Colors.blue),
+  viewGroup('View Group', Icons.layers, Colors.blue),
   viewImage('view_image', Icons.remove_red_eye, Colors.blue),
   viewJournal('view_journal', Icons.list, Colors.blue),
   viewPayment('View Payment', Icons.remove_red_eye, Colors.blue),
   exportMaterialUsageBatch(
     'export Material Usage Batch',
-    FontAwesomeIcons.file,
+    Icons.insert_drive_file,
     Colors.indigo,
   ),
   viewTransactionJournal(
@@ -163,13 +162,13 @@ enum DataAction {
   ),
   exportExcelProductPrice(
     'Export Excel Product Price',
-    FontAwesomeIcons.fileArrowDown,
+    Icons.file_download,
     Colors.orange,
   ),
 
   exportDeliveryOrder(
     'Export Delivery Order',
-    FontAwesomeIcons.car,
+    Icons.directions_car,
     Colors.green,
   ),
 
@@ -194,12 +193,12 @@ enum DataAction {
     Icons.app_registration,
     Colors.blue,
   ),
-  showWorkHour('Show Work Hour', FontAwesomeIcons.clock, Colors.blue),
+  showWorkHour('Show Work Hour', Icons.access_time, Colors.blue),
   showEmployee('Show Employee', Icons.group_outlined, Colors.blue),
   showPrice('Show Price', Icons.point_of_sale, Colors.green),
   showDiscount('Show Discount', Icons.percent, Colors.green),
-  showFormulation('Show Formulation', FontAwesomeIcons.tablets, Colors.blue),
-  showSchedule('Show Schedule', FontAwesomeIcons.calendarDay, Colors.blue);
+  showFormulation('Show Formulation', Icons.medication, Colors.blue),
+  showSchedule('Show Schedule', Icons.calendar_today, Colors.blue);
 
   const DataAction(this._title, this.icon, this.color);
   final String _title;

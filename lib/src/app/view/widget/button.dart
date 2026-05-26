@@ -18,7 +18,7 @@ class BackButtonTitled extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Row(
           children: [
-            const Icon(FontAwesomeIcons.chevronLeft),
+            const Icon(Icons.chevron_left),
             const SizedBox(width: 10),
             Text(title, style: const TextStyle(fontSize: 25)),
           ],

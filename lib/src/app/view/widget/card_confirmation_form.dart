@@ -5,7 +5,6 @@ import 'package:flx_core_flutter/src/app/model/entity.dart';
 import 'package:flx_core_flutter/src/app/model/string.dart';
 import 'package:flx_core_flutter/src/app/view/widget/button.dart';
 import 'package:flx_core_flutter/src/app/view/widget/popup.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 
 class CardConfirmationForm extends StatefulWidget {
@@ -53,7 +52,7 @@ class _CardConfirmationFormState extends State<CardConfirmationForm> {
       child: CardForm(
         popup: true,
         title: 'are_you_sure'.tr(),
-        icon: FontAwesomeIcons.exclamationTriangle,
+        icon: Icons.warning_amber_rounded,
         actions: [
           Button.action(
             permission: null,

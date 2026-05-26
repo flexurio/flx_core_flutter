@@ -85,7 +85,7 @@ class MenuLevel1 extends StatelessWidget {
                       child: Center(
                         child: Column(
                           children: [
-                            FaIcon(menu1.menu[index].icon, size: 15),
+                            Icon(menu1.menu[index].icon, size: 15),
                             const Gap(3),
                             Text(
                               menu1.menu[index].labelShort ??

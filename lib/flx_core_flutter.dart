@@ -1,5 +1,3 @@
-export 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 export 'constant/size.dart';
 export 'features/data_table_set_backend/presentation/data_table_set_backend.dart';
 export 'features/menu/application/menu/menu_bloc.dart';

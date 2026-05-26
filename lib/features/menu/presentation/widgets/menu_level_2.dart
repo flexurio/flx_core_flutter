@@ -43,7 +43,7 @@ ExpansionPanel? buildMenuLevel2({
               child: SizedBox(
                 width: 20,
                 height: 20,
-                child: Center(child: FaIcon(menu2.icon, size: 15)),
+                child: Center(child: Icon(menu2.icon, size: 15)),
               ),
             ),
             const SizedBox(width: 12),
