@@ -124,13 +124,18 @@ class SingleFormPanel extends StatelessWidget {
   }
 
   Widget _buildHeader() {
+    final configuredTitle = titlePage.trim();
+    final title = configuredTitle.isNotEmpty
+        ? configuredTitle
+        : '${action.title} ${entity.title} $suffixText';
+
     return Container(
       padding: const EdgeInsets.symmetric(
         vertical: 12,
         horizontal: 24,
       ),
       child: BackButtonWithTitle(
-        title: '${action.title} ${entity.title} $suffixText',
+        title: title,
         visibleBackButton: visibleBackButton,
         rightWidget: rightWidget,
       ),
