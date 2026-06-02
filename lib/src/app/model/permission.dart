@@ -207,6 +207,8 @@ class Permission {
 
   static String workOrderLeadtimeViewMenu = 'work_order_leadtimes_view_menu';
 
+  static String workOrderViewMenu = 'work_orders_view_menu';
+
   static String userViewMenu = 'user_view_menu';
   static String approvalStructureViewMenu = 'approval_structure_view_menu';
 
