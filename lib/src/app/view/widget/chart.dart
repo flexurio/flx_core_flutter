@@ -73,10 +73,16 @@ class FlxPieChart extends StatelessWidget {
 }
 
 class FlxBarChart extends StatelessWidget {
-  const FlxBarChart({required this.title, super.key, this.dataSource});
+  const FlxBarChart({
+    required this.title,
+    super.key,
+    this.dataSource,
+    this.isHorizontal = false,
+  });
 
   final List<ChartData>? dataSource;
   final String title;
+  final bool isHorizontal;
 
   @override
   Widget build(BuildContext context) {
@@ -90,13 +96,22 @@ class FlxBarChart extends StatelessWidget {
           position: LegendPosition.bottom,
         ),
         series: <CartesianSeries<ChartData, String>>[
-          ColumnSeries<ChartData, String>(
-            dataSource: dataSource,
-            xValueMapper: (data, _) => data.label,
-            yValueMapper: (data, _) => data.value,
-            dataLabelSettings: const DataLabelSettings(isVisible: true),
-            pointColorMapper: (data, _) => data.color,
-          ),
+          if (isHorizontal)
+            BarSeries<ChartData, String>(
+              dataSource: dataSource,
+              xValueMapper: (data, _) => data.label,
+              yValueMapper: (data, _) => data.value,
+              dataLabelSettings: const DataLabelSettings(isVisible: true),
+              pointColorMapper: (data, _) => data.color,
+            )
+          else
+            ColumnSeries<ChartData, String>(
+              dataSource: dataSource,
+              xValueMapper: (data, _) => data.label,
+              yValueMapper: (data, _) => data.value,
+              dataLabelSettings: const DataLabelSettings(isVisible: true),
+              pointColorMapper: (data, _) => data.color,
+            ),
         ],
       ),
     );
