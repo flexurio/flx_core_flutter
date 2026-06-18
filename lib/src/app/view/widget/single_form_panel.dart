@@ -18,6 +18,7 @@ class SingleFormPanel extends StatelessWidget {
     this.padding,
     this.titlePage = '',
     this.rightWidget,
+    this.customWidth,
   });
 
   final DataAction action;
@@ -32,6 +33,7 @@ class SingleFormPanel extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final String titlePage;
   final Widget? rightWidget;
+  final double? customWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class SingleFormPanel extends StatelessWidget {
       child: Center(
         child: Container(
           margin: EdgeInsets.symmetric(vertical: hideHeader ? 0 : 24),
-          width: size.width,
+          width: customWidth ?? size.width,
           decoration: BoxDecoration(
             border: Border.all(
               color: theme.modeCondition(
