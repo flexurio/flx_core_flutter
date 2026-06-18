@@ -73,7 +73,12 @@ class FlxPieChart extends StatelessWidget {
 }
 
 class FlxBarChart extends StatelessWidget {
-  const FlxBarChart({required this.title, super.key, this.dataSource, this.isHorizontal = false});
+  const FlxBarChart({
+    required this.title,
+    super.key,
+    this.dataSource,
+    this.isHorizontal = false,
+  });
 
   final List<ChartData>? dataSource;
   final String title;

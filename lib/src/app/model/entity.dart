@@ -566,4 +566,20 @@ class Entity extends EntityY {
         subtitleX: 'invoice_recap_by_sales_detail_pecial',
         iconPath: 'bill',
       );
+
+  static Entity get productRequestOtc => const Entity(
+        titleX: 'product_request_otc',
+        subtitleX: 'product_request_otc',
+        iconPath: 'product-request',
+      );
+  static Entity get productRequestOtcDetail => const Entity(
+        titleX: 'Product Request OTC Detail',
+        subtitleX: '',
+        iconPath: 'bill',
+      );
+  static Entity get productRequestOtcDistributor => const Entity(
+        titleX: 'product_request_otc_distributor',
+        subtitleX: 'product_request_otc_distributor',
+        iconPath: 'bill',
+      );
 }

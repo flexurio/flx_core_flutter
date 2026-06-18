@@ -49,8 +49,8 @@ class CardForm extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 10),
-        _buildActions(theme),
+        if (actions.isNotEmpty) const SizedBox(height: 10),
+        if (actions.isNotEmpty) _buildActions(theme),
       ],
     );
 
@@ -62,8 +62,15 @@ class CardForm extends StatelessWidget {
         ),
         contentPadding: EdgeInsets.zero,
         children: [
-          SizedBox(
-            width: width,
+          Container(
+            constraints: BoxConstraints(
+              maxWidth: width != null
+                  ? (width! > MediaQuery.of(context).size.width * 0.95
+                      ? MediaQuery.of(context).size.width * 0.95
+                      : width!)
+                  : (MediaQuery.of(context).size.width * 0.9)
+                      .clamp(400.0, 1000.0),
+            ),
             child: body,
           ),
         ],

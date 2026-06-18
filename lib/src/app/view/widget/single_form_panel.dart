@@ -42,7 +42,11 @@ class SingleFormPanel extends StatelessWidget {
       child: Center(
         child: Container(
           margin: EdgeInsets.symmetric(vertical: hideHeader ? 0 : 24),
-          width: customWidth ?? size.width,
+          constraints: BoxConstraints(
+            maxWidth: customWidth ??
+                (MediaQuery.of(context).size.width * 0.9).clamp(600.0, 1400.0),
+          ),
+          width: MediaQuery.of(context).size.width * 0.95,
           decoration: BoxDecoration(
             border: Border.all(
               color: theme.modeCondition(
@@ -169,7 +173,7 @@ class FormAction extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ...children,
-              if (actions != null)
+              if (actions != null && actions!.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(top: 36),
                   child: RowFields(
