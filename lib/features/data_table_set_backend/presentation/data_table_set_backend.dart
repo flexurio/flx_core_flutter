@@ -90,7 +90,8 @@ class DataTableBackend<T> extends StatefulWidget {
   final bool pagination;
 
   /// Jika tidak null -> aktifkan multi-select.
-  /// Saat ada terpilih, widget hasil fungsi ini akan ditampilkan di bawah tabel (di dalam kartu).
+  /// Saat ada terpilih, widget hasil fungsi ini akan ditampilkan
+  /// di bawah tabel (di dalam kartu).
   final Widget? Function(List<T> selected)? actionMultiple;
 
   @override
@@ -98,7 +99,8 @@ class DataTableBackend<T> extends StatefulWidget {
 }
 
 class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
-  /// Menyimpan index baris yang terseleksi pada halaman yang sedang ditampilkan.
+  /// Menyimpan index baris yang terseleksi pada halaman
+  /// yang sedang ditampilkan.
   final Set<int> _selectedRowIndexes = <int>{};
 
   @override
@@ -134,12 +136,16 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
 
         // Kondisi khusus: jika multi-select aktif dan freezeFirst true,
         // maka "bekukan kolom 1 & 2" dengan membuat kolom komposit:
-        // [Checkbox] + [Kolom data pertama] digabung menjadi satu kolom paling kiri.
+        // [Checkbox] + [Kolom data pertama] digabung
+        // menjadi satu kolom paling kiri.
         final freezeTwo = hasMulti && freezeFirst;
 
         // Key untuk memaksa re-render saat mode freeze/multi berubah
         final key = ValueKey(
-          'freezeFirst:$freezeFirst|freezeLast:$freezeLast|hasMulti:$hasMulti|freezeTwo:$freezeTwo',
+          'freezeFirst:$freezeFirst|'
+          'freezeLast:$freezeLast|'
+          'hasMulti:$hasMulti|'
+          'freezeTwo:$freezeTwo',
         );
 
         final screenWidth = constraints.maxWidth == double.infinity
@@ -165,10 +171,10 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
           (sum, col) => sum + (col.widthFlex * flexUnit),
         );
         final totalWidth = freezeTwo
-            ? baseWidth // tidak menambah kolom baru; kolom 1 digabung dengan checkbox
+            ? baseWidth // tidak menambah kolom baru
             : (hasMulti
                 ? baseWidth + checkboxWidth
-                : baseWidth); // tambah checkboxWidth untuk kolom checkbox terpisah
+                : baseWidth); // tambah checkboxWidth untuk kolom terpisah
 
         // Siapkan daftar TableColumn<T> untuk YuhuTable
         final yuhuColumns = <TableColumn<T>>[];
@@ -245,50 +251,50 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
           }
         } else if (hasMulti) {
           // Kolom checkbox terpisah (bukan komposit)
-          yuhuColumns.add(
-            TableColumn<T>(
-              alignment: Alignment.center,
-              width: checkboxWidth,
-              title: '',
-              builder: (data, idx) {
-                final checked = _selectedRowIndexes.contains(idx);
-                return Center(
-                  child: Checkbox(
-                    value: checked,
-                    onChanged: (v) {
-                      setState(() {
-                        if (v ?? false) {
-                          _selectedRowIndexes.add(idx);
-                        } else {
-                          _selectedRowIndexes.remove(idx);
-                        }
-                      });
-                    },
+          yuhuColumns
+            ..add(
+              TableColumn<T>(
+                alignment: Alignment.center,
+                width: checkboxWidth,
+                title: '',
+                builder: (data, idx) {
+                  final checked = _selectedRowIndexes.contains(idx);
+                  return Center(
+                    child: Checkbox(
+                      value: checked,
+                      onChanged: (v) {
+                        setState(() {
+                          if (v ?? false) {
+                            _selectedRowIndexes.add(idx);
+                          } else {
+                            _selectedRowIndexes.remove(idx);
+                          }
+                        });
+                      },
+                    ),
+                  );
+                },
+              ),
+            )
+            // Kolom data aslinya
+            ..addAll(
+              widget.columns.map((col) {
+                return TableColumn<T>(
+                  alignment: col.head.numeric
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
+                  width: col.widthFlex * flexUnit,
+                  flex: col.widthFlex.toInt(),
+                  title: col.head.label,
+                  builder: (data, _) => DefaultTextStyle(
+                    style: theme.textTheme.bodyMedium!,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    child: col.body(data).child,
                   ),
                 );
-              },
-            ),
-          );
-
-          // Kolom data aslinya
-          yuhuColumns.addAll(
-            widget.columns.map((col) {
-              return TableColumn<T>(
-                alignment: col.head.numeric
-                    ? Alignment.centerRight
-                    : Alignment.centerLeft,
-                width: col.widthFlex * flexUnit,
-                flex: col.widthFlex.toInt(),
-                title: col.head.label,
-                builder: (data, _) => DefaultTextStyle(
-                  style: theme.textTheme.bodyMedium!,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  child: col.body(data).child,
-                ),
-              );
-            }).toList(),
-          );
+              }).toList(),
+            );
         } else {
           // Tanpa multi-select
           yuhuColumns.addAll(
@@ -312,8 +318,10 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
         }
 
         // Hitung index sort awal:
-        // - freezeTwo: kolom komposit berada di index 0 dan mewakili kolom data pertama asli.
-        // - hasMulti (tanpa freezeTwo): offset +1 karena kolom 0 adalah checkbox.
+        // - freezeTwo: kolom komposit berada di index 0 dan mewakili kolom
+        //   data pertama asli.
+        // - hasMulti (tanpa freezeTwo): offset +1 karena kolom 0 adalah
+        //   checkbox.
         // - tanpa multi: sama seperti sebelumnya.
         final originalSortIdx =
             _getSortColumnIndex(widget.pageOptions, widget.columns);
@@ -391,7 +399,8 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
                         YuhuTable<T>(
                           key: key,
                           freezeFirstColumn:
-                              freezeFirst, // tetap true -> kolom komposit dibekukan
+                              freezeFirst, // tetap true -> kolom komposit
+                          // dibekukan
                           freezeLastColumn: freezeLast,
                           width: totalWidth,
                           data: widget.pageOptions.data,

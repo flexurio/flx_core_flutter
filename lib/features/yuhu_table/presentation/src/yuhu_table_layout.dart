@@ -1,20 +1,7 @@
 import 'package:flutter/material.dart';
 
 class YuhuTableLayout extends StatelessWidget {
-  final double startWidth;
-  final double endWidth;
-  final double actualScrollWidth;
-  final double totalCenterWidth;
-  final double totalTableWidth;
-  final Widget centerTable;
-  final Widget? leftPinnedTable;
-  final Widget? rightPinnedTable;
-  final ScrollController horizontalScrollController;
-  final BoxDecoration decoration;
-  final Widget? statusIndicator;
-
   const YuhuTableLayout({
-    super.key,
     required this.startWidth,
     required this.endWidth,
     required this.actualScrollWidth,
@@ -26,7 +13,20 @@ class YuhuTableLayout extends StatelessWidget {
     this.leftPinnedTable,
     this.rightPinnedTable,
     this.statusIndicator,
+    super.key,
   });
+
+  final double startWidth;
+  final double endWidth;
+  final double actualScrollWidth;
+  final double totalCenterWidth;
+  final double totalTableWidth;
+  final Widget centerTable;
+  final Widget? leftPinnedTable;
+  final Widget? rightPinnedTable;
+  final ScrollController horizontalScrollController;
+  final BoxDecoration decoration;
+  final Widget? statusIndicator;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,7 @@ class YuhuTableLayout extends StatelessWidget {
                   bottom: 20,
                   left: 0,
                   right: 0,
-                  child: Center(child: statusIndicator!),
+                  child: Center(child: statusIndicator),
                 ),
             ],
           ),

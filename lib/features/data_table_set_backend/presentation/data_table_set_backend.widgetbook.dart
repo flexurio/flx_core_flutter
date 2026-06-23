@@ -349,22 +349,26 @@ Widget dataTableBackendVoucherPayment(BuildContext context) {
               Row(
                 children: [
                   IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.remove_red_eye_outlined),
-                      tooltip: 'View Voucher'),
+                    onPressed: () {},
+                    icon: const Icon(Icons.remove_red_eye_outlined),
+                    tooltip: 'View Voucher',
+                  ),
                   IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.book_outlined),
-                      tooltip: 'View Journal'),
+                    onPressed: () {},
+                    icon: const Icon(Icons.book_outlined),
+                    tooltip: 'View Journal',
+                  ),
                   IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.payment_outlined),
-                      tooltip: 'View Payment'),
+                    onPressed: () {},
+                    icon: const Icon(Icons.payment_outlined),
+                    tooltip: 'View Payment',
+                  ),
                   if (payment.paymentId == null)
                     IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.add_card_outlined),
-                        tooltip: 'Create Payment'),
+                      onPressed: () {},
+                      icon: const Icon(Icons.add_card_outlined),
+                      tooltip: 'Create Payment',
+                    ),
                 ],
               ),
             ),

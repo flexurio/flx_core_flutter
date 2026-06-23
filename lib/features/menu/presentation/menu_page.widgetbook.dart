@@ -10,37 +10,41 @@ Widget menuPageUseCase(BuildContext context) {
       Menu1(
         label: 'Dashboard',
         menu: [
-          Menu2(
-            label: 'Analytics',
-            icon: Icons.analytics,
-            menu: [
-              Menu3(
-                  label: 'Realtime',
-                  home: const Center(child: Text('Realtime Analytics'))),
-              Menu3(
-                  label: 'History',
-                  home: const Center(child: Text('History Analytics'))),
+              Menu2(
+                label: 'Analytics',
+                icon: Icons.analytics,
+                menu: [
+                  Menu3(
+                    label: 'Realtime',
+                    home: const Center(child: Text('Realtime Analytics')),
+                  ),
+                  Menu3(
+                    label: 'History',
+                    home: const Center(child: Text('History Analytics')),
+                  ),
+                ],
+              ),
             ],
           ),
-        ],
-      ),
-      Menu1(
-        label: 'Settings',
-        menu: [
-          Menu2(
-            label: 'System',
-            icon: Icons.settings,
+          Menu1(
+            label: 'Settings',
             menu: [
-              Menu3(
-                  label: 'General',
-                  home: const Center(child: Text('General Settings'))),
-              Menu3(
-                  label: 'Security',
-                  home: const Center(child: Text('Security Settings'))),
+              Menu2(
+                label: 'System',
+                icon: Icons.settings,
+                menu: [
+                  Menu3(
+                    label: 'General',
+                    home: const Center(child: Text('General Settings')),
+                  ),
+                  Menu3(
+                    label: 'Security',
+                    home: const Center(child: Text('Security Settings')),
+                  ),
+                ],
+              ),
             ],
           ),
-        ],
-      ),
     ],
     accountPermissions: [],
     accountName: 'John Doe',
