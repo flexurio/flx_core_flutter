@@ -1,3 +1,4 @@
+// ignore_for_file: unrelated_type_equality_checks
 import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/features/menu/presentation/menu_page.dart';
 import 'package:flx_core_flutter/src/app/model/data_action.dart';
@@ -40,7 +41,8 @@ class DataSetAction<T> extends StatelessWidget {
               sm: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Action Right (Refresh, Create, etc) align to end for standard look, but allowed to wrap
+                  // Action Right (Refresh, Create, etc) align to end
+                  // for standard look, but allowed to wrap
                   Align(
                     alignment: Alignment.centerRight,
                     child: _buildActionRight(),

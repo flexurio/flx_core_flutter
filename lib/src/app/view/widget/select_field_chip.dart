@@ -94,10 +94,11 @@ class SelectChipField<T> extends FormField<String> {
     required this.options,
     required this.onChanged,
     required this.getLabel,
-    this.enabled = true,
+    bool enabled = true,
     super.key,
     super.validator,
   }) : super(
+          enabled: enabled,
           initialValue: controller.text,
           builder: (field) {
             final children = <Widget>[];
@@ -107,12 +108,11 @@ class SelectChipField<T> extends FormField<String> {
                 _Chip(
                   label: label.tr(),
                   selected: label == field.value,
-                  onPressed: enabled
+                  onPressed: field.widget.enabled
                       ? () {
                           field.didChange(label);
                           controller.text = label;
                           onChanged(option);
-                          field.setState(() {});
                         }
                       : null,
                 ),
@@ -146,8 +146,6 @@ class SelectChipField<T> extends FormField<String> {
             );
           },
         );
-  @override
-  final bool enabled;
   final String label;
   final TextEditingController controller;
   final List<T> options;

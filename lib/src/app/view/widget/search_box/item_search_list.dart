@@ -27,7 +27,6 @@ class ItemSearchList extends StatefulWidget {
 
 class _ItemSearchListState extends State<ItemSearchList> {
   late List<Widget> menuList;
-  final _selectedItemIndex = 0;
   late FocusNode _focusNode;
 
   @override
