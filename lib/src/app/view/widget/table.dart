@@ -185,7 +185,7 @@ class _TableHeader<T> extends StatelessWidget {
       );
     }
     return Container(
-      color: primaryColor.withOpacity(.09),
+      color: primaryColor.withValues(alpha: .09),
       padding: const EdgeInsets.all(12),
       child: Align(
         alignment: column.alignment,

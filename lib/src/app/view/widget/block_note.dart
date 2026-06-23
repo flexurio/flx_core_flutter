@@ -25,11 +25,11 @@ class BlockNote extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border(
                 left: BorderSide(
-                  color: mainColor.withOpacity(.5),
+                  color: mainColor.withValues(alpha: .5),
                   width: 4,
                 ),
               ),
-              color: mainColor.withOpacity(.08),
+              color: mainColor.withValues(alpha: .08),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -60,7 +60,7 @@ class PaginationControl<T> extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
             color: theme.modeCondition(
-              Colors.grey.shade300.withOpacity(.8),
+              Colors.grey.shade300.withValues(alpha: .8),
               Colors.white12,
             ),
           ),

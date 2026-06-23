@@ -51,7 +51,7 @@ class Named extends StatelessWidget {
     final textStyle = TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.bold,
-      color: theme.colorScheme.onSurface.withOpacity(0.9),
+      color: theme.colorScheme.onSurface.withValues(alpha: 0.9),
       letterSpacing: 0.5,
     );
 
@@ -151,12 +151,12 @@ class _LogoFallback extends StatelessWidget {
           end: Alignment.bottomRight,
           colors: [
             flavorConfig.color,
-            flavorConfig.color.withOpacity(0.7),
+            flavorConfig.color.withValues(alpha: 0.7),
           ],
         ),
         boxShadow: [
           BoxShadow(
-            color: flavorConfig.color.withOpacity(0.3),
+            color: flavorConfig.color.withValues(alpha: 0.3),
             blurRadius: 8,
             spreadRadius: 1,
             offset: const Offset(0, 2),

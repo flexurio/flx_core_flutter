@@ -129,7 +129,7 @@ class DatePicker extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     final monthCellBackground =
-        isDark ? const Color(0xFF232731) : Colors.blue[100]!.withOpacity(.3);
+        isDark ? const Color(0xFF232731) : Colors.blue[100]!.withValues(alpha: .3);
     final indicatorColor = theme.colorScheme.secondary;
     final highlightColor = theme.colorScheme.primary;
     final cellTextColor = isDark ? Colors.white70 : const Color(0xFF130438);
@@ -164,7 +164,7 @@ class DatePicker extends StatelessWidget {
         }
       },
       initialSelectedDate: initialSelectedDate,
-      rangeSelectionColor: theme.colorScheme.primary.withOpacity(.4),
+      rangeSelectionColor: theme.colorScheme.primary.withValues(alpha: .4),
       monthCellStyle: DateRangePickerMonthCellStyle(
         cellDecoration: _MonthCellDecoration(
           borderColor: Colors.red,
@@ -199,7 +199,7 @@ class DatePicker extends StatelessWidget {
           color: isDark ? const Color(0xFF666479) : const Color(0xffe2d7fe),
         ),
         leadingDatesTextStyle:
-            TextStyle(color: cellTextColor.withOpacity(0.5), fontSize: 14),
+            TextStyle(color: cellTextColor.withValues(alpha: 0.5), fontSize: 14),
       ),
       showNavigationArrow: true,
       todayHighlightColor: highlightColor,

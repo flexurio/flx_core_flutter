@@ -12,7 +12,7 @@ class ChipType extends StatelessWidget {
     return Chip(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       side: BorderSide.none,
-      backgroundColor: type.color.withOpacity(.1),
+      backgroundColor: type.color.withValues(alpha: .1),
       label: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

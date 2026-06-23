@@ -37,11 +37,11 @@ Widget actionsButtonTable(BuildContext context) {
                 color: theme.cardColor,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: theme.dividerColor.withOpacity(0.1),
+                  color: theme.dividerColor.withValues(alpha: 0.1),
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.03),
+                    color: Colors.black.withValues(alpha: 0.03),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -151,9 +151,9 @@ TableRow _buildHeaderRow(BuildContext context) {
     decoration: BoxDecoration(
       color: theme.brightness == Brightness.light
           ? Colors.grey.shade50
-          : Colors.white.withOpacity(0.05),
+          : Colors.white.withValues(alpha: 0.05),
       border: Border(
-        bottom: BorderSide(color: theme.dividerColor.withOpacity(0.1)),
+        bottom: BorderSide(color: theme.dividerColor.withValues(alpha: 0.1)),
       ),
     ),
     children: [
@@ -176,7 +176,7 @@ TableRow _buildRow(
   return TableRow(
     decoration: BoxDecoration(
       border: Border(
-        bottom: BorderSide(color: theme.dividerColor.withOpacity(0.05)),
+        bottom: BorderSide(color: theme.dividerColor.withValues(alpha: 0.05)),
       ),
     ),
     children: [
@@ -197,7 +197,7 @@ TableRow _buildRow(
             Text(
               description,
               style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.textTheme.bodySmall?.color?.withOpacity(0.7),
+                color: theme.textTheme.bodySmall?.color?.withValues(alpha: 0.7),
               ),
             ),
           ],

@@ -16,7 +16,7 @@ void main() async {
     companyAddress: '-',
     apiUrl: '-',
     color: Colors.blue,
-    colorSoft: Colors.blue.withOpacity(0.1),
+    colorSoft: Colors.blue.withValues(alpha: 0.1),
     backgroundLoginPage: '',
     applicationConfig: null,
   );

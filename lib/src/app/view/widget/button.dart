@@ -213,7 +213,7 @@ class IconButtonSmall extends StatelessWidget {
         child: TextButton(
           style: ButtonStyle(
             iconColor: WidgetStateProperty.all(action.color),
-            overlayColor: WidgetStateProperty.all(action.color.withOpacity(.1)),
+            overlayColor: WidgetStateProperty.all(action.color.withValues(alpha: .1)),
           ),
           onPressed: onPressed,
           child: Icon(action.icon),
@@ -279,7 +279,7 @@ class LightButton extends StatelessWidget {
       child: ElevatedButton(
         style: ButtonStyle(
           overlayColor: WidgetStatePropertyAll(
-            actionColor.withOpacity(theme.modeCondition(.08, .03)),
+            actionColor.withValues(alpha: theme.modeCondition(.08, .03)),
           ),
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
@@ -287,7 +287,7 @@ class LightButton extends StatelessWidget {
           padding: WidgetStateProperty.all(
             const EdgeInsets.symmetric(horizontal: 12),
           ),
-          shadowColor: WidgetStateProperty.all(Colors.black.withOpacity(.3)),
+          shadowColor: WidgetStateProperty.all(Colors.black.withValues(alpha: .3)),
           side: noAction
               ? null
               : WidgetStateProperty.all(
@@ -397,7 +397,7 @@ class LightButtonSmall extends StatelessWidget {
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                   ),
                   shadowColor: WidgetStateProperty.all(
-                    Colors.black.withOpacity(.3),
+                    Colors.black.withValues(alpha: .3),
                   ),
                   backgroundColor: WidgetStateProperty.all(
                     noAction ? Colors.grey.shade100 : Colors.transparent,
@@ -489,7 +489,7 @@ class LBS_JANGAN_PAKE_INI_LAGI extends StatelessWidget {
             padding: WidgetStateProperty.all(
               const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
             ),
-            shadowColor: WidgetStateProperty.all(Colors.black.withOpacity(.3)),
+            shadowColor: WidgetStateProperty.all(Colors.black.withValues(alpha: .3)),
             backgroundColor: WidgetStateProperty.all(
               noAction ? Colors.grey.shade100 : Colors.transparent,
             ),
@@ -551,7 +551,7 @@ class DropDownSmallButton extends StatelessWidget {
           side: WidgetStateProperty.all(
             BorderSide(
               color: theme.modeCondition(
-                Colors.grey.shade400.withOpacity(.7),
+                Colors.grey.shade400.withValues(alpha: .7),
                 MyTheme.black16dp,
               ),
             ),
@@ -559,7 +559,7 @@ class DropDownSmallButton extends StatelessWidget {
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
           ),
-          shadowColor: WidgetStateProperty.all(Colors.black.withOpacity(.3)),
+          shadowColor: WidgetStateProperty.all(Colors.black.withValues(alpha: .3)),
           backgroundColor: WidgetStateProperty.all(theme.cardColor),
           foregroundColor: WidgetStateProperty.all(foregroundColor),
         ),
@@ -585,7 +585,7 @@ class DropDownSmallButton extends StatelessWidget {
                   child: Icon(
                     Icons.close_rounded,
                     size: 16,
-                    color: foregroundColor.withOpacity(.6),
+                    color: foregroundColor.withValues(alpha: .6),
                   ),
                 ),
               ),

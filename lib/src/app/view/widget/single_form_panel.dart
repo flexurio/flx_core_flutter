@@ -50,7 +50,7 @@ class SingleFormPanel extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border.all(
               color: theme.modeCondition(
-                Colors.blueGrey.shade100.withOpacity(.5),
+                Colors.blueGrey.shade100.withValues(alpha: .5),
                 Colors.black12,
               ),
             ),

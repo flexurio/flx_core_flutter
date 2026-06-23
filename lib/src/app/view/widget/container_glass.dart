@@ -32,8 +32,8 @@ class ContainerGlass extends StatelessWidget {
         ),
         borderRadius: borderRadius ?? BorderRadius.circular(20),
         color: theme.modeCondition(
-          Colors.white.withOpacity(opacity),
-          Colors.black.withOpacity(.5),
+          Colors.white.withValues(alpha: opacity),
+          Colors.black.withValues(alpha: .5),
         ),
       ),
       padding: padding,

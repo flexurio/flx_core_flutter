@@ -235,7 +235,7 @@ class _HierarchyDynamicTableState<T, ID>
             color: theme.modeCondition(Colors.white, theme.cardColor),
             border: Border.all(
               color: theme.modeCondition(
-                Colors.blueGrey.shade100.withOpacity(.5),
+                Colors.blueGrey.shade100.withValues(alpha: .5),
                 Colors.black12,
               ),
             ),
@@ -377,7 +377,7 @@ class _HierarchyDynamicTableState<T, ID>
           color: isParent
               ? theme.modeCondition(
                   Colors.grey.shade50,
-                  Colors.white.withOpacity(0.02),
+                  Colors.white.withValues(alpha: 0.02),
                 )
               : null,
         ),
@@ -545,7 +545,7 @@ class _HierarchyDynamicTableState<T, ID>
         color: isParent
             ? theme.modeCondition(
                 Colors.grey.shade50,
-                Colors.white.withOpacity(0.02),
+                Colors.white.withValues(alpha: 0.02),
               )
             : null,
       ),
@@ -645,7 +645,7 @@ class _HierarchyDynamicTableState<T, ID>
         color: isParent
             ? theme.modeCondition(
                 Colors.grey.shade50,
-                Colors.white.withOpacity(0.02),
+                Colors.white.withValues(alpha: 0.02),
               )
             : null,
       ),
