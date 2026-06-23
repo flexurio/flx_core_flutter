@@ -10,13 +10,13 @@ void main() {
 
       const customWidth = 1100.0;
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: SingleFormPanel(
               customWidth: customWidth,
               action: DataAction.create,
-              entity: const Entity(titleX: 'test', subtitleX: 'test', iconPath: ''),
-              children: const [Text('Content')],
+              entity: Entity(titleX: 'test', subtitleX: 'test', iconPath: ''),
+              children: [Text('Content')],
             ),
           ),
         ),
@@ -35,17 +35,19 @@ void main() {
       addTearDown(tester.view.resetPhysicalSize);
     });
 
-    testWidgets('SingleFormPanel should use dynamic default width on large screens', (tester) async {
+    testWidgets(
+        'SingleFormPanel should use dynamic default width on large screens',
+        (tester) async {
       tester.view.physicalSize = const Size(2000, 1000);
       tester.view.devicePixelRatio = 1.0;
 
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: SingleFormPanel(
               action: DataAction.create,
-              entity: const Entity(titleX: 'test', subtitleX: 'test', iconPath: ''),
-              children: const [Text('Content')],
+              entity: Entity(titleX: 'test', subtitleX: 'test', iconPath: ''),
+              children: [Text('Content')],
             ),
           ),
         ),
@@ -64,7 +66,9 @@ void main() {
       addTearDown(tester.view.resetPhysicalSize);
     });
 
-    testWidgets('CardForm (popup) should respect width but cap at screen size', (tester) async {
+    testWidgets(
+        'CardForm (popup) should respect width but cap at screen size',
+        (tester) async {
       tester.view.physicalSize = const Size(500, 1000);
       tester.view.devicePixelRatio = 1.0;
 
