@@ -17,6 +17,7 @@ void main() {
 
     test('format should return UTC time for patterns containing Z', () {
       final formatter = FlxDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
       // We check if the result matches the manually formatted UTC date
       // to avoid hardcoding the offset
       final result = formatter.format(baseDate);

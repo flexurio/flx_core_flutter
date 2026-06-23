@@ -211,13 +211,13 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     final hasFlex = entries.any((e) => e.$2.flex != null);
     final shouldExpand = widget.expand && !isPinned && availableWidth != null;
 
-    
     if (!isPinned && widget.onSelectChanged != null) {
       columnWidths[0] = const FixedColumnWidth(80);
     }
 
     for (var i = 0; i < entries.length; i++) {
-      final columnIndex = widget.onSelectChanged != null && !isPinned ? i + 1 : i;
+      final columnIndex =
+          widget.onSelectChanged != null && !isPinned ? i + 1 : i;
       final index = entries[i].$1;
       final column = entries[i].$2;
       final width = _controller.columnWidths[index] ?? column.width ?? 100.0;
@@ -236,7 +236,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       }
     }
 
-    final List<Widget> headers = [];
+    final headers = <Widget>[];
 
     if (!isPinned && widget.onSelectChanged != null) {
       headers.add(
@@ -283,7 +283,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
               },
         onDrop: (fromIndex) => _controller.reorderColumns(fromIndex, index),
       );
-    }).toList());
+    }).toList(),);
 
 
 
@@ -360,4 +360,3 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     );
   }
 }
-
