@@ -190,7 +190,7 @@ class _PopUpDialogProfile extends StatelessWidget {
           label: 'Log out',
           onTap: () async {
             final logout = await showDialogLogout(context: context);
-            if (logout ?? false) {
+            if ((logout ?? false) && context.mounted) {
               onLogout();
               Navigator.pop(context);
             }

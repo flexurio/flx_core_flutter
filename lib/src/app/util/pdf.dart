@@ -375,7 +375,7 @@ Table simpleTablePdf<T>({
   required List<T> data,
   required List<PColumn<T>> columns,
 }) {
-  final primaryColor = PdfColor.fromInt(flavorConfig.color.value);
+  final primaryColor = PdfColor.fromInt(flavorConfig.color.toARGB32());
   const paddingRow = EdgeInsets.symmetric(horizontal: 6, vertical: 2);
   final footer = <Widget>[
     for (final column in columns)
@@ -840,7 +840,7 @@ Future<MultiPage> pdfTemplate({
           height: 180,
           width: 180,
           decoration: BoxDecoration(
-            color: PdfColor.fromInt(flavorConfig.color.lighten(.56).value),
+            color: PdfColor.fromInt(flavorConfig.color.lighten(.56).toARGB32()),
             shape: BoxShape.circle,
           ),
         ),
