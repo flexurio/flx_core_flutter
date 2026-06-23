@@ -1,5 +1,5 @@
-import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
@@ -38,7 +38,7 @@ class _SalesOrderDetailTableExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<_SalesOrderDetail> data = [
+    final data = [
       _SalesOrderDetail(
         productName: 'Amoxicillin 500mg',
         unit: 'STRIP',
@@ -84,8 +84,9 @@ class _SalesOrderDetailTableExample extends StatelessWidget {
                 columns: [
                   TableColumn(
                     width: 400,
-                    flex:
-                        1, // At least one column must have flex to prevent equal distribution
+                    // At least one column must have flex to prevent equal
+                    // distribution:
+                    flex: 1,
                     title: 'Product Name',
                     builder: (detail, _) => Text(detail.productName),
                   ),
@@ -104,13 +105,15 @@ class _SalesOrderDetailTableExample extends StatelessWidget {
                     title: 'Expired Date',
                     builder: (detail, _) {
                       final isNearExpiration = detail.expiredDate.isBefore(
-                          DateTime.now().add(const Duration(days: 365)));
+                        DateTime.now().add(const Duration(days: 365)),
+                      );
                       return Tooltip(
                         message: isNearExpiration ? 'Near Expiration' : '',
                         child: Text(
                           DateFormat('yyyy-MM-dd').format(detail.expiredDate),
                           style: TextStyle(
-                              color: isNearExpiration ? Colors.red : null),
+                            color: isNearExpiration ? Colors.red : null,
+                          ),
                         ),
                       );
                     },
