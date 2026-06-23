@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
 
 Future<void> run({
-  required FlavorConfig config,
+  required FlavorConfig<dynamic> config,
   required Widget app,
   required void Function() initialized,
 }) async {

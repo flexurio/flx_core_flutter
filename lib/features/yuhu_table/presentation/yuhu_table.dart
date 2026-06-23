@@ -211,7 +211,6 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     final hasFlex = entries.any((e) => e.$2.flex != null);
     final shouldExpand = widget.expand && !isPinned && availableWidth != null;
 
-    final isSmall = MediaQuery.sizeOf(context).width < 1000;
     
     if (!isPinned && widget.onSelectChanged != null) {
       columnWidths[0] = const FixedColumnWidth(80);

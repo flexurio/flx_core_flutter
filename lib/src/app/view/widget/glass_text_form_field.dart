@@ -39,7 +39,7 @@ class GlassTextFormField extends FormField<String> {
                           ),
                           child: TextField(
                             onChanged: (value) {
-                              field.setValue(value);
+                              field.didChange(value);
                             },
                             maxLines: maxLines,
                             controller: controller,

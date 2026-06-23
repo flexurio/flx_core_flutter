@@ -40,7 +40,8 @@ class DataSetAction<T> extends StatelessWidget {
               sm: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Action Right (Refresh, Create, etc) align to end for standard look, but allowed to wrap
+                  // Action Right (Refresh, Create, etc) align to end
+                  // for standard look, but allowed to wrap
                   Align(
                     alignment: Alignment.centerRight,
                     child: _buildActionRight(),
