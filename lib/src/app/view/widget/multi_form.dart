@@ -75,10 +75,10 @@ class _TimeLine extends StatelessWidget {
           isFirst: i == 0,
           isLast: i == itemsLength - 1,
           afterLineStyle: LineStyle(
-            color: i < value ? secondaryColor.withOpacity(.3) : lineColor,
+            color: i < value ? secondaryColor.withValues(alpha: .3) : lineColor,
           ),
           beforeLineStyle: LineStyle(
-            color: i <= value ? secondaryColor.withOpacity(.3) : lineColor,
+            color: i <= value ? secondaryColor.withValues(alpha: .3) : lineColor,
           ),
           indicatorStyle: IndicatorStyle(
             height: 30,

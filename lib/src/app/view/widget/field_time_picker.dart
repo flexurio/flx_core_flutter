@@ -62,7 +62,7 @@ class _FieldTimePickerState extends State<FieldTimePicker> {
             colorScheme: ColorScheme.light(
               primary: primaryColor,
               surfaceTint: Colors.white,
-              secondary: primaryColor.withOpacity(0.4),
+              secondary: primaryColor.withValues(alpha: 0.4),
             ),
           ),
           child: child!,
@@ -71,6 +71,7 @@ class _FieldTimePickerState extends State<FieldTimePicker> {
     );
 
     if (selectedDate != null) {
+      if (!mounted) return;
       final selectedTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.fromDateTime(
@@ -82,7 +83,7 @@ class _FieldTimePickerState extends State<FieldTimePicker> {
               colorScheme: ColorScheme.light(
                 primary: primaryColor,
                 surfaceTint: Colors.white,
-                secondary: primaryColor.withOpacity(0.4),
+                secondary: primaryColor.withValues(alpha: 0.4),
               ),
             ),
             child: child!,

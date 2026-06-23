@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
-import 'package:flx_core_flutter/src/app/view/widget/f_drop_down/f_drop_down_search_multiple.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(

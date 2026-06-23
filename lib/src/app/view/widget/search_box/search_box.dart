@@ -112,7 +112,7 @@ class SearchBox extends StatelessWidget {
           hintText: '${'type_here_to_search'.tr()} ...',
           hintStyle: TextStyle(
             color: theme.textTheme.bodyMedium?.color
-                ?.withOpacity(theme.modeCondition(.7, .3)),
+                ?.withValues(alpha: theme.modeCondition(.7, .3)),
           ),
           border: InputBorder.none,
         ),

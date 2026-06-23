@@ -62,7 +62,7 @@ class _FieldDateWithMaskedTimeState extends State<FieldDateWithMaskedTime> {
             colorScheme: ColorScheme.light(
               primary: primaryColor,
               surfaceTint: Colors.white,
-              secondary: primaryColor.withOpacity(0.4),
+              secondary: primaryColor.withValues(alpha: 0.4),
             ),
           ),
           child: child!,

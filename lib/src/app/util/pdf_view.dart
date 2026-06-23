@@ -78,7 +78,7 @@ Future<void> showDialogViewPDF({
                           controller: viewerController,
                           params: PdfViewerParams(
                             enableTextSelection: true,
-                            matchTextColor: Colors.yellow.withOpacity(0.4),
+                            matchTextColor: Colors.yellow.withValues(alpha: 0.4),
                             pagePaintCallbacks: [
                               textSearcher.pageTextMatchPaintCallback,
                             ],
