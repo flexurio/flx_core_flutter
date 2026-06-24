@@ -11,7 +11,7 @@ class TColumn<T> {
 
   final String title;
   final bool numeric;
-  final String Function(T data, int index) builder;
+  final Object? Function(T data, int index) builder;
 }
 
 List<int> simpleExcel<T>({
@@ -54,10 +54,34 @@ List<int> simpleExcel<T>({
     for (var col = 0; col < columnsCount; col++) {
       final column = columns[col];
       final cell = sheet.getRangeByIndex(row + 2, col + 1)
-        ..setValue(column.builder(item, row))
         ..cellStyle.backColorRgb = (row + 2).isEven
             ? primaryColor.lighten(.25)
             : primaryColor.lighten(.3);
+
+      final dynamic value = column.builder(item, row);
+      if (value is num) {
+        cell.setNumber(value.toDouble());
+      } else if (value is String) {
+        if (column.numeric) {
+          final parsed = double.tryParse(value);
+          if (parsed != null) {
+            cell.setNumber(parsed);
+          } else {
+            cell.setText(value);
+          }
+        } else {
+          cell.setText(value);
+        }
+      } else if (value is DateTime) {
+        cell.setDateTime(value);
+      } else if (value is bool) {
+        cell.setValue(value);
+      } else if (value == null) {
+        cell.setText('');
+      } else {
+        cell.setValue(value);
+      }
+
       if (columns[col].numeric) {
         cell.cellStyle.hAlign = HAlignType.right;
       }
@@ -96,7 +120,7 @@ List<int> generalXlsx(
         numeric: numeric,
         title: field.replaceAll('_', ' ').toUpperCase(),
         builder: (data, index) => data.containsKey(field)
-            ? (data[field]?.toString() ?? '-')
+            ? (data[field] ?? '-')
             : 'Error: Field "$field" not found',
       ),
     );
