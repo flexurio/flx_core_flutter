@@ -41,7 +41,10 @@ class SingleFormPanel extends StatelessWidget {
     return SingleChildScrollView(
       child: Center(
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: hideHeader ? 0 : 24),
+          margin: EdgeInsets.symmetric(
+            vertical: hideHeader ? 0 : 24,
+            horizontal: 24,
+          ),
           constraints: BoxConstraints(
             maxWidth: customWidth ??
                 (MediaQuery.of(context).size.width * 0.9).clamp(600.0, 1400.0),
