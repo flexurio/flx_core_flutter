@@ -53,16 +53,16 @@ Future<Page> pdfGeneral({
               );
               if (regex.hasMatch(value)) {
                 try {
-                  value = DateFormat.LLLL(DateTime.parse(value));
+                  value = DateFormat.LLLL().format(DateTime.parse(value));
                 } catch (e) {
                   value = 'Invalid date';
                 }
               }
             }
+            final displayString = value?.toString() ?? '';
             return PColumnBody<Map<String, dynamic>>(
               numeric: isNum,
-              contentBuilder: (data, index) =>
-                  isNum ? value.toString() : ((value as String?) ?? ''),
+              contentBuilder: (data, index) => displayString,
             );
           },
         ).toList(),
