@@ -821,6 +821,7 @@ Future<MultiPage> pdfTemplate({
   String? qrCode,
   double paddingHorizontal = 36,
   bool isTitleFirst = false,
+  bool isHideFooter = false,
 }) async {
   final (companyLogo, companyLogoNamed) = await getCompanyLogoPdf();
   return MultiPage(
@@ -867,12 +868,14 @@ Future<MultiPage> pdfTemplate({
         paddingHorizontal: paddingHorizontal,
       );
     },
-    footer: (context) => footerPdf(
-      context: context,
-      printedBy: printedBy,
-      footNote: footerNote,
-      paddingHorizontal: paddingHorizontal,
-    ),
+    footer: isHideFooter
+        ? null
+        : (context) => footerPdf(
+              context: context,
+              printedBy: printedBy,
+              footNote: footerNote,
+              paddingHorizontal: paddingHorizontal,
+            ),
     build: build,
   );
 }
