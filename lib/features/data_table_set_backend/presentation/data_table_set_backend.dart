@@ -75,6 +75,8 @@ class DataTableBackend<T> extends StatefulWidget {
     this.freezeLastColumn = false,
     this.pagination = true,
     this.actionMultiple,
+    this.headerColor,
+    this.stripedColor,
     super.key,
   });
 
@@ -88,6 +90,8 @@ class DataTableBackend<T> extends StatefulWidget {
   final bool freezeFirstColumn;
   final bool freezeLastColumn;
   final bool pagination;
+  final Color? headerColor;
+  final Color? stripedColor;
 
   /// Jika tidak null -> aktifkan multi-select.
   /// Saat ada terpilih, widget hasil fungsi ini akan ditampilkan
@@ -414,6 +418,8 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
                             freezeTwo,
                           ),
                           columns: yuhuColumns,
+                          headerColor: widget.headerColor,
+                          stripedColor: widget.stripedColor,
                         ),
                         if (multipleActionWidget != null)
                           Container(

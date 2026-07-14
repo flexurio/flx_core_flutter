@@ -30,6 +30,8 @@ class YuhuTable<T> extends StatefulWidget {
     this.freezeLastColumn = false,
     this.expand = true,
     this.disableModify = false,
+    this.headerColor,
+    this.stripedColor,
   });
 
   final List<T> data;
@@ -47,6 +49,8 @@ class YuhuTable<T> extends StatefulWidget {
   final bool freezeLastColumn;
   final bool expand;
   final bool disableModify;
+  final Color? headerColor;
+  final Color? stripedColor;
 
   @override
   State<YuhuTable<T>> createState() => _YuhuTableState<T>();
@@ -100,7 +104,11 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final style = YuhuTableStyle(context);
+    final style = YuhuTableStyle(
+      context,
+      customHeaderColor: widget.headerColor,
+      customStripedColor: widget.stripedColor,
+    );
 
     return ScreenIdentifierBuilder(
       builder: (context, screenIdentifier) {

@@ -5,17 +5,24 @@ import 'package:flx_core_flutter/src/app/util/theme.dart';
 class YuhuTableStyle {
   final ThemeData theme;
   final BuildContext context;
+  final Color? customHeaderColor;
+  final Color? customStripedColor;
 
-  YuhuTableStyle(this.context) : theme = Theme.of(context);
+  YuhuTableStyle(
+    this.context, {
+    this.customHeaderColor,
+    this.customStripedColor,
+  }) : theme = Theme.of(context);
 
   BorderSide get borderSide => BorderSide(
         color: theme.dividerColor.withValues(alpha: 1),
       );
 
   BoxDecoration get headerDecoration => BoxDecoration(
-        color: theme.brightness == Brightness.dark
-            ? const Color(0xFF1E293B) // Slate navy for dark mode header
-            : const Color(0xFFF1F5F9), // Soft grey-blue for light mode
+        color: customHeaderColor ??
+            (theme.brightness == Brightness.dark
+                ? theme.colorScheme.primary.withValues(alpha: .15)
+                : theme.colorScheme.primary.withValues(alpha: .08)),
         border: Border(
           bottom: BorderSide(
             color: theme.colorScheme.primary.withValues(alpha: .2),
@@ -33,9 +40,10 @@ class YuhuTableStyle {
   }
 
   Color get stripedColor {
-    return theme.brightness == Brightness.dark
-        ? theme.cardColor.lighten(.02)
-        : const Color(0xFFF9FAFB);
+    return customStripedColor ??
+        (theme.brightness == Brightness.dark
+            ? theme.cardColor.lighten(.02)
+            : const Color(0xFFF9FAFB));
   }
 
   BoxDecoration get containerDecoration => BoxDecoration(
