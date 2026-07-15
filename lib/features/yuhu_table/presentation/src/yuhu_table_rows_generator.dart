@@ -42,6 +42,10 @@ class YuhuTableRowsGenerator<T> {
             showRightBorder: true,
             backgroundColor:
                 columnColors[entries[i].$1] ?? entries[i].$2.backgroundColor,
+            // Let columns whose child manages its own padding fill edge-to-edge.
+            padding: entries[i].$2.zeroPadding
+                ? EdgeInsets.zero
+                : const EdgeInsets.symmetric(horizontal: 12),
             child: entries[i].$2.builder(data[rowIndex], rowIndex),
           ),
         );
@@ -86,6 +90,9 @@ class YuhuTableRowsGenerator<T> {
                 showRightBorder: true,
                 backgroundColor: columnColors[entries[i].$1] ??
                     entries[i].$2.backgroundColor,
+                padding: entries[i].$2.zeroPadding
+                    ? EdgeInsets.zero
+                    : const EdgeInsets.symmetric(horizontal: 12),
                 child: Container(),
               ),
             );

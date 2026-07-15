@@ -8,6 +8,10 @@ class TableData extends StatelessWidget {
     required this.borderSide,
     this.showRightBorder = false,
     this.backgroundColor,
+    // Defaults to the original 12 px horizontal padding.
+    // Pass EdgeInsets.zero for cells whose child manages its own padding
+    // (e.g. full-cell background-color containers).
+    this.padding = const EdgeInsets.symmetric(horizontal: 12),
     super.key,
   });
 
@@ -17,6 +21,7 @@ class TableData extends StatelessWidget {
   final BorderSide borderSide;
   final bool showRightBorder;
   final Color? backgroundColor;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +34,7 @@ class TableData extends StatelessWidget {
           right: showRightBorder ? borderSide : BorderSide.none,
         ),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      padding: padding,
       child: Align(
         alignment: alignment,
         child: child,

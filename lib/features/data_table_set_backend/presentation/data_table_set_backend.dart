@@ -28,12 +28,16 @@ class DTColumn<T> {
     required this.body,
     required this.widthFlex,
     this.text,
+    // When true the cell's child manages its own horizontal padding and the
+    // YuhuTable wrapper padding is zeroed out so backgrounds fill edge-to-edge.
+    this.zeroPadding = false,
   });
 
   final DTHead<T> head;
   final double widthFlex;
   final DataCell Function(T) body;
   final Widget? text;
+  final bool zeroPadding;
 }
 
 class DTSource<T> extends DataTableSource {
@@ -244,6 +248,7 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
                 width: col.widthFlex * flexUnit,
                 flex: col.widthFlex.toInt(),
                 title: col.head.label,
+                zeroPadding: col.zeroPadding,
                 builder: (data, _) => DefaultTextStyle(
                   style: theme.textTheme.bodyMedium!,
                   maxLines: 1,
@@ -290,6 +295,7 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
                   width: col.widthFlex * flexUnit,
                   flex: col.widthFlex.toInt(),
                   title: col.head.label,
+                  zeroPadding: col.zeroPadding,
                   builder: (data, _) => DefaultTextStyle(
                     style: theme.textTheme.bodyMedium!,
                     maxLines: 1,
@@ -310,6 +316,7 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
                 width: col.widthFlex * flexUnit,
                 flex: col.widthFlex.toInt(),
                 title: col.head.label,
+                zeroPadding: col.zeroPadding,
                 builder: (data, _) => DefaultTextStyle(
                   style: theme.textTheme.bodyMedium!,
                   maxLines: 1,
