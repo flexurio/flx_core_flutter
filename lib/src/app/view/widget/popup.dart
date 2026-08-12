@@ -14,6 +14,8 @@ class CardForm extends StatelessWidget {
     this.popup = false,
     this.danger = false,
     this.width,
+    this.showCloseButton = true,
+    this.onClose,
   });
 
   final String title;
@@ -23,6 +25,8 @@ class CardForm extends StatelessWidget {
   final bool popup;
   final bool danger;
   final double? width;
+  final bool? showCloseButton;
+  final VoidCallback? onClose;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +41,7 @@ class CardForm extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              _buildTitle(),
+              _buildTitle(context),
               const SizedBox(height: 20),
               DefaultTextStyle(
                 style: theme.textTheme.bodyMedium!.copyWith(
@@ -101,19 +105,35 @@ class CardForm extends StatelessWidget {
     );
   }
 
-  Widget _buildTitle() {
+  Widget _buildTitle(BuildContext context) {
+    final isCloseVisible = popup || (showCloseButton ?? true);
     return Row(
       children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: danger ? Colors.white : null,
+        Expanded(
+          child: Text(
+            title,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: danger ? Colors.white : null,
+            ),
           ),
         ),
         const Spacer(),
         Icon(icon, color: danger ? Colors.white : const Color(0XFFAFABBC)),
+        if (isCloseVisible) ...[
+          const SizedBox(width: 8),
+          IconButton(
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+            icon: Icon(
+              Icons.close,
+              color: danger ? Colors.white : const Color(0XFFAFABBC),
+            ),
+            onPressed: onClose ?? () => Navigator.maybePop(context),
+            tooltip: 'Close',
+          )
+        ]
       ],
     );
   }

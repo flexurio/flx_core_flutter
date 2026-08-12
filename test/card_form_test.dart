@@ -41,6 +41,48 @@ void main() {
       expect(find.text('Action 1'), findsOneWidget);
       expect(find.byType(Row), findsNWidgets(2)); // Title Row and Actions Row
     });
+
+    testWidgets('should show close button X when popup is true',
+        (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: CardForm(
+              popup: true,
+              title: 'Test Popup',
+              icon: Icons.info,
+              actions: [],
+              child: Text('Content'),
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byIcon(Icons.close), findsOneWidget);
+    });
+
+    testWidgets('should call onClose callback when close button X is tapped',
+        (tester) async {
+      var closed = false;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: CardForm(
+              popup: true,
+              title: 'Test Popup',
+              icon: Icons.info,
+              actions: const [],
+              onClose: () => closed = true,
+              child: const Text('Content'),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.byIcon(Icons.close));
+      await tester.pump();
+      expect(closed, isTrue);
+    });
     group('SingleFormPanel Tests', () {
       testWidgets('should hide actions row if actions list is empty',
           (tester) async {
