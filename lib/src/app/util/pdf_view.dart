@@ -10,211 +10,251 @@ Future<void> showDialogViewPDF({
   required List<Widget> actions,
   required String fileName,
 }) async {
-  final viewerController = PdfViewerController();
-
-  final textSearcher = PdfTextSearcher(viewerController);
-  final searchTextController = TextEditingController();
-
-  var showSearchBar = false;
-  var searchListenerAttached = false;
-
   await showDialog<void>(
     context: context,
     builder: (BuildContext dialogContext) {
-      final size = MediaQuery.of(dialogContext).size;
+      return _PdfViewerDialog(
+        pdfData: pdfData,
+        fileName: fileName,
+        actions: actions,
+      );
+    },
+  );
+}
 
-      return StatefulBuilder(
-        builder: (context, setState) {
-          if (!searchListenerAttached) {
-            textSearcher.addListener(() {
-              setState(() {});
-            });
-            searchListenerAttached = true;
-          }
+class _PdfViewerDialog extends StatefulWidget {
+  const _PdfViewerDialog({
+    required this.pdfData,
+    required this.fileName,
+    required this.actions,
+  });
 
-          Future<void> doSearch() async {
-            final query = searchTextController.text.trim();
-            if (query.isEmpty) {
-              textSearcher.resetTextSearch();
-              return;
-            }
-            textSearcher.startTextSearch(
-              query,
-            );
-          }
+  final Uint8List pdfData;
+  final String fileName;
+  final List<Widget> actions;
 
-          Future<void> onDownloadPressed() async {
-            final name = fileName.endsWith('.pdf') ? fileName : '$fileName.pdf';
-            await download(
-              Stream.fromIterable(pdfData),
-              name,
-            );
-          }
+  @override
+  State<_PdfViewerDialog> createState() => _PdfViewerDialogState();
+}
 
-          Future<void> onPrintPressed() async {
-            await Printing.layoutPdf(
-              onLayout: (_) async => pdfData,
-              name: fileName,
-            );
-          }
+class _PdfViewerDialogState extends State<_PdfViewerDialog> {
+  late final PdfViewerController _viewerController;
+  final TextEditingController _searchTextController = TextEditingController();
+  PdfTextSearcher? _textSearcher;
+  bool _showSearchBar = false;
 
-          final hasMatches = textSearcher.hasMatches;
-          final currentIndex = (textSearcher.currentIndex ?? 0) + 1;
-          final totalMatches = textSearcher.matches.length;
+  @override
+  void initState() {
+    super.initState();
+    _viewerController = PdfViewerController();
+  }
 
-          return Dialog(
-            backgroundColor: Colors.transparent,
-            insetPadding: const EdgeInsets.all(16),
-            child: Center(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: 1000,
-                    maxHeight: size.height * 0.9,
+  @override
+  void dispose() {
+    _searchTextController.dispose();
+    _textSearcher?.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  Future<void> _doSearch() async {
+    final query = _searchTextController.text.trim();
+    if (query.isEmpty) {
+      _textSearcher?.resetTextSearch();
+      return;
+    }
+    _textSearcher?.startTextSearch(query);
+  }
+
+  Future<void> _onDownloadPressed() async {
+    final name = widget.fileName.endsWith('.pdf')
+        ? widget.fileName
+        : '${widget.fileName}.pdf';
+    await download(
+      Stream.fromIterable(widget.pdfData),
+      name,
+    );
+  }
+
+  Future<void> _onPrintPressed() async {
+    await Printing.layoutPdf(
+      onLayout: (_) async => widget.pdfData,
+      name: widget.fileName,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final hasMatches = _textSearcher?.hasMatches ?? false;
+    final currentIndex = (_textSearcher?.currentIndex ?? 0) + 1;
+    final totalMatches = _textSearcher?.matches.length ?? 0;
+
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: const EdgeInsets.all(16),
+      child: Center(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 1000,
+              maxHeight: size.height * 0.9,
+            ),
+            child: Stack(
+              children: [
+                // Area PDF
+                Positioned.fill(
+                  child: PdfViewer.data(
+                    widget.pdfData,
+                    sourceName: widget.fileName,
+                    controller: _viewerController,
+                    params: PdfViewerParams(
+                      onViewerReady: (document, controller) {
+                        _textSearcher?.dispose();
+                        _textSearcher = PdfTextSearcher(controller)
+                          ..addListener(_onSearchChanged);
+                        if (mounted) {
+                          setState(() {});
+                        }
+                      },
+                      textSelectionParams: const PdfTextSelectionParams(),
+                      matchTextColor:
+                          Colors.yellow.withValues(alpha: 0.4),
+                      pagePaintCallbacks: [
+                        (canvas, pageRect, page) {
+                          _textSearcher?.pageTextMatchPaintCallback(
+                            canvas,
+                            pageRect,
+                            page,
+                          );
+                        },
+                      ],
+                    ),
                   ),
-                  child: Stack(
+                ),
+
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: Material(
+                    color: Colors.black54,
+                    shape: const CircleBorder(),
+                    child: IconButton(
+                      tooltip: 'Tutup',
+                      icon: const Icon(
+                        Icons.close,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                ),
+
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Area PDF
-                      Positioned.fill(
-                        child: PdfViewer.data(
-                          pdfData,
-                          sourceName: fileName,
-                          controller: viewerController,
-                          params: PdfViewerParams(
-                            textSelectionParams:
-                                const PdfTextSelectionParams(),
-                            matchTextColor:
-                                Colors.yellow.withValues(alpha: 0.4),
-                            pagePaintCallbacks: [
-                              textSearcher.pageTextMatchPaintCallback,
+                      if (_showSearchBar)
+                        Container(
+                          color: const Color(0xFFEEE8F8),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _searchTextController,
+                                  decoration: const InputDecoration(
+                                    isDense: true,
+                                    hintText: 'Cari teks di PDF...',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  textInputAction: TextInputAction.search,
+                                  onSubmitted: (_) => _doSearch(),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              // Info jumlah match
+                              if (hasMatches)
+                                Text('$currentIndex / $totalMatches'),
+                              const SizedBox(width: 8),
+                              // Prev / Next match
+                              IconButton(
+                                tooltip: 'Prev match',
+                                icon: const Icon(Icons.keyboard_arrow_up),
+                                onPressed: hasMatches
+                                    ? () async {
+                                        await _textSearcher?.goToPrevMatch();
+                                      }
+                                    : null,
+                              ),
+                              IconButton(
+                                tooltip: 'Next match',
+                                icon: const Icon(Icons.keyboard_arrow_down),
+                                onPressed: hasMatches
+                                    ? () async {
+                                        await _textSearcher?.goToNextMatch();
+                                      }
+                                    : null,
+                              ),
+                              IconButton(
+                                tooltip: 'Clear search',
+                                icon: const Icon(Icons.clear),
+                                onPressed: () {
+                                  _searchTextController.clear();
+                                  _textSearcher?.resetTextSearch();
+                                  setState(() {
+                                    _showSearchBar = false;
+                                  });
+                                },
+                              ),
                             ],
                           ),
                         ),
-                      ),
 
-                      Positioned(
-                        top: 8,
-                        right: 8,
-                        child: Material(
-                          color: Colors.black54,
-                          shape: const CircleBorder(),
-                          child: IconButton(
-                            tooltip: 'Tutup',
-                            icon: const Icon(
-                              Icons.close,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              Navigator.of(dialogContext).pop();
-                            },
-                          ),
-                        ),
-                      ),
-
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
+                      // Bar aksi utama
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        color: const Color(0xFFEDE6F3),
+                        child: Row(
+                          mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
                           children: [
-                            if (showSearchBar)
-                              Container(
-                                color: const Color(0xFFEEE8F8),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
+                            Row(
+                              children: [
+                                IconButton(
+                                  tooltip: 'Download',
+                                  icon: const Icon(Icons.download),
+                                  onPressed: _onDownloadPressed,
                                 ),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: TextField(
-                                        controller: searchTextController,
-                                        decoration: const InputDecoration(
-                                          isDense: true,
-                                          hintText: 'Cari teks di PDF...',
-                                          border: OutlineInputBorder(),
-                                        ),
-                                        textInputAction: TextInputAction.search,
-                                        onSubmitted: (_) => doSearch(),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    // Info jumlah match
-                                    if (hasMatches)
-                                      Text('$currentIndex / $totalMatches'),
-                                    const SizedBox(width: 8),
-                                    // Prev / Next match
-                                    IconButton(
-                                      tooltip: 'Prev match',
-                                      icon: const Icon(Icons.keyboard_arrow_up),
-                                      onPressed: hasMatches
-                                          ? () async {
-                                              await textSearcher
-                                                  .goToPrevMatch();
-                                            }
-                                          : null,
-                                    ),
-                                    IconButton(
-                                      tooltip: 'Next match',
-                                      icon:
-                                          const Icon(Icons.keyboard_arrow_down),
-                                      onPressed: hasMatches
-                                          ? () async {
-                                              await textSearcher
-                                                  .goToNextMatch();
-                                            }
-                                          : null,
-                                    ),
-                                    IconButton(
-                                      tooltip: 'Clear search',
-                                      icon: const Icon(Icons.clear),
-                                      onPressed: () {
-                                        searchTextController.clear();
-                                        textSearcher.resetTextSearch();
-                                        setState(() {
-                                          showSearchBar = false;
-                                        });
-                                      },
-                                    ),
-                                  ],
+                                IconButton(
+                                  tooltip: 'Print',
+                                  icon: const Icon(Icons.print),
+                                  onPressed: _onPrintPressed,
                                 ),
-                              ),
-
-                            // Bar aksi utama
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              color: const Color(0xFFEDE6F3),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      IconButton(
-                                        tooltip: 'Download',
-                                        icon: const Icon(Icons.download),
-                                        onPressed: onDownloadPressed,
-                                      ),
-                                      IconButton(
-                                        tooltip: 'Print',
-                                        icon: const Icon(Icons.print),
-                                        onPressed: onPrintPressed,
-                                      ),
-                                      IconButton(
-                                        tooltip: 'Search',
-                                        icon: const Icon(Icons.search),
-                                        onPressed: () {
-                                          setState(() {
-                                            showSearchBar = !showSearchBar;
-                                          });
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                IconButton(
+                                  tooltip: 'Search',
+                                  icon: const Icon(Icons.search),
+                                  onPressed: () {
+                                    setState(() {
+                                      _showSearchBar = !_showSearchBar;
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -222,15 +262,11 @@ Future<void> showDialogViewPDF({
                     ],
                   ),
                 ),
-              ),
+              ],
             ),
-          );
-        },
-      );
-    },
-  );
-
-  // Cleanup ketika dialog sudah ditutup
-  searchTextController.dispose();
-  textSearcher.dispose();
+          ),
+        ),
+      ),
+    );
+  }
 }
