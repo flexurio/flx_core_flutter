@@ -42,6 +42,7 @@ export 'src/app/util/number_format.dart';
 export 'src/app/util/pdf.dart';
 export 'src/app/util/pdf/general_pdf.dart';
 export 'src/app/util/pdf/header.dart';
+export 'src/app/util/pdf_view.dart';
 export 'src/app/util/simple_excel.dart';
 export 'src/app/util/simple_excel_exporter.dart';
 export 'src/app/util/simple_pdf_exporter.dart';
