@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:download/download.dart';
 import 'package:flutter/material.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'package:printing/printing.dart';
@@ -43,7 +44,11 @@ Future<void> showDialogViewPDF({
           }
 
           Future<void> onDownloadPressed() async {
-            await Printing.sharePdf(bytes: pdfData, filename: '$fileName.pdf');
+            final name = fileName.endsWith('.pdf') ? fileName : '$fileName.pdf';
+            await download(
+              Stream.fromIterable(pdfData),
+              name,
+            );
           }
 
           Future<void> onPrintPressed() async {
@@ -79,7 +84,8 @@ Future<void> showDialogViewPDF({
                           params: PdfViewerParams(
                             textSelectionParams:
                                 const PdfTextSelectionParams(),
-                            matchTextColor: Colors.yellow.withValues(alpha: 0.4),
+                            matchTextColor:
+                                Colors.yellow.withValues(alpha: 0.4),
                             pagePaintCallbacks: [
                               textSearcher.pageTextMatchPaintCallback,
                             ],
