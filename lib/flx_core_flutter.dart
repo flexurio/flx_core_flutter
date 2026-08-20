@@ -10,6 +10,7 @@ export 'features/yuhu_table/presentation/table_column.dart';
 export 'features/yuhu_table/presentation/yuhu_table.dart';
 export 'features/yuhu_table/presentation/yuhu_table_page.dart';
 export 'src/app/bloc/theme/theme_bloc.dart';
+export 'src/app/bloc/value/value_bloc.dart';
 // Model
 export 'src/app/model/base_api.dart';
 export 'src/app/model/color_type.dart';
