@@ -76,6 +76,7 @@ export 'src/app/view/widget/container_glass.dart';
 export 'src/app/view/widget/content_with_right_panel.dart';
 export 'src/app/view/widget/data.dart';
 export 'src/app/view/widget/data_list_view.dart';
+export 'src/app/view/widget/data_table_set.dart';
 export 'src/app/view/widget/data_table_set_2.dart';
 export 'src/app/view/widget/drop_down_object.dart';
 export 'src/app/view/widget/drop_down_small/date_range.dart';
