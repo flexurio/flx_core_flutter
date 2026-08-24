@@ -79,6 +79,7 @@ export 'src/app/view/widget/drop_down_object.dart';
 export 'src/app/view/widget/drop_down_small/date_range.dart';
 export 'src/app/view/widget/drop_down_small/drop_down_small_year_month.dart';
 export 'src/app/view/widget/drop_down_small/drop_down_small_year_picker.dart';
+export 'src/app/view/widget/drop_down_items/year.dart';
 export 'src/app/view/widget/f_card.dart';
 export 'src/app/view/widget/f_drop_down.dart';
 export 'src/app/view/widget/f_text_form_field.dart';
