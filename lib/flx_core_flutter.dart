@@ -51,6 +51,7 @@ export 'src/app/util/simple_pdf_exporter.dart';
 export 'src/app/util/sort.dart';
 export 'src/app/util/storage_init.dart';
 export 'src/app/util/string_extension.dart';
+export 'src/app/util/string_to_double.dart';
 export 'src/app/util/theme.dart';
 export 'src/app/util/title_create_or_update.dart';
 export 'src/app/util/toast.dart';
