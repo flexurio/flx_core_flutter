@@ -111,6 +111,7 @@ export 'src/app/view/widget/sized_text.dart';
 export 'src/app/view/widget/sliding_switch.dart';
 export 'src/app/view/widget/switch_language.dart';
 export 'src/app/view/widget/table.dart';
+export 'src/app/view/widget/table_without_header.dart';
 export 'src/app/view/widget/tile_data.dart';
 export 'src/app/view/widget/time_line.dart';
 export 'src/app/view/widget/title_page.dart';
