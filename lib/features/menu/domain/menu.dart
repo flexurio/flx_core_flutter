@@ -38,3 +38,6 @@ class Menu3 {
   final List<String> permissions;
   final Future<List<String>> Function()? permissionProvider;
 }
+
+
+List<Menu1> globalApplicationMenus = [];
