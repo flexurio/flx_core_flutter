@@ -296,7 +296,8 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
                             fontWeight: FontWeight.bold,
                             color: theme.modeCondition(
                               const Color(
-                                  0xFF505F79), // Greyish-blue for headers
+                                0xFF505F79,
+                              ), // Greyish-blue for headers
                               Colors.white
                                   .withValues(alpha: 0.9), // Lighter for dark
                             ),
@@ -371,31 +372,69 @@ class _TableHeaderState<T> extends State<TableHeader<T>> {
             right: 0,
             top: 0,
             bottom: 0,
-            child: GestureDetector(
-              onHorizontalDragUpdate: (details) {
-                widget.onResizing!(details.delta.dx);
-              },
-              onHorizontalDragEnd: (_) {
-                widget.onResizeEnd?.call();
-              },
-              child: MouseRegion(
-                cursor: SystemMouseCursors.resizeLeftRight,
-                child: Container(
-                  width: 8,
-                  color: Colors.transparent,
-                  alignment: Alignment.centerRight,
-                  child: Container(
-                    width: 1,
-                    height: double.infinity, // Full height
-                    decoration: BoxDecoration(
-                      color: theme.dividerColor, // Full opacity
-                    ),
-                  ),
-                ),
-              ),
+            child: _TableResizeHandle(
+              onResizing: widget.onResizing!,
+              onResizeEnd: widget.onResizeEnd,
             ),
           ),
       ],
+    );
+  }
+}
+
+class _TableResizeHandle extends StatefulWidget {
+  const _TableResizeHandle({
+    required this.onResizing,
+    this.onResizeEnd,
+  });
+
+  final void Function(double delta) onResizing;
+  final void Function()? onResizeEnd;
+
+  @override
+  State<_TableResizeHandle> createState() => _TableResizeHandleState();
+}
+
+class _TableResizeHandleState extends State<_TableResizeHandle> {
+  bool _isHovered = false;
+  bool _isDragging = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final active = _isHovered || _isDragging;
+
+    return MouseRegion(
+      cursor: SystemMouseCursors.resizeColumn,
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onHorizontalDragStart: (_) => setState(() => _isDragging = true),
+        onHorizontalDragUpdate: (details) {
+          widget.onResizing(details.delta.dx);
+        },
+        onHorizontalDragEnd: (_) {
+          setState(() => _isDragging = false);
+          widget.onResizeEnd?.call();
+        },
+        onHorizontalDragCancel: () {
+          setState(() => _isDragging = false);
+          widget.onResizeEnd?.call();
+        },
+        child: Container(
+          width: 14,
+          color: Colors.transparent,
+          alignment: Alignment.centerRight,
+          child: Container(
+            width: active ? 2.5 : 1.0,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              color: theme.dividerColor, // Full opacity
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

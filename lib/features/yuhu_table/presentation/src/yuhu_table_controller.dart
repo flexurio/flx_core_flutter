@@ -42,6 +42,7 @@ class YuhuTableController<T> extends ChangeNotifier {
   final Set<int> pinnedRight = {};
   final Map<int, double> columnWidths = {};
   final Map<int, Color?> columnColors = {};
+  final Set<int> manuallyResizedColumns = {};
   List<int> columnOrder = [];
 
   void init(
@@ -143,6 +144,7 @@ class YuhuTableController<T> extends ChangeNotifier {
     }
 
     if (columns.length != oldColumns.length) {
+      manuallyResizedColumns.clear();
       final newIndices = List.generate(columns.length, (index) => index);
       final keptOrder = columnOrder.where((i) => i < columns.length).toList();
       final addedIndices =
@@ -183,6 +185,7 @@ class YuhuTableController<T> extends ChangeNotifier {
   void updateColumnWidth(int index, double delta) {
     final currentWidth = columnWidths[index] ?? 100.0;
     columnWidths[index] = (currentWidth + delta).clamp(50.0, 1000.0);
+    manuallyResizedColumns.add(index);
     notifyListeners();
   }
 

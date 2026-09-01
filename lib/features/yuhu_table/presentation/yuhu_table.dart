@@ -229,12 +229,15 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       final index = entries[i].$1;
       final column = entries[i].$2;
       final width = _controller.columnWidths[index] ?? column.width ?? 100.0;
-      final hasManualWidth = _controller.columnWidths.containsKey(index);
+      final isManuallyResized =
+          _controller.manuallyResizedColumns.contains(index);
 
-      if (shouldExpand) {
+      if (isManuallyResized) {
+        columnWidths[columnIndex] = FixedColumnWidth(width);
+      } else if (shouldExpand) {
         if (column.flex != null) {
           columnWidths[columnIndex] = FlexColumnWidth(column.flex!.toDouble());
-        } else if (!hasFlex && !hasManualWidth && column.width == null) {
+        } else if (!hasFlex && column.width == null) {
           columnWidths[columnIndex] = const FlexColumnWidth();
         } else {
           columnWidths[columnIndex] = FixedColumnWidth(width);

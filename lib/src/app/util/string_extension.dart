@@ -41,7 +41,7 @@ extension TextExtension on Text {
     );
   }
 
-  Widget canCopy({VoidCallback? onTap, double? width, bool wrap = false}) {
+  Widget canCopy({VoidCallback? onTap, double? width, bool wrap = true}) {
     if (data == '') return Container();
 
     late Widget child;
@@ -63,10 +63,16 @@ extension TextExtension on Text {
     return Builder(
       builder: (context) {
         return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             if (wrap)
-              Expanded(child: child)
+              Flexible(
+                child: DefaultTextStyle.merge(
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  child: child,
+                ),
+              )
             else
               SizedBox(width: width, child: child),
             const Gap(6),
