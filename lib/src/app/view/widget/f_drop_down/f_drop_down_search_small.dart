@@ -66,11 +66,15 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
                 const Gap(12),
                 Icon(iconField, size: 16, color: foregroundColor),
                 const Gap(18),
-                Text(
-                  selectedItem == null
-                      ? '${'choose'.tr()} $labelText'
-                      : itemAsString(selectedItem),
-                  style: TextStyle(color: foregroundColor),
+                Expanded(
+                  child: Text(
+                    selectedItem == null
+                        ? '${'choose'.tr()} $labelText'
+                        : itemAsString(selectedItem),
+                    style: TextStyle(color: foregroundColor),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
                 ),
               ],
             );
