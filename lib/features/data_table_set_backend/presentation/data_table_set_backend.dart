@@ -31,6 +31,8 @@ class DTColumn<T> {
     // When true the cell's child manages its own horizontal padding and the
     // YuhuTable wrapper padding is zeroed out so backgrounds fill edge-to-edge.
     this.zeroPadding = false,
+    this.pinned = false,
+    this.pinPosition = TablePinPosition.none,
   });
 
   final DTHead<T> head;
@@ -38,6 +40,8 @@ class DTColumn<T> {
   final DataCell Function(T) body;
   final Widget? text;
   final bool zeroPadding;
+  final bool pinned;
+  final TablePinPosition pinPosition;
 }
 
 class DTSource<T> extends DataTableSource {
@@ -192,8 +196,12 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
           final firstCol = widget.columns.first;
           final firstColWidth = firstCol.widthFlex * flexUnit;
 
+          final firstColPin = firstCol.pinPosition != TablePinPosition.none
+              ? firstCol.pinPosition
+              : (firstCol.pinned ? TablePinPosition.left : TablePinPosition.none);
           yuhuColumns.add(
             TableColumn<T>(
+              pinPosition: firstColPin,
               alignment: firstCol.head.numeric
                   ? Alignment.centerRight
                   : Alignment.centerLeft,
@@ -240,8 +248,12 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
           // Tambahkan sisa kolom mulai dari index 1
           for (var i = 1; i < widget.columns.length; i++) {
             final col = widget.columns[i];
+            final colPin = col.pinPosition != TablePinPosition.none
+                ? col.pinPosition
+                : (col.pinned ? TablePinPosition.left : TablePinPosition.none);
             yuhuColumns.add(
               TableColumn<T>(
+                pinPosition: colPin,
                 alignment: col.head.numeric
                     ? Alignment.centerRight
                     : Alignment.centerLeft,
@@ -263,6 +275,7 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
           yuhuColumns
             ..add(
               TableColumn<T>(
+                pinPosition: TablePinPosition.left,
                 alignment: Alignment.center,
                 width: checkboxWidth,
                 title: '',
@@ -288,7 +301,11 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
             // Kolom data aslinya
             ..addAll(
               widget.columns.map((col) {
+                final colPin = col.pinPosition != TablePinPosition.none
+                    ? col.pinPosition
+                    : (col.pinned ? TablePinPosition.left : TablePinPosition.none);
                 return TableColumn<T>(
+                  pinPosition: colPin,
                   alignment: col.head.numeric
                       ? Alignment.centerRight
                       : Alignment.centerLeft,
@@ -309,7 +326,11 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
           // Tanpa multi-select
           yuhuColumns.addAll(
             widget.columns.map((col) {
+              final colPin = col.pinPosition != TablePinPosition.none
+                  ? col.pinPosition
+                  : (col.pinned ? TablePinPosition.left : TablePinPosition.none);
               return TableColumn<T>(
+                pinPosition: colPin,
                 alignment: col.head.numeric
                     ? Alignment.centerRight
                     : Alignment.centerLeft,

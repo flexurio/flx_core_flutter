@@ -16,6 +16,7 @@ class TableColumn<T> {
     // (e.g. full-cell background-color containers) so TableData skips the
     // default 12 px horizontal padding and the color fills edge-to-edge.
     this.zeroPadding = false,
+    this.pinPosition = TablePinPosition.none,
   });
 
   final String title;
@@ -27,4 +28,5 @@ class TableColumn<T> {
   final Widget Function(T, int) builder;
   final Color? backgroundColor;
   final bool zeroPadding;
+  final TablePinPosition pinPosition;
 }

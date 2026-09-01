@@ -63,6 +63,11 @@ class YuhuTableController<T> extends ChangeNotifier {
     }
 
     for (var i = 0; i < columns.length; i++) {
+      if (columns[i].pinPosition == TablePinPosition.left) {
+        pinnedLeft.add(i);
+      } else if (columns[i].pinPosition == TablePinPosition.right) {
+        pinnedRight.add(i);
+      }
       if (columns[i].width != null) {
         columnWidths[i] = columns[i].width!;
       }
@@ -141,6 +146,20 @@ class YuhuTableController<T> extends ChangeNotifier {
         pinnedRight.remove(columns.length - 1);
       }
       changed = true;
+    }
+
+    for (var i = 0; i < columns.length; i++) {
+      if (columns[i].pinPosition == TablePinPosition.left) {
+        if (!pinnedLeft.contains(i)) {
+          pinnedLeft.add(i);
+          changed = true;
+        }
+      } else if (columns[i].pinPosition == TablePinPosition.right) {
+        if (!pinnedRight.contains(i)) {
+          pinnedRight.add(i);
+          changed = true;
+        }
+      }
     }
 
     if (columns.length != oldColumns.length) {
