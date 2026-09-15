@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
@@ -19,24 +20,42 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
   @override
   void initState() {
     super.initState();
-    _subscription = Connectivity().onConnectivityChanged.listen((result) async {
-      if (result.first == ConnectivityResult.none) {
-        _isDeviceConnected = false;
-      } else {
-        _isDeviceConnected = await InternetConnectionChecker().hasConnection;
-      }
-      if (mounted) {
-        setState(() {});
-        if (_isDeviceConnected) {
-          _timer?.cancel();
-          _timer = Timer(const Duration(seconds: 1), () {
+    Connectivity().checkConnectivity().then(_updateConnectivity);
+    _subscription = Connectivity().onConnectivityChanged.listen(
+      _updateConnectivity,
+    );
+  }
+
+  Future<void> _updateConnectivity(List<ConnectivityResult> result) async {
+    final bool isConnected;
+    if (result.contains(ConnectivityResult.none) || result.isEmpty) {
+      isConnected = false;
+    } else if (kIsWeb) {
+      // On Flutter Web, raw TCP sockets used by InternetConnectionChecker
+      // are unsupported and fail. connectivity_plus checks navigator.onLine.
+      isConnected = true;
+    } else {
+      isConnected = await InternetConnectionChecker().hasConnection;
+    }
+
+    if (!mounted) return;
+
+    if (_isDeviceConnected != isConnected) {
+      setState(() {
+        _isDeviceConnected = isConnected;
+      });
+      if (_isDeviceConnected) {
+        _timer?.cancel();
+        _timer = Timer(const Duration(seconds: 1), () {
+          if (mounted) {
             _controller.reverse();
-          });
-        } else {
-          await _controller.forward();
-        }
+          }
+        });
+      } else {
+        _timer?.cancel();
+        await _controller.forward();
       }
-    });
+    }
   }
 
   late final _controller = AnimationController(
