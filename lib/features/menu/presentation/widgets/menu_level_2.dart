@@ -32,8 +32,8 @@ ExpansionPanel? buildMenuLevel2({
     headerBuilder: (context, isExpanded) {
       return Container(
         padding: const EdgeInsets.only(
-          right: 6,
-          left: 30,
+          right: 0,
+          left: 14,
           top: 15,
           bottom: 15,
         ),

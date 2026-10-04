@@ -177,10 +177,7 @@ class ToggleSideNav extends StatelessWidget {
                             ),
                           ),
                           if (!noCollapse)
-                            screenIdentifier.conditions(
-                              md: const SizedBox(),
-                              lg: const _ButtonToggle(),
-                            ),
+                            const _ButtonToggle(),
                         ],
                       ),
               );

@@ -174,14 +174,7 @@ class _MenuPageState extends State<MenuPage> {
           builder: (context, collapsed) {
             return ScreenIdentifierBuilder(
               builder: (context, screenIdentifier) {
-                context.read<MenuCollapseBloc>().add(
-                      collapsed ||
-                          screenIdentifier.conditions(
-                            sm: false,
-                            md: true,
-                            lg: false,
-                          ),
-                    );
+// Controlled by user collapse state
                 return Scaffold(
                   key: _scaffoldKey,
                   drawer: MenuSideNav(

@@ -1,7 +1,7 @@
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 class MenuCollapseBloc extends HydratedBloc<bool, bool> {
-  MenuCollapseBloc() : super(true) {
+  MenuCollapseBloc() : super(false) {
     on<bool>((event, emit) {
       emit(event);
     });
