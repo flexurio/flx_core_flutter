@@ -8,8 +8,8 @@ class RequestHeader {
 }
 
 abstract class Api {
-  static final String urlApi = flavorConfig.apiUrl;
-  static const String urlAuth = 'https://auth-api.flexurio.com';
+  static String get urlApi => flavorConfig.apiUrl;
+  static String get urlAuth => flavorConfig.authUrl ?? 'https://auth-api.flexurio.com';
 
   static final Dio dio = Dio(
     BaseOptions(
