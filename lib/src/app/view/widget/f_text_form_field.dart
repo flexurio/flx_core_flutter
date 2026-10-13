@@ -1,8 +1,9 @@
-import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flx_core_flutter/flx_core_flutter.dart';
 import 'package:gap/gap.dart';
+
+export 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 
 final currencyFormatter = CurrencyTextInputFormatter.currency(
   symbol: '',
@@ -14,6 +15,12 @@ final currencyFormatterNoDecimal = CurrencyTextInputFormatter.currency(
   symbol: '',
   decimalDigits: 0,
   locale: 'en',
+);
+
+final currencyFormatterIdr = CurrencyTextInputFormatter.currency(
+  symbol: '',
+  decimalDigits: 0,
+  locale: 'id',
 );
 
 class FTextFormField extends FormField<String> {

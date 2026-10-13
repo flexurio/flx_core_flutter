@@ -1,33 +1,37 @@
 import 'package:flutter/material.dart';
 
 class TableWithBodyScroll extends StatelessWidget {
-  // Add the border parameter
-
   const TableWithBodyScroll({
     required this.children,
     super.key,
     this.columnWidths,
     this.heightBody,
+    this.maxHeightBody,
     this.border,
     this.controller,
     this.physics,
     this.showScrollbar = true,
+    this.defaultVerticalAlignment = TableCellVerticalAlignment.middle,
   });
+
   final Map<int, TableColumnWidth>? columnWidths;
   final List<TableRow> children;
   final double? heightBody;
+  final double? maxHeightBody;
   final TableBorder? border;
   final ScrollController? controller;
   final ScrollPhysics? physics;
   final bool showScrollbar;
+  final TableCellVerticalAlignment defaultVerticalAlignment;
 
   @override
   Widget build(BuildContext context) {
-    if (heightBody == null) {
+    if (heightBody == null && maxHeightBody == null) {
       return Table(
         columnWidths: columnWidths,
+        defaultVerticalAlignment: defaultVerticalAlignment,
+        border: border,
         children: children,
-        border: border, // Apply the border to the table
       );
     }
 
@@ -39,10 +43,31 @@ class TableWithBodyScroll extends StatelessWidget {
       physics: physics,
       child: Table(
         columnWidths: columnWidths,
-        children: bodyRows,
+        defaultVerticalAlignment: defaultVerticalAlignment,
         border: border,
+        children: bodyRows,
       ),
     );
+
+    Widget scrollableBody = showScrollbar
+        ? Scrollbar(
+            controller: controller,
+            thumbVisibility: true,
+            child: bodyTable,
+          )
+        : bodyTable;
+
+    if (maxHeightBody != null) {
+      scrollableBody = ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: maxHeightBody!),
+        child: scrollableBody,
+      );
+    } else if (heightBody != null) {
+      scrollableBody = SizedBox(
+        height: heightBody,
+        child: scrollableBody,
+      );
+    }
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -50,19 +75,11 @@ class TableWithBodyScroll extends StatelessWidget {
       children: [
         Table(
           columnWidths: columnWidths,
-          children: [if (headerRow != null) headerRow],
+          defaultVerticalAlignment: defaultVerticalAlignment,
           border: border,
+          children: [if (headerRow != null) headerRow],
         ),
-        SizedBox(
-          height: heightBody,
-          child: showScrollbar
-              ? Scrollbar(
-                  controller: controller,
-                  thumbVisibility: true,
-                  child: bodyTable,
-                )
-              : bodyTable,
-        ),
+        scrollableBody,
       ],
     );
   }

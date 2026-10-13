@@ -18,11 +18,13 @@ class ContainerDropDown<T> extends StatelessWidget {
     required this.showSelectedItems,
     super.key,
     this.width,
+    this.emptyBuilder,
   });
 
   final double? width;
   final Status status;
   final bool showSelectedItems;
+  final Widget Function(BuildContext context, String searchEntry)? emptyBuilder;
 
   final Widget Function(
     Color foregroundColor,
@@ -66,6 +68,7 @@ class ContainerDropDown<T> extends StatelessWidget {
     );
 
     final popupProps = PopupProps<T>.menu(
+      emptyBuilder: emptyBuilder,
       showSelectedItems: showSelectedItems,
       searchDelay: Duration.zero,
       showSearchBox: true,

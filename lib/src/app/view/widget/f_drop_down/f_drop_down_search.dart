@@ -18,6 +18,7 @@ class FDropDownSearch<T> extends StatelessWidget {
     this.validator,
     this.onChanged,
     this.enabled = true,
+    this.emptyBuilder,
   });
 
   final void Function(T?)? onChanged;
@@ -30,6 +31,7 @@ class FDropDownSearch<T> extends StatelessWidget {
   final bool Function(T, T)? compareFn;
   final bool showSelectedItems;
   final bool enabled;
+  final Widget Function(BuildContext context, String searchEntry)? emptyBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +89,7 @@ class FDropDownSearch<T> extends StatelessWidget {
             ),
           ),
           popupProps: PopupProps.menu(
+            emptyBuilder: emptyBuilder,
             showSelectedItems: showSelectedItems,
             searchDelay: Duration.zero,
             showSearchBox: true,

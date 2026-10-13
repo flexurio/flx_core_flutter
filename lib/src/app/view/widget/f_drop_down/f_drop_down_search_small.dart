@@ -21,6 +21,7 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
     this.onChanged,
     this.enabled = true,
     this.showClearButton = false,
+    this.emptyBuilder,
   });
 
   final void Function(T?)? onChanged;
@@ -36,10 +37,12 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
   final bool enabled;
   final IconData iconField;
   final bool showClearButton;
+  final Widget Function(BuildContext context, String searchEntry)? emptyBuilder;
 
   @override
   Widget build(BuildContext context) {
     return ContainerDropDown<T>(
+      emptyBuilder: emptyBuilder,
       builder: (
         foregroundColor,
         border,
