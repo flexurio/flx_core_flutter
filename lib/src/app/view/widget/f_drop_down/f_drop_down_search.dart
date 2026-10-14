@@ -19,6 +19,8 @@ class FDropDownSearch<T> extends StatelessWidget {
     this.onChanged,
     this.enabled = true,
     this.emptyBuilder,
+    this.onSearchSubmitted,
+    this.dropdownSearchKey,
   });
 
   final void Function(T?)? onChanged;
@@ -32,6 +34,8 @@ class FDropDownSearch<T> extends StatelessWidget {
   final bool showSelectedItems;
   final bool enabled;
   final Widget Function(BuildContext context, String searchEntry)? emptyBuilder;
+  final void Function(String searchEntry)? onSearchSubmitted;
+  final GlobalKey<DropdownSearchState<T>>? dropdownSearchKey;
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +84,7 @@ class FDropDownSearch<T> extends StatelessWidget {
           const Gap(4),
         ],
         DropdownSearch<T>(
+          key: dropdownSearchKey,
           validator: validator,
           compareFn: compareFn ?? (a, b) => a == b,
           suffixProps: DropdownSuffixProps(
@@ -94,6 +99,12 @@ class FDropDownSearch<T> extends StatelessWidget {
             searchDelay: Duration.zero,
             showSearchBox: true,
             searchFieldProps: TextFieldProps(
+              onSubmitted: (entry) {
+                if (onSearchSubmitted != null) {
+                  Navigator.of(context).maybePop();
+                  onSearchSubmitted!(entry);
+                }
+              },
               style: TextStyle(
                 color: theme.modeCondition(null, Colors.white70),
               ),
