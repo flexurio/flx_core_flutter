@@ -6,7 +6,6 @@ import 'package:flx_core_flutter/features/yuhu_table/presentation/src/yuhu_table
 import 'package:flx_core_flutter/features/yuhu_table/presentation/src/yuhu_table_style.dart';
 import 'package:flx_core_flutter/features/yuhu_table/presentation/table_column.dart';
 import 'package:flx_core_flutter/features/yuhu_table/presentation/table_data.dart';
-import 'package:flx_core_flutter/features/yuhu_table/presentation/table_header.dart';
 import 'package:flx_core_flutter/features/yuhu_table/presentation/yuhu_table_header_draggable.dart';
 import 'package:flx_core_flutter/features/yuhu_table/presentation/yuhu_table_section.dart';
 import 'package:flx_core_flutter/src/app/view/widget/f_drop_down/f_drop_down_status.dart';
@@ -32,6 +31,8 @@ class YuhuTable<T> extends StatefulWidget {
     this.disableModify = false,
     this.headerColor,
     this.stripedColor,
+    this.defaultSelectAll = false,
+    this.initialSelected,
   });
 
   final List<T> data;
@@ -51,6 +52,8 @@ class YuhuTable<T> extends StatefulWidget {
   final bool disableModify;
   final Color? headerColor;
   final Color? stripedColor;
+  final bool defaultSelectAll;
+  final List<T>? initialSelected;
 
   @override
   State<YuhuTable<T>> createState() => _YuhuTableState<T>();
@@ -71,6 +74,16 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       freezeLastColumn: widget.freezeLastColumn,
       onSyncScroll: () => _controller.syncScroll(_controller.vMiddleController),
     );
+    if (widget.initialSelected != null) {
+      _controller.selected.addAll(widget.initialSelected!);
+    } else if (widget.defaultSelectAll && widget.data.isNotEmpty) {
+      _controller.selected.addAll(widget.data);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          widget.onSelectChanged?.call(List.from(_controller.selected));
+        }
+      });
+    }
     _controller.addListener(_onControllerChanged);
   }
 
@@ -93,6 +106,29 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       freezeLastColumn: widget.freezeLastColumn,
       oldFreezeLastColumn: oldWidget.freezeLastColumn,
     );
+    if (widget.initialSelected != null &&
+        (oldWidget.initialSelected == null ||
+            oldWidget.initialSelected != widget.initialSelected)) {
+      _controller.selected
+        ..clear()
+        ..addAll(widget.initialSelected!);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          widget.onSelectChanged?.call(List.from(_controller.selected));
+        }
+      });
+    } else if (widget.defaultSelectAll &&
+        (oldWidget.data.isEmpty || oldWidget.data != widget.data) &&
+        widget.data.isNotEmpty) {
+      _controller.selected
+        ..clear()
+        ..addAll(widget.data);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          widget.onSelectChanged?.call(List.from(_controller.selected));
+        }
+      });
+    }
   }
 
   @override
@@ -250,11 +286,29 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
     final headers = <Widget>[];
 
     if (!isPinned && widget.onSelectChanged != null) {
+      final allSelected = widget.data.isNotEmpty &&
+          widget.data.every((item) => _controller.selected.contains(item));
+      final anySelected =
+          widget.data.any((item) => _controller.selected.contains(item));
+      final isChecked = allSelected ? true : (anySelected ? null : false);
+
       headers.add(
-        TableHeader<T>(
-          column: TableColumn<T>(title: '', builder: (_, __) => Container()),
-          isSort: false,
-          ascending: _controller.ascending,
+        TableData(
+          height: 48,
+          alignment: Alignment.center,
+          borderSide: style.borderSide,
+          showRightBorder: true,
+          child: Checkbox(
+            tristate: true,
+            value: isChecked,
+            onChanged: (bool? value) {
+              if (allSelected) {
+                _controller.deselectAll(widget.onSelectChanged);
+              } else {
+                _controller.selectAll(widget.data, widget.onSelectChanged);
+              }
+            },
+          ),
         ),
       );
     }

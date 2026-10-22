@@ -185,6 +185,20 @@ class YuhuTableController<T> extends ChangeNotifier {
     notifyListeners();
   }
 
+  void selectAll(List<T> allItems, void Function(List<T>)? onSelectChanged) {
+    selected
+      ..clear()
+      ..addAll(allItems);
+    onSelectChanged?.call(List.from(selected));
+    notifyListeners();
+  }
+
+  void deselectAll(void Function(List<T>)? onSelectChanged) {
+    selected.clear();
+    onSelectChanged?.call(List.from(selected));
+    notifyListeners();
+  }
+
   void togglePin(int index, TablePinPosition position) {
     pinnedLeft.remove(index);
     pinnedRight.remove(index);
