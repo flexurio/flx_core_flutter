@@ -9,23 +9,29 @@ class KeyboardShortcutInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 50),
-        Text(
-          'keyboard_shortcuts'.tr(),
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 380),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 50),
+            Text(
+              'keyboard_shortcuts'.tr(),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            const SizedBox(height: 36),
+            ShortcutInfo(
+              title: 'search_dialog'.tr(),
+              hotkey: const ['Shift', 'Alt', 'P'],
+            ),
+            ShortcutInfo(
+              title: 'cache_refresh'.tr(),
+              hotkey: const ['Ctrl', 'Shift', 'R'],
+            ),
+          ],
         ),
-        const SizedBox(height: 36),
-        ShortcutInfo(
-          title: 'search_dialog'.tr(),
-          hotkey: const ['Shift', 'Alt', 'P'],
-        ),
-        ShortcutInfo(
-          title: 'cache_refresh'.tr(),
-          hotkey: const ['Ctrl', 'Shift', 'R'],
-        ),
-      ],
+      ),
     );
   }
 }

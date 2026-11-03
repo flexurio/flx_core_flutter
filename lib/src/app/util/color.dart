@@ -3,6 +3,20 @@ import 'package:flutter/material.dart';
 const colorEditButton = Colors.orange;
 const colorDeleteButton = Colors.red;
 
+const listViewColor = Color(0xffA1D0F5);
+const disabledFontColor = Colors.black54;
+const dialogBackgroundColor = Colors.white;
+const disabledColor = Colors.black54;
+const formColor = Color(0xffECECEC);
+const inputCardColor = Color(0xffB0BFC4);
+const blueFontColor = Color(0xff3393E1);
+const tileColor = Colors.white;
+const transparentColor = Colors.transparent;
+final barrierColor = Colors.black.withValues(alpha: 0.5);
+const listBlueColor = Color(0xff57BFEB);
+const listGrayColor = Color.fromARGB(255, 135, 135, 135);
+const listRedColor = Color.fromARGB(255, 235, 87, 87);
+
 extension ColorBrightness on Color {
   Color darken(double amount) {
     assert(amount >= 0 && amount <= 1, 'amount is between 0 and 1');

@@ -263,3 +263,13 @@ String? validateYear(String? year) {
   }
   return null;
 }
+
+String? requiredListValidator<T>(List<T>? list) {
+  return list == null || list.isEmpty ? pleaseFillOutThisField.tr() : null;
+}
+
+bool isBeforeThisMonth(DateTime dateTime) {
+  final now = DateTime.now();
+  return dateTime.year < now.year ||
+      (dateTime.year == now.year && dateTime.month < now.month);
+}

@@ -13,6 +13,31 @@ String dateTimeToIsoDate(DateTime date) {
   return date.toIso8601String();
 }
 
+DateTime periodToDateTime(String period) {
+  final now = DateTime.now();
+  if (period != '') {
+    try {
+      final year = period.substring(0, 4);
+      final month = period.substring(4);
+      final stringPeriod = '$year-$month-01 00:00:00';
+      final parsedDate = DateTime.parse(stringPeriod);
+      if (now.year == parsedDate.year && now.month == parsedDate.month) {
+        final formattedPeriod =
+            '${period.substring(0, 4)}-${period.substring(4)}-${now.day.toString().padLeft(2, '0')}';
+        return DateTime.parse(formattedPeriod);
+      } else {
+        final formattedPeriod =
+            '${period.substring(0, 4)}-${period.substring(4)}-${parsedDate.day.toString().padLeft(2, '0')}';
+        return DateTime.parse(formattedPeriod);
+      }
+    } catch (_) {
+      return periodFromJson(period);
+    }
+  } else {
+    return DateTime.now();
+  }
+}
+
 DateTime periodFromJson(String period) {
   final now = DateTime.now();
   try {
@@ -35,6 +60,11 @@ DateTime? dateTimeNullable(String? dateTime) {
 DateTime? dateTimeNullableFromJson(String? dateTime) {
   if (dateTime == null) return null;
   return DateTime.parse(dateTime).toLocal();
+}
+
+DateTime? isoDateToDateTimeNullable(String? date) {
+  if (date == null) return null;
+  return DateTime.parse(date).toLocal();
 }
 
 DateTime dateTimeFromJson(String dateTime) {

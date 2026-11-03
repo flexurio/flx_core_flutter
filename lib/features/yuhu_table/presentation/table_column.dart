@@ -6,6 +6,7 @@ class TableColumn<T> {
   TableColumn({
     required this.title,
     required this.builder,
+    this.titleTooltip,
     this.sortString,
     this.sortNum,
     this.alignment = Alignment.centerLeft,
@@ -20,6 +21,7 @@ class TableColumn<T> {
   });
 
   final String title;
+  final String? titleTooltip;
   final Alignment alignment;
   final double? width;
   final int? flex;

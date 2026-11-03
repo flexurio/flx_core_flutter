@@ -95,6 +95,18 @@ extension DateTimeExtension on DateTime {
     return DateTime(year, month + 1).subtract(const Duration(days: 1));
   }
 
+  DateTime get startOfYear {
+    return DateTime(year);
+  }
+
+  DateTime get endOfYear {
+    return DateTime(year + 1).subtract(const Duration(days: 1));
+  }
+
+  String get formatPeriod {
+    return yyyyMM;
+  }
+
   String toUtcIso() {
     return toUtc().toIso8601String();
   }
