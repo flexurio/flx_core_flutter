@@ -7,19 +7,61 @@ class RequestHeader {
   static const String authorization = 'Authorization';
 }
 
+class ApiActivityInterceptor extends Interceptor {
+  const ApiActivityInterceptor();
+
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    if (options.extra[Api.skipIdleTimerExtraKey] != true) {
+      Api.notifyActivity();
+    }
+    super.onRequest(options, handler);
+  }
+
+  @override
+  void onResponse(
+    Response<dynamic> response,
+    ResponseInterceptorHandler handler,
+  ) {
+    if (response.requestOptions.extra[Api.skipIdleTimerExtraKey] != true) {
+      Api.notifyActivity();
+    }
+    super.onResponse(response, handler);
+  }
+}
+
 abstract class Api {
+  static const String skipIdleTimerExtraKey = 'skipIdleTimer';
+  static void Function()? onApiActivity;
+
+  static void notifyActivity() {
+    onApiActivity?.call();
+  }
+
+  static Dio attachActivityInterceptor(Dio dio) {
+    final alreadyAttached = dio.interceptors.any(
+      (interceptor) => interceptor is ApiActivityInterceptor,
+    );
+    if (!alreadyAttached) {
+      dio.interceptors.add(const ApiActivityInterceptor());
+    }
+    return dio;
+  }
+
   static String get urlApi => flavorConfig.apiUrl;
   static String get urlAuth => flavorConfig.authUrl ?? 'https://auth-api.flexurio.com';
 
-  static final Dio dio = Dio(
-    BaseOptions(
-      baseUrl: urlApi,
-      connectTimeout: const Duration(minutes: 3),
-      receiveTimeout: const Duration(minutes: 3),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
+  static final Dio dio = attachActivityInterceptor(
+    Dio(
+      BaseOptions(
+        baseUrl: urlApi,
+        connectTimeout: const Duration(minutes: 3),
+        receiveTimeout: const Duration(minutes: 3),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      ),
     ),
   );
 }

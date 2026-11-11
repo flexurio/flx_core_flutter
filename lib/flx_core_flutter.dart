@@ -38,6 +38,7 @@ export 'src/app/util/general_export.dart';
 export 'src/app/util/generate_hierarchy.dart';
 export 'src/app/util/group_by.dart';
 export 'src/app/util/icon_util.dart';
+export 'src/app/util/idle_api_logout_service.dart';
 export 'src/app/util/json_to_string_query.dart';
 export 'src/app/util/list_extension.dart';
 export 'src/app/util/loading.dart';

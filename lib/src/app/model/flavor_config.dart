@@ -8,11 +8,12 @@ class FlavorConfig<T> {
     required this.companyWebsite,
     required this.companyAddress,
     required this.apiUrl,
-    this.authUrl,
     required this.color,
     required this.colorSoft,
     required this.backgroundLoginPage,
     required this.applicationConfig,
+    this.authUrl,
+    this.idleLogoutDuration,
   });
 
   final String companyId;
@@ -26,6 +27,7 @@ class FlavorConfig<T> {
   final Color color;
   final Color colorSoft;
   final T applicationConfig;
+  final Duration? idleLogoutDuration;
 }
 
 late FlavorConfig<dynamic> flavorConfig;

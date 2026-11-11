@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flx_core_flutter/src/app/util/idle_api_logout_service.dart';
 import 'package:hive/hive.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path/path.dart' as p;
@@ -26,4 +27,5 @@ Future<void> storageInit(String companyId) async {
   );
 
   Hive.init(storageDirectoryPath);
+  await Hive.openBox<int>(idleSessionBoxName);
 }
