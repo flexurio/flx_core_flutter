@@ -57,16 +57,41 @@ class DataSetAction<T> extends StatelessWidget {
                     ),
                 ],
               ),
-              md: Row(
-                children: [
-                  _buildActionLeft(),
-                  Expanded(
-                    child: Align(
+              md: LayoutBuilder(
+                builder: (context, constraints) {
+                  if (actionLeft.isEmpty) {
+                    return Align(
                       alignment: Alignment.centerRight,
                       child: _buildActionRight(),
-                    ),
-                  ),
-                ],
+                    );
+                  }
+
+                  // Keep 4+ inline filters together on one top row when the
+                  // toolbar cannot fit both filters and right-side actions
+                  // side-by-side, placing the action buttons right-aligned
+                  // on the row below instead of stranding the last filter.
+                  if (actionLeft.length >= 4 && constraints.maxWidth < 1150) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _buildActionLeft(),
+                        const Gap(12),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: _buildActionRight(),
+                        ),
+                      ],
+                    );
+                  }
+
+                  return Row(
+                    children: [
+                      Expanded(child: _buildActionLeft()),
+                      const Gap(12),
+                      _buildActionRight(),
+                    ],
+                  );
+                },
               ),
             );
           },
@@ -80,7 +105,11 @@ class DataSetAction<T> extends StatelessWidget {
   }
 
   Widget _buildActionLeft() {
-    return Wrap(spacing: 12, children: actionLeft);
+    return Wrap(
+      spacing: 12,
+      runSpacing: 12,
+      children: actionLeft,
+    );
   }
 
   Widget _buildActionRight() {
