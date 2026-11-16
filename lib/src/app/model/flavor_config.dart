@@ -14,6 +14,7 @@ class FlavorConfig<T> {
     required this.applicationConfig,
     this.authUrl,
     this.idleLogoutDuration,
+    this.withTwoFactor = true,
   });
 
   final String companyId;
@@ -28,6 +29,7 @@ class FlavorConfig<T> {
   final Color colorSoft;
   final T applicationConfig;
   final Duration? idleLogoutDuration;
+  final bool withTwoFactor;
 }
 
 late FlavorConfig<dynamic> flavorConfig;
