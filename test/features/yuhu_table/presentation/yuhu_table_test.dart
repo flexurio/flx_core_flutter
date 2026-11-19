@@ -37,6 +37,7 @@ void main() {
       void Function(List<Map<String, dynamic>>)? onSelectChanged,
       bool freezeFirstColumn = false,
       bool freezeLastColumn = false,
+      Color? Function(Map<String, dynamic>, int)? rowColorBuilder,
     }) {
       return MaterialApp(
         home: Scaffold(
@@ -45,18 +46,19 @@ void main() {
             height: 600,
             child: Material(
               child: YuhuTable<Map<String, dynamic>>(
-              data: data ?? testData,
-              columns: columns ?? testColumns(),
-              status: status,
-              onSort: onSort,
-              onSelectChanged: onSelectChanged,
-              freezeFirstColumn: freezeFirstColumn,
-              freezeLastColumn: freezeLastColumn,
+                data: data ?? testData,
+                columns: columns ?? testColumns(),
+                status: status,
+                onSort: onSort,
+                onSelectChanged: onSelectChanged,
+                freezeFirstColumn: freezeFirstColumn,
+                freezeLastColumn: freezeLastColumn,
+                rowColorBuilder: rowColorBuilder,
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
     }
 
     testWidgets('renders basic table with columns and data', (tester) async {
@@ -155,6 +157,20 @@ void main() {
 
       expect(find.text('ID'), findsOneWidget);
       expect(find.text('Age'), findsOneWidget);
+    });
+
+    testWidgets('applies rowColorBuilder to customize row colors',
+        (tester) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          rowColorBuilder: (item, index) =>
+              index == 0 ? const Color(0xFFEFF6FF) : null,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Alice'), findsOneWidget);
+      expect(find.text('Bob'), findsOneWidget);
     });
   });
 }

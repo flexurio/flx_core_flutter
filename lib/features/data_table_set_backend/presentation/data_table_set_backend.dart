@@ -85,6 +85,7 @@ class DataTableBackend<T> extends StatefulWidget {
     this.actionMultiple,
     this.headerColor,
     this.stripedColor,
+    this.rowColorBuilder,
     super.key,
   });
 
@@ -100,6 +101,7 @@ class DataTableBackend<T> extends StatefulWidget {
   final bool pagination;
   final Color? headerColor;
   final Color? stripedColor;
+  final Color? Function(T item, int rowIndex)? rowColorBuilder;
 
   /// Jika tidak null -> aktifkan multi-select.
   /// Saat ada terpilih, widget hasil fungsi ini akan ditampilkan
@@ -198,7 +200,9 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
 
           final firstColPin = firstCol.pinPosition != TablePinPosition.none
               ? firstCol.pinPosition
-              : (firstCol.pinned ? TablePinPosition.left : TablePinPosition.none);
+              : (firstCol.pinned
+                  ? TablePinPosition.left
+                  : TablePinPosition.none);
           yuhuColumns.add(
             TableColumn<T>(
               pinPosition: firstColPin,
@@ -303,7 +307,9 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
               widget.columns.map((col) {
                 final colPin = col.pinPosition != TablePinPosition.none
                     ? col.pinPosition
-                    : (col.pinned ? TablePinPosition.left : TablePinPosition.none);
+                    : (col.pinned
+                        ? TablePinPosition.left
+                        : TablePinPosition.none);
                 return TableColumn<T>(
                   pinPosition: colPin,
                   alignment: col.head.numeric
@@ -328,7 +334,9 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
             widget.columns.map((col) {
               final colPin = col.pinPosition != TablePinPosition.none
                   ? col.pinPosition
-                  : (col.pinned ? TablePinPosition.left : TablePinPosition.none);
+                  : (col.pinned
+                      ? TablePinPosition.left
+                      : TablePinPosition.none);
               return TableColumn<T>(
                 pinPosition: colPin,
                 alignment: col.head.numeric
@@ -448,6 +456,7 @@ class _DataTableBackendState<T> extends State<DataTableBackend<T>> {
                           columns: yuhuColumns,
                           headerColor: widget.headerColor,
                           stripedColor: widget.stripedColor,
+                          rowColorBuilder: widget.rowColorBuilder,
                         ),
                         if (multipleActionWidget != null)
                           Container(

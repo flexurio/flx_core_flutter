@@ -19,13 +19,15 @@ class YuhuTableRowsGenerator<T> {
     required VoidCallback onHoverExit,
     required Widget Function(int rowIndex, T item)? selectionCheckboxBuilder,
     required Widget Function(int rowIndex)? selectionEmptyBuilder,
+    Color? Function(T item, int rowIndex)? rowColorBuilder,
     bool isPinned = false,
   }) {
     final rows = List<TableRow>.generate(data.length, (rowIndex) {
       final isHovered = enableHoverEffect && hoveredRowIndex == rowIndex;
+      final customRowColor = rowColorBuilder?.call(data[rowIndex], rowIndex);
       final rowColor = isHovered
           ? hoverColor
-          : (rowIndex % 2 != 0 ? stripedColor : baseColor);
+          : (customRowColor ?? (rowIndex % 2 != 0 ? stripedColor : baseColor));
 
       final cells = <Widget>[];
 

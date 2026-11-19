@@ -33,6 +33,7 @@ class YuhuTable<T> extends StatefulWidget {
     this.stripedColor,
     this.defaultSelectAll = false,
     this.initialSelected,
+    this.rowColorBuilder,
   });
 
   final List<T> data;
@@ -54,6 +55,7 @@ class YuhuTable<T> extends StatefulWidget {
   final Color? stripedColor;
   final bool defaultSelectAll;
   final List<T>? initialSelected;
+  final Color? Function(T item, int rowIndex)? rowColorBuilder;
 
   @override
   State<YuhuTable<T>> createState() => _YuhuTableState<T>();
@@ -313,44 +315,46 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       );
     }
 
-    headers.addAll(entries.map((entry) {
-      final index = entry.$1;
-      final column = entry.$2;
-      return YuhuTableDraggableHeader<T>(
-        index: index,
-        column: column,
-        isSort: _controller.sortIndex == index,
-        ascending: _controller.ascending,
-        pinnedPosition: _controller.pinnedLeft.contains(index)
-            ? TablePinPosition.left
-            : (_controller.pinnedRight.contains(index)
-                ? TablePinPosition.right
-                : TablePinPosition.none),
-        currentWidth: _controller.columnWidths[index] ?? column.width ?? 100.0,
-        headerDecoration: style.headerDecoration,
-        disableModify: widget.disableModify,
-        onPinnedPositionChanged: (p) => _controller.togglePin(index, p),
-        onColorChanged: (color) => _controller.updateColumnColor(index, color),
-        onResizing: (delta) => _controller.updateColumnWidth(index, delta),
-        onTap: widget.disableModify
-            ? null
-            : () {
-                if (column.sortNum == null && column.sortString == null) {
-                  widget.onSort?.call(index, !_controller.ascending);
-                } else {
-                  if (_controller.sortIndex != index) {
-                    _controller.sortIndex = index;
-                    _controller.ascending = true;
+    headers.addAll(
+      entries.map((entry) {
+        final index = entry.$1;
+        final column = entry.$2;
+        return YuhuTableDraggableHeader<T>(
+          index: index,
+          column: column,
+          isSort: _controller.sortIndex == index,
+          ascending: _controller.ascending,
+          pinnedPosition: _controller.pinnedLeft.contains(index)
+              ? TablePinPosition.left
+              : (_controller.pinnedRight.contains(index)
+                  ? TablePinPosition.right
+                  : TablePinPosition.none),
+          currentWidth:
+              _controller.columnWidths[index] ?? column.width ?? 100.0,
+          headerDecoration: style.headerDecoration,
+          disableModify: widget.disableModify,
+          onPinnedPositionChanged: (p) => _controller.togglePin(index, p),
+          onColorChanged: (color) =>
+              _controller.updateColumnColor(index, color),
+          onResizing: (delta) => _controller.updateColumnWidth(index, delta),
+          onTap: widget.disableModify
+              ? null
+              : () {
+                  if (column.sortNum == null && column.sortString == null) {
+                    widget.onSort?.call(index, !_controller.ascending);
                   } else {
-                    _controller.ascending = !_controller.ascending;
+                    if (_controller.sortIndex != index) {
+                      _controller.sortIndex = index;
+                      _controller.ascending = true;
+                    } else {
+                      _controller.ascending = !_controller.ascending;
+                    }
                   }
-                }
-              },
-        onDrop: (fromIndex) => _controller.reorderColumns(fromIndex, index),
-      );
-    }).toList(),);
-
-
+                },
+          onDrop: (fromIndex) => _controller.reorderColumns(fromIndex, index),
+        );
+      }).toList(),
+    );
 
     final rows = YuhuTableRowsGenerator.generate<T>(
       data: widget.data,
@@ -364,6 +368,7 @@ class _YuhuTableState<T> extends State<YuhuTable<T>> {
       hoveredRowIndex: _controller.hoveredRowIndex,
       columnColors: _controller.columnColors,
       enableHoverEffect: true,
+      rowColorBuilder: widget.rowColorBuilder,
       onHoverEnter: (int rowIndex) => _controller.hoveredRowIndex = rowIndex,
       onHoverExit: () => _controller.hoveredRowIndex = null,
       selectionCheckboxBuilder: widget.onSelectChanged == null
