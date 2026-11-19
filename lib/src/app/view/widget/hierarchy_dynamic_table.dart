@@ -78,15 +78,18 @@ class DynamicTableColumnGroup<T> {
     required this.label,
     required this.columns,
     required this.width,
+    this.headerWidget,
   });
   final String label;
   final List<DynamicTableColumn<T>> columns;
   final double width;
+  final Widget? headerWidget;
 
   /// Static helper to generate 12 monthly groups easily.
   static List<DynamicTableColumnGroup<T>> generateMonths<T>({
     required List<DynamicTableColumn<T>> Function(String monthKey) builder,
     double groupWidth = 240,
+    Widget Function(String monthKey, int monthNumber)? headerBuilder,
   }) {
     const months = [
       'january',
@@ -102,15 +105,16 @@ class DynamicTableColumnGroup<T> {
       'november',
       'december',
     ];
-    return months
-        .map(
-          (m) => DynamicTableColumnGroup<T>(
-            label: m.tr(),
-            width: groupWidth,
-            columns: builder(m),
-          ),
-        )
-        .toList();
+    return months.asMap().entries.map((entry) {
+      final index = entry.key + 1;
+      final m = entry.value;
+      return DynamicTableColumnGroup<T>(
+        label: m.tr(),
+        width: groupWidth,
+        columns: builder(m),
+        headerWidget: headerBuilder?.call(m, index),
+      );
+    }).toList();
   }
 }
 
@@ -457,9 +461,13 @@ class _HierarchyDynamicTableState<T, ID>
                 ),
               ),
             ),
-            child: Text(
-              group.label,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: group.headerWidget ??
+                  Text(
+                    group.label,
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                  ),
             ),
           ),
           Row(
