@@ -21,6 +21,7 @@ class AppearanceDialog extends StatefulWidget {
 
 class _AppearanceDialogState extends State<AppearanceDialog> {
   late SidebarMenuDisplay _selectedDisplay;
+  bool _isExpanded = false;
 
   @override
   void initState() {
@@ -37,7 +38,7 @@ class _AppearanceDialogState extends State<AppearanceDialog> {
       popup: true,
       title: 'Appearance',
       icon: Icons.tune,
-      width: 500,
+      width: 540,
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
@@ -94,38 +95,25 @@ class _AppearanceDialogState extends State<AppearanceDialog> {
             ),
           ),
           const Gap(16),
-          PopupMenuButton<SidebarMenuDisplay>(
-            tooltip: '',
-            offset: const Offset(0, 68),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            onSelected: (display) {
+          // Trigger Bar
+          InkWell(
+            borderRadius: BorderRadius.circular(16),
+            onTap: () {
               setState(() {
-                _selectedDisplay = display;
+                _isExpanded = !_isExpanded;
               });
             },
-            itemBuilder: (context) => [
-              _buildMenuItem(
-                context,
-                display: SidebarMenuDisplay.iconsAndLabels,
-                isSelected:
-                    _selectedDisplay == SidebarMenuDisplay.iconsAndLabels,
-              ),
-              _buildMenuItem(
-                context,
-                display: SidebarMenuDisplay.iconsOnly,
-                isSelected: _selectedDisplay == SidebarMenuDisplay.iconsOnly,
-              ),
-            ],
             child: Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 14,
+              ),
               decoration: BoxDecoration(
                 color: theme.modeCondition(
                   const Color(0xFFF7F2F4),
                   theme.cardColor.lighten(0.05),
                 ),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(16),
                 border: Border.all(
                   color: theme.modeCondition(
                     const Color(0xFFEADBDF),
@@ -139,12 +127,12 @@ class _AppearanceDialogState extends State<AppearanceDialog> {
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: primaryColor.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Icon(
-                      Icons.format_indent_decrease_rounded,
+                      _selectedDisplay.icon,
                       color: primaryColor,
-                      size: 20,
+                      size: 22,
                     ),
                   ),
                   const SizedBox(width: 14),
@@ -157,10 +145,10 @@ class _AppearanceDialogState extends State<AppearanceDialog> {
                           _selectedDisplay.label,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 14,
+                            fontSize: 15,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 3),
                         Text(
                           _selectedDisplay.description,
                           style: TextStyle(
@@ -178,82 +166,163 @@ class _AppearanceDialogState extends State<AppearanceDialog> {
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
                       color: primaryColor.withValues(alpha: 0.08),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                      size: 20,
+                    child: Icon(
+                      _isExpanded
+                          ? Icons.keyboard_arrow_up_rounded
+                          : Icons.keyboard_arrow_down_rounded,
+                      size: 22,
+                      color: primaryColor,
                     ),
                   ),
                 ],
               ),
             ),
           ),
+          if (_isExpanded) ...[
+            const Gap(16),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: _buildOptionCard(
+                    context,
+                    display: SidebarMenuDisplay.iconsOnly,
+                  ),
+                ),
+                const Gap(12),
+                Expanded(
+                  child: _buildOptionCard(
+                    context,
+                    display: SidebarMenuDisplay.iconsAndLabels,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ],
       ),
     );
   }
 
-  PopupMenuItem<SidebarMenuDisplay> _buildMenuItem(
+  Widget _buildOptionCard(
     BuildContext context, {
     required SidebarMenuDisplay display,
-    required bool isSelected,
   }) {
     final theme = Theme.of(context);
     final primaryColor = theme.colorScheme.primary;
+    final isSelected = _selectedDisplay == display;
 
-    return PopupMenuItem<SidebarMenuDisplay>(
-      value: display,
+    return InkWell(
+      borderRadius: BorderRadius.circular(16),
+      onTap: () {
+        setState(() {
+          _selectedDisplay = display;
+        });
+      },
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 6),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: primaryColor.withValues(
-                  alpha: isSelected ? 0.15 : 0.08,
+        constraints: const BoxConstraints(minHeight: 160),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? theme.modeCondition(
+                  const Color(0xFFF9EFF3),
+                  primaryColor.withValues(alpha: 0.12),
+                )
+              : theme.modeCondition(
+                  Colors.white,
+                  theme.cardColor,
                 ),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Icon(
-                Icons.format_indent_decrease_rounded,
-                color: isSelected ? primaryColor : Colors.grey,
-                size: 20,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    display.label,
-                    style: TextStyle(
-                      fontWeight:
-                          isSelected ? FontWeight.bold : FontWeight.w500,
-                      color: isSelected ? primaryColor : null,
-                      fontSize: 14,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isSelected
+                ? primaryColor
+                : theme.modeCondition(
+                    const Color(0xFFE5E7EB),
+                    Colors.white12,
+                  ),
+            width: isSelected ? 2 : 1,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? primaryColor.withValues(alpha: 0.12)
+                        : theme.modeCondition(
+                            const Color(0xFFF1F5F9),
+                            Colors.white10,
+                          ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(
+                    display.icon,
+                    color: isSelected
+                        ? primaryColor
+                        : theme.modeCondition(
+                            const Color(0xFF64748B),
+                            Colors.grey,
+                          ),
+                    size: 22,
+                  ),
+                ),
+                if (isSelected)
+                  Container(
+                    width: 22,
+                    height: 22,
+                    decoration: BoxDecoration(
+                      color: primaryColor,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.check,
+                      color: Colors.white,
+                      size: 14,
+                    ),
+                  )
+                else
+                  Container(
+                    width: 22,
+                    height: 22,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: theme.modeCondition(
+                          const Color(0xFF94A3B8),
+                          Colors.grey.shade600,
+                        ),
+                        width: 1.5,
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    display.description,
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: theme.textTheme.bodyMedium?.color
-                              ?.withValues(alpha: 0.6) ??
-                          Colors.grey,
-                    ),
-                  ),
-                ],
+              ],
+            ),
+            const Gap(16),
+            Text(
+              display.label,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
               ),
             ),
-            if (isSelected) ...[
-              const SizedBox(width: 8),
-              Icon(Icons.check, size: 18, color: primaryColor),
-            ],
+            const SizedBox(height: 4),
+            Text(
+              display.description,
+              style: TextStyle(
+                fontSize: 12,
+                height: 1.3,
+                color: theme.textTheme.bodyMedium?.color
+                        ?.withValues(alpha: 0.6) ??
+                    Colors.grey,
+              ),
+            ),
           ],
         ),
       ),

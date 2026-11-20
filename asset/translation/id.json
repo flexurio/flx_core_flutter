@@ -211,7 +211,7 @@
     "icons_and_labels": "Ikon & Label",
     "icons_and_labels_desc": "Tampilkan nama menu beserta ikonnya di sidebar (Bawaan)",
     "icons_only": "Hanya Ikon",
-    "icons_only_desc": "Tampilkan hanya ikon di sidebar",
+    "icons_only_desc": "Sembunyikan nama menu dan tampilkan hanya ikon di sidebar",
     "sales_order_document": "Dokumen Sales Order",
     "schedule": "Jadwal",
     "schedule_end": "Jadwal Berakhir",

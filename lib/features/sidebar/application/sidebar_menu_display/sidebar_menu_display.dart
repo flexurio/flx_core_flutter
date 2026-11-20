@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 enum SidebarMenuDisplay {
-  iconsAndLabels,
-  iconsOnly;
+  iconsOnly,
+  iconsAndLabels;
 
   String get label {
     switch (this) {
@@ -19,7 +20,16 @@ enum SidebarMenuDisplay {
         return 'Display menu names along with their icons in the sidebar '
             '(Default)';
       case SidebarMenuDisplay.iconsOnly:
-        return 'Display only icons in the sidebar';
+        return 'Hide menu names and display icons only in the sidebar';
+    }
+  }
+
+  IconData get icon {
+    switch (this) {
+      case SidebarMenuDisplay.iconsAndLabels:
+        return Icons.format_indent_decrease_rounded;
+      case SidebarMenuDisplay.iconsOnly:
+        return Icons.block_flipped;
     }
   }
 

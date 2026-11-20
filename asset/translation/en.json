@@ -211,7 +211,7 @@
     "icons_and_labels": "Icons & Labels",
     "icons_and_labels_desc": "Display menu names along with their icons in the sidebar (Default)",
     "icons_only": "Icons Only",
-    "icons_only_desc": "Display only icons in the sidebar",
+    "icons_only_desc": "Hide menu names and display icons only in the sidebar",
     "sales_order_document": "Sales Order Document",
     "schedule": "Schedule",
     "schedule_end": "Schedule End",

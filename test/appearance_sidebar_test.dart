@@ -235,13 +235,21 @@ void main() {
       expect(find.text('Cancel'), findsOneWidget);
       expect(find.text('Save'), findsOneWidget);
 
-      // Open popup menu to choose Icons Only
+      // Tap trigger bar to expand options
       await tester.tap(find.text('Icons & Labels'));
       await tester.pumpAndSettle();
 
+      // Both option cards are now displayed
       expect(find.text('Icons Only'), findsOneWidget);
+      // trigger bar + option card
+      expect(find.text('Icons & Labels'), findsNWidgets(2));
+
+      // Tap the "Icons Only" card
       await tester.tap(find.text('Icons Only'));
       await tester.pumpAndSettle();
+
+      // Trigger bar and selected card both show "Icons Only"
+      expect(find.text('Icons Only'), findsNWidgets(2));
 
       // Tap Save
       await tester.tap(find.text('Save'));
