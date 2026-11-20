@@ -9,8 +9,9 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
   const FDropDownSearchSmall({
     required this.labelText,
     required this.itemAsString,
-    required this.items,
     required this.iconField,
+    this.items = const [],
+    this.asyncItems,
     this.width,
     super.key,
     this.status = Status.loaded,
@@ -22,12 +23,15 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
     this.enabled = true,
     this.showClearButton = false,
     this.emptyBuilder,
+    this.searchDelay,
+    this.disableFilter,
   });
 
   final void Function(T?)? onChanged;
   final String labelText;
   final T? initialValue;
   final List<T> items;
+  final DropdownSearchOnFind<T>? asyncItems;
   final double? width;
   final Status status;
   final String? Function(T?)? validator;
@@ -38,11 +42,18 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
   final IconData iconField;
   final bool showClearButton;
   final Widget Function(BuildContext context, String searchEntry)? emptyBuilder;
+  final Duration? searchDelay;
+  final bool? disableFilter;
 
   @override
   Widget build(BuildContext context) {
     return ContainerDropDown<T>(
       emptyBuilder: emptyBuilder,
+      searchDelay: searchDelay ??
+          (asyncItems != null
+              ? const Duration(milliseconds: 350)
+              : Duration.zero),
+      disableFilter: disableFilter ?? (asyncItems != null),
       builder: (
         foregroundColor,
         border,
@@ -61,7 +72,7 @@ class FDropDownSearchSmall<T> extends StatelessWidget {
             ),
           ),
           popupProps: popupProps,
-          items: (f, p) => items,
+          items: asyncItems ?? (f, p) => items,
           itemAsString: itemAsString,
           dropdownBuilder: (context, selectedItem) {
             return Row(

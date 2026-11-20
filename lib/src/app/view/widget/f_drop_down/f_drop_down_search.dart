@@ -9,7 +9,8 @@ class FDropDownSearch<T> extends StatelessWidget {
   const FDropDownSearch({
     required this.labelText,
     required this.itemAsString,
-    required this.items,
+    this.items = const [],
+    this.asyncItems,
     super.key,
     this.status = Status.loaded,
     this.initialValue,
@@ -21,12 +22,15 @@ class FDropDownSearch<T> extends StatelessWidget {
     this.emptyBuilder,
     this.onSearchSubmitted,
     this.dropdownSearchKey,
+    this.searchDelay,
+    this.disableFilter,
   });
 
   final void Function(T?)? onChanged;
   final String? labelText;
   final T? initialValue;
   final List<T> items;
+  final DropdownSearchOnFind<T>? asyncItems;
   final Status status;
   final String? Function(T?)? validator;
   final String Function(T) itemAsString;
@@ -36,6 +40,8 @@ class FDropDownSearch<T> extends StatelessWidget {
   final Widget Function(BuildContext context, String searchEntry)? emptyBuilder;
   final void Function(String searchEntry)? onSearchSubmitted;
   final GlobalKey<DropdownSearchState<T>>? dropdownSearchKey;
+  final Duration? searchDelay;
+  final bool? disableFilter;
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +102,11 @@ class FDropDownSearch<T> extends StatelessWidget {
           popupProps: PopupProps.menu(
             emptyBuilder: emptyBuilder,
             showSelectedItems: showSelectedItems,
-            searchDelay: Duration.zero,
+            searchDelay: searchDelay ??
+                (asyncItems != null
+                    ? const Duration(milliseconds: 350)
+                    : Duration.zero),
+            disableFilter: disableFilter ?? (asyncItems != null),
             showSearchBox: true,
             searchFieldProps: TextFieldProps(
               onSubmitted: (entry) {
@@ -124,7 +134,7 @@ class FDropDownSearch<T> extends StatelessWidget {
               ),
             ),
           ),
-          items: (f, p) => items,
+          items: asyncItems ?? (f, p) => items,
           itemAsString: itemAsString,
           decoratorProps: DropDownDecoratorProps(
             decoration: InputDecoration(
