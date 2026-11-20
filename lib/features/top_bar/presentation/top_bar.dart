@@ -17,6 +17,7 @@ class TopBar extends StatelessWidget {
     required this.searchData,
     required this.logoNamedUrl,
     this.placeholderMenuList,
+    this.withAppearance = false,
     super.key,
   });
 
@@ -30,6 +31,7 @@ class TopBar extends StatelessWidget {
   final void Function() drawerTriggered;
   final void Function(BuildContext context) onChangePassword;
   final Widget? placeholderMenuList;
+  final bool withAppearance;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +57,7 @@ class TopBar extends StatelessWidget {
                   title: accountName,
                   subtitle: accountSubtitle,
                   onLogout: onLogout,
+                  withAppearance: withAppearance,
                 ),
                 // const Gap(24),
               ],
@@ -142,6 +145,7 @@ class TopBar extends StatelessWidget {
       title: accountName,
       subtitle: accountSubtitle,
       onLogout: onLogout,
+      withAppearance: withAppearance,
     );
   }
 
@@ -168,6 +172,7 @@ class TopBar extends StatelessWidget {
         avatarWidth: 50,
         title: accountName,
         subtitle: accountSubtitle,
+        withAppearance: withAppearance,
       ),
     );
   }

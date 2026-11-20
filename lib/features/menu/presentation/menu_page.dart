@@ -25,8 +25,10 @@ class MenuPage extends StatefulWidget {
     this.placeholderMenuList,
     this.searchMode,
     this.tableHoverEffect,
-    this.welcomePage,
-  );
+    this.welcomePage, {
+    this.withAppearance = false,
+    this.showMenuName,
+  });
 
   final List<Widget> Function(BuildContext context, String query) searchData;
   final String appName;
@@ -44,6 +46,8 @@ class MenuPage extends StatefulWidget {
   final DataTableSearchMode searchMode;
   final bool tableHoverEffect;
   final Widget? welcomePage;
+  final bool withAppearance;
+  final bool? showMenuName;
 
   // Static Getter
 
@@ -69,6 +73,8 @@ class MenuPage extends StatefulWidget {
     Widget? welcomePage,
     DataTableSearchMode searchMode = DataTableSearchMode.submit,
     bool tableHoverEffect = false,
+    bool withAppearance = false,
+    bool? showMenuName,
   }) {
     customWelcomePage = welcomePage;
     tableSearchMode = searchMode;
@@ -82,6 +88,7 @@ class MenuPage extends StatefulWidget {
           ),
         ),
         BlocProvider(create: (_) => MenuCollapseBloc()),
+        BlocProvider.value(value: SidebarMenuDisplayBloc.instance),
       ],
       child: MenuPage._(
         menu,
@@ -100,6 +107,8 @@ class MenuPage extends StatefulWidget {
         searchMode,
         tableHoverEffect,
         welcomePage,
+        withAppearance: withAppearance,
+        showMenuName: showMenuName,
       ),
     );
   }
@@ -184,6 +193,7 @@ class _MenuPageState extends State<MenuPage> {
                     noCollapse: true,
                     menu: widget.menu,
                     accountPermission: widget.accountPermissions,
+                    showMenuName: widget.showMenuName,
                   ),
                   body: _Boxed(
                     enabled: false,
@@ -216,6 +226,7 @@ class _MenuPageState extends State<MenuPage> {
           logoUrl: widget.logoUrl,
           menu: widget.menu,
           accountPermission: widget.accountPermissions,
+          showMenuName: widget.showMenuName,
           drawerTriggered: () {
             _scaffoldKey.currentState?.openDrawer();
           },
@@ -236,6 +247,7 @@ class _MenuPageState extends State<MenuPage> {
       onLogout: widget.onLogout,
       onChangePassword: widget.onChangePassword,
       placeholderMenuList: widget.placeholderMenuList,
+      withAppearance: widget.withAppearance,
       drawerTriggered: () {
         _scaffoldKey.currentState?.openDrawer();
       },

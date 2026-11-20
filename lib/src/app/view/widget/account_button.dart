@@ -8,6 +8,7 @@ class AccountButton extends StatelessWidget {
     required this.subtitle,
     required this.onLogout,
     required this.onChangePassword,
+    this.withAppearance = false,
     super.key,
     this.padding,
   });
@@ -17,6 +18,7 @@ class AccountButton extends StatelessWidget {
   final String subtitle;
   final void Function() onLogout;
   final void Function(BuildContext context) onChangePassword;
+  final bool withAppearance;
 
   static void showProfilePopUp({
     required BuildContext context,
@@ -24,6 +26,7 @@ class AccountButton extends StatelessWidget {
     required String subtitle,
     required void Function() onLogout,
     required void Function(BuildContext context) onChangePassword,
+    bool withAppearance = false,
   }) {
     showDialog<void>(
       context: context,
@@ -32,6 +35,7 @@ class AccountButton extends StatelessWidget {
         subtitle,
         onLogout,
         onChangePassword,
+        withAppearance: withAppearance,
       ),
     );
   }
@@ -49,6 +53,7 @@ class AccountButton extends StatelessWidget {
               subtitle,
               onLogout,
               onChangePassword,
+              withAppearance: withAppearance,
             ),
           );
         },
@@ -71,6 +76,7 @@ class AvatarNameEmail extends StatelessWidget {
     required this.onChangePassword,
     required this.isOnPop,
     this.avatarWidth = 70,
+    this.withAppearance = false,
     super.key,
   });
 
@@ -80,6 +86,7 @@ class AvatarNameEmail extends StatelessWidget {
   final void Function() onLogout;
   final void Function(BuildContext context) onChangePassword;
   final bool isOnPop;
+  final bool withAppearance;
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +103,7 @@ class AvatarNameEmail extends StatelessWidget {
                       subtitle,
                       onLogout,
                       onChangePassword,
+                      withAppearance: withAppearance,
                     ),
                   );
                 },
@@ -138,13 +146,15 @@ class _PopUpDialogProfile extends StatelessWidget {
     this.title,
     this.subtitle,
     this.onLogout,
-    this.onChangePassword,
-  );
+    this.onChangePassword, {
+    this.withAppearance = false,
+  });
 
   final String title;
   final String subtitle;
   final void Function() onLogout;
   final void Function(BuildContext context) onChangePassword;
+  final bool withAppearance;
 
   @override
   Widget build(BuildContext context) {
@@ -166,6 +176,7 @@ class _PopUpDialogProfile extends StatelessWidget {
             onChangePassword: onChangePassword,
             title: title,
             subtitle: subtitle,
+            withAppearance: withAppearance,
           ),
         ),
         const Gap(12),
@@ -176,6 +187,15 @@ class _PopUpDialogProfile extends StatelessWidget {
           label: 'Profile',
           onTap: () {},
         ),
+        if (withAppearance) ...[
+          const Divider(height: 0),
+          _ListMenu(
+            color: const Color(0xFF7C4DFF),
+            icon: const Icon(Icons.tune),
+            label: 'Appearance',
+            onTap: () => showAppearanceDialog(context: context),
+          ),
+        ],
         const Divider(height: 0),
         _ListMenu(
           color: Colors.green,

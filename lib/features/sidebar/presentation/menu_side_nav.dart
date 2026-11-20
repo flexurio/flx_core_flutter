@@ -16,6 +16,7 @@ class MenuSideNav extends StatefulWidget {
     required this.bypassPermission,
     this.noCollapse = false,
     this.drawerTriggered,
+    this.showMenuName,
     super.key,
   });
   final List<Menu1> menu;
@@ -25,6 +26,7 @@ class MenuSideNav extends StatefulWidget {
   final String? logoUrl;
   final String? logoNamedUrl;
   final bool bypassPermission;
+  final bool? showMenuName;
 
   @override
   State<MenuSideNav> createState() => _MenuSideNavState();
@@ -68,66 +70,75 @@ class _MenuSideNavState extends State<MenuSideNav> {
     final theme = Theme.of(context);
     return BlocBuilder<MenuCollapseBloc, bool>(
       builder: (context, collapsedX) {
-        return ScreenIdentifierBuilder(
-          builder: (context, screenIdentifier) {
-            final collapsed = screenIdentifier.conditions(
-              md: collapsedX,
-              sm: true,
-            );
+        return BlocBuilder<SidebarMenuDisplayBloc, SidebarMenuDisplay>(
+          bloc: SidebarMenuDisplayBloc.instance,
+          builder: (context, menuDisplay) {
+            final effectiveShowMenuName = widget.showMenuName ??
+                menuDisplay.showMenuName;
 
-            return Material(
-              color: theme.cardColor,
-              shadowColor: Colors.black,
-              elevation: collapsed && _hovered ? 8 : 0,
-              child: AnimatedContainer(
-                width: widget.noCollapse
-                    ? sideNavWidth
-                    : _conditionCollapsed<double>(
-                        collapsed,
-                        collapsed: sideNavWidthCollapsed,
-                        unCollapsed: sideNavWidth,
-                      ),
-                duration: const Duration(milliseconds: 200),
-                child: SafeArea(
-                  child: Column(
-                    children: [
-                      const Gap(12),
-                      ToggleSideNav(
-                        logoNamedUrl: widget.logoNamedUrl,
-                        logoUrl: widget.logoUrl,
-                        noCollapse: widget.noCollapse,
-                        isCollapsed: !widget.noCollapse &&
-                            _conditionCollapsed<bool>(
-                              collapsed,
-                              collapsed: true,
-                              unCollapsed: false,
+            return ScreenIdentifierBuilder(
+              builder: (context, screenIdentifier) {
+                final collapsed = screenIdentifier.conditions(
+                  md: collapsedX,
+                  sm: true,
+                );
+
+                return Material(
+                  color: theme.cardColor,
+                  shadowColor: Colors.black,
+                  elevation: collapsed && _hovered ? 8 : 0,
+                  child: AnimatedContainer(
+                    width: widget.noCollapse
+                        ? sideNavWidth
+                        : _conditionCollapsed<double>(
+                            collapsed,
+                            collapsed: sideNavWidthCollapsed,
+                            unCollapsed: sideNavWidth,
+                          ),
+                    duration: const Duration(milliseconds: 200),
+                    child: SafeArea(
+                      child: Column(
+                        children: [
+                          const Gap(12),
+                          ToggleSideNav(
+                            logoNamedUrl: widget.logoNamedUrl,
+                            logoUrl: widget.logoUrl,
+                            noCollapse: widget.noCollapse,
+                            isCollapsed: !widget.noCollapse &&
+                                _conditionCollapsed<bool>(
+                                  collapsed,
+                                  collapsed: true,
+                                  unCollapsed: false,
+                                ),
+                          ),
+                          const Gap(12),
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: menuFiltered.length,
+                              itemBuilder: (context, index) {
+                                final menu1 = menuFiltered[index];
+                                return MenuLevel1(
+                                  bypassPermission: widget.bypassPermission,
+                                  accountPermissions: widget.accountPermission,
+                                  menu1: menu1,
+                                  index: index,
+                                  showMenuName: effectiveShowMenuName,
+                                  isCollapsed: !widget.noCollapse &&
+                                      _conditionCollapsed<bool>(
+                                        collapsed,
+                                        collapsed: true,
+                                        unCollapsed: false,
+                                      ),
+                                );
+                              },
                             ),
+                          ),
+                        ],
                       ),
-                      const Gap(12),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: menuFiltered.length,
-                          itemBuilder: (context, index) {
-                            final menu1 = menuFiltered[index];
-                            return MenuLevel1(
-                              bypassPermission: widget.bypassPermission,
-                              accountPermissions: widget.accountPermission,
-                              menu1: menu1,
-                              index: index,
-                              isCollapsed: !widget.noCollapse &&
-                                  _conditionCollapsed<bool>(
-                                    collapsed,
-                                    collapsed: true,
-                                    unCollapsed: false,
-                                  ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             );
           },
         );

@@ -6,6 +6,7 @@ export 'features/menu/domain/menu.dart';
 // Page
 export 'features/menu/presentation/menu_page.dart';
 export 'features/sidebar/application/menu_collapse/menu_collapse.dart';
+export 'features/sidebar/application/sidebar_menu_display/sidebar_menu_display.dart';
 export 'features/top_bar/presentation/top_bar.dart';
 export 'features/yuhu_table/presentation/table_column.dart';
 export 'features/yuhu_table/presentation/yuhu_table.dart';
@@ -64,6 +65,7 @@ export 'src/app/view/page/splash/splash_page.dart';
 // Widget
 export 'src/app/view/widget/account_button.dart';
 export 'src/app/view/widget/action_button_group.dart';
+export 'src/app/view/widget/appearance_dialog.dart';
 export 'src/app/view/widget/app.dart';
 export 'src/app/view/widget/background.dart';
 export 'src/app/view/widget/block_note.dart';
