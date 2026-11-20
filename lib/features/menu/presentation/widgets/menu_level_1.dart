@@ -12,6 +12,7 @@ class MenuLevel1 extends StatelessWidget {
     required this.isCollapsed,
     required this.accountPermissions,
     required this.bypassPermission,
+    this.showMenuName = true,
     super.key,
   });
 
@@ -20,6 +21,7 @@ class MenuLevel1 extends StatelessWidget {
   final bool isCollapsed;
   final List<String> accountPermissions;
   final bool bypassPermission;
+  final bool showMenuName;
 
   @override
   Widget build(BuildContext context) {
@@ -80,23 +82,43 @@ class MenuLevel1 extends StatelessWidget {
                 Column(
                   children: List.generate(
                     menu1.menu.length,
-                    (index) => SizedBox(
-                      height: 50,
-                      child: Center(
-                        child: Column(
-                          children: [
-                            Icon(menu1.menu[index].icon, size: 15),
-                            const Gap(3),
-                            Text(
-                              menu1.menu[index].labelShort ??
-                                  menu1.menu[index].label.tr(),
-                              style: const TextStyle(fontSize: 10),
-                              textAlign: TextAlign.center,
+                    (index) {
+                      final item = menu1.menu[index];
+                      final label = item.labelShort ?? item.label.tr();
+                      if (!showMenuName) {
+                        return Tooltip(
+                          message: label,
+                          child: SizedBox(
+                            height: 40,
+                            child: Center(
+                              child: Icon(item.icon, size: 18),
                             ),
-                          ],
+                          ),
+                        );
+                      }
+                      return Tooltip(
+                        message: label,
+                        child: SizedBox(
+                          height: 50,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(item.icon, size: 15),
+                                const Gap(3),
+                                Text(
+                                  label,
+                                  style: const TextStyle(fontSize: 10),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 )
               else
