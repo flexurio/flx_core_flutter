@@ -31,6 +31,65 @@ class CardForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final mediaSize = MediaQuery.of(context).size;
+    final isMobile = mediaSize.width < 600;
+
+    if (popup) {
+      final maxAllowedWidth =
+          isMobile ? mediaSize.width - 32 : mediaSize.width * 0.92;
+      final double? effectiveWidth = isMobile
+          ? maxAllowedWidth
+          : (width != null
+              ? width!.clamp(280.0, maxAllowedWidth).toDouble()
+              : null);
+      final maxConstraintsWidth =
+          effectiveWidth ?? (mediaSize.width * 0.9).clamp(400.0, 1000.0);
+
+      return Dialog(
+        backgroundColor: danger ? Colors.red : theme.cardColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        insetPadding: EdgeInsets.all(isMobile ? 16 : 24),
+        clipBehavior: Clip.antiAlias,
+        child: Container(
+          width: effectiveWidth,
+          constraints: BoxConstraints(
+            maxWidth: maxConstraintsWidth,
+            maxHeight: mediaSize.height * 0.88,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 24, 20, 16),
+                child: _buildTitle(context),
+              ),
+              Flexible(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.fromLTRB(
+                    20,
+                    0,
+                    20,
+                    actions.isNotEmpty ? 20 : 24,
+                  ),
+                  child: DefaultTextStyle(
+                    style: theme.textTheme.bodyMedium!.copyWith(
+                      fontSize: 16,
+                      color: danger ? Colors.red.shade50 : null,
+                    ),
+                    child: child,
+                  ),
+                ),
+              ),
+              if (actions.isNotEmpty) _buildActions(theme),
+            ],
+          ),
+        ),
+      );
+    }
+
     final body = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -58,33 +117,10 @@ class CardForm extends StatelessWidget {
       ],
     );
 
-    if (popup) {
-      return SimpleDialog(
-        backgroundColor: danger ? Colors.red : theme.cardColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        contentPadding: EdgeInsets.zero,
-        children: [
-          Container(
-            constraints: BoxConstraints(
-              maxWidth: width != null
-                  ? (width! > MediaQuery.of(context).size.width * 0.95
-                      ? MediaQuery.of(context).size.width * 0.95
-                      : width!)
-                  : (MediaQuery.of(context).size.width * 0.9)
-                      .clamp(400.0, 1000.0),
-            ),
-            child: body,
-          ),
-        ],
-      );
-    } else {
-      return Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        child: body,
-      );
-    }
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      child: body,
+    );
   }
 
   Widget _buildActions(ThemeData theme) {
