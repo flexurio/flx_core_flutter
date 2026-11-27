@@ -28,6 +28,7 @@ class MenuPage extends StatefulWidget {
     this.welcomePage, {
     this.withAppearance = false,
     this.showMenuName,
+    this.keepLoginWidget,
   });
 
   final List<Widget> Function(BuildContext context, String query) searchData;
@@ -48,6 +49,7 @@ class MenuPage extends StatefulWidget {
   final Widget? welcomePage;
   final bool withAppearance;
   final bool? showMenuName;
+  final Widget? keepLoginWidget;
 
   // Static Getter
 
@@ -75,6 +77,7 @@ class MenuPage extends StatefulWidget {
     bool tableHoverEffect = false,
     bool withAppearance = false,
     bool? showMenuName,
+    Widget? keepLoginWidget,
   }) {
     customWelcomePage = welcomePage;
     tableSearchMode = searchMode;
@@ -109,6 +112,7 @@ class MenuPage extends StatefulWidget {
         welcomePage,
         withAppearance: withAppearance,
         showMenuName: showMenuName,
+        keepLoginWidget: keepLoginWidget,
       ),
     );
   }
@@ -248,6 +252,7 @@ class _MenuPageState extends State<MenuPage> {
       onChangePassword: widget.onChangePassword,
       placeholderMenuList: widget.placeholderMenuList,
       withAppearance: widget.withAppearance,
+      keepLoginWidget: widget.keepLoginWidget,
       drawerTriggered: () {
         _scaffoldKey.currentState?.openDrawer();
       },

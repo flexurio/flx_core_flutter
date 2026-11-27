@@ -175,6 +175,44 @@ void main() {
       expect(storage.readLastActivity('last_api_activity'), isNull);
       service.dispose();
     });
+
+    test(
+      'refreshTimeout toggles keepLogin timer on and off',
+      () async {
+      final storage = _InMemoryIdleStorage();
+      var currentTime = DateTime.utc(2026, 11, 27, 9);
+      var keepLogin = false;
+      var logoutCount = 0;
+
+      final service = IdleApiLogoutService(
+        timeoutProvider: () =>
+            keepLogin ? null : const Duration(milliseconds: 60),
+        isAuthenticated: () => true,
+        onTimeout: () => logoutCount++,
+        storage: storage,
+        now: () => currentTime,
+      )..onAuthenticated(resetTimestamp: true);
+
+      // Enable Keep Login before timeout expires -> timer should be cancelled.
+      keepLogin = true;
+      service.refreshTimeout();
+      expect(service.isEnabled, isFalse);
+
+      currentTime = currentTime.add(const Duration(minutes: 30));
+      await Future<void>.delayed(const Duration(milliseconds: 90));
+      expect(logoutCount, 0);
+
+      // Disable Keep Login -> fresh timeout starts from now.
+      keepLogin = false;
+      service.refreshTimeout();
+      expect(service.isEnabled, isTrue);
+      expect(logoutCount, 0);
+
+      currentTime = currentTime.add(const Duration(milliseconds: 70));
+      await Future<void>.delayed(const Duration(milliseconds: 90));
+      expect(logoutCount, 1);
+      service.dispose();
+    });
   });
 
   group('ApiActivityInterceptor', () {

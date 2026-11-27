@@ -18,6 +18,7 @@ class TopBar extends StatelessWidget {
     required this.logoNamedUrl,
     this.placeholderMenuList,
     this.withAppearance = false,
+    this.keepLoginWidget,
     super.key,
   });
 
@@ -32,6 +33,7 @@ class TopBar extends StatelessWidget {
   final void Function(BuildContext context) onChangePassword;
   final Widget? placeholderMenuList;
   final bool withAppearance;
+  final Widget? keepLoginWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -150,13 +152,17 @@ class TopBar extends StatelessWidget {
   }
 
   _RoundedContainer _buildThemeLanguage() {
-    return const _RoundedContainer(
+    return _RoundedContainer(
       child: Row(
         children: [
-          SwitchLightDarkMode(),
-          Gap(24),
-          SwitchLanguage(),
-          Gap(6),
+          const SwitchLightDarkMode(),
+          const Gap(24),
+          const SwitchLanguage(),
+          if (keepLoginWidget != null) ...[
+            const Gap(12),
+            keepLoginWidget!,
+          ],
+          const Gap(6),
         ],
       ),
     );

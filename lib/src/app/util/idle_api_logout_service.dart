@@ -169,6 +169,16 @@ class IdleApiLogoutService with WidgetsBindingObserver {
     _storage.clearLastActivity(_storageKey);
   }
 
+  /// Re-evaluates the active timeout, e.g. when Keep Login setting changes.
+  void refreshTimeout() {
+    final activeTimeout = timeout;
+    if (activeTimeout == null || !_isAuthenticated()) {
+      _cancelTimer();
+      return;
+    }
+    onAuthenticated(resetTimestamp: true);
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
